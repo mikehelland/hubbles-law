@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <style>
+        html {
+            background-color: black;
+            color: white;
+        }
+
+        canvas {
+            width:100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        function Experiment(params) {
+            this.name = params.name
+            this.data = params.initialConditions
+            this.rules = params.rules
+            this.output = params.output || function () {}
+            this.scaleX =  params.scaleX
+
+            var caption = document.createElement("div")
+            caption.innerHTML = params.name
+            document.body.appendChild(caption)
+            this.canvas = document.createElement("canvas")
+            this.ctx = this.canvas.getContext("2d")
+            document.body.appendChild(this.canvas)
+            this.canvas.width = this.canvas.clientWidth
+            this.top = 5
+            this.left = 5
+
+            this.ctx.fillStyle = "yellow"
+            this.ctx.fillRect(this.left + this.data.g1.x / this.scaleX, this.top, 8, 8);
+
+            this.canvas.onclick = () => {
+                if (this.running)
+                    this.stop()
+                else
+                    this.start()
+            }
+        }
+
+        Experiment.prototype.draw = function () {
+
+            this.ctx.fillStyle = "yellow"
+            this.ctx.fillRect(this.left + this.data.g2.x / this.scaleX, this.top, 8, 8);
+
+            this.ctx.fillStyle = "red"
+            this.ctx.fillRect(this.left + this.data.photon.x / this.scaleX, this.top, 4, 4);
+
+        }
+
+        Experiment.prototype.start = function () {
+
+            this.running = true;
+            this.drawHandle = setInterval(() => {
+                this.draw()
+            }, 1000/30);
+            this.rulesHandle = setInterval(() => {
+                if (this.rules(this.data) === "DONE") {
+                    this.stop();
+                }
+            }, 0)
+        }
+
+        Experiment.prototype.stop = function () {
+            clearInterval(this.rulesHandle)
+            clearInterval(this.drawHandle)
+            this.running = false;
+        }
+
+    </script>
+
+    <!-- add experiment scripts here-->
+    <script src="experiment0-control.js"></script>
+    <script src="experiment1-hubble.js"></script>
+    
+
+
+</body>

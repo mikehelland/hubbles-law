@@ -1,0 +1,112 @@
+<style>
+body {
+    background-color: black;
+}
+
+img {
+    position:absolute;
+    width:80px;
+    height:80px;
+}
+#g1 {
+    width:120px;
+    height:120px;
+}
+
+</style>
+<div>
+
+    <img id="g1" src="galaxy.png">
+    
+    <img id="g2" src="galaxy.png">
+    <img id="g3" src="galaxy.png">
+    <img id="g4" src="galaxy.png">
+    <img id="g5" src="galaxy.png">
+
+
+    <script>
+    var gs = document.getElementsByTagName("img");
+    var egs = []
+    var first = true;
+    var xy = [[0.23, 0.26], [0.76, 0.24], [0.25, 0.73], [0.77, 0.77]]
+    for (var gi = 0; gi < gs.length; gi++) {
+        var g = gs[gi]
+        if (first) {
+            console.log(g.clientHeight)
+            g.style.top = window.innerHeight / 2 - 60 / 2 + "px";
+            g.style.left = window.innerWidth / 2 - 60 / 2 + "px";
+            first = false;
+        }
+        else {
+            var x = xy[gi - 1][0] * window.innerWidth;
+            var y = xy[gi - 1][1] * window.innerHeight;
+            g.style.top =  y - 40 + "px";
+            g.style.left = x - 40 + "px";
+            egs.push({
+                div: g, x: x, y: y, 
+                dx: xy[gi - 1][0] > 0.5 ? 1 : -1, dy: xy[gi - 1][1] > 0.5 ? 1 : -1
+            })
+        }
+    }
+
+    window.onkeypress = function () {
+        setInterval(function () {
+            for (var gi = 0; gi < egs.length; gi++) {
+                var g = egs[gi];
+                g.x = g.x + g.dx;
+                g.y = g.y + g.dy;
+                g.div.style.left = g.x - 40;
+                g.div.style.top = g.y - 40;
+            } 
+        }, 1000/30)
+    }
+
+    </script>
+</div>>
+Picture our galaxy.
+
+And space all round it is expanding. 
+
+The farther out in space, the faster it expands, described by Hubble's Law, v = H * D.
+
+As light from our galaxy travels across the universe, it encounters space that 
+expands faster and faster.
+
+Eventually, distance D is so great, that H * D is greater than c, 
+the speed of light. So the light gets trapped in space that is expanding faster
+than it can travel. 
+
+That means the light that gets to us has to come from closer than H/c, 
+which makes an observable sphere around us, called Hubble's Volume.
+
+https://en.wikipedia.org/wiki/Hubble_volume
+
+"In cosmology, a Hubble volume or Hubble sphere is a spherical region of the 
+observable universe surrounding an observer beyond which objects recede from 
+that observer at a rate greater than the speed of light due to the expansion of the Universe."
+
+While we're in the center of the Hubble Volume, we're not in the center of the universe. 
+So we have to assume that every other point in the universe is the center of its own Hubble Volumes.
+
+Question 1:
+
+At the edge of the Hubble Volume, are there large numbers of trapped photons 
+that will never do anything ever except cruise in space that expands faster than it travels?
+
+And if there are infinitely more Hubble Volumes, each with an edge with trapped photons, 
+does that mean everywhere in the universe is filled with trapped photons?
+
+----
+
+The Cosmic Microwave Background should look the same in every direction, but after we took a closer
+look, it doesn't. The southern hemisphere is a little warmer, and has a big cold spot.
+
+https://www.space.com/20330-cosmic-microwave-background-explained-infographic.html
+
+Imagine an observer in a galaxy south of ours by the diameter of a Hubble Volume. 
+The southern edge of our volume would touch the northern edge of their Hubble Volume.
+
+Question 2:
+
+How does their CMB look compared to ours? Would they see a cold spot to the south?
+Or would they see the same cold spot we do by looking north?

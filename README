@@ -1,0 +1,25 @@
+Space is expanding. 
+
+Supposedly. 
+
+We think this because we assume light travels to infinity and never loses energy,
+but we observe that the more distant a galaxy is, the more energy of its light has been lost.
+
+Rather than questioning light's role in this situation, we theorize that space is expanding,
+and everything is moving away from us, which causes the light to have lower energy levels.
+ 
+Here's what Edwin Hubble had to say in 1937:
+
+"If red-shifts are the familiar velocity-shifts, systematic variations do exist in the observable region, 
+and they suggest an expanding universe that is finite, small, and young. On the other hand, if red-shifts 
+are evidence of some unknown principle of nature, which does not involve actual motion, then variations 
+are not appreciable in our sample, and the observable region is an insignificant fraction of the universe 
+as a whole. Thus, in a certain sense, we again face a choice between a small finite universe and a 
+universe indefinitely large plus a new principle of nature."
+
+https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf page 19
+
+The computer models in this repo aim to supply that new principle of nature.
+
+Specifically, the preferred model is one where light redshifts until it reaches zero and is done. 
+Light is given a finite range which is Hubble's Distance, `c / H`.
