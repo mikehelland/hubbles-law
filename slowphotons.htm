@@ -41,173 +41,21 @@
     var step = 0
     var steps = [
         () => {
-            caption1.innerHTML = "Our Galaxy"
-        },
-        () => {
-            caption1.innerHTML = "Other Galaxies"
-            for (var ig = 0; ig < 200; ig++) {
-                setTimeout(function () {
-                    galaxies.push({x: 1.5 * w * (Math.random() - 0.5), y : 2 * h * (Math.random() - 0.5)})
-                }, 1 * ig)
-            }
-            for (var ig = 0; ig < 50; ig++) {
-                setTimeout(function () {
-                    galaxies.push({x: 0.75 * w * (Math.random() - 0.5), y : h * (Math.random() - 0.5)})
-                }, 1 * ig)
-            }
-
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 1.A</code> <br> Light traveling from our galaxy"
+            galaxies.push({x: 250, y : 0})
             galaxies.forEach((g, i) => {
                 g.origX = g.x
                 g.origY = g.y
             })
-            fire(g1)
         },
         () => {
-            caption1.innerHTML = "next, the other direction..."
-            fadeOutContacts = true
-            photons = []
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 1.B</code> <br> Light traveling to our galaxy"
-            galaxies.forEach((g, i) => {
-                setTimeout(()=> {
-                    fire(g)
-                }, 1 * i)
-            })
-        },
-        () => {
-            caption1.innerHTML = "but space expands!"
-            fadeOutContacts = true
-            photons = []
-        },
-        () => {
-            caption1.innerHTML = "Galaxies will move away<br> according to Hubble's Law: v = Hd"
-            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 2.A</code> <br> Light traveling from our galaxy <br> in expanding space"
-            
-            H = _H
-            fire(g1)
-        },
-        () => {
-            caption1.innerHTML = "again, the other direction..."
-            photons = []
-            H = 0
-            fadeOutContacts = 1
-            rewind  = 1
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 2.B</code> <br> Light traveling to our galaxy <br> in expanding space"
+            H_c = 0.0133
 
-            H = _H
-            galaxies.forEach((g, i) => {
-                setTimeout(()=> {
-                    fire(g)
-                }, 1 * i)
-            })
-        },
-        () => {
-            caption1.innerHTML = "Question: What's this?"
-            caption2.innerHTML = ""
-            photons = []
-            H = 0
-            rewind  = 1
-        },
-        () => {
-            caption1.innerHTML = "Answer: Hubble's Volume"
-            caption2.innerHTML = "radius = c / H"
-            photons = []
-            drawHubble = true
-        },
-        () => {
-            document.getElementById("hv-wiki").style.display = "block"
-        },
-        () => {
-            document.getElementById("hv-wiki").style.display = "none"
-        },
-        () => {
-            drawHubble = false
-            caption1.innerText = "Let's look at that again..."
-            fadeOutContacts = 1
-            caption2.innerHTML = ""
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 2.A</code> <br> Light traveling from our galaxy <br> in expanding space"
-            
-            H = _H
-            fire(g1)
-        },
-        () => {
-            caption1.innerHTML = "again, the other direction..."
-            photons = []
-            H = 0
-            fadeOutContacts = 1
-            rewind  = 1
-        },
-        () => {
-            caption1.innerHTML = "<code>Program 2.B</code> <br> Light traveling to our galaxy <br> in expanding space"
-            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
-            
-            H = _H
-            galaxies.forEach((g, i) => {
-                setTimeout(()=> {
-                    fire(g)
-                }, 1 * i)
-            })
-        },
-        () => {
-            caption1.innerHTML = ""
-            caption2.innerHTML = ""
-            pause = true
-        },
-        () => {
-            caption1.innerHTML = "Question."
-            caption2.innerHTML = ""
-            pause = true
-        },
-        () => {
-            caption1.innerHTML = "What's up with the trapped photons everywhere?"
-        },
-        () => {
-            caption1.innerHTML = "Is the universe filled with countless trapped photons"
-        },
-        () => {
-            caption1.innerHTML = "travelling through space that is expanding faster than light can travel?"
-            pause = false
-        },
-        () => {
-            //caption1.innerHTML = "or..."
-            caption1.innerHTML = "Please let me know!"
-        },
-        () => {
-            caption2.innerHTML = "Thank You!"
-        },
-        () => {
-            caption1.innerHTML = "What if light redshifted on its own?"
-        },
-        () => {
-            caption1.innerHTML = "Instead of this:<br><em>speed of galaxies</em> = Hd"
-        },
-        () => {
-            caption1.innerHTML = "Instead of this:<br><s><em>speed of galaxies</em> = Hd</s>"
-                + "<br>We did this:<br><em>speed of light</em> = c - Hd"
-        },
-        () => {
-            caption1.innerHTML = "let's try it!"
-            caption2.innerHTML = "<em>speed of light</em> = c - Hd"
-            H = 0
-            photons = []
-            pause = false
-            rewind  = 1
-            fadeOutContacts = 1
+            setInterval(()=> {
+                fire(g1)
+            }, 1000)
         },
         () => {
             caption1.innerHTML = "<code>Program 3.A</code> <br> Light traveling from our galaxy <br> redshifting with distance"
-            H_c = 0.0133
             fire(g1)
         },
         () => {
@@ -244,6 +92,7 @@
         step++;
     }
 
+    var t = 0
     var _H = 0.005
     var H = 0
     var H_c = 0
@@ -351,6 +200,7 @@
         ctx.stroke()
     }
 
+    var lastHit = 0
     var run = function () {
         if (pause) 
             return 
@@ -396,7 +246,13 @@
                     d = Math.sqrt(Math.pow(g.x, 2) + Math.pow(g.y, 2))
                     if (photon.d - d < 2 && photon.d - d > -2) {
                         console.log("pushing?")
-                        contacts.push({g})
+                        
+                        caption2.innerHTML = t - lastHit
+                        lastHit = t
+                        
+                        photons.splice(i, 1)
+                        i--
+
                     }
                 })
             }
@@ -406,6 +262,7 @@
             }
         }
         draw()
+        t++
     }
 
     var fire = function (g) {
