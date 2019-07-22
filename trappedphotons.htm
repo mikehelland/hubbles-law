@@ -84,7 +84,7 @@
             photons = []
         },
         () => {
-            caption1.innerHTML = "Galaxies will move away<br> according to Hubble's Law: v = Hd"
+            caption1.innerHTML = "Galaxies will move away<br> according to Hubble's Law"
             caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
         },
         () => {
@@ -137,6 +137,7 @@
         },
         () => {
             caption1.innerHTML = "<code>Program 2.A</code> <br> Light traveling from our galaxy <br> in expanding space"
+            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
             
             H = _H
             fire(g1)
@@ -198,7 +199,7 @@
         },
         () => {
             caption1.innerHTML = "let's try it!"
-            caption2.innerHTML = "<em>speed of light</em> = c - Hd"
+            caption2.innerHTML = "<em>speed of light</em> = c - H * distance"
             H = 0
             photons = []
             pause = false
