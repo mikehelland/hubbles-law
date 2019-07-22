@@ -240,7 +240,12 @@
     ]
 
     var pause = false
-    document.onkeypress = function () {
+    document.onkeypress = function (e) {
+        console.log(e)
+        if (e.key === "R") {
+            return
+        }
+
         steps[step]()
         step++;
     }
