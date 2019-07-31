@@ -55,7 +55,7 @@
     <canvas></canvas>
 <img id="galaxy" src="galaxy.png">
 <img id="hv-wiki" src="hubblevolumewiki.png">
-<img id="cmb-wiki" src="coldspot.png">
+<img id="cmb-wiki" src="coldspot2.png">
 <img id="arrowup" src="arrow.png">
 <img id="arrowleft" src="arrowleft.png">
 <img id="arrowdown" src="arrowdown.png">
@@ -95,7 +95,7 @@
                 setTimeout(function () {
                     ctxg.drawImage(gimg, w * (Math.random() - 0.5), 
                         h * (Math.random() - 0.5), 2, 2)
-                }, 0.1 * ig)
+                }, 0.01 * ig)
             }
 
         },
@@ -156,16 +156,16 @@
             caption1.innerHTML = "Question"
         },
         () => {
-            caption1.innerHTML = "What if there's an observer here"
+            caption1.innerHTML = "If there's an observer here..."
             drawObserver2 = true
         },
         () => {
             drawHubble2 = true
-            caption1.innerHTML = "And this is their Hubble Volume"
+            caption1.innerHTML = "... and this is their Hubble Volume ..."
         },
         () => {
             drawObserver2 = false
-            caption1.innerHTML = "They will also observe the CMB"
+            caption1.innerHTML = "... When they observe the CMB ..."
         },
         () => {
             caption1.innerHTML = "Does the CMB look the exact same to them as it does to us?"
