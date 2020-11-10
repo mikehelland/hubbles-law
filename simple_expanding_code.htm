@@ -1,0 +1,56 @@
+<html>
+<body>
+<script>
+
+// the unit for distance is 1 million light years
+// the unit for time is 1 million years
+
+// light moves 1 million light years in 1 million years
+c = 1
+
+// Hubble's Constant
+// this value let's light travel 13.8 billion years 
+// before being over taken by the expansion of space
+H = 0.00002665
+
+// make the targets, 
+// place them 500 million light years apart
+// up to 14 billion light years away
+var targets = []
+for (var i = 500; i <= 14000; i += 500) {
+    targets.push({
+        start: i,
+        x: i
+    })
+}
+
+
+// you are at 0, with your laser
+var photon_x = 0
+var t = 0
+var nextTarget = 0
+
+while (t < 50000) {
+    t++ 
+
+    // move the photon at a velocity of c
+    photon_x = photon_x + c
+
+    // move the targets at a velocity of its distance * H
+    for (var i = 0; i < targets.length; i++) {
+        targets[i].x = targets[i].x + targets[i].x * H
+    }
+
+    // if the photon has reached a target, log it, and wait for the next one
+    if (targets[nextTarget].x <= photon_x) {
+        console.log("Target " + targets[nextTarget].start + " reached at t = " + t)
+        nextTarget++
+    }
+}
+
+console.log("Done")
+</script>
+
+
+
+

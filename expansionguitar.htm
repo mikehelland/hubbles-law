@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {margin: 0; padding: 0; overflow: hidden; background-color: black; color:white;}
+            #caption1 {
+                position:absolute;
+                top:20px;
+                right:40px;
+                color:white;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:3.3em;
+                text-align: right;
+            }
+            #caption2 {
+                position:absolute;
+                bottom:20px;
+                right:40px;
+                color:white;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size:2.3em;
+                text-align: right;
+            }
+
+            #sun {
+                position:absolute;
+                left: 49%;
+                top: 49%;
+            }
+        </style>
+    </head>
+<body>
+<canvas></canvas>
+<div id="caption1"></div>
+<div id="caption2"></div>
+<p>
+    A star emits light at a lot of frequecies, and a guitar emits sound at a lot of frequencies.
+
+    Let's imagine each star in the night sky as a guitar.  
+
+Say this star plays a C Major chord:
+
+---
+---
+-9-
+-10
+-10
+-8-
+
+And this star plays a C Minor chord:
+
+---
+---
+-8-
+-10
+-10
+-8-
+
+And this star plays a C7th chord:
+
+---
+---
+-9-
+-8
+-10
+-8-
+
+Say those three chords represent three types of stars. Of each kind, there are many.
+
+Now let's say, we listen to a star, and we hear a B7:
+
+---
+---
+-8-
+-7
+-9
+-7-
+
+Since this is a new chord, you might think this is a new type of star. But the B7 chord is actually just
+a C7 chord with all the notes shifted down. Because it is shifted down, we can tell the star is actually 
+moving away from us.
+
+Here is a D minor star:
+
+----
+----
+-10-
+-12-
+-12-
+-10-
+
+This isn't a new type of star either. It's just the C minor star with it's frequencies shifted up, 
+because the star is moving toward us.
+
+This is the classic Doppler shift you hear when a fast moving train blares it horn as it flys by you. 
+Theoretically, if could run with superhuman speed away from you, while playing a C7 chord, 
+it would sound as if I was tuning my guitar down.
+
+So, from the frequencies we can tell what type of star it is and what direction it's headed.
+
+In the 1920's with bigger telescopes we discovered galaxies. Until then, astronomers had just been 
+looking around our neighborhood. Now we could see clear across the ocean.
+
+These galaxy things are just huge collections of stars. And their light works the same way. 
+They are chords with more notes in them, the combined light of all its stars:
+
+-8-
+-8-
+-9-
+-10
+-10
+-8-
+
+And like stars, galaxies also don't stay still. 
+
+When a galaxy is moving away from us, its notes are tuned down. 
+
+-6-
+-6-
+-7-
+-8-
+-8-
+-6-
+
+And when a galaxy is moving toward us, its notes are tuned up:
+
+-10-
+-10-
+-11-
+-12-
+-12-
+-10-
+
+And then... it got weird.
+
+Initially astronomers spotted galaxies that were tuned up and galaxies that were tuned down.
+
+But looking out further, there were no more tuned up galaxies. They were all tuned down. All moving away.
+
+In fact, the farther out you looked, the farther down the galaxies are tuned.
+
+-1-
+-1-
+-2-
+-3-
+-3-
+-1-
+
+It appears that... on the grand scale, everything in existence is running away from us?
+
+That would mean we live in a special place, which is against the rules of science. (The Copernicun principle)
+
+If we aren't in a special place, and everything is running away from us, it must be true that everything is 
+running away from everywhere.
+
+And this is why we think space is expanding. 
+
+Of course scientists don't talk about stars and galaxies as being "tuned" up or down. They talk about light as
+being red-shifted or blue-shifted.
+
+On the visible spectrum of light, blue has the highest frequencies and red has the lower frequecies. If a star
+is "tuned" down, that is red-shift. If the star is "tuned" up, that is blue-shift.
+
+
+
+</p>
+<script>
+
+    var stars = []
+    stars.push({x: 0, y:0})
+
+
+    var step = 0
+    var steps = [
+        () => {
+            caption1.innerHTML = "Our Sun"
+        },
+        () => {
+            caption1.innerHTML = "Other Stars"
+            for (var ig = 0; ig < 200; ig++) {
+                setTimeout(function () {
+                    galaxies.push({x: 1.5 * w * (Math.random() - 0.5), y : 2 * h * (Math.random() - 0.5)})
+                }, 1 * ig)
+            }
+            for (var ig = 0; ig < 50; ig++) {
+                setTimeout(function () {
+                    galaxies.push({x: 0.75 * w * (Math.random() - 0.5), y : h * (Math.random() - 0.5)})
+                }, 1 * ig)
+            }
+
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 1.A</code> <br> Light traveling from our galaxy"
+            galaxies.forEach((g, i) => {
+                g.origX = g.x
+                g.origY = g.y
+            })
+            fire(g1)
+        },
+        () => {
+            caption1.innerHTML = "next, the other direction..."
+            fadeOutContacts = true
+            photons = []
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 1.B</code> <br> Light traveling to our galaxy"
+            galaxies.forEach((g, i) => {
+                setTimeout(()=> {
+                    fire(g)
+                }, 1 * i)
+            })
+        },
+        () => {
+            caption1.innerHTML = "but space expands!"
+            fadeOutContacts = true
+            photons = []
+        },
+        () => {
+            caption1.innerHTML = "Galaxies will move away<br> according to Hubble's Law"
+            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 2.A</code> <br> Light traveling from our galaxy <br> in expanding space"
+            
+            H = _H
+            fire(g1)
+        },
+        () => {
+            caption1.innerHTML = "again, the other direction..."
+            photons = []
+            H = 0
+            fadeOutContacts = 1
+            rewind  = 1
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 2.B</code> <br> Light traveling to our galaxy <br> in expanding space"
+
+            H = _H
+            galaxies.forEach((g, i) => {
+                setTimeout(()=> {
+                    fire(g)
+                }, 1 * i)
+            })
+        },
+        () => {
+            caption1.innerHTML = "Question: What's this?"
+            caption2.innerHTML = ""
+            photons = []
+            H = 0
+            rewind  = 1
+        },
+        () => {
+            caption1.innerHTML = "Answer: Hubble's Volume"
+            caption2.innerHTML = "radius = c / H"
+            photons = []
+            drawHubble = true
+        },
+        () => {
+            document.getElementById("hv-wiki").style.display = "block"
+        },
+        () => {
+            document.getElementById("hv-wiki").style.display = "none"
+        },
+        () => {
+            drawHubble = false
+            caption1.innerText = "Let's look at that again..."
+            fadeOutContacts = 1
+            caption2.innerHTML = ""
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 2.A</code> <br> Light traveling from our galaxy <br> in expanding space"
+            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
+            
+            H = _H
+            fire(g1)
+        },
+        () => {
+            caption1.innerHTML = "again, the other direction..."
+            photons = []
+            H = 0
+            fadeOutContacts = 1
+            rewind  = 1
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 2.B</code> <br> Light traveling to our galaxy <br> in expanding space"
+            caption2.innerHTML = "<em>speed of galaxies</em> = Hd"
+            
+            H = _H
+            galaxies.forEach((g, i) => {
+                setTimeout(()=> {
+                    fire(g)
+                }, 1 * i)
+            })
+        },
+        () => {
+            caption1.innerHTML = ""
+            caption2.innerHTML = ""
+            pause = true
+        },
+        () => {
+            caption1.innerHTML = "Question."
+            caption2.innerHTML = ""
+            pause = true
+        },
+        () => {
+            caption1.innerHTML = "What's up with the trapped photons everywhere?"
+        },
+        () => {
+            caption1.innerHTML = "Is the universe filled with countless trapped photons"
+        },
+        () => {
+            caption1.innerHTML = "travelling through space that is expanding faster than light can travel?"
+            pause = false
+        },
+        () => {
+            //caption1.innerHTML = "or..."
+            caption1.innerHTML = "Please let me know!"
+        },
+        () => {
+            caption2.innerHTML = "Thank You!"
+        },
+        () => {
+            caption1.innerHTML = "What if light redshifted on its own?"
+        },
+        () => {
+            caption1.innerHTML = "Instead of this:<br><em>speed of galaxies</em> = Hd"
+        },
+        () => {
+            caption1.innerHTML = "Instead of this:<br><s><em>speed of galaxies</em> = Hd</s>"
+                + "<br>We did this:<br><em>speed of light</em> = c - Hd"
+        },
+        () => {
+            caption1.innerHTML = "let's try it!"
+            caption2.innerHTML = "<em>speed of light</em> = c - H * distance"
+            H = 0
+            photons = []
+            pause = false
+            rewind  = 1
+            fadeOutContacts = 1
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 3.A</code> <br> Light traveling from our galaxy <br> redshifting with distance"
+            H_c = 0.0133
+            fire(g1)
+        },
+        () => {
+            caption1.innerHTML = "<code>Program 3.B</code> <br> Light traveling to our galaxy <br> redshifting with distance"
+            photons = []
+            fadeOutContacts = 1
+        },
+        () => {
+            galaxies.forEach((g, i) => {
+                setTimeout(()=> {
+                    fire(g)
+                }, 1 * i)
+            })
+        },
+        () => {
+            caption1.innerHTML = "There's the Hubble Volume"
+            drawHubble = true
+        },
+        () => {
+            caption1.innerHTML = "There's the Hubble Volume<br>without expanding space."
+        },
+        () => {
+            caption1.innerHTML = "There's the Hubble Volume<br>without expanding space.<br>And no useless trapped photons."
+        },
+        () => {
+            caption2.innerHTML = '... and no dark energy, or inflation, blah blah blah' 
+        }
+
+    ]
+
+    var pause = false
+    document.onkeypress = function (e) {
+        console.log(e)
+        // for ignoring OBS hotkeys 
+        if (e.key === "R") {
+            return
+        }
+
+        steps[step]()
+        step++;
+    }
+
+    var _H = 0.005
+    var H = 0
+    var H_c = 0
+    var c = document.getElementsByTagName("canvas")[0];
+    var ctx = c.getContext("2d")
+    var gimg = document.getElementById("galaxy")
+    var w, h, w2, h2
+
+    var timewarp = 0.5
+    var expansion = 1
+    var dexpansion = 0
+    var gsize = 10
+    var g1size = 30
+    var g1 = {x:0, y:0, origX:0, origY:0}
+
+    var galaxies = []
+    var photons = []
+    var contacts = []
+    var drawHubble = false
+    var fadeOutContacts = 0
+    var rewind = 0
+
+    window.onload = function () {
+        w = window.innerWidth
+        h = window.innerHeight
+        w2 = w / 2
+        h2 = h / 2
+        c.width = w
+        c.height = h
+        c.style.width = w + "px"
+        c.style.height = h + "px"
+
+        ctx.translate(w2/2, h2)
+
+        draw()
+        setInterval(run, 1000/60)
+    }
+
+    var draw = function () {
+        ctx.fillStyle = "black"
+        ctx.fillRect(-w2/2, -h2, w, h)
+        
+        //drawGridLines()        
+
+        if (drawHubble) {
+            ctx.globalAlpha = 0.5
+            ctx.fillStyle = "#888888"
+            ctx.beginPath()
+            ctx.arc(0, 0, 295, 0, Math.PI * 2)
+            ctx.closePath()
+            ctx.fill()
+            ctx.globalAlpha = 1
+        }
+
+        ctx.strokeStyle = "red"
+        if (fadeOutContacts) {
+            ctx.globalAlpha = fadeOutContacts
+            fadeOutContacts -= 0.1
+            if (fadeOutContacts <= 0) {
+                contacts = []
+                fadeOutContacts = 0
+            }
+        }
+        contacts.forEach(function (p) {
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(p.g.origX, p.g.origY)
+            ctx.closePath()
+            ctx.stroke()
+        })
+        ctx.globalAlpha = 0.8
+        ctx.strokeStyle = "yellow"
+        photons.forEach(function (p) {
+            ctx.beginPath()
+            ctx.arc(p.g.x * expansion, p.g.y * expansion, p.d, 0, Math.PI * 2)
+            ctx.closePath()
+            ctx.stroke()
+        })
+        ctx.globalAlpha = 1
+        galaxies.forEach(function (g) {
+            ctx.drawImage(gimg, expansion * g.x - gsize/2, 
+                                expansion * g.y - gsize/2, gsize, gsize)
+        })
+        if (step > 0) {
+            ctx.drawImage(gimg, 0 - g1size/2, 0 - g1size/2, g1size, g1size)
+        }
+    }
+
+    var drawGridLines = function () {
+        ctx.strokeStyle = "#808080"
+        ctx.beginPath()
+        for (var ix = -0.5; ix <= 1; ix+=0.1) {
+            //ctx.moveTo(w * ix * expansion, -h2)
+            //ctx.lineTo(w * ix * expansion, h)
+            ctx.moveTo(w * ix, -h2)
+            ctx.lineTo(w * ix, h)
+        }
+        for (var ix = -0.5; ix <= 1; ix+=0.1) {
+            //ctx.moveTo(-w2, h * ix * expansion)
+            //ctx.lineTo(w2, h * ix * expansion)
+            ctx.moveTo(-w2, h * ix)
+            ctx.lineTo(w, h * ix)
+        }
+        ctx.closePath()
+        ctx.stroke()
+    }
+
+    var run = function () {
+        if (pause) 
+            return 
+
+        if (rewind) {
+            galaxies.forEach((g, i) => {
+                g.x = g.x - (g.x - g.origX) * (1 - rewind)
+                g.y = g.y - (g.y - g.origY) * (1 - rewind)
+            })
+            rewind -= 0.01
+            if (rewind <= 0) {
+                galaxies.forEach((g, i) => {
+                    g.x = g.origX
+                    g.y = g.origY
+                })
+                rewind = 0
+            }
+            //return
+        }
+
+        galaxies.forEach(function (galaxy) {
+            //Hubble's Law, v = H * d
+            galaxy.dx = galaxy.x * H
+            galaxy.dy = galaxy.y * H
+            galaxy.x += galaxy.dx * timewarp
+            galaxy.y += galaxy.dy * timewarp
+        })
+        var d
+        for (var i = 0; i < photons.length; i++) {
+            var photon = photons[i]
+            photon.speed = 4 - H_c * photon.d
+            photon.d += photon.speed * timewarp
+            if (photon.g !== g1) {
+                d = Math.sqrt(Math.pow(photon.g.x, 2) + Math.pow(photon.g.y, 2))
+                if (photon.d - d < 2 && photon.d - d > -2) {
+                    photons.splice(i, 1)
+                    i--
+                    contacts.push(photon)
+                }
+            }
+            else {
+                galaxies.forEach(function (g) {
+                    d = Math.sqrt(Math.pow(g.x, 2) + Math.pow(g.y, 2))
+                    if (photon.d - d < 2 && photon.d - d > -2) {
+                        console.log("pushing?")
+                        contacts.push({g})
+                    }
+                })
+            }
+            if (photon.speed < 0.1) {
+                photons.splice(i, 1)
+                i--
+            }
+        }
+        draw()
+    }
+
+    var fire = function (g) {
+        photons.push({d: 10, speed: 4, g, color:"yellow"})
+    }
+
+
+</script>
