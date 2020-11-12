@@ -278,17 +278,25 @@
             ctxG.fillStyle = models[m].color
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
-                    ctxG.fillRect(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
+                    //ctxG.fillRect(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
+                    ctxG.beginPath()
+                    ctxG.arc(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 3, 0, Math.PI * 2)
+                    ctxG.fill()
                 }
             }
+            
         }
 
         ctxG.fillStyle = "white"
         ctxG.fillText("time (billion of years)", offset + 5, offset)
         ctxG.fillText("distance (billions of light years)", graph.width / 2, graph.height - 5)
         
-        ctxG.fillRect(offset + 5500 * zoomG, graph.height - 11000 * zoomGY - offset, 5, 5)
-        ctxG.fillRect(offset + 13800 * zoomG, graph.height - 46600 * zoomGY - offset, 5, 5)
+        ctxG.beginPath()
+        ctxG.arc(offset + 5500 * zoomG, graph.height - 11000 * zoomGY - offset, 6, 0, Math.PI * 2)
+        ctxG.fill()
+        ctxG.beginPath()
+        ctxG.arc(offset + 13800 * zoomG, graph.height - 46600 * zoomGY - offset, 6, 0, Math.PI * 2)
+        ctxG.fill()
     }
 
     function runModel(model) {
@@ -303,7 +311,7 @@
         model.t = 0
 
         var i
-        var batch = 100
+        var batch = 500
         var handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
                 if (model.targets[model.nextTarget]) {
