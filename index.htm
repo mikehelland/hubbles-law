@@ -245,23 +245,30 @@
     var ctxG = document.getElementById("graph").getContext("2d")
     var zoomG = zoom * 0.6
     var zoomGY = zoom * 0.12
+    var offset = 20
     function drawGraph() {
         
         ctxG.fillStyle = "black"
         ctxG.fillRect(0, 0, graph.width, graph.height)
 
+        ctxG.strokeStyle = "white" 
+        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        
         for (var m = 0; m < models.length; m++) {
             ctxG.fillStyle = models[m].color
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
-                    ctxG.fillRect(models[m].targets[i].start * zoomG, graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
+                    ctxG.fillRect(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
                 }
             }
         }
 
         ctxG.fillStyle = "white"
-        ctxG.fillRect(5500 * zoomG, graph.height - 11000 * zoomGY, 5, 5)
-        ctxG.fillRect(13800 * zoomG, graph.height - 46600 * zoomGY, 5, 5)
+        ctxG.fillText("time (billion of years)", offset + 5, offset)
+        ctxG.fillText("distance (billions of light years)", graph.width / 2, graph.height - 5)
+        
+        ctxG.fillRect(offset + 5500 * zoomG, graph.height - 11000 * zoomGY - offset, 5, 5)
+        ctxG.fillRect(offset + 13800 * zoomG, graph.height - 46600 * zoomGY - offset, 5, 5)
     }
 
     function runModel(model) {
