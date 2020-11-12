@@ -289,7 +289,7 @@
 
         ctxG.fillStyle = "white"
         ctxG.fillText("time (billion of years)", offset + 5, offset)
-        ctxG.fillText("distance (billions of light years)", graph.width / 2, graph.height - 5)
+        ctxG.fillText("distance (billions of light years)", graph.width - 190, graph.height - 30)
         
         ctxG.beginPath()
         ctxG.arc(offset + 5500 * zoomG, graph.height - 11000 * zoomGY - offset, 6, 0, Math.PI * 2)
@@ -297,6 +297,14 @@
         ctxG.beginPath()
         ctxG.arc(offset + 13800 * zoomG, graph.height - 46600 * zoomGY - offset, 6, 0, Math.PI * 2)
         ctxG.fill()
+
+        for (var i = 0; i < 80; i+=5) {
+            ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+        }
+
+        for (i = 0; i < 16; i+=2) {
+            ctxG.fillText(i, offset + i * 1000 * zoomG, graph.height - 5)    
+        }
     }
 
     function runModel(model) {
