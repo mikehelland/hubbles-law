@@ -33,7 +33,7 @@
     
     <p>
         But what about in an expanding universe? Because of the expansion of space, the targets will move away from you. 
-        It will take more than 500 million years to reach the first target. It may have started 500 million light years away, but it will have moved farther away by the time the laser beam gets there. 
+        It will take more than 500 million years to reach the first target. 
     </p>
 
 
@@ -65,15 +65,15 @@
     c = 1
 
     // Hubble's Constant
-    // this value let's light travel 13.8 billion years 
-    // before being over taken by the expansion of space
-    H = 0.00002665
+    // this value let's light hit the target at 13.8 billion light years 
+    // after it's moved to 46.5 billion years away
+    H = 0.000051
 
     // make the targets, 
     // place them 500 million light years apart
-    // up to 14 billion light years away
+    // up to 20 billion light years away
     var targets = []
-    for (var i = 500; i <= 14000; i += 500) {
+    for (var i = 500; i <= 20000; i += 500) {
         targets.push({
             start: i,
             x: i
@@ -86,16 +86,16 @@
     var t = 0
     var nextTarget = 0
 
-    // only go for 50 billion years
-    while (t < 50000) {
+    // only go for 100 billion years
+    while (t < 100000) {
         t++ 
 
         // move the photon at a velocity of c
         photon_x = photon_x + c
 
-        // move the targets at a velocity of its distance * H
+        // move the targets at a velocity of its comoving distance * H
         for (var i = 0; i < targets.length; i++) {
-            targets[i].x = targets[i].x + targets[i].x * H
+            targets[i].x = targets[i].x + targets[i].start * H
         }
 
         // if the photon has reached a target, log it, and wait for the next one
@@ -113,7 +113,7 @@
 
 var c = 1
 
-var zoom = 0.04
+var zoom = 0.01
 var wait = 0
 
 var models = [
@@ -128,12 +128,16 @@ var models = [
     {
         name: "Expanding",
         color: "green", 
-        H: 0.00002665,
+        H: 0.000051,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].x * this.H
+                //this is proper distance, don't use this
+                //this.targets[i].x += this.targets[i].x * this.H
+
+                //this is comoving distance, us this
+                this.targets[i].x += this.targets[i].start * this.H
             }
         },
         log: true
@@ -152,6 +156,10 @@ models.forEach(model => {
         var hIinput = document.createElement("input")
         hIinput.value = model.H
         div.appendChild(hIinput)
+
+        hIinput.onchange = e => {
+            model.H = parseFloat(hIinput.value)
+        }
     }
 
     model.canvas = document.createElement("canvas")
@@ -165,8 +173,8 @@ models.forEach(model => {
     model.targets = []
 })
 
-// make a target every 500 million light years until 14 billion
-for (var i = 500; i <= 14000; i += 500) {
+// make a target every 500 million light years until 20 billion
+for (var i = 500; i <= 20000; i += 500) {
     var tr = document.createElement("tr")
     resultsTable.appendChild(tr)
     
@@ -178,6 +186,7 @@ for (var i = 500; i <= 14000; i += 500) {
     models.forEach(model => {
         target = {
             label: i / 1000, 
+            start: i,
             x: i,
             tdX: document.createElement("td"),
             tdT: document.createElement("td"),
@@ -239,21 +248,32 @@ var t = 0
 var paused = true
 
 function start() {
+    models.forEach(model => {
+        model.photon.x = 0
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+            target.tdT.innerHTML = "-"
+        })
+    })
+
     paused = false
     t = 0
 }
 
 var runHandle = setInterval(() => {
-    for (var ii = 0; ii < 10; ii++) {
+    for (var ii = 0; ii < 100; ii++) {
         
-        if (paused) return
+        if (paused || t >=  100000000) return
         t++
 
         for (var m = 0; m < models.length; m++) {
-            var nextTarget = models[m].targets[models[m].nextTarget] 
-            if (nextTarget) {
                 models[m].next()
-
+                
+                var nextTarget = models[m].targets[models[m].nextTarget] 
+                if (nextTarget) {
+            
                 if (nextTarget.x <= models[m].photon.x) {
                     nextTarget.hit = t
                     nextTarget.tdX.innerHTML = Math.trunc(nextTarget.x) / 1000
@@ -263,10 +283,6 @@ var runHandle = setInterval(() => {
                 }
             }
         }
-    }
-
-    if (t >=  43010) {
-        clearInterval(runHandle)
     }
 }, wait)
 

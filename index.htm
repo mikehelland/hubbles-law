@@ -1,0 +1,309 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            #graph {
+                position:fixed;
+                left:850px;
+                top:10px;
+                height:600px;
+                width: 600px;
+            }
+
+            .text {
+                background-color: white;
+                max-width: 800px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+            }
+            p {
+                
+            }
+        </style>
+
+        <script>
+            var models = []
+            var c = 1
+            var zoom = 0.06
+
+            function setupModel(model) {
+                
+                var playButton = document.createElement("button")
+                playButton.innerHTML = "Click HERE to run"
+                playButton.onclick = () => runModel(model)
+
+                model.canvas = document.createElement("canvas")
+
+                model.div.appendChild(playButton)
+                model.div.appendChild(model.canvas)
+
+                model.ctx = model.canvas.getContext("2d")
+                model.nextTarget = 0
+
+                model.canvas.width = 800
+                model.canvas.height = 60
+                
+                // make a target every 200 million light years until 14 billion
+                model.targets = []
+                for (var i = 200; i <= 14000; i+=200) {
+                    model.targets.push({label: i/1000, start: i, x: i})
+                }
+
+                draw(model.ctx, model)
+
+                models.push(model)
+            }
+
+            function draw(ctx, exp) {
+
+                ctx.fillStyle = "black"
+                ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+                for (var i = 0; i < exp.targets.length; i++) {
+                    ctx.fillStyle = exp.targets[i].hit ? exp.color : "#888888"
+
+                    ctx.fillRect(exp.targets[i].x * zoom, 0, 1, ctx.canvas.height)
+                    ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
+
+                    if (exp.targets[i].hit) {
+                        //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+                        ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+                    }
+                }
+
+                ctx.fillStyle = "yellow"
+                ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+            }
+
+        </script>
+    </head>
+<body>
+
+
+<div class="text">
+<h1>Fixing Hubble's Law</h1>
+
+<p>Finding the right value for Hubble's Constant has been difficult.</p>
+
+<p>To understand why, imagine you have a laser, and you shoot a laser beam into space.</p>
+
+<p>Now imagine the laser beam passes a series of targets you've placed in space, each 200 million light years apart.</p>
+
+<p>In a simple universe, the laser beam will reach the first target in 200 million years, the second target in 400 million light years, and so on.</p>
+
+<div id="staticModel"></div>
+<script>
+    setupModel({
+        div: document.getElementById("staticModel"),
+        name: "Static",
+        color: "red", 
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+        }
+    })
+</script>
+
+<p>But we don't live in such a simple universe. We have the law of redshifts, which are interpreted as galaxies moving away from us in an expanding universe.</p>
+
+<p>The question is then, how fast is the universe expanding?</p>
+
+<p>Based on observations, a target that begins 13.8 billion light years away would be 46.6 billion light years away by the time the laser beam caught up with it.</p>
+
+<p>Also, a target that started 5.5 billion light years away would be 11 billion light years away when the laser beam got to it.</p>
+
+<p>Those are the white points on the graph.</p>
+
+<p>If Hubble's Law is v = H &times; D, where v is the apparent recessional velocity of the target, H is Hubble's Constant, and D is the comoving distance of the target, then what should H be?</p>
+
+<p>If H is 90 light years per million light years, the near by data point an be reached.</p>
+
+<div id="expandingFast"></div>
+<script>
+    setupModel({
+        div: document.getElementById("expandingFast"),
+        name: "Expanding Fast",
+        color: "#AAAABB", 
+        H: 0.00009,
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H
+            }
+        }
+    })
+</script>
+
+<p>If H is 51 light years per million light years, the far data point can be reached.</p>
+
+<div id="expandingSlow"></div>
+<script>
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Expanding Slow",
+        color: "#8888BB", 
+        H: 0.000051,
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H
+            }
+        }
+    })
+</script>
+
+<p>The problem isn't really Hubble's Constant, it's the interpretation of redshift and the version of Hubble's Law being used.</p>
+
+<p>Edwin Hubble said that it was conveinent for the redshift to be interpreted as a Doppler-like effect, leading to the expanding universe theory. 
+    He said the redshfits might also be interpreted as how nature actually works. 
+    There isn't another phenomenon causing the redshifts. The redshifts are a new phenomenon in themselves. 
+    However, he noted, if there are existing ways to explain the redshift, adding new princinples of nature should be avoided.</p>
+
+<blockquote>When first observed the red-shifts were immediately attributed to radial motion away from the observer, to recession of the nebulae. 
+    This interpretation still remains the only permissible explanation that is known. 
+    It is true that other ways are known by which red-shifts might be produced, but in each case they would be accompanied by other phenomena which would 
+    be conspicuous and, actually, are not found. 
+    We may state with some confidence that <b>red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.</b>
+    We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, 
+    familiar principle by an ad hoc explanation <b>unless we are forced to that step by actual observations.</b>
+
+    <br>
+    <br>
+    Edwin Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 22, 1937 (emphsis added)
+</blockquote>
+    
+
+<p>But the path of the familiar principles has lead us to propose new principles anyways: accelerating expansion, dark energy, the inflation period, the multiverse. We're past the point of being forced to that step of creating new principles of physics.</p>
+
+<p>Therefore, consider two hypotheses based on a literal interpretation of the law of redshifts: the observed fact that light from a distant galaxy loses energy proportionally to the distance of the galaxy.</p>
+
+<p>Hypothesis 1: the speed of light equals c - H &times; D</p>
+
+<div id="redshift1"></div>
+<script>
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "Redshift by distance",
+        color: "green", 
+        H: 0.000072,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += this.photon.dx
+            this.photon.dx = c - this.H * this.photon.x
+        }
+    })
+</script>
+
+<p>Hypothesis 2: the speed of light equals c / (1 - H &times; D)</p>
+
+<div id="redshift2"></div>
+<script>
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "Redshift by distance 2",
+        color: "magenta", 
+        H: 0.00035,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += this.photon.dx
+            this.photon.dx = c / (1 + this.H * this.photon.x) 
+        }
+    })
+</script>
+
+<p>Note here that Hypothesis 2 hits both data points.</p>
+
+<p>From this data and the models considered, Hypothesis 2 appears to be the real Hubble's Law. In such a universe, space is not expanding, there is no dark energy, 
+    there is no age or size of the universe, and Hubble's Constant is a consistent 0.00035 million light years per million years. </p>
+
+<p>Hubble's Law is:</p>
+<hr>
+
+<blockquote>the speed of light = c / (1 - H &times; D)</blockquote>
+
+<hr>
+
+<p>Check out <a href="test.htm">the Testing Page</a> to try your own hypotheses and values</p>
+
+<p>Questions, comments, concerns?</p>
+<ul>
+    <li>Create a <a href="https://github.com/mikehelland/hubbles-law/issues">GitHub Issue</a></li>
+    <li>Or <a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a></li>
+</ul>
+
+</div>
+
+<canvas id="graph" height="600" width="600"></canvas>
+
+<script>
+
+    var ctxG = document.getElementById("graph").getContext("2d")
+    var zoomG = zoom * 0.6
+    var zoomGY = zoom * 0.12
+    function drawGraph() {
+        
+        ctxG.fillStyle = "black"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        for (var m = 0; m < models.length; m++) {
+            ctxG.fillStyle = models[m].color
+            for (var i = 0; i < models[m].targets.length; i++) {
+                if (models[m].targets[i].hit) {
+                    ctxG.fillRect(models[m].targets[i].start * zoomG, graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
+                }
+            }
+        }
+
+        ctxG.fillStyle = "white"
+        ctxG.fillRect(5500 * zoomG, graph.height - 11000 * zoomGY, 5, 5)
+        ctxG.fillRect(13800 * zoomG, graph.height - 46600 * zoomGY, 5, 5)
+    }
+
+    function runModel(model) {
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+
+        var i
+        var batch = 100
+        var handle = setInterval(function () {
+            for (i = 0; i < batch; i++) {
+                if (model.targets[model.nextTarget]) {
+                    model.t++
+                    model.next()
+
+                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+                        model.targets[model.nextTarget].hit = model.t
+                        model.nextTarget++
+                    }
+
+                    //draw(model.ctx, model)
+                }
+            }
+        }, 0)
+    }
+
+    setInterval(() => {
+        for (var m = 0; m < models.length; m++) {
+            draw(models[m].ctx, models[m]) 
+        }
+
+        drawGraph()
+    }, 1000 / 60)
+
+</script>
+
+
+
+

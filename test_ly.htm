@@ -2,7 +2,8 @@
     <head>
         <style>
             body {
-                background-color: #CCCCCC;
+                background-color: #404040;
+                color:white;
             }
             #graph {
                 height:600px;
@@ -11,13 +12,9 @@
         </style>
     </head>
 <body>
-
-<h3>Hubble's Law Testing Page. Read more <a href="index.htm">on the home page.</a></h3>
-
-
-<canvas id="graph" height="600" width="600"></canvas>
-<br>
 <button id="startButton">Start</button> <button id="pauseButton">Pause</button>
+<br>
+<canvas id="graph" height="600" width="600"></canvas>
 <script>
 
 var ctxG = graph.getContext("2d")
@@ -26,12 +23,11 @@ var ctxG = graph.getContext("2d")
 var H = 0.00005
 var c = 1
 
-var zoom = 0.125
+var zoom = 0.000000125
 var wait = 0
-var batch = 100
 
 var models = [
-    {
+    /*{
         name: "Static",
         color: "red", 
         photon: {x: 0},
@@ -40,9 +36,9 @@ var models = [
         }
     },
     {
-        name: "Expanding Fast",
+        name: "Expanding",
         color: "blue", 
-        H: 0.00009,
+        H: 0.00000000009,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -50,19 +46,7 @@ var models = [
                 this.targets[i].x += this.targets[i].start * this.H
             }
         }
-    },
-    {
-        name: "Expanding Slow",
-        color: "dark blue", 
-        H: 0.000051,
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
-            }
-        }
-    },
+    },*/
     {
         name: "Redshift by distance",
         color: "green", 
@@ -86,27 +70,27 @@ var models = [
         }
     },
     {
-        name: "Redshift by time 2",
+        name: "Redshift by distance1",
         color: "purple", 
-        H: 0.0002,
+        H: 0.000072,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += this.photon.dx
+            this.photon.dx = c - this.H * this.photon.x
+        }
+    },
+    {
+        name: "Redshift by time2",
+        color: "magenta", 
+        H: 0.000036,
         photon: {x: 0, dx: c},
         next: function () {
             if (this.photon.dx > 0) {
                 this.photon.x += this.photon.dx
-                this.photon.dx = c / (1 + this.H * t) 
+                this.photon.dx = this.photon.dx * this.H
             }
         }
-    },*/
-    {
-        name: "Redshift by distance 2",
-        color: "magenta", 
-        H: 0.00035,
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += this.photon.dx
-            this.photon.dx = c / (1 + this.H * this.photon.x) 
-        }
-    }
+    }*/
 ]
 
 
@@ -129,10 +113,10 @@ models.forEach(model => {
     model.canvas.height = 60
     document.body.appendChild(model.canvas)
 
-    // make a target every 200 million light years until 14 billion
+    // make a target every 1 million light years until 14 billion
     model.targets = []
-    for (var i = 1000; i <= 14000; i+=200) {
-        model.targets.push({label: i/1000, start: i, x: i})
+    for (var i = 500_000_000; i <= 14_000_000_000; i+=500_000_000) {
+        model.targets.push({label: i/1_000_000_000, start: i, x: i})
     }
 
 })
@@ -160,8 +144,7 @@ function draw(ctx, exp) {
     ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
 }
 
-var zoomG = zoom * 0.3
-var zoomGY = zoom * 0.05
+var zoomG = zoom * 0.1
 function drawGraph() {
 
     ctxG.fillStyle = "black"
@@ -171,14 +154,14 @@ function drawGraph() {
         ctxG.fillStyle = models[m].color
         for (var i = 0; i < models[m].targets.length; i++) {
             if (models[m].targets[i].hit) {
-                ctxG.fillRect(models[m].targets[i].start * zoomG, graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
+                ctxG.fillRect(models[m].targets[i].start * zoomG, graph.height - models[m].targets[i].hit * zoomG, 5, 5)
             }
         }
     }
 
     ctxG.fillStyle = "white"
-    ctxG.fillRect(5500 * zoomG, graph.height - 11000 * zoomGY, 5, 5)
-    ctxG.fillRect(13800 * zoomG, graph.height - 46600 * zoomGY, 5, 5)
+    ctxG.fillRect(5_500_000_000 * zoomG, graph.height - 11_000_000_000 * zoomG, 5, 5)
+    ctxG.fillRect(13800_000_000 * zoomG, graph.height - 46_600_000_000 * zoomG, 5, 5)
 }
 
 var t = 0
@@ -201,7 +184,7 @@ function start() {
 }
 
 setInterval(() => {
-    for (var ii = 0; ii < batch; ii++) {
+    for (var ii = 0; ii < 1_000_000; ii++) {
         
         if (paused) return
         t++
