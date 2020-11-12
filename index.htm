@@ -314,12 +314,13 @@
         })
     
         model.t = 0
+        model.running = true
 
         var i
         var batch = 100
         var handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
-                if (model.targets[model.nextTarget]) {
+                if (model.targets[model.nextTarget] && model.t < 80000) {
                     model.t++
                     model.next()
 
@@ -330,13 +331,19 @@
 
                     //draw(model.ctx, model)
                 }
+                else {
+                    clearInterval(handle)
+                    model.running = false
+                }
             }
         }, 0)
     }
 
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
-            draw(models[m].ctx, models[m]) 
+            if (models[m].running) {
+                draw(models[m].ctx, models[m]) 
+            }
         }
 
         drawGraph()
