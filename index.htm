@@ -201,13 +201,12 @@
         H: 0.000072,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += this.photon.dx
-            this.photon.dx = c - this.H * this.photon.x
+            this.photon.x += c - this.H * this.photon.x
         }
     })
 </script>
 
-<p><b>Hypothesis 2: the speed of light = c / (1 - H &times; D)</b></p>
+<p><b>Hypothesis 2: the speed of light = c / (1 + H &times; D)</b></p>
 
 <div id="redshift2"></div>
 <script>
@@ -218,8 +217,10 @@
         H: 0.00035,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += this.photon.dx
-            this.photon.dx = c / (1 + this.H * this.photon.x) 
+            this.photon.x += c / (1 + this.H * this.photon.x)
+            
+            // not needed, used for logging purposes
+            this.photon.dx = c / (1 + this.H * this.photon.x)
         }
     })
 </script>
@@ -235,7 +236,7 @@
 
 <p>Hubble's Law should be:</p>
 
-<blockquote>the speed of light = c / (1 - H &times; D)</blockquote>
+<blockquote>the speed of light = c / (1 + H &times; D)</blockquote>
 
 <p>
     This conclusion raises questions that must be addressed that include:
@@ -261,7 +262,7 @@
 <p>So if:</p>
 
 <pre>
-    v_light = c / (1 - H &times; D)
+    v_light = c / (1 + H &times; D)
     
     and:
     
@@ -269,7 +270,7 @@
     
     then:
     
-    v_light = c / (1 - 0)
+    v_light = c / (1 + 0)
     
     v_light = c
 </pre>
@@ -291,7 +292,7 @@
     but the light inside the telescope will be very close to its source: the lens that focused it. 
     The D of the photons in the telescope will not be millions of light years, but rather a few dozen centimeters.</p>
 
-<p>Thus, any light that we interact with will presumably be moving at c / (1 - H &times; 0), or just c.</p>
+<p>Thus, any light that we interact with will presumably be moving at c / (1 + H &times; 0), or just c.</p>
 
 <p>If there was a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. </p>
 
