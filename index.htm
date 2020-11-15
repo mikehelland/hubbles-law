@@ -425,6 +425,7 @@
         }
 
         model.ctx.font = "8px sans-serif"
+        model.ctx.lineWidth = 3
         draw(model.ctx, model)
 
         models.push(model)
@@ -436,15 +437,18 @@
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         for (var i = 0; i < exp.targets.length; i++) {
-            ctx.fillStyle = exp.targets[i].hit ? exp.color : "#888888"
-
-            ctx.fillRect(exp.targets[i].x * zoom, 0, 1, ctx.canvas.height)
+            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * zoom, 0)
+            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
             //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
 
             if (exp.targets[i].hit) {
                 //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
                 //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
             }
+
+            ctx.stroke()
         }
 
         ctx.fillStyle = "yellow"
