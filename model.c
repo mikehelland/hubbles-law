@@ -2,7 +2,7 @@
 
 
 void runFast() {
-    printf("\reticulating splines... fast!\n\n");
+    printf("\nreticulating splines... fast!\n\n");
 
     unsigned long t = 0;
     double c = 1;
@@ -24,7 +24,7 @@ void runFast() {
 }
 
 void runSlow() {
-    printf("\reticulating splines... slow...\n\n");
+    printf("\nreticulating splines... slow...\n\n");
 
     // 1 year per step
     // c = 1 lightyear per year
