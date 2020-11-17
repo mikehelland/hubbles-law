@@ -24,6 +24,10 @@
                 font-family: Arial, Helvetica, sans-serif;
                 padding: 15px;
             }
+
+            .pimg  {
+                text-align: center;
+            }
         </style>
 
     </head>
@@ -132,11 +136,11 @@
     This conclusion raises questions that must be addressed that include:
     <ul>
         <li>Isn't the expansion of the universe a fact?</li>
+        <li>Doesn't the Cosmic Microwave Background confirm an expanding universe?</li>
         <li>Doesn't this conflict with special relativity?</li>
         <li>Shouldn't we be able to measure a drop in a photon's speed?</li>
         <li>Doesn't this violate the Conservation of Energy?</li>
         <li>Isn't this the discredited Tired Light Theory?</li>
-        <li>What about the Cosmic Microwave Background?</li>
         <li>... more to come as questions come in</li>
     </ul>
     These are addressed below.
@@ -167,7 +171,7 @@
 
 <p>Much has changed since his day though. From the 30's to the 60's the expanding models were very simple. A point that expands.</p>
 
-<img src="img/expansion_classic.jpg">
+<p class="pimg"><img src="img/expansion_classic.jpg"></p>
 
 <p>But in the 70's problems began to emerge.</p>
 
@@ -183,7 +187,7 @@
 
 <p>Today, the expanding theory of the universe looks like this:</p>
 
-<img width="700px" src="img/cosmicinflation.jpg">
+<p class="pimg"><img width="700px" src="img/cosmicinflation.jpg"></p>
 
 <p>If the benefit of the expanding universe theory is, as Hubble wrote, that interpreting redshifts as motion didn't require any new physics, 
     then the expanding theory gave away that benefit decades ago. </p>
@@ -209,6 +213,46 @@
 
 <p>In any case, the <i>redshifts</i> of distant galaxies are observed facts. The motion of those galaxies and expansion of space are theoretical interpretations of the facts.</p>
 
+<hr>
+
+<h4>Doesn't the Cosmic Microwave Background confirm an expanding universe?</h4>
+
+<p>The expanding universe theory predicts we observe the same background temperature in all directions.</p>
+
+<p>This prediction seemed to hold until 2003 when anomalies appeared, which were confirmed in 2013:</p>
+
+<p class="pimg"><img src="img/cmb.jpg"></p>
+<blockquote>
+    Two Cosmic Microwave Background anomalous features hinted at by Planck's predecessor, NASA's Wilkinson Microwave Anisotropy Probe (WMAP), 
+    are confirmed in the new high precision data from Planck.  One is an asymmetry in the average temperatures on opposite hemispheres of the 
+    sky (indicated by the curved line), with slightly higher average temperatures in the southern ecliptic hemisphere and slightly lower 
+    average temperatures in the northern ecliptic hemisphere. <b>This runs counter to the prediction made by the standard model that the Universe 
+    should be broadly similar in any direction we look.</b> There is also a cold spot that extends over a patch of sky that is much larger 
+    than expected (circled). In this image the anomalous regions have been enhanced with red and blue shading to make them more clearly visible.
+
+    <br>
+    <br>
+    <a href="https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background">
+        https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background</a>
+</blockquote>
+
+<p>This raises the question of where the <a href="https://en.wikipedia.org/wiki/CMB_cold_spot">CMB Cold Spot</a> might appear to other observers.</p>
+
+<p>For instance, imagine observers at the north and south poles of our observable universe:</p>
+
+<p class="pimg"><img src="img/cmbobservers.png"></p>
+
+<p>We see a cold spot to the south. Does the south observer see a cold spot to their south? Does the north observer see the same CMB anomalies as we do?</p>
+
+<p>This is a question the expanding universe theory doesn't have a clear answer for.</p>
+
+<p>However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
+    then there are no anomalies or questions. The cold spot is to <i>our</i> south, but to the southern observer is just east a little bit. </p>
+
+<p>One thing to keep in mind is that before the expanding theory even existed, Arthur Eddington 
+    <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
+        calculated the temperature of starlight in our galaxy to be 3.18 Kelvin</a>. As such, the CMB may just be photons limping in 
+        from galaxies 14 billion light years away, right before the temperature of space takes over our measurements. </p>
 <hr>
 
 <h4>Doesn't this conflict with special relativity?</h4>
@@ -313,10 +357,6 @@
 
 <hr>
 
-<h4>What about the Cosmic Microwave Background?</h4>
-
-<p>The CMB is a major topic in cosmology and will be getting its own article. Soon.</p>
-<hr>
 <p><i>Mike Helland, 12 Nov 2020</i></p>
 
 <p>Questions, comments, concerns?</p>
@@ -332,6 +372,7 @@
 <h4>Change Log:</h4>
 
 <ul>
+    <li><i>16 Nov 2020</i> - Added CMB question and answer. </li>
     <li><i>14 Nov 2020</i> - Added "Isn't expansion a fact?" question and answer. </li>
     <li><i>14 Nov 2020</i> - Fixed (1 - H &times; D) to (1 + H &times; D). Fixed units. </li>
     <li><i>12 Nov 2020</i> - Original. </li>
@@ -502,6 +543,7 @@
         name: "Expanding Fast",
         color: "orange", 
         H: 0.00009,
+        //H: 0.0000756,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -515,6 +557,7 @@
         name: "Expanding Slow",
         color: "blue", 
         H: 0.000051,
+        //H: 0.00006888,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
