@@ -38,6 +38,8 @@
 <div class="text">
 <h1>Fixing Hubble's Law</h1>
 
+<h2>Introduction</h2>
+
 <p>Finding the right value for Hubble's Constant has been difficult. </p>
 
 <ul>
@@ -47,39 +49,46 @@
     <li>Video: <a href="https://www.youtube.com/watch?v=72cM_E6bsOs">PBS Space Time: The Crisis in Cosmology</a></li>
     <li>More at <a href="https://duckduckgo.com/?q=hubble+constant+crisis">DuckDuckGo</a></li>
 </ul>
-<p>To understand why, imagine you have a laser, and you shoot a laser beam into space.</p>
-
-<p>Now imagine the laser beam passes a series of targets you've placed in space, each 200 million light years apart.</p>
+<p>To visualize the problem, imagine you have a laser, and you shoot a laser beam into space. 
+    The laser beam passes a series of targets you've placed in space, each 200 million light years apart.</p>
 
 <p>In a simple universe, the laser beam will reach the first target in 200 million years, the second target in 400 million light years, and so on.</p>
 
 <div id="staticModel"></div>
 
-<p>But we don't live in such a simple universe. We observe cosmological redshifts, which are interpreted as galaxies moving away from us in an expanding universe.</p>
+<p>But we don't live in such a simple universe. We observe cosmological redshifts. These are an observed fact, and you can learn more about them here.
+    
+<p>The redshifts are interpreted as the expansion of space. In this universe, the targets will be moving away from us according to Hubble's Law:</p>
 
-<p>The question is then, how fast is the universe expanding?</p>
+<blockquote>
+    <code>v = H &times; D</code>
+</blockquote>
 
-<p>Based on observations, a target that begins 13.8 billion light years away would be 46.6 billion light years away by the time the laser beam caught up with it. 
-    Also, a target that started 5.5 billion light years away would be 11 billion light years away when the laser beam got to it.
-    Those are the white points on the graph.</p>
+<p>where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, and <code>D</code> is the starting distance of the target</p>
 
-<p>If Hubble's Law is v = H &times; D, where v is the apparent recessional velocity of the target, H is Hubble's Constant, and D is the comoving distance of the target, then what should H be?</p>
-
-<p>If H is 0.00009 light years / year / million light years, the near-by data point can be reached.</p>
+<p>According to observations of relatively near phenomena, <code>H</code> is measured to be 74 km/sec / Mpc.</p>
 
 <div id="expandingFast"></div>
 
-<p>If H is 0.000051 light years / year / million light years, the far data point can be reached.</p>
+<p>But according to measurements our most distant observable range, <code>H</code> is measured as 67 km/sec / Mpc.</p>
 
 <div id="expandingSlow"></div>
 
-<p>There isn't a single value for H that can be used in this model to reach both data points.</p>
+<p>Yet another <a href="https://arxiv.org/abs/1911.02087">measurement based on the curvature of space</a> puts <code>H</code> at 54 km/sec / Mpc.</p>
 
-<p>The problem isn't really Hubble's Constant. The problem is the interpretation of redshift and the version of Hubble's Law being used.</p>
+<div id="expanding54"></div>
+
+<p>As the measurements become more accurate, they agree less and less.</p>
+
+<hr>
+
+<h2>Hypothesis</h2>
+
+<p>Let's remember the observed facts: galaxies redshift with distance.</p>
 
 <p>Edwin Hubble said that it was convenient for the redshift to be interpreted as a Doppler-like effect, leading to the expanding universe theory. 
-    He said the redshifts might also be interpreted as how nature actually works: 
-    there isn't another phenomenon causing the redshifts; the redshifts are a new phenomenon in themselves. 
+    He also said redshifts might be interpreted as how nature actually works. 
+    There isn't another phenomenon causing the redshifts; the redshifts are a new phenomenon in themselves. 
     However, he noted, if there are existing ways to explain the redshift, adding new principles of nature should be avoided.</p>
 
 <blockquote>When first observed the red-shifts were immediately attributed to radial motion away from the observer, to recession of the nebulae. 
@@ -96,41 +105,66 @@
 </blockquote>
     
 
-<p>But the path of the familiar principles has led us to propose new principles anyways: accelerating expansion, dark energy, the inflation period, the multiverse. 
+<p>But the path of the familiar principles has led us to propose new principles anyways: accelerating expansion, dark energy, the inflation period. 
     We are clearly past the point of being forced to create new principles of physics.</p>
 
-<p>Therefore, consider a literal interpretation of the law of redshifts:</p>
+<p>Let's see what the law of redshifts actually says:</p>
 
-<blockquote>the law of red-shfts - the observed fact that light from a distant galaxy loses energy proportionally to the distance of the galaxy. 
+<blockquote>the observed fact that light from a distant galaxy loses energy proportionally to the distance of the galaxy. 
     <br>
     <br>
     E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 18, 1937
 </blockquote>
 
-<p>I've devised two hypotheses based on a literal interpretation of the redshifts to test.</p>
+<p>So:</p>
+
+<ul>
+    <li>The energy of a photon is <code>E = frequency &times; Planck's Constant</code></li>
+    <li>The speed of wave is <code>v = frequency &times; wavelength</code></li>
+    <li>We observe a drop in energy, which is also a drop in frequency</li>
+    <li>Taken literally, a drop in energy and frequency could also be a drop in speed.</li>
+</ul>
+
+<p>To test this literal interpretation of redshifts, I considered possible models where the speed of a photon decreases.</p>
+
+<p>A simple hypothesis is where the photon's speed begins at c and decreases directly proportional to its distance.</p>
 
 <p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
 
 <div id="redshift1"></div>
 
+<p>This hypothesis creates an even steeper curve than the expanding models. So this hypothesis is of no help.</p>
+
+<p>Observations say there is a faster rate of redshift in the nearby universe 
+    and a slower rate of redshift in the farthest parts of the observable universe. </p>
+
+<p>That suggests to me that we don't want a big curve on the graph. Something flatter. Instead of subtracting <code>H &times; D</code>, what about dividing by it?</p>
+
 <p><b>Hypothesis 2: the speed of light = c / (1 + H &times; D)</b></p>
 
 <div id="redshift2"></div>
 
-<p>Note that Hypothesis 2 hits both data points.</p>
+<p>This hypothesis results in a higher rate of redshift for nearby objects and a lower rate of redshift for far away objects, when compared to the expanding models.</p>
 
-<p>In these models, the laser beam's speed diminishes as its distance from its source increases. The speed of a wave is its frequency &times; wavelength. 
-    And the energy of a photon is its frequency &times; Planck's constant. We observe redshifts, which are a drop in frequency and energy. 
-    Taken literally, that would also drop the laser beam's speed.</p>
+<p>Hypothesis 2 makes more of a straight line than a curve. By squaring <code>(1 + H &times; D)</code>, a more pronounced curve can be made. </p>
 
-<p>From this data and the models considered, Hypothesis 2 appears to be the real Hubble's Law. In such a universe, space is not expanding, there is no dark energy, 
-    there is no age or size of the universe, and Hubble's Constant is a consistent 0.00035 Mly<sup>-1</sup>. </p>
+<p><b>Hypothesis 3: the speed of light = c / (1 + H &times; D)<sup>2</sup></b></p>
 
-<p>Hubble's Law should be:</p>
+<div id="redshift3"></div>
 
-<blockquote>the speed of light = c / (1 + H &times; D)</blockquote>
+<p>Squaring just <code>H &times; D</code> makes an even steeper curve. </p>
 
-<p>Note that H is independent of the units of c. A unit of inverse length for H means the denominator (1 + H &times; D) is unitless.</p>
+<p><b>Hypothesis 4: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
+
+<div id="redshift4"></div>
+
+<p>Note that here H is independent of the units of c. H has a unit of inverse length, which means (1 + H &times; D) is unitless. 
+    These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
+
+<p>In these models, the laser beam shows delays in reaching the targets, even though the targets are stationary. In such a universe, 
+    space is not expanding. </p>
+
+
 
 <p>
     This conclusion raises questions that must be addressed that include:
@@ -148,7 +182,7 @@
 
 <hr>
 
-<h4>Isn't the expansion of the universe a fact?</h4>
+<h2>Isn't the expansion of the universe a fact?</h2>
 
 <p>Not exactly. The <i>redshifts</i> are an observed fact. The redshifts may be interpreted as motion, which leads to the expansion of the universe as a 
     hypothetical consequence. If every galaxy is moving away from our galaxy, that would put our galaxy in some special spot in the universe. 
@@ -169,7 +203,7 @@
     E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 47, 1937 (emphasis added)
 </blockquote>
 
-<p>Much has changed since his day though. From the 30's to the 60's the expanding models were very simple. A point that expands.</p>
+<p>Much has changed since his day though. From the 30's through the 60's, the universe was thought to have begun as a point that grew out consistently.</p>
 
 <p class="pimg"><img src="img/expansion_classic.jpg"></p>
 
@@ -189,8 +223,8 @@
 
 <p class="pimg"><img width="700px" src="img/cosmicinflation.jpg"></p>
 
-<p>If the benefit of the expanding universe theory is, as Hubble wrote, that interpreting redshifts as motion doesn't require any new physics, 
-    then the expanding theory gave away that benefit decades ago. </p>
+<p>If the benefit of interpreting redshifts as motion is that it doesn't require any new physics, 
+    then the expanding theory gave that benefit away decades ago. </p>
 
 <p>To make the problem worse, as we peer into the "early universe", we don't see only young galaxies. We see mature systems like the ones around us.</p>
 
@@ -215,7 +249,7 @@
 
 <hr>
 
-<h4>Doesn't the Cosmic Microwave Background confirm an expanding universe?</h4>
+<h2>Doesn't the Cosmic Microwave Background confirm an expanding universe?</h2>
 
 <p>The expanding universe theory predicts we observe the same background temperature in all directions.</p>
 
@@ -255,7 +289,7 @@
         from galaxies 14 billion light years away, right before the temperature of space takes over our measurements. </p>
 <hr>
 
-<h4>Doesn't this conflict with special relativity?</h4>
+<h2>Doesn't this conflict with special relativity?</h2>
 
 <p>Yes, when light has traveled for millions of years, its speed will be less than c.</p>
 
@@ -281,7 +315,7 @@
 
 <hr>
 
-<h4>Shouldn't we be able to measure a drop in a photon's speed?</h4>
+<h2>Shouldn't we be able to measure a drop in a photon's speed?</h2>
 
 <p>The task would be to come up with a clever way to measure the speed of ancient light without disturbing the photon.</p>
 
@@ -300,7 +334,7 @@
 
 <hr>
 
-<h4>Doesn't this violate the Conservation of Energy?</h4>
+<h2>Doesn't this violate the Conservation of Energy?</h2>
 
 <p>In the specific model demonstrated here, yes, energy is lost. 
     It could be that the energy deducted from the photon is deposited in space as it travels. </p>
@@ -328,20 +362,10 @@
 
 <hr>
 
-<h4>Isn't this the discredited Tired Light Theory?</h4>
+<h2>Isn't this the discredited Tired Light Theory?</h2>
 
-<p>In 1929, just after Hubble published the redshift-distance relation, Fritz Zwicky proposed that a type of gravitational drag was causing the redshift, 
-    not an expanding universe. </p>
-
-<p>However, such an effect would lead to a blurring of the light, which is not observed. Referring to an earlier quote, as Hubble said in 1937:</p>
-
-<blockquote>
-    It is true that other ways are known by which red-shifts might be produced, but in each case they would be accompanied by other phenomena which would 
-    be conspicuous and, actually, are not found.
-    <br>
-    <br>
-    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 22, 1937 
-</blockquote>
+<p>Fritz Zwicky proposed that a type of gravitational scattering was causing the redshift, 
+    not an expanding universe. However, such an effect would lead to a blurring of the light, which is not observed, falsifying the hypothesis.</p>
 
 <p>In Zwicky's Tired Light model, light loses energy but still travels at c. 
     This is represented by the red dots in the graph: a static universe with a universally constant speed of light. 
@@ -354,15 +378,15 @@
 
 <hr>
 
-<h4>Conclusion</h4>
+<h2>Conclusion</h2>
 
-<p>Since 1929, cosmological redshifts have been a known, observed fact.</p>
+<p>Cosmological redshifts have been a known, observed fact since 1929.</p>
 
-<p>We could assume the redshifts indicate motion, in which case the universe is expanding, there are age and size limits to the universe, 
-    it experienced hyper-expansion in the first nanosecond, is currently accelerating, and is dominated by dark matter and dark energy.
+<p>We could assume the redshifts indicate motion, which means the universe is expanding, which means there are age and size limits to the universe, 
+    which means it inflated in the first nanosecond, which means it is dominated by dark matter and dark energy, and it's currently accelerating.
 </p>
 
-<p>Or we could assume the redshifts are a new feature of the universe we could only notice with big telescopes, and that's it. </p>
+<p>Or we could assume the redshifts are a new feature of the universe that can only be noticed at great distances by large telescopes, and that's it. </p>
 
 <p>With several hypotheses in hand, how to test them becomes the next question.</p>
 
@@ -396,9 +420,10 @@
 
 <hr>
 
-<h4>Change Log:</h4>
+<h2>Change Log:</h2>
 
 <ul>
+    <li><i>17 Nov 2020</i> - Rewrote introduction and hypothesis sections. </li>
     <li><i>16 Nov 2020</i> - Added conclusion, and bonus newspaper article. </li>
     <li><i>16 Nov 2020</i> - Added CMB question and answer. </li>
     <li><i>14 Nov 2020</i> - Added "Isn't expansion a fact?" question and answer. </li>
@@ -407,6 +432,8 @@
 </ul>
 
 <hr>
+
+<h2>Bonus material:</h2>
 
 <p>Newspaper article announcing Edwin Hubble has refuted the expanding universe theory, Dec. 30, 1941:</p>
 
@@ -438,36 +465,30 @@
     
     function drawGraph() {
         
+        ctxG.lineWidth = 1
+
         ctxG.fillStyle = "black"
         ctxG.fillRect(0, 0, graph.width, graph.height)
 
         ctxG.strokeStyle = "white" 
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
+        ctxG.lineWidth = 2
         for (var m = 0; m < models.length; m++) {
-            ctxG.fillStyle = models[m].color
+            ctxG.strokeStyle = models[m].color
+            ctxG.beginPath()
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
-                    //ctxG.fillRect(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
-                    ctxG.beginPath()
-                    ctxG.arc(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY, 3, 0, Math.PI * 2)
-                    ctxG.fill()
+                    ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
                 }
             }
-            
+            ctxG.stroke()            
         }
 
         ctxG.fillStyle = "white"
         ctxG.fillText("time to target (billion years)", offset + 5, offset)
         ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
         
-        ctxG.beginPath()
-        ctxG.arc(offset + 5500 * zoomG, graph.height - 11000 * zoomGY - offset, 6, 0, Math.PI * 2)
-        ctxG.fill()
-        ctxG.beginPath()
-        ctxG.arc(offset + 13800 * zoomG, graph.height - 46660 * zoomGY - offset, 6, 0, Math.PI * 2)
-        ctxG.fill()
-
         for (var i = 0; i < 80; i+=5) {
             ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
         }
@@ -576,9 +597,8 @@
     setupModel({
         div: document.getElementById("expandingFast"),
         name: "Expanding Fast",
-        color: "orange", 
-        H: 0.00009,
-        //H: 0.0000756,
+        color: "#888888", 
+        H: 0.0000756,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -590,9 +610,21 @@
     setupModel({
         div: document.getElementById("expandingSlow"),
         name: "Expanding Slow",
-        color: "blue", 
-        H: 0.000051,
-        //H: 0.00006888,
+        color: "#888888", 
+        H: 0.0000688,
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H
+            }
+        }
+    })
+    setupModel({
+        div: document.getElementById("expanding54"),
+        name: "Expanding Slow",
+        color: "#888888", 
+        H: 0.0000556,
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -619,6 +651,26 @@
         photon: {x: 0, dx: c},
         next: function () {
             this.photon.x += c / (1 + this.H * this.photon.x)
+        }
+    })
+    setupModel({
+        div: document.getElementById("redshift3"),
+        name: "v_light = c / (1 + H &times; D)^2",
+        color: "purple", 
+        H: 0.00015,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
+        }
+    })
+    setupModel({
+        div: document.getElementById("redshift4"),
+        name: "v_light = c / (1 + (H &times; D)^2)",
+        color: "darkred", 
+        H: 0.00025,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
         }
     })
 

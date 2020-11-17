@@ -7,6 +7,12 @@
             #graph {
                 height:600px;
                 width: 600px;
+                left: 830px;
+                position: fixed;
+            }
+            .model-label {
+                margin: 4px 0;
+                font-weight: bold;
             }
         </style>
     </head>
@@ -14,34 +20,170 @@
 
 <h3>Hubble's Law Testing Page. Read more <a href="index.htm">on the home page.</a></h3>
 
-
-<canvas id="graph" height="600" width="600"></canvas>
-<br>
 <button id="startButton">Start</button> <button id="pauseButton">Pause</button>
+<br>
+<canvas id="graph" height="600" width="600"></canvas>
+
+<div id="details"></div>
+
 <script>
 
-var ctxG = graph.getContext("2d")
+    var details = document.getElementById("details")
 
-//var H = 0.0000265
-var H = 0.00005
-var c = 1
+    var graph = document.getElementById("graph")
+    var ctxG = graph.getContext("2d")
+    var models = []
+    
+    
+    // the models advance by 1 million years each step
+    // the units for distance are in Mly (million light years)
 
-var zoom = 0.125
-var wait = 0
-var batch = 100
+    // the speed of light is 1 million lightyears per 1 million years
+    // Hubble's Constant is in units of Mly^-1 
 
-var models = [
-    {
+    var c = 1
+
+    var zoom = 0.056
+    var zoomG = zoom * 0.65
+    var zoomGY = zoom * 0.18
+    var offset = 20
+    
+    function drawGraph() {
+        
+        ctxG.lineWidth = 1
+        ctxG.fillStyle = "black"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.strokeStyle = "white" 
+        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        
+        ctxG.lineWidth = 2
+        for (var m = 0; m < models.length; m++) {
+            ctxG.strokeStyle = models[m].color
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+            for (var i = 0; i < models[m].targets.length; i++) {
+                if (models[m].targets[i].hit) {
+                    ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                }
+            }
+            ctxG.stroke()
+            
+        }
+
+        ctxG.fillStyle = "white"
+        ctxG.fillText("time to target (billion years)", offset + 5, offset)
+        ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
+        
+        for (var i = 0; i < 80; i+=5) {
+            ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+        }
+
+        for (i = 0; i < 16; i+=2) {
+            ctxG.fillText(i, offset + i * 1000 * zoomG, graph.height - 5)    
+        }
+    }
+
+    function setupModel(model) {
+
+        var label = document.createElement("div")
+        label.innerHTML = model.name
+        label.className = "model-label"
+        details.appendChild(label)
+                
+        model.canvas = document.createElement("canvas")
+        model.canvas.onclick = () => runModel(model)
+        details.appendChild(model.canvas)
+
+        model.ctx = model.canvas.getContext("2d")
+        model.nextTarget = 0
+
+        model.canvas.width = 800
+        model.canvas.height = 40
+        
+        // make a target every 200 million light years until 20 billion
+        model.targets = []
+        for (var i = 200; i <= 20000; i+=200) {
+            model.targets.push({label: i/1000, start: i, x: i})
+        }
+
+        model.ctx.font = "8px sans-serif"
+        model.ctx.lineWidth = 3
+        draw(model.ctx, model)
+
+        models.push(model)
+    }
+
+    function draw(ctx, exp) {
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        for (var i = 0; i < exp.targets.length; i++) {
+            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * zoom, 0)
+            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
+            //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
+
+            if (exp.targets[i].hit) {
+                //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+                //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+            }
+
+            ctx.stroke()
+        }
+
+        ctx.fillStyle = "yellow"
+        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+    }
+
+    function runModel(model) {
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+        model.running = true
+
+        var i
+        var batch = 100
+        var handle = setInterval(function () {
+            for (i = 0; i < batch; i++) {
+                if (model.targets[model.nextTarget] && model.t < 80000) {
+                    model.t++
+                    model.next()
+
+                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+                        model.targets[model.nextTarget].hit = model.t
+                        model.nextTarget++
+                    }
+                }
+                else {
+                    clearInterval(handle)
+                    model.running = false
+                }
+            }
+        }, 0)
+    }
+
+    setupModel({
+        div: document.getElementById("staticModel"),
         name: "Static",
-        color: "red", 
+        color: "#888888", 
         photon: {x: 0},
         next: function () {
             this.photon.x += c
         }
-    },
-    {
-        name: "Expanding Fast",
-        color: "blue", 
+    })
+    setupModel({
+        div: document.getElementById("expandingFast"),
+        name: "Expanding, H = 74",
+        color: "#888888", 
         H: 0.0000756,
         photon: {x: 0},
         next: function () {
@@ -50,10 +192,11 @@ var models = [
                 this.targets[i].x += this.targets[i].start * this.H
             }
         }
-    },
-    {
-        name: "Expanding Slow",
-        color: "darkblue", 
+    })
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Expanding, H = 67",
+        color: "#888888", 
         H: 0.0000688,
         photon: {x: 0},
         next: function () {
@@ -62,188 +205,74 @@ var models = [
                 this.targets[i].x += this.targets[i].start * this.H
             }
         }
-    },
-    {
-        name: "Redshift by distance",
+    })
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Expanding, H = 54",
+        color: "#888888", 
+        H: 0.0000556,
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H
+            }
+        }
+    })
+    /*setupModel({
+        div: document.getElementById("redshift1"),
+        name: "v_light = c - H &times; D",
         color: "green", 
         H: 0.000072,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += this.photon.dx
-            this.photon.dx = c - this.H * this.photon.x
+            this.photon.x += c - this.H * this.photon.x
         }
-    },
-    /*{
-        name: "Redshift by time",
-        color: "yellow", 
-        H: 0.000036,
-        photon: {x: 0, dx: c},
-        next: function () {
-            if (this.photon.dx > 0) {
-                this.photon.x += this.photon.dx
-                this.photon.dx -= this.H
-            }
-        }
-    },
-    {
-        name: "Redshift by time 2",
-        color: "purple", 
-        H: 0.0002,
-        photon: {x: 0, dx: c},
-        next: function () {
-            if (this.photon.dx > 0) {
-                this.photon.x += this.photon.dx
-                this.photon.dx = c / (1 + this.H * t) 
-            }
-        }
-    },*/
-    {
-        name: "Redshift by distance 2",
+    })*/
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "v_light = c / (1 + H &times; D)",
         color: "magenta", 
         H: 0.00035,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += this.photon.dx
-            this.photon.dx = c / (1 + this.H * this.photon.x) 
+            this.photon.x += c / (1 + this.H * this.photon.x)
         }
-    },
-    {
-        name: "Expanding 2",
-        color: "orange", 
-        H: 0.000035,
+    })
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "v_light = c / (1 + H &times; D)^2",
+        color: "purple", 
+        H: 0.00015,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += this.photon.dx
-
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += c - c / (1 + this.H * this.targets[i].start) 
-            }
-            this.photon.dx = c / (1 + this.H * this.photon.x) 
+            this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
         }
-    }
-]
-
-
-models.forEach(model => {
-
-    var div = document.createElement("div")
-    div.innerHTML = model.name + ": H = "
-    document.body.appendChild(div)
-
-    var hIinput = document.createElement("input")
-    hIinput.value = model.H
-    div.appendChild(hIinput)
-    hIinput.onchange = e => model.H = parseFloat(hIinput.value)
-
-    model.canvas = document.createElement("canvas")
-    model.ctx = model.canvas.getContext("2d")
-    model.nextTarget = 0
-
-    model.canvas.width = 1800
-    model.canvas.height = 60
-    document.body.appendChild(model.canvas)
-
-    // make a target every 200 million light years until 14 billion
-    model.targets = []
-    for (var i = 1000; i <= 14000; i+=200) {
-        model.targets.push({label: i/1000, start: i, x: i})
-    }
-
-})
-
-
-
-function draw(ctx, exp) {
-
-    ctx.fillStyle = "black"
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-    for (var i = 0; i < exp.targets.length; i++) {
-        ctx.fillStyle = exp.targets[i].hit ? exp.color : "#888888"
-    
-        ctx.fillRect(exp.targets[i].x * zoom, 0, 1, ctx.canvas.height)
-        ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
-
-        if (exp.targets[i].hit) {
-            //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-            ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+    })
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "v_light = c / (1 + (H &times; D)^2)",
+        color: "red", 
+        //H: 0.00035,
+        H: 0.00025,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
         }
-    }
-
-    ctx.fillStyle = "yellow"
-    ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
-}
-
-var zoomG = zoom * 0.3
-var zoomGY = zoom * 0.05
-function drawGraph() {
-
-    ctxG.fillStyle = "black"
-    ctxG.fillRect(0, 0, graph.width, graph.height)
-
-    for (var m = 0; m < models.length; m++) {
-        ctxG.fillStyle = models[m].color
-        for (var i = 0; i < models[m].targets.length; i++) {
-            if (models[m].targets[i].hit) {
-                ctxG.fillRect(models[m].targets[i].start * zoomG, graph.height - models[m].targets[i].hit * zoomGY, 5, 5)
-            }
-        }
-    }
-
-    ctxG.fillStyle = "white"
-    ctxG.fillRect(5500 * zoomG, graph.height - 11000 * zoomGY, 5, 5)
-    ctxG.fillRect(13800 * zoomG, graph.height - 46600 * zoomGY, 5, 5)
-}
-
-var t = 0
-var paused = true
-
-function start() {
-    models.forEach(model => {
-        model.photon.x = 0
-        model.photon.dx = c
-        model.nextTarget = 0
-        model.targets.forEach(target => {
-            target.x = target.start
-            target.hit = 0
-            //target.tdT.innerHTML = "-"
-        })
     })
 
-    paused = false
-    t = 0
-}
 
-setInterval(() => {
-    for (var ii = 0; ii < batch; ii++) {
-        
-        if (paused) return
-        t++
-
+    setInterval(() => {
         for (var m = 0; m < models.length; m++) {
-            if (models[m].targets[models[m].nextTarget]) {
-                models[m].next()
-
-                if (models[m].targets[models[m].nextTarget].x <= models[m].photon.x) {
-                    models[m].targets[models[m].nextTarget].hit = t
-                    models[m].nextTarget++
-                }
+            if (models[m].running) {
+                draw(models[m].ctx, models[m]) 
             }
         }
-    }
-}, wait)
 
+        drawGraph()
+    }, 1000 / 60)
 
-setInterval(() => {
-    for (var m = 0; m < models.length; m++) {
-        draw(models[m].ctx, models[m]) 
-    }
-
-    drawGraph()
-}, 1000 / 60)
-
-pauseButton.onclick = e => paused = !paused
-startButton.onclick = start
+document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
 </script>
 
 
