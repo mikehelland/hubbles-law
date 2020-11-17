@@ -120,8 +120,8 @@
 
 <ul>
     <li>The energy of a photon is <code>E = frequency &times; Planck's Constant</code></li>
-    <li>The speed of wave is <code>v = frequency &times; wavelength</code></li>
     <li>We observe a drop in energy, which is also a drop in frequency</li>
+    <li>The speed of wave is <code>v = frequency &times; wavelength</code></li>
     <li>Taken literally, a drop in energy and frequency could also be a drop in speed.</li>
 </ul>
 
@@ -502,7 +502,17 @@
         
         var playButton = document.createElement("button")
         playButton.innerHTML = "Click HERE to run"
-        playButton.onclick = () => runModel(model)
+        playButton.onclick = () => {
+            if (playButton.innerHTML === "Reset") {
+                playButton.innerHTML = "Click HERE to run"
+                resetModel(model)
+                draw(model.ctx, model)
+            }
+            else {
+                runModel(model)
+                playButton.innerHTML = "Reset"
+            }
+        }
 
         model.canvas = document.createElement("canvas")
 
@@ -515,14 +525,14 @@
         model.canvas.width = 800
         model.canvas.height = 60
         
-        // make a target every 200 million light years until 20 billion
+        // make a target every 200 million light years 
         model.targets = []
-        for (var i = 200; i <= 20000; i+=200) {
+        for (var i = 200; i <= 26800; i+=200) {
             model.targets.push({label: i/1000, start: i, x: i})
         }
 
         model.ctx.font = "8px sans-serif"
-        model.ctx.lineWidth = 3
+
         draw(model.ctx, model)
 
         models.push(model)
@@ -534,25 +544,27 @@
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         for (var i = 0; i < exp.targets.length; i++) {
-            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
-            ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * zoom, 0)
-            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
-            //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
-
             if (exp.targets[i].hit) {
-                //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-                //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+                ctx.strokeStyle = exp.color
+                ctx.lineWidth = 3
             }
-
+            else {
+                ctx.strokeStyle = "white"
+                ctx.lineWidth = 2
+            }
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * (exp.zoom || zoom), 0)
+            ctx.lineTo(exp.targets[i].x * (exp.zoom || zoom), ctx.canvas.height)
+            
             ctx.stroke()
         }
 
         ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+        ctx.fillRect(exp.photon.x * (exp.zoom || zoom) - 2, ctx.canvas.height / 2, 5, 5)
     }
 
-    function runModel(model) {
+    function resetModel(model) {
+        model.running = false
         model.photon.x = 0
         model.photon.dx = c
         model.nextTarget = 0
@@ -562,13 +574,19 @@
         })
     
         model.t = 0
+    }
+
+    function runModel(model) {
+        
+        resetModel(model)
+
         model.running = true
 
         var i
-        var batch = 100
+        var batch = 30
         var handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
-                if (model.targets[model.nextTarget] && model.t < 80000) {
+                if (model.running && model.targets[model.nextTarget] && model.t < 80000) {
                     model.t++
                     model.next()
 
@@ -600,6 +618,7 @@
         color: "#888888", 
         H: 0.0000756,
         photon: {x: 0},
+        zoom: 0.03,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -613,6 +632,7 @@
         color: "#888888", 
         H: 0.0000688,
         photon: {x: 0},
+        zoom: 0.03,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -626,6 +646,7 @@
         color: "#888888", 
         H: 0.0000556,
         photon: {x: 0},
+        zoom: 0.03,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
