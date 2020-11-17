@@ -109,7 +109,7 @@
 
 <p>Let’s say instead of light, each star produces sound. Some stars produce a C Major chord, made of the notes C, E, and G.</p>
 
-<canvas id="kb1" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="kb1" width="507" height="75px"></canvas></p>
 
 <script>
     draw(document.getElementById("kb1").getContext("2d"), [3, 7, 10], 0, true)
@@ -119,7 +119,7 @@
 
 <p>Other stars produce an D Minor chord, made of the notes D, F, and A.</p>
 
-<canvas id="kb2" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="kb2" width="507" height="75px"></canvas></p>
 
 <script>
     draw(document.getElementById("kb2").getContext("2d"), [5, 8, 12], 0, true)
@@ -129,7 +129,7 @@
 
 <p>Now, you’ve discovered a new star, and it doesn’t make a C Major or D Minor. It makes this chord.</p>
 
-<canvas id="kb3" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="kb3" width="507" height="75px"></canvas></p>
 
 <script>
     draw(document.getElementById("kb3").getContext("2d"), [4, 8, 11], 0, true)
@@ -141,7 +141,7 @@
 
 <p>This isn’t a new kind of star. It’s the C Major star shifted up. All the notes are shifted up an equal amount. </p>
 
-<canvas id="kb4" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="kb4" width="507" height="75px"></canvas></p>
 
 <script>
     shiftKB(document.getElementById("kb4").getContext("2d"), [3, 7, 10], 1, true)
@@ -172,7 +172,7 @@
 <p>The same works shifting down. If we discover a C# Minor star, for instance, we'll know it's a D Minor star (code <code>10010001</code>) shifted down. </p>
 
 
-<canvas id="kb5" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="kb5" width="507" height="75px"></canvas></p>
 
 <script>
     shiftKB(document.getElementById("kb5").getContext("2d"), [5, 8, 12], -1, true)    
@@ -191,7 +191,7 @@
 
 <img style="display:none;" src="img/spectrum.png" id="spectrum">
 
-<canvas id="spectrum1" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="spectrum1" width="507" height="75px"></canvas></p>
 <script>
     var colors = document.getElementById("spectrum")
     colors.onload = () => {
@@ -211,7 +211,7 @@
 
 <p>If the star is moving away from us, the frequencies are shifted down, and the colors move to the red side of the spectrum.</p>
 
-<canvas id="spectrum2" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="spectrum2" width="507" height="75px"></canvas></p>
 
 <script>
     shiftKB(document.getElementById("spectrum2").getContext("2d"), [4, 8, 11], -1, false)
@@ -222,7 +222,7 @@
 
 <p>If the star is moving toward us, the frequencies shift up, and the colors move to the blue side.</p>
 
-<canvas id="spectrum3" width="800px" height="75px"></canvas>
+<p class="pimg"><canvas id="spectrum3" width="507" height="75px"></canvas></p>
 
 <script>
     shiftKB(document.getElementById("spectrum3").getContext("2d"), [4, 8, 11], 1, false)
