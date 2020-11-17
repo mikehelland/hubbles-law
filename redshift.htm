@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/hubbleslaws_graph.png"/>
+        <meta property="og:description" content="A demonstration of Hubble's tension and its resolution."/>
+        <meta property="og:title" content="Fixing Hubble's Law"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>-->
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            #graph {
+                position:fixed;
+                left:850px;
+                top:10px;
+                height:600px;
+                width: 600px;
+            }
+
+            .text {
+                background-color: white;
+                max-width: 800px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin: auto;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+        </style>
+
+        <script>
+            var noteNames = ["A", "B#", "B", "C", "C#",  "D",  "D#",  "E",  "F",  "F#",  "G",  "G#",  "A",  "A#",  "B",  "C"]
+                
+            function draw(ctx1, notes, shift, kb) {
+                var kb1 = ctx1.canvas
+                
+                //kb1.width = kb1.width
+                ctx1.strokeStyle = "black"
+                ctx1.strokeRect(0, 0, kb1.width, kb1.height)
+
+
+                if (!kb) {
+                    ctx1.drawImage(colors, 0, 0, ctx1.canvas.width, ctx1.canvas.height)
+                }
+
+                shift = shift || 0
+                for (var i = 0; i < 16; i++) {
+
+                    if (notes.indexOf(i) > -1) {
+                        ctx1.fillStyle = "#404040"
+                        ctx1.fillRect(kb1.width / 16 * (i + shift), 0, kb1.width / 16, kb1.height)
+                        ctx1.fillStyle = "white"
+                    }
+                    else {
+                        ctx1.fillStyle = "black"
+                    }
+
+                    if (kb) {
+                        ctx1.beginPath()
+                        ctx1.moveTo(kb1.width / 16 * i, 0)
+                        ctx1.lineTo(kb1.width / 16 * i, kb1.height)
+                        ctx1.stroke()
+
+                        ctx1.fillText(noteNames[i], 12 + kb1.width / 16 * i, kb1.height - 12)
+                    }
+                }
+            }
+
+            
+            function shiftKB(ctx, notes, d, kb) {
+                
+                var start = Date.now()
+                var handle = setInterval(() => {
+                        
+                    if (Date.now() - start > 4000) {
+                        clearInterval(handle)
+                        setTimeout(() => {
+                            ctx.canvas.width = ctx.canvas.width
+                            draw(ctx, notes, 0, kb)
+                            setTimeout(() => shiftKB(ctx, notes, d, kb), 1000)
+                        }, 2000)
+                    }
+                    else {
+                        ctx.canvas.width = ctx.canvas.width
+                        draw(ctx, notes, d * (Date.now() - start) % 4000 / 4000, kb)
+                    }
+            
+                }, 1000/60)
+            }
+        </script>
+    </head>
+<body>
+
+<div class="text">
+<h1>Understanding Redshifts</h1>
+
+<ol>
+    <li>Frequency Shifts</li>
+    <li>Redshift and Blueshift</l>
+    <li>Cosmological Redshifts</li>
+</ol>
+
+<h2>Part 1: Frequency Shifts</h2>
+
+<p>To understand what a redshift is, how about a music analogy. </p>
+
+<p>Let’s say instead of light, each star produces sound. Some stars produce a C Major chord, made of the notes C, E, and G.</p>
+
+<canvas id="kb1" width="800px" height="75px"></canvas>
+
+<script>
+    draw(document.getElementById("kb1").getContext("2d"), [3, 7, 10], 0, true)
+</script>
+
+<p>Notice there’s a gap of 3, and a gap of 2. You could say the "code" for this chord <code>10001001</code></p>
+
+<p>Other stars produce an D Minor chord, made of the notes D, F, and A.</p>
+
+<canvas id="kb2" width="800px" height="75px"></canvas>
+
+<script>
+    draw(document.getElementById("kb2").getContext("2d"), [5, 8, 12], 0, true)
+</script>
+
+<p>Notice this time, there is a gap of 2, then a gap of 3. The code for this chord is <code>10010001</code>.</p>
+
+<p>Now, you’ve discovered a new star, and it doesn’t make a C Major or D Minor. It makes this chord.</p>
+
+<canvas id="kb3" width="800px" height="75px"></canvas>
+
+<script>
+    draw(document.getElementById("kb3").getContext("2d"), [4, 8, 11], 0, true)
+</script>
+
+<p>This is a new chord. Is it a new kind of star? Nope.</p>
+
+<p>The gaps between the notes in this star are 3 and 2. It's code is <code>1000101</code>, the same as the C Major star. </p>
+
+<p>This isn’t a new kind of star. It’s the C Major star shifted up. All the notes are shifted up an equal amount. </p>
+
+<canvas id="kb4" width="800px" height="75px"></canvas>
+
+<script>
+    shiftKB(document.getElementById("kb4").getContext("2d"), [3, 7, 10], 1, true)
+    
+</script>
+
+<p>How could a star’s notes get shifted up?</p>
+
+<p>One reason is the Doppler effect, which we can hear in the horn of a moving car.</p>
+
+<p>When the car is sitting still, and honks its horn, let’s say it comes out as a middle C. The frequency of this note is 261.626 Hertz. That means, a sound wave from the horn reaches your ear 261 times every second.</p>
+
+<p>If the car was speeding toward you, blasting its horn at 261 Hz, the car gets closer to you between each sound wave, meaning the crests of the waves get closer together, reaching you at a higher rate. </p>
+
+<p class="pimg"><img src="img/doppler.gif"></p>
+
+
+<p>If the sound waves reach you at 277 times per second, you will hear the car horn at a C#.</p>
+
+<p>Anyone sitting in the car, however, will be moving at its speed, meaning the sound waves don’t get any closer together relative to the passengers’ ears. To them, the horn is still in tune at middle C.</p>
+
+<p>Going back to the star, we can understand how the notes in the chord are shifted up: it's the Doppler effect of the star moving towards us.</p>
+
+<p>A star that sounds like C# Major is not a new type of star. It’s just a C Major star, shifted up one note by traveling towards us. A D Major star is also a C Major star, but shifted up two notes. </p>
+
+<p>The farther the notes have been shifted up, the faster the star must be traveling toward us.</p>
+
+<p>The same works shifting down. If we discover a C# Minor star, for instance, we'll know it's a D Minor star (code <code>10010001</code>) shifted down. </p>
+
+
+<canvas id="kb5" width="800px" height="75px"></canvas>
+
+<script>
+    shiftKB(document.getElementById("kb5").getContext("2d"), [5, 8, 12], -1, true)    
+</script>
+
+
+<p>The lower a star’s chord is shifted, the faster it is moving away from us.</p>
+
+<hr>
+
+<h2>Part 2: Redshift and Blueshift</h2>
+
+<p>Stars don’t actually produce sounds though. They produce light. But sounds and light both have frequency, and the Doppler effect applies to both.</p>
+
+<p>So let’s replace the musical notes with colors. Red has the lowest frequency, and blue has the highest frequency.</p>
+
+<img style="display:none;" src="img/spectrum.png" id="spectrum">
+
+<canvas id="spectrum1" width="800px" height="75px"></canvas>
+<script>
+    var colors = document.getElementById("spectrum")
+    colors.onload = () => {
+        draw(document.getElementById("spectrum1").getContext("2d"), [3, 7, 10])
+    }
+</script>
+
+
+<p>This should actually be read as the opposite of the music analogy. Instead of the line indicating which notes should be played, the lines in the color spectrum indicate which frequencies are missing.</p>
+
+<p>Different elements like oxygen and sodium and calcium absorb light at different frequencies. So depending on which frequencies are missing when we analyze a star’s light, we can tell what the star is made of. 
+    Here are the sun's actual absorption lines: </p>
+
+<p class="pimg"><img src="img/sun_spectrum.jpg"></p>
+
+<p>And then by looking at the gaps in between the absorption lines, we can tell if it’s moving away from us or toward us, and how fast.  </p>
+
+<p>If the star is moving away from us, the frequencies are shifted down, and the colors move to the red side of the spectrum.</p>
+
+<canvas id="spectrum2" width="800px" height="75px"></canvas>
+
+<script>
+    shiftKB(document.getElementById("spectrum2").getContext("2d"), [4, 8, 11], -1, false)
+</script>
+
+
+<p>That’s called red-shift.
+
+<p>If the star is moving toward us, the frequencies shift up, and the colors move to the blue side.</p>
+
+<canvas id="spectrum3" width="800px" height="75px"></canvas>
+
+<script>
+    shiftKB(document.getElementById("spectrum3").getContext("2d"), [4, 8, 11], 1, false)
+</script>
+
+
+<p>That’s called blue-shift.</p>
+
+<p>Some stars are moving away from us, and some are moving toward us, and some are pretty still relative to us. So whether a star is red-shifted or blue-shifted is somewhat random. It just depends which way they happen to be moving.</p>
+
+<hr>
+
+<h2>Cosmological Redshifts</h2>
+
+<p>Like stars, galaxies can be red-shifted and blue-shifted too. Galaxies are just groups of stars after all. </p>
+
+<p>Some galaxies are blue-shifted, which means they’re moving towards us. But there are surprisingly very few blue-shifted galaxies, and they are all among the closest galaxies to us. </p>
+
+<p class="pimg"><img src="img/redshift_zones.png"></p>
+
+<p>Nearly all the galaxies we observe are red-shifted. And the more distant a galaxy is, the more red-shift it has. </p>
+
+<p>We understand the red and blue shifts in Zone 1. Those motions, intrinsic to the stars or galaxies, are called 
+    "<a href="https://en.wikipedia.org/wiki/Peculiar_velocity">peculiar velocities</a>"</p>
+
+<p>But what is going on in Zone 2? These redshifts were not expected at all. One would have assumed the pattern of random red and blue shifted galaxies continues.</p>
+
+<p>These redshifts are referred to as "cosmological redshifts". Are they caused by motion, the same as the red and blue shifts in Zone 1?</p>
+
+<p>Or something else?</p>
+
+Find out in <a href="index.htm">"Fixing Hubble's Law""</a>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</div>
+
+</body>
+</html>
