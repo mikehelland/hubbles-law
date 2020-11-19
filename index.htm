@@ -28,6 +28,12 @@
             .pimg  {
                 text-align: center;
             }
+
+            code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
         </style>
 
     </head>
@@ -85,80 +91,89 @@
 
 <h2>Hypothesis</h2>
 
+<blockquote> 
+    We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.
+    We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, 
+    familiar principle by an ad hoc explanation unless we are forced to that step by actual observations.
+
+    <br>
+    <br>
+    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 22, 1937
+</blockquote>
+
 <p>Edwin Hubble said that it was convenient for the redshift to be interpreted as a Doppler-like effect, leading to the expanding universe theory. 
     He also said redshifts might be interpreted as how nature actually works. 
-    There isn't another phenomenon causing the redshifts; the redshifts are a new phenomenon in themselves. 
-    However, he noted, if there are existing ways to explain the redshift, adding new principles of nature should be avoided.</p>
+    The redshifts aren't caused by some other phenomenon; cosmological redshift is a new phenomenon in-and-of itself. 
+    However, he noted, if there are existing ways to explain the redshift, adding a new principle of nature would be too drastic to resort to.</p>
 
-<blockquote>When first observed the red-shifts were immediately attributed to radial motion away from the observer, to recession of the nebulae. 
-    This interpretation still remains the only permissible explanation that is known. 
-    It is true that other ways are known by which red-shifts might be produced, but in each case they would be accompanied by other phenomena which would 
-    be conspicuous and, actually, are not found. 
-    We may state with some confidence that <b>red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.</b>
-    We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, 
-    familiar principle by an ad hoc explanation <b>unless we are forced to that step by actual observations.</b>
+<p>But choosing the path of the familiar principles over a new principle 
+    has forced us to propose several new principles anyways, including dark energy and inflation. 
+    It is also unclear, despite many accurate measurements, how fast space is expanding.</p>
 
-    <br>
-    <br>
-    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 22, 1937 (emphasis added)
-</blockquote>
-    
-
-<p>But the path of the familiar principles has led us to propose new principles anyways: accelerating expansion, dark energy, the inflation period. 
-    We are clearly past the point of being forced to create new principles of physics.</p>
-
-<p>Let's remember what's important:</p>
-
-<blockquote>the observed fact that light from a distant galaxy loses energy proportionally to the distance of the galaxy. 
-    <br>
-    <br>
-    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 18, 1937
-</blockquote>
-
-<p>So:</p>
+<p>Let's back up then and ask: if cosmological redshifts do represent a new principle of nature, what is that principle? Consider the following premises:</p>
 
 <ul>
-    <li>The energy of a photon is <code>E = frequency &times; Planck's Constant</code></li>
-    <li>We observe a drop in energy, which is also a drop in frequency</li>
-    <li>The speed of wave is <code>v = frequency &times; wavelength</code></li>
-    <li>Taken literally, a drop in energy and frequency could also be a drop in speed.</li>
+    <li>A decrease in frequency is observed</li>
+    <li>The <a href="https://byjus.com/wave-speed-formula/" target="_out">speed of a wave</a> is <code>v = frequency &times; wavelength</code></li>
 </ul>
 
-<p>To test this literal interpretation of redshifts, I considered possible models where the speed of a photon decreases.</p>
+<p>Therefore, if these premises are taken literally and plainly (and somewhat naively):</p>
 
-<p>A simple hypothesis is where the photon's speed begins at <code>c</code> and decreases directly proportional to its distance from its source.</p>
+<ul>
+    <li>the observed decrease in frequency should result in a decrease in speed.</li>
+</ul>
+
+<p>To examine this literal interpretation of redshifts, I considered possible models where the speed of a photon begins at <code>c</code> and decreases 
+    as the distance from its source increases.</p>
+
+<p>The simplest of these models is one where <code>H &times; D</code> is just subtracted from <code>c</code>.</p>
 
 <p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
 
 <div id="redshift1"></div>
 
-<p>This hypothesis creates an even steeper curve than the expanding models. So this hypothesis is of no help.</p>
+<p>This hypothesis acheives something interesting. Even though the targets are stationary, the time it takes to reach the next target grows with distance,
+    in close agreement with the time it would take to reach a moving target.</p>
 
-<p>Observations say there is a faster rate of redshift in the nearby universe 
-    and a slower rate of redshift in the farthest parts of the observable universe. </p>
+<p>Unfortunately, this doesn't seem to help with the issue of Hubble's constant. Observations say there is a faster rate of redshift in the nearby universe 
+    and a slower rate of redshift in the farthest parts of the observable universe. Compared to the standard expanding model, Hypothesis 1 makes the problem worse.</p>
 
-<p>That suggests to me that we don't want a big curve on the graph. Something flatter. Instead of subtracting <code>H &times; D</code>, what about dividing by it?</p>
+<button id="show-tension">Click to Toggle Hubble Tension</button>
+<script>
+    var showTension = false
+    document.getElementById("show-tension").onclick = e => showTension = !showTension
+</script>
+
+<p>To match observations, more redshift is needed in the first half, and less is needed in the second half. </p>
+
+<p>I thought about dividing <code>H &times; D</code> by an increasing number, 
+    but <code>H &times; D</code> itself increases as the photon travels. So how about dividing <code>c</code> by that?</p>
 
 <p><b>Hypothesis 2: the speed of light = c / (1 + H &times; D)</b></p>
 
 <div id="redshift2"></div>
 
-<p>This hypothesis results in a higher rate of redshift for nearby objects and a lower rate of redshift for far away objects, when compared to the expanding models.</p>
+<p>This hypothesis results in a much higher rate of redshift for nearby objects and a much lower rate of redshift for far away objects, compared to the expanding models.
+</p>
 
-<p>Hypothesis 2 makes more of a straight line than a curve. By squaring <code>(1 + H &times; D)</code>, a more pronounced curve can be made. </p>
+<p>In this hypothesis, the units of <code>H</code> are independent of the units of <code>c</code>. The units of <code>H</code> are inverse length, which means <code>(1 + H &times; D)</code> is unitless. 
+    </p>
+
+
+<p>On the graph, hypothesis 2 makes more of a straight line than a curve.  
+    By making it an inverse square law, a more pronounced curve can be made. </p>
 
 <p><b>Hypothesis 3: the speed of light = c / (1 + H &times; D)<sup>2</sup></b></p>
 
 <div id="redshift3"></div>
 
-<p>Squaring just <code>H &times; D</code> makes an even steeper curve. </p>
+<p>Squaring just <code>H &times; D</code> or <code>D</code> makes an even steeper curve. </p>
 
 <p><b>Hypothesis 4: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
 
 <div id="redshift4"></div>
 
-<p>Note that here <code>H</code> is independent of the units of <code>c</code>. The units of <code>H</code> are inverse length, which means <code>(1 + H &times; D)</code> is unitless. 
-    These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
+<p>These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
 
 <p>In these models, the laser beam shows delays in reaching the targets, even though the targets are stationary. In such a universe, 
     space is not expanding. </p>
@@ -170,10 +185,10 @@
     <ul>
         <li>Isn't the expansion of the universe a fact?</li>
         <li>Doesn't the Cosmic Microwave Background confirm an expanding universe?</li>
+        <li>Isn't this the discredited Tired Light Theory?</li>
         <li>Doesn't this conflict with special relativity?</li>
         <li>Shouldn't we be able to measure a drop in a photon's speed?</li>
         <li>Doesn't this violate the Conservation of Energy?</li>
-        <li>Isn't this the discredited Tired Light Theory?</li>
         <li>... more to come as questions come in</li>
     </ul>
     These are addressed below.
@@ -288,9 +303,47 @@
         from galaxies 14 billion light years away, right before the temperature of space takes over our measurements. </p>
 <hr>
 
+<h2>Isn't this the discredited Tired Light Theory?</h2>
+
+<p>There have been 
+    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> as to how light gets "tired" 
+    during long intergalactic journeys, which don't include expanding space, going all the way back to 1929 when the redshift-distance relation was published.
+</p>
+
+<p>In general, tired light theories fail because they don't
+    account for enough redshift, they can't explain the distance factor, or the redshifts are caused in a way that would include other observable results, 
+    which ultimately are not observed.</p>
+
+<p>Two things they all have in common are:</p>
+
+<ul>
+    <li>Some other phenomenon causes the redshifts</li>
+    <li>Light, even though it's "tired", still travels at <code>c</code></li>
+</ul>
+
+<p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
+
+<ul>
+    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
+    <li>Light travels at less than <code>c</code> after millions of years</li>
+</ul>
+
+<p>This hypothesis produces lines on the graph
+    that closely match the expanding models, while the other tired theories all match the static model in red.</p>
+
+<p>It should come as no surprise to us that there are fundamental laws of nature we would only detect once we had telescopes
+    that can see what's out beyond the Milky Way.</p>
+
+<p>If dark energy, which hasn't been observed, is in the consideration as a possible fundamental ingredient of nature, 
+    then the atual observations that led to its conjecture, cosmological redshift, should be considered a worthy candidate as well.
+
+<hr>
+
 <h2>Doesn't this conflict with special relativity?</h2>
 
-<p>Yes, when light has traveled for millions of years, its speed will be less than c.</p>
+<p>Yes. The hypothesis is that the speed of light decreases with distance.</p>
+
+<p>Special relativity tells us that light can travel at <code>c</code> for million and billions of years. </p> 
 
 <p>But our experiments and measurements don't last millions of years. In our experiments, H &times; D is so small, it can be considered zero.</p>
 
@@ -361,22 +414,6 @@
 
 <hr>
 
-<h2>Isn't this the discredited Tired Light Theory?</h2>
-
-<p>Fritz Zwicky proposed that a type of gravitational scattering was causing the redshift, 
-    not an expanding universe. However, such an effect would lead to a blurring of the light, which is not observed, falsifying the hypothesis.</p>
-
-<p>In Zwicky's Tired Light model, light loses energy but still travels at c. 
-    This is represented by the red line on the graph: a static universe with a universally constant speed of light. 
-    This model does not hit either of the two data points aimed for.</p>
-
-<p>The hypotheses presented here, represented by the green and magenta lines on the graph, are mathematically distinct from Zwicky's Tired Light. 
-    The magenta line does connect the desired data points, which no other interpretation can claim.</p>
-
-<p>So this is not Zwicky's Tired Light Theory. This is an even more literal interpretation of redshift and a novel mathematical model.</p>
-
-<hr>
-
 <h2>Conclusion</h2>
 
 <p>Cosmological redshifts have been a known, observed fact since 1929.</p>
@@ -422,6 +459,7 @@
 <h2>Change Log:</h2>
 
 <ul>
+    <li><i>19 Nov 2020</i> - Rewrote hypothesis and tired light sections. Added Hubble tension toggle. </li>
     <li><i>17 Nov 2020</i> - Rewrote introduction and hypothesis sections. </li>
     <li><i>16 Nov 2020</i> - Added conclusion, and bonus newspaper article. </li>
     <li><i>16 Nov 2020</i> - Added CMB question and answer. </li>
@@ -469,9 +507,21 @@
         ctxG.fillStyle = "black"
         ctxG.fillRect(0, 0, graph.width, graph.height)
 
+        ctxG.fillStyle = "white"
+
         ctxG.strokeStyle = "white" 
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
+        if (showTension) {
+            ctxG.strokeStyle = "#404040" 
+            ctxG.beginPath()
+            ctxG.moveTo(offset + 6700 * zoomG, 0)
+            ctxG.lineTo(offset + 6700 * zoomG, graph.height - offset)
+            ctxG.stroke()
+
+            ctxG.fillText("Should be higher", graph.width / 6, graph.height / 2)
+            ctxG.fillText("Should be lower", graph.width / 4 * 3, graph.height / 2)
+        }
         ctxG.lineWidth = 2
         for (var m = 0; m < models.length; m++) {
             ctxG.strokeStyle = models[m].color
@@ -484,7 +534,6 @@
             ctxG.stroke()            
         }
 
-        ctxG.fillStyle = "white"
         ctxG.fillText("time to target (billion years)", offset + 5, offset)
         ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
         
@@ -657,7 +706,7 @@
         div: document.getElementById("redshift1"),
         name: "Redshift by distance",
         color: "green", 
-        H: 0.000072,
+        H: 0.000086,
         photon: {x: 0, dx: c},
         next: function () {
             this.photon.x += c - this.H * this.photon.x

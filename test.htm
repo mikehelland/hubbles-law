@@ -4,15 +4,23 @@
             body {
                 background-color: #CCCCCC;
             }
+            #right-side {
+                left: 830px;
+                position: fixed;
+            
+            }
             #graph {
                 height:600px;
                 width: 600px;
-                left: 830px;
-                position: fixed;
             }
             .model-label {
                 margin: 4px 0;
                 font-weight: bold;
+            }
+
+            hr {
+                opacity: 0;;
+                margin:18px;
             }
         </style>
     </head>
@@ -20,9 +28,20 @@
 
 <h3>Hubble's Law Testing Page. Read more <a href="index.htm">on the home page.</a></h3>
 
-<button id="startButton">Start</button> <button id="pauseButton">Pause</button>
+<button id="startButton">Start</button> <button id="stopButton">Stop</button>
 <br>
-<canvas id="graph" height="600" width="600"></canvas>
+
+<div id="right-side">
+    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
+    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
+    <canvas id="graph" height="600" width="600"></canvas>
+    <br>
+    Y axis: <select id="graph-y-axis">
+        <option>time to target</option>
+        <option>difference from static</option>
+    </select>
+
+</div>
 
 <div id="details"></div>
 
@@ -44,8 +63,10 @@
     var c = 1
 
     var zoom = 0.056
-    var zoomG = zoom * 0.65
-    var zoomGY = zoom * 0.18
+    var zoom_gx = 0.65
+    var zoom_gy = 0.18
+    var zoomG = zoom * zoom_gx
+    var zoomGY = zoom * zoom_gy
     var offset = 20
     
     function drawGraph() {
@@ -64,7 +85,14 @@
             ctxG.moveTo(offset, graph.height - offset)
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
-                    ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    if (yAxis.selectedIndex === 0) {
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    }
+                    else if (yAxis.selectedIndex === 1) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
+                    }
                 }
             }
             ctxG.stroke()
@@ -92,7 +120,14 @@
         details.appendChild(label)
                 
         model.canvas = document.createElement("canvas")
-        model.canvas.onclick = () => runModel(model)
+        model.canvas.onclick = () => {
+            if (model.running || model.ran) {
+                resetModel(model)
+            }
+            else {
+                runModel(model)
+            }
+        }
         details.appendChild(model.canvas)
 
         model.ctx = model.canvas.getContext("2d")
@@ -112,6 +147,31 @@
         draw(model.ctx, model)
 
         models.push(model)
+    }
+
+    function stopModel(model) {
+        clearInterval(model.handle)
+
+        model.running = false
+        model.ran = true
+    }
+
+    function resetModel(model) {
+        
+        stopModel(model)
+    
+        model.ran = false
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+
+        draw(model.ctx, model)
     }
 
     function draw(ctx, exp) {
@@ -139,22 +199,16 @@
     }
 
     function runModel(model) {
-        model.photon.x = 0
-        model.photon.dx = c
-        model.nextTarget = 0
-        model.targets.forEach(target => {
-            target.x = target.start
-            target.hit = 0
-        })
-    
-        model.t = 0
+        
+        resetModel(model)
+        
         model.running = true
 
         var i
         var batch = 100
-        var handle = setInterval(function () {
+        model.handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
-                if (model.targets[model.nextTarget] && model.t < 80000) {
+                if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
                     model.t++
                     model.next()
 
@@ -164,8 +218,9 @@
                     }
                 }
                 else {
-                    clearInterval(handle)
+                    clearInterval(model.handle)
                     model.running = false
+                    model.ran = true
                 }
             }
         }, 0)
@@ -180,6 +235,9 @@
             this.photon.x += c
         }
     })
+
+    details.appendChild(document.createElement("hr"))
+
     setupModel({
         div: document.getElementById("expandingFast"),
         name: "Expanding, H = 74",
@@ -219,7 +277,10 @@
             }
         }
     })
-    /*setupModel({
+
+    details.appendChild(document.createElement("hr"))
+    
+    setupModel({
         div: document.getElementById("redshift1"),
         name: "v_light = c - H &times; D",
         color: "green", 
@@ -228,7 +289,7 @@
         next: function () {
             this.photon.x += c - this.H * this.photon.x
         }
-    })*/
+    })
     setupModel({
         div: document.getElementById("redshift2"),
         name: "v_light = c / (1 + H &times; D)",
@@ -273,6 +334,12 @@
     }, 1000 / 60)
 
 document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
+document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
+
+document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
+document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
+
+var yAxis = document.getElementById("graph-y-axis")
 </script>
 
 
