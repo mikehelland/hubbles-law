@@ -166,13 +166,8 @@
 
 <div id="redshift3"></div>
 
-<p>Squaring just <code>H &times; D</code> or <code>D</code> makes an even steeper curve. </p>
-
-<p><b>Hypothesis 4: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
-
-<div id="redshift4"></div>
-
-<p>These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
+<p>Squaring just <code>H &times; D</code> or <code>D</code> makes an even steeper curve. 
+    These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
 
 <p>In these models, the laser beam shows delays in reaching the targets, even though the targets are stationary. In such a universe, 
     space is not expanding. </p>
@@ -182,9 +177,9 @@
 <p>
     This conclusion raises questions that must be addressed that include:
     <ul>
+        <li>Isn't this the discredited Tired Light Theory?</li>
         <li>Isn't the expansion of the universe a fact?</li>
         <li>Doesn't the Cosmic Microwave Background confirm an expanding universe?</li>
-        <li>Isn't this the discredited Tired Light Theory?</li>
         <li>Doesn't this conflict with special relativity?</li>
         <li>Doesn't this violate the Conservation of Energy?</li>
         <li>Shouldn't we be able to measure a drop in a photon's speed?</li>
@@ -192,6 +187,42 @@
     </ul>
     These are addressed below.
 </p>
+
+<hr>
+
+<h2>Isn't this the discredited Tired Light Theory?</h2>
+
+<p>There have been 
+    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> that don't involve expanding space
+    trying to explain how light gets "tired" during long intergalactic journeys, 
+    starting all the way back to 1929 when the redshift-distance relation was first published.
+</p>
+
+<p>Tired light theories fail because they don't
+    account for enough redshift, they can't explain the distance factor, or the redshifts are caused in a way that would include other observable results, 
+    which ultimately are not observed.</p>
+
+<p>In general, tired light theories have the following in common:</p>
+
+<ul>
+    <li>Some other phenomenon causes the redshifts</li>
+    <li>Light, even though it's "tired", still travels at <code>c</code></li>
+    <li>They are represented by the red line on the graph, matching a simple static model</li> 
+</ul>
+
+<p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
+
+<ul>
+    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
+    <li>Light travels at less than <code>c</code> after millions of years</li>
+    <li>The time it takes light to reach a target closely matches the expanding model</li> 
+</ul>
+
+<p>It should come as no surprise to us that there are fundamental laws of nature we would only detect once we had telescopes
+    that can see what's out beyond the Milky Way.</p>
+
+<p>If dark energy, which hasn't been observed, is in the consideration as a possible fundamental ingredient of nature, 
+    then the actual observations that led to its conjecture, cosmological redshift, should be considered a worthy candidate as well.
 
 <hr>
 
@@ -302,43 +333,6 @@
     <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
         calculated the temperature of starlight in our galaxy to be 3.18 Kelvin</a>. As such, the CMB may just be photons limping in 
         from galaxies 14 billion light years away, right before the temperature of space takes over our measurements. </p>
-<hr>
-
-<h2>Isn't this the discredited Tired Light Theory?</h2>
-
-<p>There have been 
-    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> that don't involve expanding space
-    trying to explain how light gets "tired" during long intergalactic journeys, 
-    going all the way back to 1929 when the redshift-distance relation was first published.
-</p>
-
-<p>In general, tired light theories fail because they don't
-    account for enough redshift, they can't explain the distance factor, or the redshifts are caused in a way that would include other observable results, 
-    which ultimately are not observed.</p>
-
-<p>Two things they all have in common are:</p>
-
-<ul>
-    <li>Some other phenomenon causes the redshifts</li>
-    <li>Light, even though it's "tired", still travels at <code>c</code></li>
-</ul>
-
-<p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
-
-<ul>
-    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
-    <li>Light travels at less than <code>c</code> after millions of years</li>
-</ul>
-
-<p>This hypothesis produces lines on the graph
-    that closely match the expanding models, while the other tired theories match the static model in red.</p>
-
-<p>It should come as no surprise to us that there are fundamental laws of nature we would only detect once we had telescopes
-    that can see what's out beyond the Milky Way.</p>
-
-<p>If dark energy, which hasn't been observed, is in the consideration as a possible fundamental ingredient of nature, 
-    then the actual observations that led to its conjecture, cosmological redshift, should be considered a worthy candidate as well.
-
 <hr>
 
 <h2>Doesn't this conflict with special relativity?</h2>
@@ -455,7 +449,10 @@
     <li>Or <a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a></li>
 </ul>
 
-<p>The source code for the models on this page are <a href="https://github.com/mikehelland/hubbles-law/blob/master/index.htm">here on GitHub</a>. Check out <a href="test.htm">the Testing Page</a> to try your own hypotheses and values</p>
+<p>The source code for the models on this page are <a href="https://github.com/mikehelland/hubbles-law/blob/master/index.htm">here on GitHub</a>. 
+</p>
+
+<p>Check out <a href="test.htm">the Testing Page</a> to try your own hypotheses and values</p>
 
 <hr>
 
@@ -735,7 +732,7 @@
             this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
         }
     })
-    setupModel({
+    /*setupModel({
         div: document.getElementById("redshift4"),
         name: "v_light = c / (1 + (H &times; D)^2)",
         color: "darkred", 
@@ -744,7 +741,7 @@
         next: function () {
             this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
         }
-    })
+    })*/
 
 
     setInterval(() => {
