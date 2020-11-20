@@ -330,7 +330,7 @@
 <ul>
     <li>Some other phenomenon causes the redshifts</li>
     <li>Light, even though it's "tired", still travels at <code>c</code></li>
-    <li>They are represented by the red line on the graph, matching a simple static model</li> 
+    <li>They are represented by the blue line on the graph, matching a simple static model</li> 
 </ul>
 
 <p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
@@ -580,6 +580,7 @@
     var models = []
     
     var yAxis = document.getElementById("graph-y-axis")
+    yAxis.selectedIndex = 1
     document.getElementById("set-y-axis").onclick = e => {
         yAxis.selectedIndex = 3
         document.getElementById("y-axis").style.display = "block"
