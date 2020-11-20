@@ -22,13 +22,17 @@
                 opacity: 0;;
                 margin:18px;
             }
+
+            input {
+                width: 100px;
+            }
         </style>
     </head>
 <body>
 
 <h3>Hubble's Law Testing Page. Read more <a href="index.htm">on the home page.</a></h3>
 
-<button id="startButton">Start</button> <button id="stopButton">Stop</button>
+<button id="startButton">Run All</button> <button id="stopButton">Stop</button>
 <br>
 
 <div id="right-side">
@@ -45,6 +49,8 @@
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
 </div>
+
+<br>
 
 <div id="details"></div>
 
@@ -135,11 +141,28 @@
 
     function setupModel(model) {
 
-        var label = document.createElement("div")
-        label.innerHTML = model.name
+        if (model.H) {
+            var label = document.createElement("span")
+            label.innerHTML = "H = "
+            label.className = "model-label"
+            details.appendChild(label)
+                    
+            var input = document.createElement("input")
+            input.type = "number"
+            input.value = model.H
+            input.step = 0.00001
+            details.appendChild(input)
+
+            input.onchange = e => model.H = parseFloat(input.value)
+        }
+            
+        label = document.createElement("span")
+        label.innerHTML = " " + model.name
         label.className = "model-label"
         details.appendChild(label)
-                
+
+        details.appendChild(document.createElement("br"))
+        
         model.canvas = document.createElement("canvas")
         model.canvas.onclick = () => {
             if (model.running || model.ran) {
@@ -150,6 +173,7 @@
             }
         }
         details.appendChild(model.canvas)
+        details.appendChild(document.createElement("br"))
 
         model.ctx = model.canvas.getContext("2d")
         model.nextTarget = 0
