@@ -34,7 +34,9 @@ void runSlow() {
     double H = 0.00000000031;
 
     double photon = 0;    
-    long nextTarget = 1000000000;
+    
+    //long nextTarget = 1000000000;
+    long nextTarget = 446000000;
 
     while (1) {
         t++;
