@@ -32,14 +32,17 @@
 <br>
 
 <div id="right-side">
-    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
-    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
+    Y-axis: <select id="graph-y-axis">
+        <option>time to target (billions of years)</option>
+        <option>time difference from static (billions of years)</option>
+        <option>delayed / static - 1</option>
+        <option>1 - static / delayed</option>
+    </select>
+    <br>
     <canvas id="graph" height="600" width="600"></canvas>
     <br>
-    Y axis: <select id="graph-y-axis">
-        <option>time to target</option>
-        <option>difference from static</option>
-    </select>
+    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
+    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
 </div>
 
@@ -86,12 +89,23 @@
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
                     if (yAxis.selectedIndex === 0) {
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
+                                    -offset + graph.height - models[m].targets[i].hit * zoomGY)
                     }
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
                         ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
                             (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
+                    }
+                    else if (yAxis.selectedIndex === 2) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (models[m].targets[i].hit / models[m].targets[i].start - 1) * zoomGY * 10000)
+                    }
+                    else if (yAxis.selectedIndex === 3) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (1 - models[m].targets[i].start / models[m].targets[i].hit) * zoomGY * 50000)
                     }
                 }
             }
@@ -100,11 +114,18 @@
         }
 
         ctxG.fillStyle = "white"
-        ctxG.fillText("time to target (billion years)", offset + 5, offset)
+        ctxG.fillText(yAxis.value, offset + 5, offset)
         ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
         
-        for (var i = 0; i < 80; i+=5) {
-            ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+        if (yAxis.selectedIndex < 2) {
+            for (var i = 0; i < 80; i+=5) {
+                ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+            }
+        }
+        else {
+            for (var i = 0; i < 11; i++) {
+                ctxG.fillText(i / 10, 4, -offset + graph.height - i / 10 * 50000 * zoomGY + 4)    
+            }
         }
 
         for (i = 0; i < 16; i+=2) {

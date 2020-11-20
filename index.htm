@@ -10,10 +10,13 @@
                 background-color: #CCCCCC;
                 color:black;
             }
-            #graph {
+            #right {
                 position:fixed;
                 left:850px;
-                top:10px;
+                top:10px;    
+            }
+            
+            #graph {
                 height:600px;
                 width: 600px;
             }
@@ -33,6 +36,10 @@
                 background-color: #EEEEEE;
                 padding:2px;
                 font-weight: bold;
+            }
+
+            #y-axis {
+                display: none;
             }
         </style>
 
@@ -166,8 +173,13 @@
 
 <div id="redshift3"></div>
 
-<p>Squaring just <code>H &times; D</code> or <code>D</code> makes an even steeper curve. 
-    These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
+<p>Squaring just <code>H &times; D</code> makes an even more interesting curve.</p>
+
+<p><b>Hypothesis 4: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
+
+<div id="redshift4"></div>
+
+<p>These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
 
 <p>In these models, the laser beam shows delays in reaching the targets, even though the targets are stationary. In such a universe, 
     space is not expanding. </p>
@@ -184,6 +196,7 @@
         <li>Doesn't this conflict with special relativity?</li>
         <li>Doesn't this violate the Conservation of Energy?</li>
         <li>Shouldn't we be able to measure a drop in a photon's speed?</li>
+        <li>Doesn't this predict redshifted stars in our own galaxy?</li>
         <li>... more to come as questions come in</li>
     </ul>
     These are addressed below.
@@ -436,6 +449,45 @@
 
 <p>If there was a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. </p>
 
+<hr>
+
+<h2>Doesn't this predict redshifted stars in our own galaxy?</h2>
+
+<p>That depends on the hypothesis used.</p>
+
+<p>To see the differences between them, a better view of the graph is needed. 
+    Let's put the ratio between time in the hypothesis and time in a static universe on the 
+    y-axis.</p>
+
+
+<button id="set-y-axis">Set y-axis to ratio to static</button>
+
+<p>From this view, the expanding models (white) are a straight line. Hypothesis 1 (green) lags behind the expanding models,
+    while hypotheses 2 and 3 (magenta and purple) jump out a ways ahead initially before tapering off.</p>
+    
+<p>Hypothesis 4 (red) does something different. It lags behind for hundreds of millions of years, then jumps out ahead, and then flattens out.</p>
+
+<p>So what do the models predict for redshifts in our own galaxy?</p>
+
+<ul>
+    <li>Hypothesis 1: Yes</li>
+    <li>Hypotehsis 2: Big Yes</li>
+    <li>Hypothesis 3: Big Yes</li>
+    <li>Hypothesis 4: No (almost none)</li>
+</ul>
+
+<p>Hypothesis 4 shows a staggering difference from what's predicted by any of the other models, including the expanding ones. 
+    There is almost no expansion for hundreds of millions of years, which fits with observations very closely.</p> 
+
+<p>Shown by itself and the main measurements behind the disagreement in values for Hubble's constant, we get the following picture:</p>
+
+<p class="pimg">
+    <img src="img/hubble_relief_labels.png">
+</p>
+
+<p>The space between the white lines represents the Hubble tension, and the red line is the suggested solution.</p> 
+
+<p></p>
 
 <hr>
 
@@ -487,6 +539,7 @@
 <h2>Change Log:</h2>
 
 <ul>
+    <li><i>20 Nov 2020</i> - Added redshift in our galaxy section. </li>
     <li><i>19 Nov 2020</i> - Added Varying Speed of Light section. </li>
     <li><i>19 Nov 2020</i> - Rewrote hypothesis and tired light sections. Added Hubble tension toggle. </li>
     <li><i>17 Nov 2020</i> - Rewrote introduction and hypothesis sections. </li>
@@ -507,7 +560,18 @@
 
 </div>
 
-<canvas id="graph" height="600" width="600"></canvas>
+<div id="right">
+    <canvas id="graph" height="600" width="600"></canvas>
+    <br>
+    <div id="y-axis">
+        Y-axis: <select id="graph-y-axis">
+            <option>time to target (billions of years)</option>
+            <option>time difference from static (billions of years)</option>
+            <option>delayed / static - 1</option>
+            <option>1 - static / delayed</option>
+        </select>
+    </div>
+</div>
 
 <script>
 
@@ -515,6 +579,11 @@
     var ctxG = graph.getContext("2d")
     var models = []
     
+    var yAxis = document.getElementById("graph-y-axis")
+    document.getElementById("set-y-axis").onclick = e => {
+        yAxis.selectedIndex = 3
+        document.getElementById("y-axis").style.display = "block"
+    }
     
     // the models advance by 1 million years each step
     // the units for distance are in Mly (million light years)
@@ -555,9 +624,29 @@
         for (var m = 0; m < models.length; m++) {
             ctxG.strokeStyle = models[m].color
             ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
-                    ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    //ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    if (yAxis.selectedIndex === 0) {
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
+                                    -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    }
+                    else if (yAxis.selectedIndex === 1) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
+                    }
+                    else if (yAxis.selectedIndex === 2) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (models[m].targets[i].hit / models[m].targets[i].start - 1) * zoomGY * 10000)
+                    }
+                    else if (yAxis.selectedIndex === 3) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                            (1 - models[m].targets[i].start / models[m].targets[i].hit) * zoomGY * 50000)
+                    }
                 }
             }
             ctxG.stroke()            
@@ -683,7 +772,7 @@
     setupModel({
         div: document.getElementById("staticModel"),
         name: "Static",
-        color: "red", 
+        color: "blue", 
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -761,16 +850,16 @@
             this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
         }
     })
-    /*setupModel({
+    setupModel({
         div: document.getElementById("redshift4"),
         name: "v_light = c / (1 + (H &times; D)^2)",
-        color: "darkred", 
+        color: "red", 
         H: 0.00025,
         photon: {x: 0, dx: c},
         next: function () {
             this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
         }
-    })*/
+    })
 
 
     setInterval(() => {
