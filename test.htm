@@ -359,8 +359,7 @@
         div: document.getElementById("redshift2"),
         name: "v_light = c / (1 + (H &times; D)^2)",
         color: "red", 
-        //H: 0.00035,
-        H: 0.00025,
+        H: 0.00026,
         photon: {x: 0, dx: c},
         next: function () {
             this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
