@@ -39,8 +39,9 @@
     Y-axis: <select id="graph-y-axis">
         <option>time to target (billions of years)</option>
         <option>time difference from static (billions of years)</option>
-        <option>delayed / static - 1</option>
-        <option>1 - static / delayed</option>
+        <option>delayed time / static time - 1</option>
+        <option>1 - static time / delayed time</option>
+        <option>1 - v_light / c</option>
     </select>
     <br>
     <canvas id="graph" height="600" width="600"></canvas>
@@ -116,14 +117,22 @@
                             (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
                     }
                     else if (yAxis.selectedIndex === 2) {
-                        // show the difference in time with a static model
+                        // show the ratio with a static model
                         ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
                             (models[m].targets[i].hit / models[m].targets[i].start - 1) * zoomGY * 10000)
                     }
                     else if (yAxis.selectedIndex === 3) {
-                        // show the difference in time with a static model
+                        // show the inverse ratio with a static model
                         ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
                             (1 - models[m].targets[i].start / models[m].targets[i].hit) * zoomGY * 50000)
+
+                    }
+                    else if (yAxis.selectedIndex === 4) {
+                        // show its speed ratio inverted, is this z?
+                        // 1 - v / c... c is 1, so, just 1 - v
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
+                                -offset + graph.height - (1 - models[m].targets[i].dx) * 50000 * zoomGY)
+
                     }
                 }
             }
@@ -261,16 +270,19 @@
         
         model.running = true
 
+        var x
         var i
         var batch = 100
         model.handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
                 if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
                     model.t++
+                    x = model.photon.x
                     model.next()
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
                         model.targets[model.nextTarget].hit = model.t
+                        model.targets[model.nextTarget].dx = model.photon.x - x
                         model.nextTarget++
                     }
                 }
