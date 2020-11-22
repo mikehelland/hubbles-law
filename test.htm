@@ -5,9 +5,9 @@
                 font-family: Arial, Helvetica, sans-serif;
             }
             #right-side {
-                left: 830px;
-                top: 50px;
-                position: fixed;
+                left: 730px;
+                top: 20px;
+                position: absolute;
             
             }
             #graph {
@@ -38,7 +38,10 @@
             }
 
             #details, #notes {
-                width:800px;
+                width:700px;
+            }
+            #notes {
+                margin-left: 20px;
             }
 
             .model-header {
@@ -56,8 +59,7 @@
 <h3>Hubble's Law Testing Page </h3>
 
 <p>
-    Read more <a href="index.htm">on the home page.</a>
-    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>. 
+    Read more about the models being tested <a href="index.htm">on the home page.</a> 
 </p>
 
 
@@ -76,8 +78,8 @@
         <option>time to target (billions of years)</option>
         <option>time difference from static (billions of years)</option>
         <option>delayed time / static time - 1</option>
-        <option>1 - static time / delayed time</option>
-        <option>1 - v_light / c</option>
+        <option>(1 - static time / delayed time)</option>
+        <option>(1 - v)</option>
         <option>z redshift</option>
     </select>
     <br>
@@ -86,6 +88,8 @@
     Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
+    <hr>
+    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
 </div>
 
 <p>Click a model to play or reset it.</p>
@@ -101,8 +105,9 @@
         <li>Others: light year / year / Gly</li>
     </ul>
 
+    <p>1 megaparsec to Mly = 3.2638 Mly <a href="https://www.convertunits.com/from/megaparsec/to/Mly" target="_ou">https://www.convertunits.com/from/megaparsec/to/Mly</a></p>
     <hr>
-    <p>Sample z's from <a href="https://lco.global/spacebook/light/redshift/">https://lco.global/spacebook/light/redshift/</a></p>
+    <p>Sample z's (white dots when y-axis is redshift) from <a href="https://lco.global/spacebook/light/redshift/" target="_ou">https://lco.global/spacebook/light/redshift/</a></p>
     <table class="table is-fullwidth is-striped">
         <thead>
         <tr><th>z</th><th>Target distance</th></tr>
@@ -153,8 +158,7 @@
     
     var zoomz = 10000
 
-    var drawx, drawy
-
+    var drawx, drawy, dgt, dgm, dgi
     function drawGraph() {
         
         ctxG.lineWidth = 1
@@ -165,45 +169,44 @@
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
         ctxG.lineWidth = 2
-        for (var m = 0; m < models.length; m++) {
-            ctxG.strokeStyle = models[m].color
+        for (dgm of models) {
+            ctxG.strokeStyle = dgm.color
             ctxG.beginPath()
             ctxG.moveTo(offset, graph.height - offset)
-            for (var i = 0; i < models[m].targets.length; i++) {
-                if (models[m].targets[i].hit) {
+            for (dgt of dgm.targets) {
+                if (dgt.hit) {
 
                     if (xAxis.selectedIndex === 0) {
-                        drawx = models[m].targets[i].start
+                        drawx = dgt.start
                     }
                     else {
-                        drawx = models[m].targets[i].hit
+                        drawx = dgt.hit
                     }
 
                     if (yAxis.selectedIndex === 0) {
-                        drawy = models[m].targets[i].hit
+                        drawy = dgt.hit
                     }
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
-                        drawy = models[m].targets[i].hit - models[m].targets[i].start
+                        drawy = dgt.hit - dgt.start
                     }
                     else if (yAxis.selectedIndex === 2) {
                         // show the ratio with a static model
-                        drawy = (models[m].targets[i].hit / models[m].targets[i].start - 1) * 10000
+                        drawy = (dgt.hit / dgt.start - 1) * 10000
                     }
                     else if (yAxis.selectedIndex === 3) {
                         // show the inverse ratio with a static model
-                        drawy = (1 - models[m].targets[i].start / models[m].targets[i].hit) * 10000
+                        drawy = (1 - dgt.start / dgt.hit) * 10000
 
                     }
                     else if (yAxis.selectedIndex === 4) {
-                        // show its speed ratio inverted, is this z?
-                        // 1 - v / c... c is 1, so, just 1 - v
-                        drawy = (1 - models[m].targets[i].dx) * 10000
+                        // v_light or v_target
+                        drawy = (1 - dgt.dx) * 10000
 
                     }
                     else if (yAxis.selectedIndex === 5) {
                         // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (1 - models[m].targets[i].dx) / models[m].targets[i].dx * 10000
+                        drawy = (1 - dgt.dx) / dgt.dx * 10000
 
                     }
 
@@ -220,27 +223,34 @@
         ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
         
         if (yAxis.selectedIndex < 2) {
-            for (var i = 0; i < 80; i+=5) {
-                ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
             }
         }
         else {
-            for (var i = 0; i < 110; i+=2) {
-                ctxG.fillText(i / 10, 4, -offset + graph.height - i / 10 * 10000 * zoomGY + 4)    
+            for (dgi = 0; dgi < 110; dgi+=2) {
+                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
             }
         }
 
-        for (i = 0; i < 16; i+=2) {
-            ctxG.fillText(i, offset + i * 1000 * zoomG, graph.height - 5)    
+        for (dgi = 0; dgi < 16; dgi+=2) {
+            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
         }
 
         if (yAxis.selectedIndex === 5) {
-            for (i = 0; i < zs.length; i++) {
+            for (dg = 0; dg < zs.length; dg++) {
                 ctxG.beginPath()
-                ctxG.arc(offset + zs[i][1] * zoomG, -offset + graph.height - zs[i][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
+                ctxG.arc(offset + zs[dg][1] * zoomG, -offset + graph.height - zs[dg][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
                 ctxG.fill()
             }
         }
+        /*if (yAxis.selectedIndex === 0) {
+            for (i = 0; i < ts.length; i++) {
+                ctxG.beginPath()
+                ctxG.arc(offset + ts[i][0] * zoomG, -offset + graph.height - ts[i][1] * zoomGY, 2, 0, Math.PI * 2)
+                ctxG.fill()
+            }
+        }*/
     }
 
     function setupModel(model) {
@@ -294,8 +304,8 @@
         model.ctx = model.canvas.getContext("2d")
         model.nextTarget = 0
 
-        model.canvas.width = 800
-        model.canvas.height = 40
+        model.canvas.width = 700
+        model.canvas.height = 30
         
         // make a target every 200 million light years until 20 billion
         model.targets = []
@@ -323,6 +333,7 @@
     
         model.ran = false
         model.photon.x = 0
+        model.photon.f = 6e5
         model.photon.dx = c
         model.nextTarget = 0
         model.targets.forEach(target => {
@@ -377,6 +388,15 @@
                     model.next()
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
+
+                        if (model.targets[model.nextTarget].start === 3400) {
+                            console.log(model.name, 
+                                model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x),
+                                model.t)
+                        }
+
+
+
                         model.targets[model.nextTarget].hit = model.t
                         model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
                         model.nextTarget++
@@ -394,7 +414,7 @@
     setupModel({
         div: document.getElementById("staticModel"),
         name: "Static",
-        color: "#888888", 
+        color: "darkblue", 
         photon: {x: 0},
         next: function () {
             this.photon.x += c
@@ -508,6 +528,59 @@
     })
 
 
+    details.appendChild(document.createElement("hr"))
+    
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "f = f' - H &times; D",
+        color: "lightgreen", 
+        H: 3,
+        unitH: "ly/y/Mly",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        next: function () {
+            this.photon.f2 = this.photon.f - this.H / 1000 * this.photon.x * this.photon.x
+            this.photon.x += this.photon.f2 * this.photon.w / 300000000
+        }
+    })
+    
+    // these frequency based models are identical to their velocity counterparts
+    
+    /*setupModel({
+        div: document.getElementById("redshift2"),
+        name: "f = f' / (1 + H &times; D)",
+        color: "pink", 
+        H: 0.35,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        next: function () {
+            this.photon.x += (this.photon.f / (1 + this.H / 1000 * this.photon.x)) * this.photon.w / 300000000
+        }
+    })
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "f = f' / (1 + H &times; D)<sup>2</sup>",
+        color: "aqua", 
+        H: 0.15,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        next: function () {
+            this.photon.x += (this.photon.f / Math.pow(1 + this.H / 1000 * this.photon.x, 2)) * this.photon.w / 300000000
+        }
+    })
+
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "f = f' / (1 + (H &times; D)<sup>2</sup>)",
+        color: "lightblue", 
+        H: 0.25,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        next: function () {
+            this.photon.x += (this.photon.f / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))) * this.photon.w / 300000000
+        }
+    })*/
+
+
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
             if (models[m].running) {
@@ -562,11 +635,11 @@ var ts = [
 ]
 
 setTimeout(() => {
-    models.forEach(model => runModel(model))
+    //models.forEach(model => runModel(model))
 }, 500)
 
 setTimeout(() => {
-    models.forEach(model => stopModel(model))
+    //models.forEach(model => stopModel(model))
 }, 10000)
 
 </script>
