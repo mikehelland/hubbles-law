@@ -2,10 +2,11 @@
     <head>
         <style>
             body {
-                background-color: #CCCCCC;
+                font-family: Arial, Helvetica, sans-serif;
             }
             #right-side {
                 left: 830px;
+                top: 50px;
                 position: fixed;
             
             }
@@ -15,33 +16,69 @@
             }
             .model-label {
                 margin: 4px 0;
-                font-weight: bold;
+                
+                
             }
 
             hr {
-                opacity: 0;;
+                opacity: 0.1;
                 margin:18px;
             }
 
             input {
                 width: 100px;
             }
+            .input-label {
+            }
+
+            .model-units {
+                columns: #444444;
+                font-size: 12px;
+                padding-left:4px;
+            }
+
+            #details, #notes {
+                width:800px;
+            }
+
+            .model-header {
+                padding:4px;
+                display:flex;
+                align-items: center;
+            }
+            .header-spacer {
+                flex-grow: 1
+            };
         </style>
     </head>
 <body>
 
-<h3>Hubble's Law Testing Page. Read more <a href="index.htm">on the home page.</a></h3>
+<h3>Hubble's Law Testing Page </h3>
 
-<button id="startButton">Run All</button> <button id="stopButton">Stop</button>
-<br>
+<p>
+    Read more <a href="index.htm">on the home page.</a>
+    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>. 
+</p>
+
 
 <div id="right-side">
-    Y-axis: <select id="graph-y-axis">
+    <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
+    <br>
+    <br>
+    X-axis: 
+    <select id="graph-x-axis">
+        <option>starting distance to target (billion light years)</option>
+        <option>time to target (billions of years)</option>
+    </select>
+    <br>    
+    Y-axis: 
+    <select id="graph-y-axis">
         <option>time to target (billions of years)</option>
         <option>time difference from static (billions of years)</option>
         <option>delayed time / static time - 1</option>
         <option>1 - static time / delayed time</option>
         <option>1 - v_light / c</option>
+        <option>z redshift</option>
     </select>
     <br>
     <canvas id="graph" height="600" width="600"></canvas>
@@ -55,17 +92,39 @@
 
 <div id="details"></div>
 
+<div id="notes">
+    <hr>
+    <p>Units of H for input boxes:</p>
 
-<p>Units of H for input boxes:</p>
+    <ul>
+        <li>Inverse models:  Gly<sup>-1</sup></li>
+        <li>Others: light year / year / Gly</li>
+    </ul>
 
-<ul>
-    <li>Inverse models:  Mly<sup>-1</sup></li>
-    <li>Others: light year / year / Mly</li>
-</ul>
-
-<p>Source code: <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">https://github.com/mikehelland/hubbles-law/blob/master/test.htm</a>. 
-</p>
-
+    <hr>
+    <p>Sample z's from <a href="https://lco.global/spacebook/light/redshift/">https://lco.global/spacebook/light/redshift/</a></p>
+    <table class="table is-fullwidth is-striped">
+        <thead>
+        <tr><th>z</th><th>Target distance</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>0.0000715</td><td>1 million years</td></tr>
+        <tr><td>0.10</td><td>1.286 billion years</td></tr>
+        <tr><td>0.25</td><td>2.916 billion years</td></tr>
+        <tr><td>0.5</td><td>5.019 billion years</td></tr>
+        <tr><td>1</td><td>7.731 billion years</td></tr>
+        <tr><td>2</td><td>10.324 billion years</td></tr>
+        <tr><td>3</td><td>11.476 billion years</td></tr>
+        <tr><td>4</td><td>12.094 billion years</td></tr>
+        <tr><td>5</td><td>12.469 billion years</td></tr>
+        <tr><td>6</td><td>12.716 billion years</td></tr>
+        <tr><td>7</td><td>12.888 billion years</td></tr>
+        <tr><td>8</td><td>13.014 billion years</td></tr>
+        <tr><td>9</td><td>13.110 billion years</td></tr>
+        <tr><td>10</td><td>13.184 billion years</td></tr>
+    </tbody>
+    </table>
+</notes>
 
 <script>
 
@@ -79,8 +138,9 @@
     // the models advance by 1 million years each step
     // the units for distance are in Mly (million light years)
 
-    // the speed of light is 1 million lightyears per 1 million years
-    // Hubble's Constant is in units of Mly^-1 
+    // the speed of light is 1 million lightyears per million years
+    
+    // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
 
     var c = 1
 
@@ -91,6 +151,10 @@
     var zoomGY = zoom * zoom_gy
     var offset = 20
     
+    var zoomz = 10000
+
+    var drawx, drawy
+
     function drawGraph() {
         
         ctxG.lineWidth = 1
@@ -107,33 +171,44 @@
             ctxG.moveTo(offset, graph.height - offset)
             for (var i = 0; i < models[m].targets.length; i++) {
                 if (models[m].targets[i].hit) {
+
+                    if (xAxis.selectedIndex === 0) {
+                        drawx = models[m].targets[i].start
+                    }
+                    else {
+                        drawx = models[m].targets[i].hit
+                    }
+
                     if (yAxis.selectedIndex === 0) {
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
-                                    -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                        drawy = models[m].targets[i].hit
                     }
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
+                        drawy = models[m].targets[i].hit - models[m].targets[i].start
                     }
                     else if (yAxis.selectedIndex === 2) {
                         // show the ratio with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (models[m].targets[i].hit / models[m].targets[i].start - 1) * zoomGY * 10000)
+                        drawy = (models[m].targets[i].hit / models[m].targets[i].start - 1) * 10000
                     }
                     else if (yAxis.selectedIndex === 3) {
                         // show the inverse ratio with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (1 - models[m].targets[i].start / models[m].targets[i].hit) * zoomGY * 50000)
+                        drawy = (1 - models[m].targets[i].start / models[m].targets[i].hit) * 10000
 
                     }
                     else if (yAxis.selectedIndex === 4) {
                         // show its speed ratio inverted, is this z?
                         // 1 - v / c... c is 1, so, just 1 - v
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
-                                -offset + graph.height - (1 - models[m].targets[i].dx) * 50000 * zoomGY)
+                        drawy = (1 - models[m].targets[i].dx) * 10000
 
                     }
+                    else if (yAxis.selectedIndex === 5) {
+                        // z = (freq_emit - freq_observes) / freq_observer
+                        drawy = (1 - models[m].targets[i].dx) / models[m].targets[i].dx * 10000
+
+                    }
+
+                    ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
+
                 }
             }
             ctxG.stroke()
@@ -142,7 +217,7 @@
 
         ctxG.fillStyle = "white"
         ctxG.fillText(yAxis.value, offset + 5, offset)
-        ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
+        ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
         
         if (yAxis.selectedIndex < 2) {
             for (var i = 0; i < 80; i+=5) {
@@ -150,39 +225,59 @@
             }
         }
         else {
-            for (var i = 0; i < 11; i++) {
-                ctxG.fillText(i / 10, 4, -offset + graph.height - i / 10 * 50000 * zoomGY + 4)    
+            for (var i = 0; i < 110; i+=2) {
+                ctxG.fillText(i / 10, 4, -offset + graph.height - i / 10 * 10000 * zoomGY + 4)    
             }
         }
 
         for (i = 0; i < 16; i+=2) {
             ctxG.fillText(i, offset + i * 1000 * zoomG, graph.height - 5)    
         }
+
+        if (yAxis.selectedIndex === 5) {
+            for (i = 0; i < zs.length; i++) {
+                ctxG.beginPath()
+                ctxG.arc(offset + zs[i][1] * zoomG, -offset + graph.height - zs[i][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
+                ctxG.fill()
+            }
+        }
     }
 
     function setupModel(model) {
 
+        var header = document.createElement("div")
+        header.className = "model-header"
+
+
+        label = document.createElement("div")
+        label.innerHTML = model.name
+        label.className = "model-label"
+        header.appendChild(label)
+
         if (model.H) {
-            var label = document.createElement("span")
+            var label = document.createElement("div")
             label.innerHTML = "H = "
-            label.className = "model-label"
-            details.appendChild(label)
+            label.className = "input-label"
                     
             var input = document.createElement("input")
             input.type = "number"
             input.value = model.H
-            input.step = 0.00001
-            details.appendChild(input)
-
+            input.step = 0.0001
+            
             input.onchange = e => model.H = parseFloat(input.value)
+
+            var spacer = document.createElement("div")
+            spacer.innerHTML = "&nbsp;"//model.unitH
+            spacer.className = "header-spacer"
+
+            header.appendChild(spacer)
+            header.appendChild(label)
+            header.appendChild(input)
+
         }
             
-        label = document.createElement("span")
-        label.innerHTML = " " + model.name
-        label.className = "model-label"
-        details.appendChild(label)
-
-        details.appendChild(document.createElement("br"))
+        
+        details.appendChild(header)
         
         model.canvas = document.createElement("canvas")
         model.canvas.onclick = () => {
@@ -278,11 +373,12 @@
                 if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
                     model.t++
                     x = model.photon.x
+                    x2 = model.targets[model.nextTarget].x
                     model.next()
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
                         model.targets[model.nextTarget].hit = model.t
-                        model.targets[model.nextTarget].dx = model.photon.x - x
+                        model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
                         model.nextTarget++
                     }
                 }
@@ -309,40 +405,46 @@
 
     setupModel({
         div: document.getElementById("expandingFast"),
-        name: "Expanding, H = 74",
+        name: "Expanding, 74 km/s/Mpc",
+        expanding: true,
         color: "#888888", 
-        H: 0.0000756,
+        H: 0.0756,
+        unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].start * this.H / 1000
             }
         }
     })
     setupModel({
         div: document.getElementById("expandingSlow"),
-        name: "Expanding, H = 67",
+        name: "Expanding, 67 km/s/Mpc",
+        expanding: true,
         color: "#888888", 
-        H: 0.0000688,
+        H: 0.0688,
+        unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].start * this.H / 1000
             }
         }
     })
     setupModel({
         div: document.getElementById("expandingSlow"),
-        name: "Expanding, H = 54",
+        name: "Expanding, 54 km/s/Mpc",
+        expanding: true,
         color: "#888888", 
-        H: 0.0000556,
+        H: 0.0556,
+        unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].start * this.H / 1000
             }
         }
     })
@@ -351,42 +453,57 @@
     
     setupModel({
         div: document.getElementById("redshift1"),
-        name: "v_light = c - H &times; D",
+        name: "v<sub>light</sub> = c - H &times; D",
         color: "green", 
-        H: 0.000072,
+        H: 0.072,
+        unitH: "ly/y/Mly",
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += c - this.H * this.photon.x
+            this.photon.x += c - this.H / 1000 * this.photon.x
         }
     })
     setupModel({
         div: document.getElementById("redshift2"),
-        name: "v_light = c / (1 + H &times; D)",
+        name: "v<sub>light</sub> = c / (1 + H &times; D)",
         color: "magenta", 
-        H: 0.00035,
+        H: 0.35,
+        unitH: "Gly<sup>-1</sup>",
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += c / (1 + this.H * this.photon.x)
+            this.photon.x += c / (1 + this.H / 1000 * this.photon.x)
         }
     })
     setupModel({
         div: document.getElementById("redshift2"),
-        name: "v_light = c / (1 + H &times; D)^2",
+        name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
         color: "purple", 
-        H: 0.00015,
+        H: 0.15,
+        unitH: "Gly<sup>-1</sup>",
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
+            this.photon.x += c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
         }
     })
     setupModel({
         div: document.getElementById("redshift2"),
-        name: "v_light = c / (1 + (H &times; D)^2)",
+        name: "v<sub>light</sub> = c / (1 + (H &times; D)<sup>2</sup>)",
         color: "red", 
-        H: 0.00026,
+        H: 0.26,
+        unitH: "Gly<sup>-1</sup>",
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
+            this.photon.x += c / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))
+        }
+    })
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "v<sub>light</sub> = c / sqrt(1 + (H &times; D)<sup>2</sup>)",
+        color: "orange", 
+        H: 0.26,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / Math.sqrt(1 + Math.pow(this.H / 1000 * this.photon.x, 2))
         }
     })
 
@@ -408,8 +525,49 @@ document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx 
 document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
 
 var yAxis = document.getElementById("graph-y-axis")
+var xAxis = document.getElementById("graph-x-axis")
+
+var zs = [
+[0.0000715, 	1],
+[0.10, 	        1286 ],
+[0.25, 	        2916 ],
+[0.5, 	        5019 ],
+[1, 	        7731 ],
+[2, 	        10324],
+[3, 	        11476],
+[4, 	        12094],
+[5, 	        12469],
+[6, 	        12716],
+[7, 	        12888],
+[8, 	        13014],
+[9, 	        13110],
+[10, 	        13184],
+]
+
+var ts = [
+[1, 	1],
+[1286  	 ,	1349 ],
+[2916  	 ,	3260 ],
+[5019 	 ,	5936 ],
+[7731     ,	10147],
+[10324    , 	15424],
+[11476    , 	18594],
+[12094    , 	20745],
+[12469    , 	22322],
+[12716    , 	23542],
+[12888    , 	24521],
+[13014    , 	25329],
+[13110    , 	26011],
+[13184     , 	26.596] 
+]
+
+setTimeout(() => {
+    models.forEach(model => runModel(model))
+}, 500)
+
+setTimeout(() => {
+    models.forEach(model => stopModel(model))
+}, 10000)
+
 </script>
-
-
-
 
