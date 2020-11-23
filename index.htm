@@ -5,6 +5,7 @@
         <meta property="og:description" content="A demonstration of Hubble's tension and its resolution."/>
         <meta property="og:title" content="Fixing Hubble's Law"/>
         <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
         <style>
             body {
                 background-color: #CCCCCC;
@@ -32,7 +33,7 @@
                 text-align: center;
             }
 
-            code {
+            li code, p code {
                 background-color: #EEEEEE;
                 padding:2px;
                 font-weight: bold;
@@ -57,41 +58,149 @@
 
 <ul>
     <li><a href="https://www.livescience.com/hubble-constant-crisis-deepens.html">No One Can Agree How Fast Universe Is Expanding. New Measure Makes Things Worse.</a></li>
-    <li><a href="https://www.aps.org/publications/apsnews/201805/hubble.cfm">Hubble Trouble: A Crisis in Cosmology?</a></li>
     <li><a href="https://www.scientificamerican.com/article/best-yet-measurements-deepen-cosmological-crisis/">Best-Yet Measurements Deepen Cosmological Crisis</a></li>
-    <li>Video: <a href="https://www.youtube.com/watch?v=72cM_E6bsOs">PBS Space Time: The Crisis in Cosmology</a></li>
     <li>More at <a href="https://duckduckgo.com/?q=hubble+constant+crisis">DuckDuckGo</a></li>
 </ul>
-<p>To visualize the problem, imagine you shoot a laser beam into space, and it passes a series of targets placed 200 million light years apart.</p>
 
-<p>In a simple universe, the laser beam will reach the first target in 200 million years, the second target in 400 million light years, and so on.</p>
+<p>To examine the problem, imagine you shoot a laser beam into space, and it passes a series of targets placed 200 million light years apart.</p>
+
+<p>In a simple universe, the laser beam will reach the first target in 200 million years, the second target in 400 million light years, and so on. </p>
+
+<p>Here's a computer model demonstration.</p>
 
 <div id="staticModel"></div>
 
-<p>But we don't live in such a simple universe. We observe cosmological redshifts. These are an observed fact, and you can learn more about 
+<p>The photon moves at a constant speed and reaches the targets at a consistent rate. 
+    The graph to the right plots the time it takes to reach a target (y-axis) over the distance to the target (x-axis).</p>
+    
+<p>This is the model we will be expanding on, so let's look at the code. We'll use JavaScript for simplicity.</p>
+
+<pre><code>
+simple = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
+    }
+}
+</code></pre>
+
+<p>The <code>simple</code> model contains two things, a <code>photon</code> and a <code>next()</code> function. 
+    The <code>photon</code> has a distance <code>d</code> which starts at zero. 
+    Every time <code>next()</code> is called, <code>d</code> increases by <code>c</code>.</p>
+
+<p>We need to define <code>c</code> and also the units of the model:</p>
+
+<pre><code>
+// time units:          1 million years
+// distance units:      1 million light years
+
+// the speed of light   1 million light years / million years
+const c = 1
+</code></pre>
+
+<p>Now we need to do three things:</p>
+
+<ul>
+    <li>Add the targets</li>
+    <li>Call the <code>next()</code> function in a loop</li>
+    <li>Record when the photon passes a target</li>
+</ul>
+
+<p>That's what the following function does:</p>
+
+<pre><code>
+function run(model) {
+
+    // create targets at distance (d) 200 million light years apart
+    model.targets = []
+    for (var i = 200; i &lt;= 30000; i+=200) 
+        model.targets.push({d: i})
+
+    var t = 0
+    var nextTarget = 0
+
+    // start the loop
+    while (model.targets[nextTarget]) {
+
+        //advance the model 1 million years
+        t += 1
+        model.next()
+
+        // if we hit a target record the time
+        if (model.photon.d >= model.targets[nextTarget].d) {
+            
+            console.log("Target reached", t)
+            model.targets[nextTarget].hit = t
+
+            nextTarget += 1
+        }
+    }
+}
+</code></pre>
+
+<p>The <code>run()</code> function creates an array of targets, and then calls <code>next()</code> in a loop, which moves the photon.
+     The time <code>t</code> is recorded whenever the photon passes a target.</p>
+
+<p>Pretty simple, right?</p>
+
+<p>Well, we don't live in such a simple universe. We observe cosmological redshifts. These are an observed fact, and you can learn more about 
     <a href="redshift.htm">cosmological redshift here</a>.
     
 <p>The redshifts are interpreted as the expansion of space. In this universe, the targets will be moving away from us according to Hubble's Law:</p>
 
-<blockquote>
-    <code>v = H &times; D</code>
-</blockquote>
+<pre><code>v = H &times; D</code></pre>
 
-<p>where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, and <code>D</code> is the starting distance of the target</p>
+<p>where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, and <code>D</code> is the starting distance of the target.</p>
 
-<p>According to observations of relatively near phenomena, <code>H</code> is measured to be 74 km/sec / Mpc.</p>
+<p>To demonstrate that, we need a model where the <code>next()</code> function moves the targets:</p>
+
+<pre><code>
+expanding = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
+
+        // targets move at H &times D
+        for (var target of this.targets)
+            target.d += H * target.start
+    }
+}
+</code></pre>
+
+<p>While <code>simple.next()</code> just moves the <code>photon</code>, <code>expanding.next()</code> moves the <code>photon</code> and the <code>targets</code>.
+
+<p>The important new line in this model is <code>target.d += H * target.start</code> and it contains a new constant <code>H</code>, 
+    which is Hubble's constant.
+
+<p>So what value do we use for <code>H</code>? 
+    According to observations of relatively near phenomena, <code>H</code> is measured to be 74 km/sec/Mpc. 
+    But according to measurements at our most distant observable range, <code>H</code> is measured as 67 km/sec/Mpc.</p>
+
+<p>To use these values in the model, they must be converted to the proper units.</p>
+
+<ul>
+    <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
+    <li>Step 2: convert (km/s) to (light years / year)</li>
+</ul>
+
+Which gives:
+
+<pre>
+    74 km/s/Mpc = 22.6880185 km/s/Mly = 7.56790836e-5 ly/y/Mly = 0.00076
+    67 km/s/Mpc = 20.5418546 km/s/Mly = 6.85202514e-5 ly/y/Mly = 0.00069
+</pre>
+
+<p>When you run the <code>expanding</code> model, notice that the targets are moving away from the photon's source.
+    The first one (<code>H = 0.00076</code>) expands slightly faster than the second one (<code>H = 0.00069</code>).
 
 <div id="expandingFast"></div>
 
-<p>But according to measurements at our most distant observable range, <code>H</code> is measured as 67 km/sec / Mpc.</p>
-
 <div id="expandingSlow"></div>
 
-<p>Yet another <a href="https://arxiv.org/abs/1911.02087">measurement based on the curvature of space</a> puts <code>H</code> at 54 km/sec / Mpc.</p>
+<p>As the targets recede, the time <code>t</code> it takes the photon to reach the next target increases, 
+    as can be seen by the white lines on the graph shooting up and away from the blue line of the simple model.</p>
 
-<div id="expanding54"></div>
-
-<p>As the measurements become more precise, they remain in disagreement.</p>
+<p>The difference in the values of <code>H</code> may seem small, but to cosmologists it begs for a resolution.</p>
 
 <hr>
 
@@ -129,94 +238,152 @@
     <li>the observed decrease in frequency should result in a decrease in speed.</li>
 </ul>
 
-<p>To examine this literal interpretation of redshifts, I considered possible models where the speed of a photon begins at <code>c</code> and decreases 
+<p>To examine this literal interpretation of redshifts, let's make a new model where the speed of a photon begins at <code>c</code> and decreases 
     as the distance from its source increases.</p>
 
-<p>The simplest of these models is one where <code>H &times; D</code> is just subtracted from <code>c</code>.</p>
+<p>The simplest of these models is one where <code>H &times; D</code> is subtracted from <code>c</code>.</p>
 
 <p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
+
+<pre><code>
+hypothesis1 = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c - H * this.photon.d
+    }
+}
+</code></pre>
 
 <div id="redshift1"></div>
 
 <p>This hypothesis achieves something interesting. Even though the targets are stationary, the time it takes to reach the next target increases 
-    in a way that is similar to the time it would take to reach a moving target.</p>
+    in a way that is similar to, but not exactly, the time it would take to reach a moving target.</p>
 
-<p>Unfortunately, this doesn't seem to help with the issue of Hubble's constant. Observations say there is a faster rate of redshift in the nearby universe 
-    and a slower rate of redshift in the farthest parts of the observable universe. Compared to the standard expanding model, Hypothesis 1 makes the problem worse.</p>
+<p>The difference between the <code>expanding</code> model and <code>hypothesis1</code> is that <code>H &times; D</code> has been moved from the
+    velocity of the <code>targets</code>, to the velocity of the <code>photon</code>.</p>
 
-<button id="show-tension">Click to Toggle Hubble Tension</button>
-<script>
-    var showTension = false
-    document.getElementById("show-tension").onclick = e => showTension = !showTension
-</script>
+<pre><code>
+// expanding.next()                       // hypothesis1.next()
+this.photon.d += c                        this.photon.d += c - <span style="color:blue;">H * this.photon.d</span>
 
-<p>To match observations, more redshift is needed in the first half, and less is needed in the second half. </p>
-
-<p>I thought about dividing <code>H &times; D</code> by an increasing number, 
-    but <code>H &times; D</code> itself increases as the photon travels. So how about dividing <code>c</code> by that?</p>
-
-<p><b>Hypothesis 2: the speed of light = c / (1 + H &times; D)</b></p>
-
-<div id="redshift2"></div>
-
-<p>This hypothesis results in a much higher rate of redshift for nearby objects and a much lower rate of redshift for far away objects, compared to the expanding models.
-</p>
-
-<p>In this hypothesis, the units of <code>H</code> are independent of the units of <code>c</code>. The units of <code>H</code> are inverse length, which means <code>(1 + H &times; D)</code> is unitless. 
-    </p>
+for (var target of this.targets) 
+    target.d += <span style="color:blue;">H * target.start</span>
+</code></pre>
 
 
-<p>On the graph, hypothesis 2 makes more of a straight line than a curve.  
-    By making it an inverse square law, a more pronounced curve can be made. </p>
+<p>Let's check to see how this affects frequency and red-shift. We're going to modify <code>hypothesis1</code>, not to do anything different,
+but to log more data. We'll store the <code>photon</code>'s velocity as <code>v</code>.
+We'll give the <code>photon</code> an initial wavelength <code>w</code> and frequency <code>freq_init</code> of 499.65 nm and 6&times;10<sup>5</sup>&nbsp;Ghz. 
+Then we'll calculate a new frequency <code>freq</code> based on the <code>photon</code>'s new velocity <code>v</code>.</p>
 
-<p><b>Hypothesis 3: the speed of light = c / (1 + H &times; D)<sup>2</sup></b></p>
+<pre><code>
+hypothesis1 = {
+    photon: {d: 0, freq_init: 6e5, w: 499.65},
+    next: function () {
+        this.photon.v = c - H * this.photon.d
+        this.photon.d += this.photon.v
 
-<div id="redshift3"></div>
+        this.photon.freq = this.photon.v * 299792458 / this.photon.w
+    }
+}
+</code></pre>
+            
+<p>Now we can update the <code>run()</code> function to log the <code>photon</code>'s velocity and frequency at the time it reaches a target.</p>
 
-<p>Squaring just <code>H &times; D</code> makes an even more interesting curve.</p>
+<pre><code>
+console.log("Target reached", t)
+model.targets[nextTarget].hit  = t
+model.targets[nextTarget].v    = model.photon.v
+model.targets[nextTarget].freq = model.photon.freq
+</code></pre>
 
-<p><b>Hypothesis 4: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
+<p>With this data, we can graph the velocity and frequency of the <code>photon</code> as it travels. Because we have the 
+    <code>freq</code> and <code>freq_init</code> we can also graph the red-shift of the <code>photon</code> given by:</p>
+
+<pre><code>z = (freq_init - freq) / freq</code></pre>
+
+<button id="set-y-axis">Set y-axis to red-shift</button>
+
+<p>In this view, the green line for <code>hypothesis1</code> covers up the white line for an <code>expanding</code> model using the same value of <code>H</code>.
+    This shows that <code>hypothesis1</code> predicts identical red-shifts for targets of the same distance as the <code>expanding</code> model's 
+    <a href="https://en.wikipedia.org/wiki/Comoving_and_proper_distances">co-moving distance</a>.</p>
+
+<p>However, they are <i>not</i> identical models, of course. <code>hypothesis1</code> predicts the photon reaches the target faster 
+    than the photon in the <code>expanding</code> model,
+    as seen when the y-axis is set to "time to target".</p>
+
+<p>That difference in the predictions between these models will be investigated later in this paper.</p>
+
+<p>Hypothesis 1 is a very straightforward implementation of the principle that a photon's speed decreases with distance. 
+    Another possibility is something like an inverse square law:</p>
+
+<p><b>Hypothesis 2: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
+
+<pre><code>
+hypothesis2 = {
+    photon: {x: 0},
+    next: function () {
+        this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
+    }
+}
+</code></pre>
 
 <div id="redshift4"></div>
 
-<p>These models and others can be examined on <a href="test.htm">the Testing Page.</a></p>
+<p>In this hypothesis, the units of <code>H</code> are independent of the units of <code>c</code>. 
+    The units of <code>H</code> are inverse length, which makes <code>(1 + H × D)</code> unitless.
+    These models make interesting curves, but they don't match the expected red-shift data like hypothesis 1 does.
+</p> 
 
-<p>In these models, the laser beam shows delays in reaching the targets even though the targets are stationary. In such a universe, 
+<p>You can examine these models and others for yourself on <a href="test.htm">the Testing Page.</a></p>
+
+<p>In these models, the laser beam shows delays in reaching the targets even though the targets are stationary. 
+    The delay occurs because the photon red-shifts and its velocity decreases. In such a universe,
     space is not expanding. </p>
 
+<p>This conclusion raises many questions. Some of these questions are answered in the FAQ, such as:</p>
+    
+<ul>
+    <li><a href="faq.htm#expansion-fact">Isn't the expansion of the universe a fact?</a></li>
+    <li><a href="faq.htm#special-relativity">Doesn't this conflict with special relativity?</a></li>
+    <li><a href="faq.htm#conservation-of-energy">Doesn't this violate the Conservation of Energy?</a></li>
+    <li><a href="faq.htm#tired-light">Isn't this the discredited Tired Light theory?</a></li>
+    <li><a href="faq.htm#vsl">Is this a Varying Speed of Light theory?</a></li>    
+    
+</ul>
 
-
-<p>
-    This conclusion raises questions that must be addressed that include:
-    <ul>
-        <li><a href="#own-galaxy">Doesn't this predict redshifted stars in our own galaxy?</a></li>
-        <li><a href="#expansion-fact">Isn't the expansion of the universe a fact?</a></li>
-        <li><a href="#cmb">Doesn't the Cosmic Microwave Background confirm an expanding universe?</a></li>
-        <li><a href="#tired-light">Isn't this the discredited Tired Light theory?</a></li>
-        <li><a href="#vsl">Is this a Varying Speed of Light theory?</a></li>
-        <li><a href="#special-relativity">Doesn't this conflict with special relativity?</a></li>
-        <li><a href="#conservation-of-energy">Doesn't this violate the Conservation of Energy?</a></li>
-        <li><a href="#measure-speed">Shouldn't we be able to measure a drop in a photon's speed?</a></li>
-        <li>... more to come as questions come in</li>
-    </ul>
-    These are addressed below.
-</p>
+<p>Others are answered in the sections below:</p>
 
 <hr>
 
-<a name="own-galaxy"></a>
+<a name="measure-speed"></a>
+<h2>Shouldn't we be able to measure a drop in a photon's speed?</h2>
+
+<p>This is the first obvious test of the hypothesis.</p>
+
+<p>The task is to come up with a clever way to measure the speed of ancient light without disturbing the photon.</p>
+
+<p>Say that light travels for hundreds of millions of years, and slows to below c, and then hits your telescope's lens.</p>
+
+<p>At the quantum level, the photon will have been <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mod5.html">absorbed by atoms</a> in the lens. 
+    Then a new photon, or maybe the old one, is emitted and focused to your telescope's eyepiece.</p>
+
+<p>The photon may have traveled great distances from its source before it encountered your telescope, 
+    but the light inside the telescope will be very close to its source: the lens that focused it. 
+    The D of the photons in the telescope will not be millions of light years, but rather a few dozen centimeters.</p>
+
+<p>Thus, any light that we interact with will presumably be moving at c / (1 + H &times; 0), or just c.</p>
+
+<p>If there is a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. </p>
+
+<hr>
+
+<!--<a name="own-galaxy"></a>
 <h2>Doesn't this predict redshifted stars in our own galaxy?</h2>
 
 <p>That depends on which hypothesis is used.</p>
 
-<p>To see the differences between them, a better view of the graph is needed. 
-    Let's put the ratio between time in the hypothesis and time in a static universe on the 
-    y-axis.</p>
-
-
-<button id="set-y-axis">Set y-axis to ratio to static</button>
-
-<p>From this view, the expanding models (white) are a straight line. Hypothesis 1 (green) lags behind the expanding models,
+<p>We can see from the graph that hypothesis 1 (green) will agree with the expanding models (white),
     while hypotheses 2 and 3 (magenta and purple) jump out a ways ahead initially before tapering off.</p>
     
 <p>Hypothesis 4 (red) does something different. It lags behind for hundreds of millions of years, then jumps out ahead, and then flattens out.</p>
@@ -243,273 +410,7 @@
 
 <p></p>
 
-<hr>
-
-<a name="expansion-fact"></a>
-<h2>Isn't the expansion of the universe a fact?</h2>
-
-<p>Not exactly. The <i>redshifts</i> are an observed fact. The redshifts may be interpreted as motion, which leads to the expansion of the universe as a 
-    hypothetical consequence. If every galaxy is moving away from our galaxy, that would put our galaxy in some special spot in the universe. 
-    But if every galaxy is moving away from every galaxy, we would be in a normal galaxy in an expanding universe. </p>
-
-<p>The theoretical expansion of the universe has hypothetical consequences of its own: a small, young universe dominated by dark energy, dark matter.</p>
-
-<p>Edwin Hubble never accepted the expanding theory as a fact. He wrote:</p>
-
-<blockquote>
-    The familiar interpretation of red-shifts as velocity-shifts very seriously restricts not only the time scale, the age of the universe, 
-    but the spatial dimensions as well. On the other hand, the alternative possible interpretation, 
-    that red-shifts are not velocity-shifts, avoids both difficulties, and presents <b>the observable region as an 
-    insignificant sample of a universe that extends indefinitely in space and in time</b>. 
-
-    <br>
-    <br>
-    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 47, 1937 (emphasis added)
-</blockquote>
-
-<p>Much has changed since his day though. From the 30's through the 60's, the universe was thought to have begun as a point that grew out consistently.</p>
-
-<p class="pimg"><img src="img/expansion_classic.jpg"></p>
-
-<p>But in the 1970's problems began to emerge. To make a software analogy, there were a lot of bugs that needed patching. Such as:</p>
-
-<ul>
-    <li><a href="https://en.wikipedia.org/wiki/Horizon_problem">Horizon Problem</a></li>
-    <li><a href="https://en.wikipedia.org/wiki/Flatness_problem">Flatness Problem</a></li>
-    <li><a href="https://en.wikipedia.org/wiki/Big_Bang#Magnetic_monopoles">Magnetic Monopole Problem</a></li>
-</ul>
-
-<p>These problems lead to the theory of <a href="https://en.wikipedia.org/wiki/Inflation_(cosmology)">inflation.</a> 
-    The universe blows up super fast in the first nanosecond after the big bang, then chills out. Then in 1998, it was discovered that the expansion of the universe is 
-    <a href="https://en.wikipedia.org/wiki/Accelerating_expansion_of_the_universe">accelerating.</a></p>
-
-<p>Today, the expanding theory of the universe looks like this:</p>
-
-<p class="pimg"><img width="700px" src="img/cosmicinflation.jpg"></p>
-
-<p>If the benefit of interpreting redshifts as motion is that it doesn't require any new physics, 
-    then the expanding theory gave that benefit away decades ago. </p>
-
-<p>To make the problem worse, as we peer into the "early universe", we don't see only young galaxies. We see mature systems like the ones around us.</p>
-
-<ul>
-    <li><a href="https://skyandtelescope.org/astronomy-news/dead-ringer-milky-way-found-early-universe/">"Dead Ringer" for the Milky Way Found in Early Universe</a></li>
-    <li><a href="https://www.space.com/how-can-a-star-be-older-than-the-universe.html"> How Can a Star Be Older Than the Universe?</a></li>
-    <li><a href="https://www.sciencedaily.com/releases/2015/03/150302122925.htm"> Old-looking galaxy in a young universe: Astronomers find dust in the early universe</a></li>
-    <li><a href="https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E"> Ancient planets are almost as old as the universe</a></li>
-    <li>More <a href="https://old.reddit.com/r/BigBangSkeptics">here.</a>
-</ul>
-
-<p>For these reasons and others, the widely accepted expansion theory is increasingly being compared to outdated software: 
-    burdened by outlandish patches and still full of bugs.
-    Here's a sample:</p>
-
-<ul>
-    <li>1995: <a href="https://www.nature.com/articles/377099a0">Nature: Big Bang not yet dead but in decline</a></li>
-    <li>2004: <a href="http://cosmology.info/media/open-letter-on-cosmology.html">Open Letter on Cosmology / Cosmology Statement</a></li>
-    <li>2019: <a href="https://blogs.scientificamerican.com/observations/cosmology-has-some-big-problems/">Cosmology Has Some Big Problems</a></li>
-    <li>More <a href="http://cosmology.info/resources/index.html">here.</a></li>
-</ul>
-
-<p>In any case, the <i>redshifts</i> of distant galaxies are observed facts. The motion of those galaxies and the expansion of space are theoretical interpretations of the facts.</p>
-
-<hr>
-
-<a name="cmb"></a>
-<h2>Doesn't the Cosmic Microwave Background confirm an expanding universe?</h2>
-
-<p>The expanding universe theory predicts we observe the same background temperature in all directions.</p>
-
-<p>This prediction seemed to hold until 2003 when anomalies appeared, which were confirmed in 2013:</p>
-
-<p class="pimg"><img src="img/cmb.jpg"></p>
-<blockquote>
-    Two Cosmic Microwave Background anomalous features hinted at by Planck's predecessor, NASA's Wilkinson Microwave Anisotropy Probe (WMAP), 
-    are confirmed in the new high precision data from Planck.  One is an asymmetry in the average temperatures on opposite hemispheres of the 
-    sky (indicated by the curved line), with slightly higher average temperatures in the southern ecliptic hemisphere and slightly lower 
-    average temperatures in the northern ecliptic hemisphere. <b>This runs counter to the prediction made by the standard model that the Universe 
-    should be broadly similar in any direction we look.</b> There is also a cold spot that extends over a patch of sky that is much larger 
-    than expected (circled). In this image the anomalous regions have been enhanced with red and blue shading to make them more clearly visible.
-
-    <br>
-    <br>
-    <a href="https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background">
-        https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background</a>
-</blockquote>
-
-<p>This raises the question of where the <a href="https://en.wikipedia.org/wiki/CMB_cold_spot">CMB Cold Spot</a> might appear to other observers.</p>
-
-<p>For instance, imagine observers at the north and south poles of our observable universe:</p>
-
-<p class="pimg"><img src="img/cmbobservers.png"></p>
-
-<p>We see a cold spot to the south. Does the south observer see a cold spot to their south? Does the north observer see the same CMB anomalies as we do?</p>
-
-<p>This is a question the expanding universe theory doesn't have a clear answer for.</p>
-
-<p>However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
-    then there are no anomalies or questions. The cold spot is to <i>our</i> south, but to the southern observer the cold spot is in their vicinity. </p>
-
-<p>One thing to keep in mind is that before the expanding theory even existed, Arthur Eddington 
-    <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
-        calculated the temperature of starlight in our galaxy to be 3.18 Kelvin</a>. As such, the CMB may just be photons limping in 
-        from galaxies 14 billion light years away, right before the temperature of space takes over our measurements. </p>
-<hr>
-
-<a name="tired-light"></a>
-<h2>Isn't this the discredited Tired Light theory?</h2>
-
-<p>There have been 
-    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> that don't involve expanding space
-    trying to explain how light gets "tired" during long intergalactic journeys, 
-    starting all the way back to 1929 when the redshift-distance relation was first published.
-</p>
-
-<p>Tired light theories fail because they don't
-    account for enough redshift, they can't explain the distance factor, or the redshifts are caused in a way that would include other observable results, 
-    which ultimately are not observed.</p>
-
-<p>In general, tired light theories have the following in common:</p>
-
-<ul>
-    <li>Some other phenomenon causes the redshifts</li>
-    <li>Light, even though it's "tired", still travels at <code>c</code></li>
-    <li>They are represented by the blue line on the graph, matching a simple static model</li> 
-</ul>
-
-<p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
-
-<ul>
-    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
-    <li>Light travels at less than <code>c</code> after millions of years</li>
-    <li>The time it takes light to reach a target is similar to the expanding model</li> 
-</ul>
-
-<p>It should come as no surprise to us that there are fundamental laws of nature we would only detect once we had telescopes
-    that can see what's out beyond the Milky Way.</p>
-
-<p>If dark energy, which hasn't been observed, is in the consideration as a possible fundamental ingredient of nature, 
-    then the actual observations that led to its conjecture, cosmological redshift, should be considered a worthy candidate as well.
-
-<hr>
-
-<a name="vsl"></a>
-<h2>Is this a Varying Speed of Light theory?</h2>
-
-<p>In the last decade there have been versions of a theory going around known as Varying Speed of Light (VSL):</p>
-
-<blockquote>
-    There are others that think such dark energy ideas are now getting too convoluted, and that a much simpler explanation, one that even Einstein considered, should now be given serious consideration; a change in the speed of light, or VSL (Varying Speed of Light) as others know it by.
-<br>
-<br>
-“The ‘tension’ between measurements of the Hubble-Lemaire constant, H0, (which is known to be changing over time) shows that old theories of the Universe are missing something. If H0 was the lower value of 67 km/sec/Mpc, much or all of the so-called acceleration would vanish. The differing values may be explained if the speed of light has changed between the early and late universe,” said Louise Riofrio, an author and scientist who now works at an observatory association in Hawaii. 
-<br>
-<br>
-<a href=https://room.eu.com/news/as-mystery-of-the-universes-expansion-rate-widens-a-simple-solution-is-offered">As mystery of the Universe’s expansion rate widens, a simple solution is offered</a>
-</blockquote>
-
-<p>In VSL theories:</p>
-
-<ul>
-    <li><code>c</code> changes</li>
-    <li><i>All</i> photons in the universe slow to the same speed </li>
-    <li>Space is expanding</li>
-    <li>Intends to represent the accelerating rate of expansion</li>
-</ul>
-
-<p>The hypothesis in this paper is different:</p>
-
-<ul>
-    <li><code>c</code> is constant</li>
-    <li><i>Individual</i> photons slow down according to their own history, not the universe's</li>
-    <li>Space is not expanding</li>
-    <li>Intends to represent cosmological redshift</li>
-</ul>
-
-<p>According to the hypothesis presented in this paper, the speed of light <i>does</i> vary, and light <i>does</i> get tired, 
-    but it does so in a way that is conceptually and mathematically unique to the established 
-    <a href="https://en.wikipedia.org/wiki/Variable_speed_of_light">Varying Speed of Light</a> and 
-    <a href="https://en.wikipedia.org/wiki/Tired_light">Tired Light</a> theories.</p>
-
-<hr>
-
-<a name="special-relativity"></a>
-<h2>Doesn't this conflict with special relativity?</h2>
-
-<p>Yes. The hypothesis is that the speed of light decreases with distance from the source, which is noticeable after traveling millions of years.</p>
-
-<p>Special relativity tells us that light travels at <code>c</code> over all distances, even after millions and billions of years. </p> 
-
-<p>But our experiments don't last millions of years. In our experiments, H &times; D is so small, it can be considered zero.</p>
-
-<p>So if:</p>
-
-<pre>
-    v_light = c / (1 + H &times; D)
-    
-    and:
-    
-    H &times; D = 0
-    
-    then:
-    
-    v_light = c / (1 + 0)
-    
-    v_light = c
-</pre>
-
-<p>In which case there shouldn't be any conflict with special relativity in the domain where the redshifts don't appear.</p>
-
-<hr>
-
-<a name="conservation-of-energy"></a>
-<h2>Doesn't this violate the Conservation of Energy?</h2>
-
-<p>In the specific model demonstrated here, yes, energy is lost. 
-    It could be that the energy deducted from the photon is deposited in space as it travels. </p>
-
-<p>But I will let the esteemed <a href="https://en.wikipedia.org/wiki/Sean_M._Carroll">Sean Carroll</a> do the talking on this one.</p>
-
-<blockquote>
-    The thing about photons is that they redshift, losing energy as space expands. 
-    If we keep track of a certain fixed number of photons, the number stays constant while the energy per photon decreases, 
-    so the total energy decreases. A decrease in energy is just as much a “violation of energy conservation” as an increase in energy, 
-    but it doesn’t seem to bother people as much. At the end of the day it doesn’t matter how bothersome it is, of course — it’s a 
-    crystal-clear prediction of general relativity.
-
-    <br>
-    <br>
-    <a href="https://www.preposterousuniverse.com/blog/2010/02/22/energy-is-not-conserved/">https://www.preposterousuniverse.com/blog/2010/02/22/energy-is-not-conserved/</a>
-</blockquote>
-
-<p>In an expanding universe, photons redshift and energy is lost.</p>
-
-<p>Under the literal interpretation of redshifts, however, energy could be lost, or it could be deposited throughout space. 
-    The photon could simply decay into tiny particles left in its path after 14 billion years.</p>
-
-<hr>
-
-<a name="measure-speed"></a>
-<h2>Shouldn't we be able to measure a drop in a photon's speed?</h2>
-
-<p>This is the first obvious test of the hypothesis.</p>
-
-<p>The task is to come up with a clever way to measure the speed of ancient light without disturbing the photon.</p>
-
-<p>Say that light travels for hundreds of millions of years, and slows to below c, and then hits your telescope's lens.</p>
-
-<p>At the quantum level, the photon will have been <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mod5.html">absorbed by atoms</a> in the lens. 
-    Then a new photon, or maybe the old one, is emitted and focused to your telescope's eyepiece.</p>
-
-<p>The photon may have traveled great distances from its source before it encountered your telescope, 
-    but the light inside the telescope will be very close to its source: the lens that focused it. 
-    The D of the photons in the telescope will not be millions of light years, but rather a few dozen centimeters.</p>
-
-<p>Thus, any light that we interact with will presumably be moving at c / (1 + H &times; 0), or just c.</p>
-
-<p>If there is a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. </p>
-
-<hr>
+<hr>-->
 
 <h2>Conclusion</h2>
 
@@ -558,7 +459,8 @@
 
 <h2>Change Log:</h2>
 
-<ul>
+<ul><li><i>23 Nov 2020</i> - Rewrote introduction and hypothesis, showing code along the way. </li>
+    <li><i>23 Nov 2020</i> - Moved general questions to FAQ </li>
     <li><i>20 Nov 2020</i> - Added redshift in our galaxy section. </li>
     <li><i>19 Nov 2020</i> - Added Varying Speed of Light section. </li>
     <li><i>19 Nov 2020</i> - Rewrote hypothesis and tired light sections. Added Hubble tension toggle. </li>
@@ -584,9 +486,7 @@
     <div id="y-axis">
         Y-axis: <select id="graph-y-axis">
             <option>time to target (billions of years)</option>
-            <option>time difference from static (billions of years)</option>
-            <option>delayed / static - 1</option>
-            <option>1 - static / delayed</option>
+            <option>z</option>
         </select>
     </div>
 </div>
@@ -600,7 +500,7 @@
     var yAxis = document.getElementById("graph-y-axis")
     yAxis.selectedIndex = 0
     document.getElementById("set-y-axis").onclick = e => {
-        yAxis.selectedIndex = 3
+        yAxis.selectedIndex = 1
         document.getElementById("y-axis").style.display = "block"
     }
     
@@ -629,16 +529,6 @@
         ctxG.strokeStyle = "white" 
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
-        if (showTension) {
-            ctxG.strokeStyle = "#404040" 
-            ctxG.beginPath()
-            ctxG.moveTo(offset + 8000 * zoomG, 0)
-            ctxG.lineTo(offset + 8000 * zoomG, graph.height - offset)
-            ctxG.stroke()
-
-            ctxG.fillText("Should be higher", graph.width / 6, graph.height / 2)
-            ctxG.fillText("Should be lower", graph.width / 4 * 3, graph.height / 2)
-        }
         ctxG.lineWidth = 2
         for (var m = 0; m < models.length; m++) {
             ctxG.strokeStyle = models[m].color
@@ -654,17 +544,8 @@
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
                         ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (models[m].targets[i].hit - models[m].targets[i].start) * zoomGY)
-                    }
-                    else if (yAxis.selectedIndex === 2) {
-                        // show the difference in time with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (models[m].targets[i].hit / models[m].targets[i].start - 1) * zoomGY * 10000)
-                    }
-                    else if (yAxis.selectedIndex === 3) {
-                        // show the difference in time with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                            (1 - models[m].targets[i].start / models[m].targets[i].hit) * zoomGY * 50000)
+                        models[m].targets[i].z * 10000
+                            * zoomGY)
                     }
                 }
             }
@@ -767,7 +648,7 @@
 
         model.running = true
 
-        var i
+        var i, v, z
         var batch = 30
         var handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
@@ -777,6 +658,19 @@
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
                         model.targets[model.nextTarget].hit = model.t
+
+                        if (model.photon.f_init) {
+                            z = (model.photon.f_init - model.photon.f) / model.photon.f
+                        }
+                        else if (model.targets[model.nextTarget].dx) {
+                            v = 1 - model.targets[model.nextTarget].dx 
+                            z = (1 - v) / v
+                        }
+                        else {
+                            v = model.photon.dx
+                            z = (1 - v) / v
+                        }
+                        model.targets[model.nextTarget].z = z || 0
                         model.nextTarget++
                     }
                 }
@@ -801,13 +695,14 @@
         div: document.getElementById("expandingFast"),
         name: "Expanding Fast",
         color: "#888888", 
-        H: 0.0000756,
+        H: 0.000076,
         photon: {x: 0},
         zoom: 0.03,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
+                this.targets[i].dx = this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].dx
             }
         }
     })
@@ -815,27 +710,14 @@
         div: document.getElementById("expandingSlow"),
         name: "Expanding Slow",
         color: "#888888", 
-        H: 0.0000688,
+        H: 0.000069,
         photon: {x: 0},
         zoom: 0.03,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
-            }
-        }
-    })
-    setupModel({
-        div: document.getElementById("expanding54"),
-        name: "Expanding Slow",
-        color: "#888888", 
-        H: 0.0000556,
-        photon: {x: 0},
-        zoom: 0.03,
-        next: function () {
-            this.photon.x += c
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H
+                this.targets[i].dx = this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].dx
             }
         }
     })
@@ -843,13 +725,16 @@
         div: document.getElementById("redshift1"),
         name: "Redshift by distance",
         color: "green", 
-        H: 0.000086,
-        photon: {x: 0, dx: c},
+        H: 0.000076,
+        photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
         next: function () {
-            this.photon.x += c - this.H * this.photon.x
+            //this.photon.x += c - this.H * this.photon.x
+            this.photon.v = c - this.H * this.photon.x
+            this.photon.x += this.photon.v
+            this.photon.f = this.photon.v * 299792458 / this.photon.w
         }
     })
-    setupModel({
+    /*setupModel({
         div: document.getElementById("redshift2"),
         name: "Redshift by distance 2",
         color: "magenta", 
@@ -868,7 +753,7 @@
         next: function () {
             this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
         }
-    })
+    })*/
     setupModel({
         div: document.getElementById("redshift4"),
         name: "v_light = c / (1 + (H &times; D)^2)",
@@ -876,7 +761,8 @@
         H: 0.00026,
         photon: {x: 0, dx: c},
         next: function () {
-            this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
+            this.photon.dx = c / (1 + Math.pow(this.H * this.photon.x, 2))
+            this.photon.x += this.photon.dx
         }
     })
 
@@ -893,6 +779,5 @@
 
 </script>
 
-
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>

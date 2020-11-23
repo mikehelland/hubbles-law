@@ -28,8 +28,6 @@
             input {
                 width: 100px;
             }
-            .input-label {
-            }
 
             .model-units {
                 columns: #444444;
@@ -206,7 +204,7 @@
                     }
                     else if (yAxis.selectedIndex === 5) {
                         // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (1 - dgt.dx) / dgt.dx * 10000
+                        drawy = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
 
                     }
 
@@ -398,7 +396,10 @@
 
 
                         model.targets[model.nextTarget].hit = model.t
+
+                        model.targets[model.nextTarget].z = (model.photon.f_start - model.photon.f) / model.photon.f
                         model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
+                        
                         model.nextTarget++
                     }
                 }
@@ -475,11 +476,14 @@
         div: document.getElementById("redshift1"),
         name: "v<sub>light</sub> = c - H &times; D",
         color: "green", 
-        H: 0.072,
+        H: 0.0688,
         unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c},
+        //photon: {x: 0, dx: c},
+        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
         next: function () {
-            this.photon.x += c - this.H / 1000 * this.photon.x
+            this.photon.dx = c - this.H / 1000 * this.photon.x
+            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+            this.photon.f = (this.photon.dx * 300000000 / this.photon.w) 
         }
     })
     setupModel({
@@ -534,29 +538,49 @@
         div: document.getElementById("redshift1"),
         name: "f = f' - H &times; D",
         color: "lightgreen", 
-        H: 3,
+        H: 40000,
         unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
         next: function () {
-            this.photon.f2 = this.photon.f - this.H / 1000 * this.photon.x * this.photon.x
-            this.photon.x += this.photon.f2 * this.photon.w / 300000000
+            this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
+            this.photon.x += this.photon.f * this.photon.w / 300000000
+        }
+    })
+
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "f = f' - H &times; D",
+        color: "lightblue", 
+        H: 32200,
+        unitH: "ly/y/Mly",
+        photon: {x: 0, dx: c, f: 499654, w: 600, f_start: 499654},
+        //photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        next: function () {
+            this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
+            this.photon.x += this.photon.f * this.photon.w / 300000000
         }
     })
     
     // these frequency based models are identical to their velocity counterparts
     
-    /*setupModel({
+    setupModel({
         div: document.getElementById("redshift2"),
         name: "f = f' / (1 + H &times; D)",
         color: "pink", 
         H: 0.35,
         unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68, f_start: 6e5},
         next: function () {
-            this.photon.x += (this.photon.f / (1 + this.H / 1000 * this.photon.x)) * this.photon.w / 300000000
+            this.photon.f = this.photon.f_start / (1 + this.H / 1000 * this.photon.x)
+            this.photon.x += (this.photon.f) * this.photon.w / 300000000
+
+            //save's a step
+            //this.photon.x += (this.photon.f_start / (1 + this.H / 1000 * this.photon.x)) * this.photon.w / 300000000
         }
     })
-    setupModel({
+
+    
+    /*setupModel({
         div: document.getElementById("redshift2"),
         name: "f = f' / (1 + H &times; D)<sup>2</sup>",
         color: "aqua", 
