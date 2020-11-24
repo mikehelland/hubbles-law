@@ -33,6 +33,9 @@
                 text-align: center;
             }
 
+            li {
+                line-height: 1.5em;
+            }
             li code, p code {
                 background-color: #EEEEEE;
                 padding:2px;
@@ -41,6 +44,16 @@
 
             #y-axis {
                 display: none;
+            }
+
+            .model {
+                min-height: 74px;
+            }
+
+            pre code {
+                display:block;
+                padding:0.5em;
+                background: #f0f0f0;
             }
         </style>
 
@@ -68,7 +81,7 @@
 
 <p>Here's a computer model demonstration.</p>
 
-<div id="staticModel"></div>
+<div class="model" id="staticModel"></div>
 
 <p>The photon moves at a constant speed and reaches the targets at a consistent rate. 
     The graph to the right plots the time it takes to reach a target (y-axis) over the distance to the target (x-axis).</p>
@@ -169,7 +182,7 @@ expanding = {
 
 <p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
 
-<p>The important new line in this model is <code>target.d += H * target.start</code> and it contains a new constant <code>H</code>, 
+<p>The important new line in this model is <code>target.d += H * target.start</code>, and it contains a new constant <code>H</code>, 
     which is Hubble's constant.
 
 <p>So what value do we use for <code>H</code>? 
@@ -193,9 +206,9 @@ Which gives:
 <p>When you run the <code>expanding</code> model, notice that the targets are moving away from the photon's source.
     The first one (<code>H = 0.00076</code>) expands slightly faster than the second one (<code>H = 0.00069</code>).
 
-<div id="expandingFast"></div>
+<div class="model" id="expandingFast"></div>
 
-<div id="expandingSlow"></div>
+<div class="model" id="expandingSlow"></div>
 
 <p>As the targets recede, the time <code>t</code> it takes the photon to reach the next target increases, 
     as can be seen by the white lines on the graph shooting up and away from the blue line of the simple model.</p>
@@ -207,9 +220,9 @@ Which gives:
 <h2>Hypothesis</h2>
 
 <blockquote> 
-    We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.
+    <i>We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.
     We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, 
-    familiar principle by an ad hoc explanation unless we are forced to that step by actual observations.
+    familiar principle by an ad hoc explanation unless we are forced to that step by actual observations.</i>
 
     <br>
     <br>
@@ -254,7 +267,7 @@ hypothesis1 = {
 }
 </code></pre>
 
-<div id="redshift1"></div>
+<div class="model" id="redshift1"></div>
 
 <p>This hypothesis achieves something interesting. Even though the targets are stationary, the time it takes to reach the next target increases 
     in a way that is similar to, but not exactly, the time it would take to reach a moving target.</p>
@@ -308,11 +321,10 @@ model.targets[nextTarget].freq = model.photon.freq
     This shows that <code>hypothesis1</code> predicts identical red-shifts for targets of the same distance as the <code>expanding</code> model's 
     <a href="https://en.wikipedia.org/wiki/Comoving_and_proper_distances">co-moving distance</a>.</p>
 
-<p>However, they are <i>not</i> identical models, of course. <code>hypothesis1</code> predicts the photon reaches the target faster 
+<p>However, they are <i>not</i> identical models, of course. <code>hypothesis1</code> predicts the photon reaches the target sooner 
     than the photon in the <code>expanding</code> model,
-    as seen when the y-axis is set to "time to target".</p>
-
-<p>That difference in the predictions between these models will be investigated later in this paper.</p>
+    as seen when the y-axis is set to "time to target".
+    That will be investigated later in this paper.</p>
 
 <p>Hypothesis 1 is a very straightforward implementation of the principle that a photon's speed decreases with distance. 
     Another possibility is something like an inverse square law:</p>
@@ -323,16 +335,17 @@ model.targets[nextTarget].freq = model.photon.freq
 hypothesis2 = {
     photon: {x: 0},
     next: function () {
-        this.photon.x += c / (1 + Math.pow(this.H * this.photon.x, 2))
+        this.photon.x += c / (1 + Math.pow(H * this.photon.x, 2))
     }
 }
 </code></pre>
 
-<div id="redshift4"></div>
+<div class="model" id="redshift4"></div>
 
 <p>In this hypothesis, the units of <code>H</code> are independent of the units of <code>c</code>. 
     The units of <code>H</code> are inverse length, which makes <code>(1 + H × D)</code> unitless.
-    These models make interesting curves, but they don't match the expected red-shift data like hypothesis 1 does.
+    Hypothesis 2 doesn't match the expected red-shift data exactly like hypothesis 1 does. 
+    But it does have some features that will be investigated later in this paper.  
 </p> 
 
 <p>You can examine these models and others for yourself on <a href="test.htm">the Testing Page.</a></p>
@@ -346,35 +359,185 @@ hypothesis2 = {
 <ul>
     <li><a href="faq.htm#expansion-fact">Isn't the expansion of the universe a fact?</a></li>
     <li><a href="faq.htm#special-relativity">Doesn't this conflict with special relativity?</a></li>
-    <li><a href="faq.htm#conservation-of-energy">Doesn't this violate the Conservation of Energy?</a></li>
-    <li><a href="faq.htm#tired-light">Isn't this the discredited Tired Light theory?</a></li>
-    <li><a href="faq.htm#vsl">Is this a Varying Speed of Light theory?</a></li>    
-    
+    <li><a href="faq.htm#conservation-of-energy">Doesn't this violate the Conservation of Energy?</a></li>    
 </ul>
 
-<p>Others are answered in the sections below:</p>
+<p>The remainder of this paper this paper will compare this hypothesis to similar sounding models, 
+    discuss the treatment of the photon in the model, and examine possible ways to test the hypothesis.</p>
+
+<hr>
+
+<a name="tired-light"></a>
+<h2>Comparison to other models</h2>
+
+<h3>Tired Light</h3>
+
+<p>There have been 
+    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> that don't involve expanding space
+    trying to explain how light gets "tired" during long intergalactic journeys, 
+    starting all the way back to 1929 when the redshift-distance relation was first published.
+</p>
+
+<p>Tired light theories fail because they don't
+    account for enough redshift, they can't explain the distance factor, or the redshifts are caused in a way that would include other observable results, 
+    which ultimately are not observed.</p>
+
+<p>In general, tired light theories have the following in common:</p>
+
+<ul>
+    <li>Some other phenomenon causes the redshifts</li>
+    <li>Light always travels at <code>c</code>, even though it is "tired"</li>
+    <li>They are represented by the blue line on the graph, matching a simple static model</li> 
+</ul>
+
+<p>The hypothesis that light's speed is inversely proportional to the distance from its source is different:</p>
+
+<ul>
+    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
+    <li>Light travels at less than <code>c</code> after millions of years</li>
+    <li>The time it takes light to reach a target is similar to the expanding model</li> 
+</ul>
+
+<p>In this hypothesis, one could say light <i>does</i> get "tired",  
+    but it does so in a way that is conceptually and mathematically unique to the established 
+    <a href="https://en.wikipedia.org/wiki/Tired_light">Tired Light</a> theories.</p>
+
+<a name="vsl"></a>
+<h3>Varying Speed of Light (VSL)</h3>
+
+<p>For the last few decades there have been versions of a theory going around known as Varying Speed of Light:</p>
+
+<blockquote><i>
+    There are others that think such dark energy ideas are now getting too convoluted, and that a much simpler explanation, one that even Einstein considered, should now be given serious consideration; a change in the speed of light, or VSL (Varying Speed of Light) as others know it by.
+<br>
+<br>
+... The differing values [in Hubble's constant] may be explained if the speed of light has changed between the early and late universe,” said Louise Riofrio, an author and scientist who now works at an observatory association in Hawaii. 
+</i>
+<br>
+<br>
+<a href=https://room.eu.com/news/as-mystery-of-the-universes-expansion-rate-widens-a-simple-solution-is-offered">As mystery of the Universe’s expansion rate widens, a simple solution is offered</a>
+</blockquote>
+
+<p>In VSL theories:</p>
+
+<ul>
+    <li><code>c</code> changes</li>
+    <li><i>All</i> photons in the universe slow to the same speed </li>
+    <li>Space is expanding</li>
+    <li>Intends to represent the accelerating rate of expansion</li>
+</ul>
+
+<p>The hypothesis in this paper is different:</p>
+
+<ul>
+    <li><code>c</code> is constant</li>
+    <li><i>Individual</i> photons slow down according to their own history, not the universe's</li>
+    <li>Space is not expanding</li>
+    <li>Intends to represent cosmological redshift</li>
+</ul>
+
+<p>The speed of light does vary in this hypotheses, but in a novel way to  
+    <a href="https://en.wikipedia.org/wiki/Variable_speed_of_light">Varying Speed of Light</a> theories.</p>
+
+<hr>
+
+<a name="photon-treatment"></a>
+<h2>Photons</h2>
+
+<p>This model represents light at the individual photon level. 
+    It's not a quantum theory, nor is it a relativistic theory, but it's also not completely classical. 
+    To illustrate, the photon was defined as having a distance from its source.</p>
+
+<pre><code>
+photon = {
+    distance: 0
+}
+</code></pre>
+
+<p>Where is this photon? It doesn't have an <i>(x,y,z)</i> coordinate. Instead, it occupies every point at distance <code>d</code> from its source.
+    It's not a classical particle or wave in this form.</p> 
+
+<p>Later, we added velocity, frequency, and wavelength to the photon.</p>
+
+<pre><code>
+photon = {
+    distance: 0, 
+    velocity: 1, 
+    frequency: 6e5, 
+    wavelength: 499.65
+}
+</code></pre>
+
+<p>For the purposes of this model, the photon actually only needs distance and energy.</p>
+
+<pre><code>
+photon = {
+    distance: 0, 
+    energy: 2.48, 
+}
+</code></pre>
+    
+<p>Given these formulas:</p>
+
+<pre>
+    speed of a photon  = c - H &times; D
+    energy of a photon = frequency &times; h (Planck's constant)
+    speed of wave      = frequency &times; wavelength 
+</pre>
+
+</p>the photon's velocity, frequency, and wavelength can be determined at any time.</p>
+
+<p>However, those values don't need to be there at all times, and since the photon is a quantum particle, they probably shouldn't be there until we need them.</p>
+
+<p>What we know about a photon we determine from its interaction with a measurement apparatus, not because we can observe it in-flight.</p>
+
+<p>We do know that a red-shifted photon will deliver less energy than it started out with.  
+    Using just the photon's original energy and the distance from its source, we can calculate the observed energy of a photon to be:</p>
+
+<blockquote>
+    <code>E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c = E<sub>emitted</sub> &times; (c - H &times; D)/c
+    </code>
+</blockquote>
+
+<p>The photon's distance from where it was emitted is crucial to keep in mind at all times. 
+    Consider light that has traveled billions of years to reach your telescope. 
+    The light enters the lens, gets focused to the eyepiece, and then into your eyeball.</p>
+
+<p>Seems pretty straightforward. But at some level, some type of interaction with the light and the lens must be focusing the light. 
+    At the quantum level, the photon will have been <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mod5.html">absorbed by atoms</a> in the lens. 
+        Then it is re-emitted (or an entirely new photon is emitted), and focused to your telescope's eyepiece.</p>
+
+<p>The photon may have traveled great distances from its source before it encountered your telescope, 
+    but the light inside the telescope will be very close to its source: the lens that focused it. 
+    The distance of the photons in the telescope will not be millions of light years, but rather a few dozen centimeters.</p>
+
+<p>In which case, the refreshed photon will be traveling back at <code>c</code>, which now results in an elongated wavelength when calculated.</p>
+
 
 <hr>
 
 <a name="measure-speed"></a>
-<h2>Shouldn't we be able to measure a drop in a photon's speed?</h2>
+
+<h2>Tests</h2>
+
+<h3>Test 1: Measure the speed of a red-shifted photon</h3>
 
 <p>This is the first obvious test of the hypothesis.</p>
 
-<p>The task is to come up with a clever way to measure the speed of ancient light without disturbing the photon.</p>
+<p>To perform a fully controlled experiment where light is emitted with a known energy at a known time and travels across a known distance,
+    would take thousands or millions of years to see the effects of red-shift.</p>
+    
+<p>Using light that has already traveled millions of years seems to be the only choice.</p>
 
-<p>Say that light travels for hundreds of millions of years, and slows to below c, and then hits your telescope's lens.</p>
+<p>But interacting with the photon will cause it to reset its distance and speed, as mentioned in the previous section. 
+    The task then is to come up with a clever way to measure the speed of ancient light without disturbing the photon.
+    If there is a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. 
+    I'm currently unsure of how to perform such a test.
+</p>
 
-<p>At the quantum level, the photon will have been <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mod5.html">absorbed by atoms</a> in the lens. 
-    Then a new photon, or maybe the old one, is emitted and focused to your telescope's eyepiece.</p>
+<h3>Test 2: the time to target discrepency</h3> 
 
-<p>The photon may have traveled great distances from its source before it encountered your telescope, 
-    but the light inside the telescope will be very close to its source: the lens that focused it. 
-    The D of the photons in the telescope will not be millions of light years, but rather a few dozen centimeters.</p>
-
-<p>Thus, any light that we interact with will presumably be moving at c / (1 + H &times; 0), or just c.</p>
-
-<p>If there is a way to measure the speed of ancient light without interacting with it, that would make a good test of the hypothesis. </p>
+work in progress
 
 <hr>
 
@@ -416,11 +579,28 @@ hypothesis2 = {
 
 <p>Cosmological redshifts have been a known, observed fact since 1929.</p>
 
-<p>We could assume the redshifts indicate motion, which means the universe is expanding, which means there are age and size limits to the universe, 
-    which means it inflated in the first nanosecond, which means it is dominated by dark matter and dark energy, and it's currently accelerating.
-</p>
+<p>It should come as no surprise to us that there are fundamental laws of nature we would only detect once we had telescopes
+    that can see what's out beyond the Milky Way.</p>
 
-<p>Or we could assume the redshifts are a new feature of the universe that can only be noticed at great distances by large telescopes, and that's it. </p>
+<p>We could assume the redshifts indicate motion, which means:</p> 
+
+<ul>
+    <li>the universe is expanding</li>
+    <li>there are age and size limits to the universe</li>
+    <li>the universe inflated in the first nanosecond</li>
+    <li>it is dominated by dark matter and dark energy</li>
+    <li>it's currently accelerating</li>
+</ul>
+
+<p>Or we could assume the redshifts are a new feature of the universe that can only be noticed at great distances by large telescopes, which means:</p>
+
+<ul>
+    <li>light doesn't travel to infinity at a constant speed</li>
+    <li>the observable region is an insignificant sample of an indefinitely large and old universe</li>
+</ul>
+
+<p>If dark energy, which hasn't been observed, is in the consideration as a possible fundamental ingredient of nature, 
+    then the actual observations that led to its conjecture, cosmological redshift, should be considered a worthy candidate as well.
 
 <p>With several hypotheses in hand, how to test them becomes the next question.</p>
 
@@ -429,20 +609,18 @@ hypothesis2 = {
 <p>In an indefinite universe, those distant galaxies will still be redshifted millions of years from now, but they will be in about the same place. 
     And the CMB will be the same temperature. </p>
 
-<p>If we had millions of years to wait around, that would be a nice test to do.</p>
+<p>If we had millions of years to wait around and see, that would be a nice test to do.</p>
 
 <p>In the meantime, I'm sure we'll think of others.</p>
 
-<p>In conclusion, I would like to quote Hubble one last time. Here is his conclusion to <u>The Observational Approach to Cosmology</u>, pg. 52, 1937:</p>
+<p>In conclusion, I would like to quote Edwin Hubble's conclusion to <u>The Observational Approach to Cosmology</u>:</p>
 
-<blockquote>We seem to face, as once before in the days of Copernicus, a choice between a small, finite universe, 
-    and a universe indefinitely large plus a new principle of nature. </blockquote>
+<blockquote>
+    <i>We seem to face, as once before in the days of Copernicus, a choice between a small, finite universe, 
+    and a universe indefinitely large plus a new principle of nature.</i> 
+</blockquote>
 
 <hr>
-
-<p><i>Mike Helland
-<br>    
-12 Nov 2020</i></p>
 
 <p>Questions, comments, concerns?</p>
 <ul>
@@ -459,7 +637,9 @@ hypothesis2 = {
 
 <h2>Change Log:</h2>
 
-<ul><li><i>23 Nov 2020</i> - Rewrote introduction and hypothesis, showing code along the way. </li>
+<ul>
+    <li><i>24 Nov 2020</i> - Added Photons section. </li>
+    <li><i>23 Nov 2020</i> - Rewrote introduction and hypothesis, showing code along the way. </li>
     <li><i>23 Nov 2020</i> - Moved general questions to FAQ </li>
     <li><i>20 Nov 2020</i> - Added redshift in our galaxy section. </li>
     <li><i>19 Nov 2020</i> - Added Varying Speed of Light section. </li>
@@ -486,7 +666,7 @@ hypothesis2 = {
     <div id="y-axis">
         Y-axis: <select id="graph-y-axis">
             <option>time to target (billions of years)</option>
-            <option>z</option>
+            <option>z red-shift</option>
         </select>
     </div>
 </div>
@@ -517,6 +697,7 @@ hypothesis2 = {
     var zoomGY = zoom * 0.18
     var offset = 20
     
+    var dgi
     function drawGraph() {
         
         ctxG.lineWidth = 1
@@ -552,15 +733,22 @@ hypothesis2 = {
             ctxG.stroke()            
         }
 
-        ctxG.fillText("time to target (billion years)", offset + 5, offset)
+        ctxG.fillText(yAxis.value, offset + 5, offset)
         ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
         
-        for (var i = 0; i < 80; i+=5) {
-            ctxG.fillText(i, 4, -offset + graph.height - i * 1000 * zoomGY + 4)    
+        if (yAxis.selectedIndex === 0) {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 110; dgi+=2) {
+                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+            }
         }
 
-        for (i = 0; i < 16; i+=2) {
-            ctxG.fillText(i, offset + i * 1000 * zoomG, graph.height - 5)    
+        for (dgi = 0; dgi < 16; dgi+=2) {
+            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
         }
     }
 
@@ -589,7 +777,7 @@ hypothesis2 = {
         model.nextTarget = 0
 
         model.canvas.width = 700
-        model.canvas.height = 60
+        model.canvas.height = 40
         
         // make a target every 200 million light years 
         model.targets = []
@@ -758,7 +946,7 @@ hypothesis2 = {
         div: document.getElementById("redshift4"),
         name: "v_light = c / (1 + (H &times; D)^2)",
         color: "red", 
-        H: 0.00026,
+        H: 0.00016,
         photon: {x: 0, dx: c},
         next: function () {
             this.photon.dx = c / (1 + Math.pow(this.H * this.photon.x, 2))
