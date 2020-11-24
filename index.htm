@@ -167,7 +167,7 @@ expanding = {
 }
 </code></pre>
 
-<p>While <code>simple.next()</code> just moves the <code>photon</code>, <code>expanding.next()</code> moves the <code>photon</code> and the <code>targets</code>.
+<p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
 
 <p>The important new line in this model is <code>target.d += H * target.start</code> and it contains a new constant <code>H</code>, 
     which is Hubble's constant.
@@ -272,9 +272,9 @@ for (var target of this.targets)
 
 
 <p>Let's check to see how this affects frequency and red-shift. We're going to modify <code>hypothesis1</code>, not to do anything different,
-but to log more data. We'll store the <code>photon</code>'s velocity as <code>v</code>.
-We'll give the <code>photon</code> an initial wavelength <code>w</code> and frequency <code>freq_init</code> of 499.65 nm and 6&times;10<sup>5</sup>&nbsp;Ghz. 
-Then we'll calculate a new frequency <code>freq</code> based on the <code>photon</code>'s new velocity <code>v</code>.</p>
+but to log more data. We'll store the photon's velocity as <code>v</code>.
+We'll give the photon an initial wavelength <code>w</code> and frequency <code>freq_init</code> of 499.65 nm and 6&times;10<sup>5</sup>&nbsp;Ghz. 
+Then we'll calculate a new frequency <code>freq</code> based on the photon's new velocity <code>v</code>.</p>
 
 <pre><code>
 hypothesis1 = {
@@ -288,7 +288,7 @@ hypothesis1 = {
 }
 </code></pre>
             
-<p>Now we can update the <code>run()</code> function to log the <code>photon</code>'s velocity and frequency at the time it reaches a target.</p>
+<p>Now we can update the <code>run()</code> function to log the photon's velocity and frequency at the time it reaches a target.</p>
 
 <pre><code>
 console.log("Target reached", t)
@@ -297,8 +297,8 @@ model.targets[nextTarget].v    = model.photon.v
 model.targets[nextTarget].freq = model.photon.freq
 </code></pre>
 
-<p>With this data, we can graph the velocity and frequency of the <code>photon</code> as it travels. Because we have the 
-    <code>freq</code> and <code>freq_init</code> we can also graph the red-shift of the <code>photon</code> given by:</p>
+<p>With this data, we can graph the velocity and frequency of the photon as it travels. Because we have the 
+    <code>freq</code> and <code>freq_init</code> we can also graph the red-shift of the photon given by:</p>
 
 <pre><code>z = (freq_init - freq) / freq</code></pre>
 
