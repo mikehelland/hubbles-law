@@ -213,7 +213,7 @@ Which gives:
 <p>As the targets recede, the time <code>t</code> it takes the photon to reach the next target increases, 
     as can be seen by the white lines on the graph shooting up and away from the blue line of the simple model.</p>
 
-<p>The difference in the values of <code>H</code> may seem small, but to cosmologists it begs for a resolution.</p>
+<p>The difference in the values of <code>H</code> may seem small, but to cosmologists it begs to be resolved.</p>
 
 <hr>
 
@@ -496,9 +496,17 @@ photon = {
     Assuming the ratio of energy observed to energy emitted is the same ratio as the photon's velocity to <code>c</code>,
     we can calculate the observed energy of a photon using just the photon's original energy and the distance from its source:</p>
 
-<blockquote>
-    <code>E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c = E<sub>emitted</sub> &times; (c - H &times; D)/c
+<pre>
+    <code>
+E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c 
+         = E<sub>emitted</sub> &times; (c - H &times; D)/c
     </code>
+</pre>
+
+<p>And if we put that over Planck's constant (<code>h</code>) we get the new red-shifted frequency of the photon:</p>
+
+<blockquote>
+    <code>frequency<sub>observed</sub> = (E<sub>emitted</sub> &times; (c - H &times; D)/c) / h</code>
 </blockquote>
 
 <p>The photon's distance from where it was emitted is crucial to keep in mind at all times. 
@@ -637,7 +645,7 @@ photon = {
 <p>If dark energy is in the consideration as a possible fundamental ingredient of nature despite having never been observed, 
     then the actual observations that led to its conjecture, cosmological redshift, should be considered as well.</p>
 
-<p>In conclusion, I would like to quote Edwin Hubble's conclusion in <u>The Observational Approach to Cosmology</u>:</p>
+<p>I would like to finish by quoting Edwin Hubble's conclusion in <u>The Observational Approach to Cosmology</u>:</p>
 
 <blockquote>
     <i>We seem to face, as once before in the days of Copernicus, a choice between a small, finite universe, 
@@ -664,6 +672,7 @@ photon = {
 <h2>Change Log:</h2>
 
 <ul>
+    <li><i>26 Nov 2020</i> - Added the tube test. </li>
     <li><i>24 Nov 2020</i> - Reworked conclusion. </li>
     <li><i>24 Nov 2020</i> - Added Photons section. </li>
     <li><i>23 Nov 2020</i> - Rewrote introduction and hypothesis, showing code along the way. </li>
