@@ -112,31 +112,72 @@
 
     <p>1 megaparsec to Mly = 3.2638 Mly <a href="https://www.convertunits.com/from/megaparsec/to/Mly" target="_ou">https://www.convertunits.com/from/megaparsec/to/Mly</a></p>
     <hr>
-    <p>Sample z's (white dots when y-axis is redshift) from <a href="https://lco.global/spacebook/light/redshift/" target="_ou">https://lco.global/spacebook/light/redshift/</a></p>
-    <table class="table is-fullwidth is-striped">
-        <thead> 	
-        <tr><th>z</th><th>Time the light has been traveling</th><th>Distance to the object now </th></tr>
-        </thead>
-        <tbody>
-        <tr><td>0.0000715</td><td>1 million years</td><td>1 million light years</td></tr>
-        <tr><td>0.10</td><td>1.286 billion years</td> <td>1.349 billion light years</td></tr>
-        <tr><td>0.25</td><td>2.916 billion years</td> <td>3.260 billion light years</td></tr>
-        <tr><td>0.5</td><td>5.019 billion years</td>  <td>5.936 billion light years</td></tr>
-        <tr><td>1</td><td>7.731 billion years</td>    <td>10.147 billion light years</td></tr>
-        <tr><td>2</td><td>10.324 billion years</td>   <td>15.424 billion light years</td></tr>
-        <tr><td>3</td><td>11.476 billion years</td>   <td>18.594 billion light years</td></tr>
-        <tr><td>4</td><td>12.094 billion years</td>   <td>20.745 billion light years</td></tr>
-        <tr><td>5</td><td>12.469 billion years</td>   <td>22.322 billion light years</td></tr>
-        <tr><td>6</td><td>12.716 billion years</td>   <td>23.542 billion light years</td></tr>
-        <tr><td>7</td><td>12.888 billion years</td>   <td>24.521 billion light years</td></tr>
-        <tr><td>8</td><td>13.014 billion years</td>   <td>25.329 billion light years</td></tr>
-        <tr><td>9</td><td>13.110 billion years</td>   <td>26.011 billion light years</td></tr>
-        <tr><td>10</td><td>13.184 billion years</td>  <td>26.596 billion light years</td></tr>
-    </tbody>
-    </table>
+    <p>Sample z's (white dots when y-axis is redshift) from <a href="https://wolframalpha.com/" target="_out">WolframAlpha</a></p>
+    <pre id="zoutput">
+    </pre>
 </notes>
 
 <script>
+var zs = [
+    { z: 1, t: 7400, d: 10400 },
+    { z: 2, t: 9880, d: 16400 },
+    { z: 3, t: 11000, d: 20100 },
+    { z: 4, t: 11600, d: 22800 },
+    { z: 5, t: 11900, d: 24700 },
+    { z: 6, t: 12200, d: 26200 },
+    { z: 7, t: 12300, d: 27500 },
+    { z: 8, t: 12400, d: 28500 },
+    { z: 9, t: 12500, d: 29400 },
+    { z: 10, t: 12600, d: 30100 },
+    { z: 11, t: 12700, d: 30700 },
+    { z: 12, t: 12700, d: 31300 },
+    { z: 13, t: 12700, d: 31800 },
+    { z: 14, t: 12800, d: 32300 },
+    { z: 15, t: 12800, d: 32700 },
+    { z: 16, t: 12800, d: 33100 },
+    { z: 17, t: 12800, d: 33400 },
+    { z: 18, t: 12900, d: 33700 },
+    { z: 19, t: 12900, d: 34000 },
+    { z: 20, t: 12900, d: 34300 },
+    { z: 21, t: 12900, d: 34600 },
+    { z: 22, t: 12900, d: 34800 },
+    { z: 23, t: 12900, d: 35000 },
+    { z: 24, t: 12900, d: 35200 },
+    { z: 25, t: 12900, d: 35400 },
+    { z: 1, t: 8130, d: 11400 },
+    { z: 2, t: 10800, d: 18000 },
+    { z: 3, t: 12100, d: 22100 },
+    { z: 4, t: 12700, d: 25000 },
+    { z: 5, t: 13100, d: 27100 },
+    { z: 6, t: 13400, d: 28800 },
+    { z: 7, t: 13500, d: 30200 },
+    { z: 8, t: 13700, d: 31300 },
+    { z: 9, t: 13800, d: 32200 },
+    { z: 10, t: 13800, d: 33000 },
+    { z: 11, t: 13900, d: 33800 },
+    { z: 12, t: 14000, d: 34400 },
+    { z: 13, t: 14000, d: 34900 },
+    { z: 14, t: 14000, d: 35400 },
+    { z: 15, t: 14100, d: 35900 },
+    { z: 16, t: 14100, d: 36300 },
+    { z: 17, t: 14100, d: 36700 },
+    { z: 18, t: 14100, d: 37000 },
+    { z: 19, t: 14100, d: 37400 },
+    { z: 20, t: 14200, d: 37700 },
+    { z: 21, t: 14200, d: 37900 },
+    { z: 22, t: 14200, d: 38200 },
+    { z: 23, t: 14200, d: 38400 },
+    { z: 24, t: 14200, d: 38700 },
+    { z: 25, t: 14200, d: 38900 }
+  ]
+
+    var output = document.getElementById("zoutput")
+    for (var zz of zs) {
+        output.innerHTML += zz.z.toString().padEnd(12) +
+                            (zz.t).toString().padEnd(14) + 
+                            (zz.d).toString().padEnd(14) + 
+                             "\n" 
+    }
 
     var details = document.getElementById("details")
 
@@ -687,7 +728,8 @@ document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy
 var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
 
-var zs = [
+// H = 70
+/*var zs = [
         {z: 0.0000715, t:   0.992, d:  0.992      , v: 0.00007148}, 
         {z: 0.1,       t:   1290,  d:   1360      , v: 0.09502254}, 
         {z: 0.25,      t:   2930,  d:   3280      , v: 0.21951219}, 
@@ -718,6 +760,7 @@ var zs = [
         {z: 24,        t:  13600 , d:  37000 }, 
         {z: 25,        t:  13600 , d:  37200 } 
     ]
+*/
 
 setTimeout(() => {
     //models.forEach(model => runModel(model))
