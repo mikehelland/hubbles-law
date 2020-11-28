@@ -73,7 +73,6 @@
     <select id="graph-x-axis">
         <option>starting distance to target (billion light years)</option>
         <option>time to target (billions of years)</option>
-        <option>z redshift</option>
     </select>
     <br>    
     Y-axis: 
@@ -84,8 +83,6 @@
         <option>(1 - static time / delayed time)</option>
         <option>(1 - v)</option>
         <option>z redshift</option>
-        <option>starting distance to target (billion light years)</option>
-        
     </select>
     <br>
     <canvas id="graph" height="600" width="600"></canvas>
@@ -184,11 +181,8 @@
                     if (xAxis.selectedIndex === 0) {
                         drawx = dgt.start
                     }
-                    else if (xAxis.selectedIndex === 1) {
+                    else {
                         drawx = dgt.hit
-                    }
-                    else if (xAxis.selectedIndex === 2) {
-                        drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
                     }
 
                     if (yAxis.selectedIndex === 0) {
@@ -217,10 +211,6 @@
                         drawy = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
 
                     }
-                    else if (yAxis.selectedIndex === 6) {
-                        drawy = dgt.start
-
-                    }
 
                     ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
 
@@ -234,7 +224,7 @@
         ctxG.fillText(yAxis.value, offset + 5, offset)
         ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
         
-        if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
+        if (yAxis.selectedIndex < 2) {
             for (dgi = 0; dgi < 80; dgi+=5) {
                 ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
             }
@@ -245,28 +235,21 @@
             }
         }
 
-        if (xAxis.selectedIndex < 2) {
-            for (dgi = 0; dgi < 16; dgi+=2) {
-                ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=5) {
-                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomGY + 4, graph.height - 5)    
-            }
+        for (dgi = 0; dgi < 16; dgi+=2) {
+            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
         }
 
         //if (yAxis.selectedIndex === 5) {
             for (dgi = 0; dgi < zs.length; dgi++) {
                 ctxG.beginPath()
-                //ctxG.arc(offset + zs[dgi][0] * zoomG * 10000, -offset + graph.height - zs[dgi][1] * zoomGY, 2, 0, Math.PI * 2)
+                ctxG.arc(offset + zs[dgi][1] * zoomG, -offset + graph.height - zs[dgi][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
                 ctxG.fill()
             }
         //}
         //if (yAxis.selectedIndex === 0) {
             for (dgi = 0; dgi < ts.length; dgi++) {
                 ctxG.beginPath()
-                //ctxG.arc(offset + zs[dgi][0] * zoomG * 10000, -offset + graph.height - ts[dgi][1] * zoomGY, 2, 0, Math.PI * 2)
+                ctxG.arc(offset + ts[dgi][1] * zoomG, -offset + graph.height - zs[dgi][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
                 ctxG.fill()
             }
         //}
@@ -351,7 +334,7 @@
         stopModel(model)
     
         model.ran = false
-        model.photon.x = 0
+        model.photon.x = model.photon.startX
         model.photon.f = 6e5
         model.photon.dx = c
         model.nextTarget = 0
@@ -367,14 +350,15 @@
 
     function draw(ctx, exp) {
 
+        var offset = ctx.canvas.width / 2
         ctx.fillStyle = "black"
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         for (var i = 0; i < exp.targets.length; i++) {
             ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
             ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * zoom, 0)
-            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
+            ctx.moveTo(offset + exp.targets[i].x * zoom, 0)
+            ctx.lineTo(offset + exp.targets[i].x * zoom, ctx.canvas.height)
             //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
 
             if (exp.targets[i].hit) {
@@ -386,7 +370,7 @@
         }
 
         ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+        ctx.fillRect(offset + exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
     }
 
     function runModel(model) {
@@ -397,7 +381,7 @@
 
         var x
         var i
-        var batch = 100
+        var batch = 10
         model.handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
                 if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
@@ -433,17 +417,6 @@
         }, 0)
     }
 
-    setupModel({
-        div: document.getElementById("staticModel"),
-        name: "Static",
-        color: "darkblue", 
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-        }
-    })
-
-    details.appendChild(document.createElement("hr"))
 
     setupModel({
         div: document.getElementById("expandingFast"),
@@ -452,7 +425,7 @@
         color: "#888888", 
         H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {x: 0},
+        photon: {x: 0, startX: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -467,11 +440,16 @@
         color: "#888888", 
         H: 0.0688,
         unitH: "ly/y/Mly",
-        photon: {x: 0},
+        photon: {x: 5000, startX: 5000},
         next: function () {
-            this.photon.x += c
+            this.photon.x -= c - this.H / 1000 * this.photon.startX
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+
+            if (this.photon.x <= 0) {
+                console.log(this.t)
+                debugger
             }
         }
     })
@@ -490,180 +468,6 @@
             }
         }
     })
-    setupModel({
-        div: document.getElementById("expandingSlow"),
-        name: "Expanding, 67 km/s/Mpc &times; proper distance",
-        expanding: true,
-        color: "#888888", 
-        H: 0.02668,
-        unitH: "ly/y/Mly",
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].x * this.H / 1000
-            }
-        }
-    })
-
-    details.appendChild(document.createElement("hr"))
-    
-    setupModel({
-        div: document.getElementById("redshift1"),
-        name: "v<sub>light</sub> = c - H &times; D",
-        color: "green", 
-        H: 0.0688,
-        unitH: "ly/y/Mly",
-        //photon: {x: 0, dx: c},
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        next: function () {
-            this.photon.dx = c - this.H / 1000 * this.photon.x
-            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 300000000 / this.photon.w) 
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift1"),
-        name: "v<sub>light</sub> = c - H &times; t",
-        color: "green", 
-        H: 0.0688,
-        unitH: "ly/y/Mly",
-        //photon: {x: 0, dx: c},
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        next: function () {
-            this.photon.dx = c - this.H / 1000 * this.t
-            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 300000000 / this.photon.w) 
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "v<sub>light</sub> = c / (1 + H &times; D)",
-        color: "magenta", 
-        H: 0.35,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += c / (1 + this.H / 1000 * this.photon.x)
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
-        color: "purple", 
-        H: 0.15,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "v<sub>light</sub> = c / (1 + (H &times; D)<sup>2</sup>)",
-        color: "red", 
-        H: 0.26,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += c / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "v<sub>light</sub> = c / (1 + (H &times; t)<sup>2</sup>)",
-        color: "yellow", 
-        H: 0.26,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += c / (1 + Math.pow(this.H / 1000 * this.t, 2))
-        }
-    })
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "v<sub>light</sub> = c / sqrt(1 + (H &times; D)<sup>2</sup>)",
-        color: "orange", 
-        H: 0.26,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c},
-        next: function () {
-            this.photon.x += c / Math.sqrt(1 + Math.pow(this.H / 1000 * this.photon.x, 2))
-        }
-    })
-
-
-    details.appendChild(document.createElement("hr"))
-    
-    setupModel({
-        div: document.getElementById("redshift1"),
-        name: "f = f' - H &times; D",
-        color: "lightgreen", 
-        H: 40000,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        next: function () {
-            this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
-            this.photon.x += this.photon.f * this.photon.w / 300000000
-        }
-    })
-
-    setupModel({
-        div: document.getElementById("redshift1"),
-        name: "f = f' - H &times; D",
-        color: "lightblue", 
-        H: 32200,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 499654, w: 600, f_start: 499654},
-        //photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-        next: function () {
-            this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
-            this.photon.x += this.photon.f * this.photon.w / 300000000
-        }
-    })
-    
-    // these frequency based models are identical to their velocity counterparts
-    
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "f = f' / (1 + H &times; D)",
-        color: "pink", 
-        H: 0.35,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.68, f_start: 6e5},
-        next: function () {
-            this.photon.f = this.photon.f_start / (1 + this.H / 1000 * this.photon.x)
-            this.photon.x += (this.photon.f) * this.photon.w / 300000000
-
-            //save's a step
-            //this.photon.x += (this.photon.f_start / (1 + this.H / 1000 * this.photon.x)) * this.photon.w / 300000000
-        }
-    })
-
-    
-    /*setupModel({
-        div: document.getElementById("redshift2"),
-        name: "f = f' / (1 + H &times; D)<sup>2</sup>",
-        color: "aqua", 
-        H: 0.15,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-        next: function () {
-            this.photon.x += (this.photon.f / Math.pow(1 + this.H / 1000 * this.photon.x, 2)) * this.photon.w / 300000000
-        }
-    })
-
-    setupModel({
-        div: document.getElementById("redshift2"),
-        name: "f = f' / (1 + (H &times; D)<sup>2</sup>)",
-        color: "lightblue", 
-        H: 0.25,
-        unitH: "Gly<sup>-1</sup>",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-        next: function () {
-            this.photon.x += (this.photon.f / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))) * this.photon.w / 300000000
-        }
-    })*/
 
 
     setInterval(() => {
