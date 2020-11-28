@@ -144,16 +144,16 @@ radiation temperature | 21.8 K (kelvins)
 (based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
 
 https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+8
-time ago (lookback time) | 12.9 billion years
-time since big bang | 779 million years
-distance (comoving) | 28.8 billion ly (light years)
-8840 Mpc (megaparsecs)
-2.73×10^23 km (kilometers)
-1.7×10^23 miles
-fraction of total observable radius | 0.618
-scale factor | 0.125 × current value
+time ago (lookback time) | 13.1 billion years
+time since big bang | 652 million years
+distance (comoving) | 29.9 billion ly (light years)
+9170 Mpc (megaparsecs)
+2.83×10^23 km (kilometers)
+1.76×10^23 miles
+fraction of total observable radius | 0.641
+scale factor | 0.111 × current value
 epoch | matter dominated, post-recombination
-radiation temperature | 21.8 K (kelvins)
+radiation temperature | 24.5 K (kelvins)
 (based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
 
 https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+9
@@ -233,6 +233,150 @@ scale factor | 0.0667 × current value
 epoch | matter dominated, post-recombination
 radiation temperature | 40.9 K (kelvins)
 (based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+15
+time ago (lookback time) | 13.4 billion years
+time since big bang | 275 million years
+distance (comoving) | 34.3 billion ly (light years)
+10500 Mpc (megaparsecs)
+3.25×10^23 km (kilometers)
+2.02×10^23 miles
+fraction of total observable radius | 0.735
+scale factor | 0.0625 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 43.6 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+16
+time ago (lookback time) | 13.5 billion years
+time since big bang | 251 million years
+distance (comoving) | 34.7 billion ly (light years)
+10600 Mpc (megaparsecs)
+3.28×10^23 km (kilometers)
+2.04×10^23 miles
+fraction of total observable radius | 0.743
+scale factor | 0.0588 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 46.3 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+17
+time ago (lookback time) | 13.5 billion years
+time since big bang | 230 million years
+distance (comoving) | 35.1 billion ly (light years)
+10800 Mpc (megaparsecs)
+3.32×10^23 km (kilometers)
+2.06×10^23 miles
+fraction of total observable radius | 0.751
+scale factor | 0.0556 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 49.1 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+18
+time ago (lookback time) | 13.5 billion years
+time since big bang | 212 million years
+distance (comoving) | 35.4 billion ly (light years)
+10900 Mpc (megaparsecs)
+3.35×10^23 km (kilometers)
+2.08×10^23 miles
+fraction of total observable radius | 0.758
+scale factor | 0.0526 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 51.8 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+19
+time ago (lookback time) | 13.5 billion years
+time since big bang | 196 million years
+distance (comoving) | 35.7 billion ly (light years)
+11000 Mpc (megaparsecs)
+3.38×10^23 km (kilometers)
+2.1×10^23 miles
+fraction of total observable radius | 0.765
+scale factor | 0.05 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 54.5 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+20
+time ago (lookback time) | 13.5 billion years
+time since big bang | 182 million years
+distance (comoving) | 36 billion ly (light years)
+11000 Mpc (megaparsecs)
+3.41×10^23 km (kilometers)
+2.12×10^23 miles
+fraction of total observable radius | 0.771
+scale factor | 0.0476 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 57.2 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+21
+time ago (lookback time) | 13.5 billion years
+time since big bang | 170 million years
+distance (comoving) | 36.3 billion ly (light years)
+11100 Mpc (megaparsecs)
+3.43×10^23 km (kilometers)
+2.13×10^23 miles
+fraction of total observable radius | 0.777
+scale factor | 0.0455 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 60 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+22
+time ago (lookback time) | 13.6 billion years
+time since big bang | 159 million years
+distance (comoving) | 36.5 billion ly (light years)
+11200 Mpc (megaparsecs)
+3.45×10^23 km (kilometers)
+2.15×10^23 miles
+fraction of total observable radius | 0.782
+scale factor | 0.0435 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 62.7 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+23
+time ago (lookback time) | 13.6 billion years
+time since big bang | 149 million years
+distance (comoving) | 36.7 billion ly (light years)
+11300 Mpc (megaparsecs)
+3.48×10^23 km (kilometers)
+2.16×10^23 miles
+fraction of total observable radius | 0.787
+scale factor | 0.0417 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 65.4 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+24
+time ago (lookback time) | 13.6 billion years
+time since big bang | 140 million years
+distance (comoving) | 37 billion ly (light years)
+11300 Mpc (megaparsecs)
+3.5×10^23 km (kilometers)
+2.17×10^23 miles
+fraction of total observable radius | 0.792
+scale factor | 0.04 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 68.1 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
+https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+25
+time ago (lookback time) | 13.6 billion years
+time since big bang | 132 million years
+distance (comoving) | 37.2 billion ly (light years)
+11400 Mpc (megaparsecs)
+3.52×10^23 km (kilometers)
+2.19×10^23 miles
+fraction of total observable radius | 0.796
+scale factor | 0.0385 × current value
+epoch | matter dominated, post-recombination
+radiation temperature | 70.9 K (kelvins)
+(based on 5-year WMAP data and Lambda-CDM model; current universe age: 13.7 billion years)
+
 
 
 

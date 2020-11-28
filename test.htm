@@ -240,36 +240,38 @@
             }
         }
         else {
-            for (dgi = 0; dgi < 110; dgi+=2) {
+            for (dgi = 0; dgi < 1000; dgi+=10) {
                 ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
             }
         }
 
         if (xAxis.selectedIndex < 2) {
-            for (dgi = 0; dgi < 16; dgi+=2) {
+            for (dgi = 0; dgi < 100; dgi+=2) {
                 ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
             }
         }
         else {
-            for (dgi = 0; dgi < 110; dgi+=5) {
+            for (dgi = 0; dgi < 110; dgi+=10) {
                 ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomGY + 4, graph.height - 5)    
             }
         }
 
-        //if (yAxis.selectedIndex === 5) {
+        if (yAxis.selectedIndex === 5) {
             for (dgi = 0; dgi < zs.length; dgi++) {
-                ctxG.beginPath()
-                //ctxG.arc(offset + zs[dgi][0] * zoomG * 10000, -offset + graph.height - zs[dgi][1] * zoomGY, 2, 0, Math.PI * 2)
-                ctxG.fill()
+        
+                if (xAxis.selectedIndex === 1) {
+                    ctxG.beginPath()
+                    ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
+                    ctxG.fill()
+                }
+
+                if (xAxis.selectedIndex === 0) {
+                    ctxG.beginPath()
+                    ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
+                    ctxG.fill()
+                }
             }
-        //}
-        //if (yAxis.selectedIndex === 0) {
-            for (dgi = 0; dgi < ts.length; dgi++) {
-                ctxG.beginPath()
-                //ctxG.arc(offset + zs[dgi][0] * zoomG * 10000, -offset + graph.height - ts[dgi][1] * zoomGY, 2, 0, Math.PI * 2)
-                ctxG.fill()
-            }
-        //}
+        }
     }
 
     function setupModel(model) {
@@ -686,38 +688,36 @@ var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
 
 var zs = [
-[0.0000715, 	1],
-[0.10, 	        1286 ],
-[0.25, 	        2916 ],
-[0.5, 	        5019 ],
-[1, 	        7731 ],
-[2, 	        10324],
-[3, 	        11476],
-[4, 	        12094],
-[5, 	        12469],
-[6, 	        12716],
-[7, 	        12888],
-[8, 	        13014],
-[9, 	        13110],
-[10, 	        13184]
-]
-
-var ts = [
-[1, 	1],
-[1286  	 ,	1349 ],
-[2916  	 ,	3260 ],
-[5019 	 ,	5936 ],
-[7731     ,	10147],
-[10324    , 	15424],
-[11476    , 	18594],
-[12094    , 	20745],
-[12469    , 	22322],
-[12716    , 	23542],
-[12888    , 	24521],
-[13014    , 	25329],
-[13110    , 	26011],
-[13184     , 	26.596] 
-]
+        {z: 0.0000715, t:   0.992, d:  0.992      , v: 0.00007148}, 
+        {z: 0.1,       t:   1290,  d:   1360      , v: 0.09502254}, 
+        {z: 0.25,      t:   2930,  d:   3280      , v: 0.21951219}, 
+        {z: 0.5,       t:   5050,  d:   6170      , v: 0.38461666}, 
+        {z: 1,         t:   7770,  d:  10900      , v: 0.59999933}, 
+        {z: 2,         t:  10400,  d:  17200      , v: 0.80000133}, 
+        {z: 3,         t:  11500,  d:  21100      , v: 0.88235509}, 
+        {z: 4,         t:  12100,  d:  23900      , v: 0.92307666}, 
+        {z: 5,         t:  12500,  d:  26000      , v: 0.94594585}, 
+        {z: 6,         t:  12800,  d:  27600      , v: 0.96000226}, 
+        {z: 7,         t:  12900,  d:  28800      , v: 0.96923200}, 
+        {z: 8,         t:  13100,  d:  29900      , v: 0.9756097 },
+        {z: 9,         t:  13200,  d:  30800      , v: 0.98019960}, 
+        {z: 10,        t:  13200,  d:  31600      , v: 0.98360863}, 
+        {z: 11,        t:  13300,  d:  32300      , v: 0.98620710}, 
+        {z: 12,        t:  13300,  d:  32900      , v: 0.98823517}, 
+        {z: 13,        t:  13400,  d:  33400      , v: 0.98823517}, 
+        {z: 14,        t:  13400,  d:  33900      , v: 0.99115053},
+        {z: 15,        t:  13400 , d:  34300 }, 
+        {z: 16,        t:  13500 , d:  34700 }, 
+        {z: 17,        t:  13500 , d:  35100 }, 
+        {z: 18,        t:  13500 , d:  35400 }, 
+        {z: 19,        t:  13500 , d:  35700 }, 
+        {z: 20,        t:  13500 , d:  36000 }, 
+        {z: 21,        t:  13500 , d:  36300 }, 
+        {z: 22,        t:  13600 , d:  36500 }, 
+        {z: 23,        t:  13600 , d:  36700 }, 
+        {z: 24,        t:  13600 , d:  37000 }, 
+        {z: 25,        t:  13600 , d:  37200 } 
+    ]
 
 setTimeout(() => {
     //models.forEach(model => runModel(model))

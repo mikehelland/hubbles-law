@@ -204,7 +204,31 @@ z           lookback      distance      velocity
                         drawy = dgt.hit
                     }
                     else if (yAxis.selectedIndex === 2) {
-                        drawy = dgt.v * 5000
+                        drawy = dgt.dx * graph.height * 10
+                    }
+
+                    ctxG.lineTo(offset + drawx * graph.width * zoomG, -offset + graph.height - drawy * zoomGY)
+
+                }
+            }
+            ctxG.stroke()
+
+            ctxG.strokeStyle = dgm.color
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+            for (dgt of dgm.targets) {
+                if (dgt.hit) {
+
+                    drawx = dgt.z
+
+                    if (yAxis.selectedIndex === 0) {
+                        drawy = dgt.start
+                    }
+                    else if (yAxis.selectedIndex === 1) {
+                        drawy = dgt.hit
+                    }
+                    else if (yAxis.selectedIndex === 2) {
+                        drawy = dgt.dx * graph.height * 10
                     }
 
                     ctxG.lineTo(offset + drawx * graph.width * zoomG, -offset + graph.height - drawy * zoomGY)
@@ -339,6 +363,9 @@ z           lookback      distance      velocity
             target.x = target.start
             target.hit = 0
         })
+        model.targets.forEach(target => {
+            target.hit = 0
+        })
     
         model.t = 0
 
@@ -392,9 +419,11 @@ z           lookback      distance      velocity
                     var hitZ = false
                     if (model.ztargets[model.nextz]) {
                         if (model.expanding) {
-                            hitZ = model.photon.x >= model.ztargets[model.nextz].d
+                            //hitZ = model.photon.x >= model.ztargets[model.nextz].d
                             //hitZ = model.photon.x >= model.ztargets[model.nextz].t
+                            //hitZ = dx2 >= model.ztargets[model.nextz].v
                             
+                            z = Math.sqrt((1 + dx2) / (1 - dx2)) - 1
                         }
                         else {
                             z = (model.photon.f_start - model.photon.f) / model.photon.f
@@ -405,32 +434,17 @@ z           lookback      distance      velocity
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
 
-                        z = (1 - dx2) / dx2
-                        
-                        /*while (model.expanding && model.ztargets[model.nextz] && model.photon.x >= model.ztargets[model.nextz].d) {
-                            console.log(dx2, model.ztargets[model.nextz].v)
-                            output.innerHTML += model.ztargets[model.nextz].z.toString().padEnd(12) +
-                                            model.t.toString().padEnd(14) + 
-                                            Math.trunc(model.photon.x).toString().padEnd(14) + 
-                                            model.photon.dx.toString().padEnd(14) + 
-                                            "\n" 
-                            model.nextz++
-                            //hitZ = true
-                            //debugger
-                        }*/
-
-
                         model.targets[model.nextTarget].hit = model.t
 
                         model.targets[model.nextTarget].z = z
-                        model.targets[model.nextTarget].dx = model.expanding ? dx2 : (model.photon.x - x)
+                        model.targets[model.nextTarget].dx = model.expanding ? dx2 : (1 - model.photon.dx)
                         
                         model.nextTarget++
                     }
                     if (hitZ) {
                         model.ztargets[model.nextz].hit = model.t
                         model.ztargets[model.nextz].x = model.expanding ? model.targets[Math.max(0, model.nextTarget - 1)].start : model.photon.x
-                        model.ztargets[model.nextz].dx = model.expanding ? model.targets[Math.max(0, model.nextTarget - 1)].dx : (model.photon.dx)
+                        model.ztargets[model.nextz].dx = model.expanding ? model.targets[Math.max(0, model.nextTarget - 1)].dx : (1 - model.photon.dx)
 
                         output.innerHTML += model.ztargets[model.nextz].z.toString().padEnd(12) +
                                             model.t.toString().padEnd(14) + 
