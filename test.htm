@@ -273,10 +273,15 @@ var zs = [
             
         }
 
-        ctxG.fillStyle = !black ? "black" : "white"
-        ctxG.fillText(yAxis.value, offset + 5, offset)
-        ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
+        ctxG.font = "14px sans-serif"
         
+        ctxG.fillStyle = !black ? "black" : "white"
+        ctxG.textAlign = "right"
+        ctxG.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxG.textAlign = "left"
+        ctxG.fillText(yAxis.value, offset + 5, offset)
+        
+        ctxG.font = "10px sans-serif"
         if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
             for (dgi = 0; dgi < 80; dgi+=5) {
                 ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
@@ -300,18 +305,28 @@ var zs = [
         }
 
         if (yAxis.selectedIndex === 5) {
-            for (dgi = 0; dgi < zs.length / 2; dgi++) {
+            for (dgi = 0; dgi < zs.length; dgi++) {
         
                 if (xAxis.selectedIndex === 1) {
-                    ctxG.beginPath()
-                    ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
-                    ctxG.fill()
+                    if (dgi < 25) {
+                        ctxG.beginPath()
+                        ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
+                        ctxG.fill()
+                    }
+                    else {
+                        ctxG.fillRect(-3 + offset + zs[dgi].d * zoomG, -3 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 6, 6)
+                    }
                 }
 
                 if (xAxis.selectedIndex === 0) {
-                    ctxG.beginPath()
-                    ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
-                    ctxG.fill()
+                    if (dgi < 25) {
+                        ctxG.beginPath()
+                        ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
+                        ctxG.fill()
+                    }
+                    else {
+                        ctxG.fillRect(-3 + offset + zs[dgi].t * zoomG, -3 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 6, 6)
+                    }
                 }
             }
         }
@@ -377,7 +392,6 @@ var zs = [
             model.targets.push({label: i/1000, start: i, x: i})
         }
 
-        model.ctx.font = "8px sans-serif"
         model.ctx.lineWidth = 3
         draw(model.ctx, model)
 
@@ -440,6 +454,8 @@ var zs = [
         
         model.running = true
 
+        var find = 0.16
+                    
         var x
         var i
         var batch = 100
@@ -450,6 +466,13 @@ var zs = [
                     x = model.photon.x
                     x2 = model.targets[model.nextTarget].x
                     model.next()
+
+                    var z = (model.photon.f_start - model.photon.f) / model.photon.f
+                    
+                    if (find && z >= find) {
+                        console.log(model.t, model.photon)
+                        find = 0
+                    }
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
 
@@ -463,7 +486,7 @@ var zs = [
 
                         model.targets[model.nextTarget].hit = model.t
 
-                        model.targets[model.nextTarget].z = (model.photon.f_start - model.photon.f) / model.photon.f
+                        model.targets[model.nextTarget].z = z
                         model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
                         
                         model.nextTarget++
@@ -559,12 +582,12 @@ var zs = [
         color: "green", 
         H: 0.0688,
         unitH: "ly/y/Mly",
-        //photon: {x: 0, dx: c},
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+        //photon: {x: 0, dx: c, f: 1, w: 299792460, f_start: 1},
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.photon.x
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 300000000 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
         }
     })
     setupModel({
@@ -578,7 +601,7 @@ var zs = [
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.t
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 300000000 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
         }
     })
     setupModel({
