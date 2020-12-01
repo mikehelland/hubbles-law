@@ -118,6 +118,8 @@
 </notes>
 
 <script>
+var black = false 
+
 var zs = [
     { z: 1, t: 7400, d: 10400 },
     { z: 2, t: 9880, d: 16400 },
@@ -208,10 +210,10 @@ var zs = [
     function drawGraph() {
         
         ctxG.lineWidth = 1
-        ctxG.fillStyle = "black"
+        ctxG.fillStyle = black ? "black" : "white"
         ctxG.fillRect(0, 0, graph.width, graph.height)
 
-        ctxG.strokeStyle = "white" 
+        ctxG.strokeStyle = !black ? "black" : "white"
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
         ctxG.lineWidth = 2
@@ -271,7 +273,7 @@ var zs = [
             
         }
 
-        ctxG.fillStyle = "white"
+        ctxG.fillStyle = !black ? "black" : "white"
         ctxG.fillText(yAxis.value, offset + 5, offset)
         ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
         
@@ -302,13 +304,13 @@ var zs = [
         
                 if (xAxis.selectedIndex === 1) {
                     ctxG.beginPath()
-                    ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
+                    //ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
                     ctxG.fill()
                 }
 
                 if (xAxis.selectedIndex === 0) {
                     ctxG.beginPath()
-                    ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
+                    //ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 2, 0, Math.PI * 2)
                     ctxG.fill()
                 }
             }
