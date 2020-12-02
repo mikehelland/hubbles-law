@@ -180,12 +180,13 @@ var zs = [
   ]
 
     var outputDiv = document.getElementById("output")
-    var trunc = n => Math.trunc(n * 100) / 100
+    var trunc = n => Math.trunc(n * 1000) / 1000
     var output = (model, photon) => {
         outputDiv.innerHTML += model.name + "\n" + 
                                 "t=" + model.t.toString().padEnd(8) + " d=" + 
                                 trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
-                                trunc(photon.dx) + ", f=" + trunc(photon.f) + "\n"
+                                trunc(photon.dx) + ", f=" + trunc(photon.f) + 
+                                ", w=" + trunc(299792460/photon.f) + "\n"
     }
     
     var zoutput = document.getElementById("zoutput")
