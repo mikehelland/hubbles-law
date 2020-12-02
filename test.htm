@@ -26,7 +26,7 @@
             }
 
             input {
-                width: 100px;
+                width: 80px;
             }
 
             .model-units {
@@ -94,7 +94,11 @@
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
     <hr>
-    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
+    Starting frequency=<input id="start-freq">
+    <br>
+    Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v">
+    
+    <pre id="output"></pre>
 </div>
 
 <p>Click a model to play or reset it.</p>
@@ -115,6 +119,8 @@
     <p>Sample z's (white dots when y-axis is redshift) from <a href="https://wolframalpha.com/" target="_out">WolframAlpha</a></p>
     <pre id="zoutput">
     </pre>
+
+    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
 </notes>
 
 <script>
@@ -173,9 +179,18 @@ var zs = [
     { z: 25, t: 14200, d: 38900 }
   ]
 
-    var output = document.getElementById("zoutput")
+    var outputDiv = document.getElementById("output")
+    var trunc = n => Math.trunc(n * 100) / 100
+    var output = (model, photon) => {
+        outputDiv.innerHTML += model.name + "\n" + 
+                                "t=" + model.t.toString().padEnd(8) + " d=" + 
+                                trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
+                                trunc(photon.dx) + ", f=" + trunc(photon.f) + "\n"
+    }
+    
+    var zoutput = document.getElementById("zoutput")
     for (var zz of zs) {
-        output.innerHTML += zz.z.toString().padEnd(12) +
+        zoutput.innerHTML += zz.z.toString().padEnd(12) +
                             (zz.t).toString().padEnd(14) + 
                             (zz.d).toString().padEnd(14) + 
                              "\n" 
@@ -186,6 +201,8 @@ var zs = [
     var graph = document.getElementById("graph")
     var ctxG = graph.getContext("2d")
     var models = []
+
+    var startFreqInput = document.getElementById("start-freq")
     
     
     // the models advance by 1 million years each step
@@ -411,7 +428,9 @@ var zs = [
     
         model.ran = false
         model.photon.x = 0
-        model.photon.f = 6e5
+        model.photon.f_start = startFreqInput.value || model.photon.f_start || 6e5 
+        model.photon.f = model.photon.f_start
+        model.photon.w = 299792460 / model.photon.f
         model.photon.dx = c
         model.nextTarget = 0
         model.targets.forEach(target => {
@@ -454,7 +473,10 @@ var zs = [
         
         model.running = true
 
-        var find = 0.16
+        var findT = document.getElementById("find-t").value
+        var findD = document.getElementById("find-d").value
+        var findZ = document.getElementById("find-z").value
+        var findV = document.getElementById("find-v").value
                     
         var x
         var i
@@ -468,10 +490,23 @@ var zs = [
                     model.next()
 
                     var z = (model.photon.f_start - model.photon.f) / model.photon.f
+                    model.photon.z = z
                     
-                    if (find && z >= find) {
-                        console.log(model.t, model.photon)
-                        find = 0
+                    if (findT && model.t >= findT) {
+                        output(model, model.photon)
+                        findT = 0
+                    }
+                    if (findZ && z >= findZ) {
+                        output(model, model.photon)
+                        findZ = 0
+                    }
+                    if (findD && model.photon.x >= findD) {
+                        output(model, model.photon)
+                        findD = 0
+                    }
+                    if (findV && model.photon.dx >= findV) {
+                        output(model, model.photon)
+                        findV = 0
                     }
 
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
