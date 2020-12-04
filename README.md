@@ -1,6 +1,6 @@
 This is a scientific hypothesis for cosmological redshift.
 
-Please provide your peer review in the repo Issues.
+Peer review is welcome in the repo Issues.
 
 ----
 
@@ -12,6 +12,8 @@ as a whole. Thus, in a certain sense, we again face a choice between a small fin
 universe indefinitely large plus a new principle of nature."
 
 Edwin Hubble, https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf, page 19, 1937
+
+----
 
 The computer models in this repo aim to supply that new principle of nature.
 
