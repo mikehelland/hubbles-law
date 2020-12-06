@@ -8,6 +8,7 @@
                 left: 730px;
                 top: 20px;
                 position: absolute;
+                display:none;
             
             }
             #graph {
@@ -66,7 +67,6 @@
 
 
 <div id="right-side">
-    <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
     <br>
     <br>
     X-axis: 
@@ -100,8 +100,8 @@
     targets frame of reference.
 </p>
 
-<p>Click a model to play or reset it.</p>
-
+<button id="startButton">Run All</button> <button id="stopButton">Stop</button>
+    
 <div id="details"></div>
 
 <p>If we the speed of light of c + it's source's motion, the preferred frame is no more.</p>
@@ -414,23 +414,7 @@
         div: document.getElementById("details2"),
         name: "Expanding, 74 km/s/Mpc",
         expanding: true,
-        color: "#888888", 
-        H: 0.0756,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, startX: 0},
-        next: function () {
-            this.photon.x += c
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H / 1000
-            }
-        }
-    })
-
-    setupModel({
-        div: document.getElementById("details2"),
-        name: "Expanding, 74 km/s/Mpc",
-        expanding: true,
-        color: "yellow", 
+        color: "orange", 
         H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {d: 0, x: 8000, sourceX: 8000, source_startX: 8000},
