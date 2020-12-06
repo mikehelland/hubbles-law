@@ -58,7 +58,7 @@
     </head>
 <body>
 
-<h3>Hubble's Law Testing Page </h3>
+<h3>Hubble's Law Expanding FOR </h3>
 
 <p>
     Read more about the models being tested <a href="index.htm">on the home page.</a> 
@@ -94,44 +94,21 @@
     <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
 </div>
 
+<div id="notes">
+
+<p>If light moves at c, and we model that naively with an absolute frame, we get different restults from the sources's frame of reference and the 
+    targets frame of reference.
+</p>
+
 <p>Click a model to play or reset it.</p>
 
 <div id="details"></div>
 
-<div id="notes">
-    <hr>
-    <p>Units of H for input boxes:</p>
+<p>If we the speed of light of c + it's source's motion, the preferred frame is no more.</p>
 
-    <ul>
-        <li>Inverse models:  Gly<sup>-1</sup></li>
-        <li>Others: light year / year / Gly</li>
-    </ul>
+<div id="details2"></div>
 
-    <p>1 megaparsec to Mly = 3.2638 Mly <a href="https://www.convertunits.com/from/megaparsec/to/Mly" target="_ou">https://www.convertunits.com/from/megaparsec/to/Mly</a></p>
-    <hr>
-    <p>Sample z's (white dots when y-axis is redshift) from <a href="https://lco.global/spacebook/light/redshift/" target="_ou">https://lco.global/spacebook/light/redshift/</a></p>
-    <table class="table is-fullwidth is-striped">
-        <thead> 	
-        <tr><th>z</th><th>Time the light has been traveling</th><th>Distance to the object now </th></tr>
-        </thead>
-        <tbody>
-        <tr><td>0.0000715</td><td>1 million years</td><td>1 million light years</td></tr>
-        <tr><td>0.10</td><td>1.286 billion years</td> <td>1.349 billion light years</td></tr>
-        <tr><td>0.25</td><td>2.916 billion years</td> <td>3.260 billion light years</td></tr>
-        <tr><td>0.5</td><td>5.019 billion years</td>  <td>5.936 billion light years</td></tr>
-        <tr><td>1</td><td>7.731 billion years</td>    <td>10.147 billion light years</td></tr>
-        <tr><td>2</td><td>10.324 billion years</td>   <td>15.424 billion light years</td></tr>
-        <tr><td>3</td><td>11.476 billion years</td>   <td>18.594 billion light years</td></tr>
-        <tr><td>4</td><td>12.094 billion years</td>   <td>20.745 billion light years</td></tr>
-        <tr><td>5</td><td>12.469 billion years</td>   <td>22.322 billion light years</td></tr>
-        <tr><td>6</td><td>12.716 billion years</td>   <td>23.542 billion light years</td></tr>
-        <tr><td>7</td><td>12.888 billion years</td>   <td>24.521 billion light years</td></tr>
-        <tr><td>8</td><td>13.014 billion years</td>   <td>25.329 billion light years</td></tr>
-        <tr><td>9</td><td>13.110 billion years</td>   <td>26.011 billion light years</td></tr>
-        <tr><td>10</td><td>13.184 billion years</td>  <td>26.596 billion light years</td></tr>
-    </tbody>
-    </table>
-</notes>
+</div>
 
 <script>
 
@@ -151,9 +128,9 @@
 
     var c = 1
 
-    var zoom = 0.056
-    var zoom_gx = 0.65
-    var zoom_gy = 0.18
+    var zoom = 0.016
+    var zoom_gx = 3
+    var zoom_gy = 3
     var zoomG = zoom * zoom_gx
     var zoomGY = zoom * zoom_gy
     var offset = 20
@@ -179,7 +156,7 @@
                 if (dgt.hit) {
 
                     if (xAxis.selectedIndex === 0) {
-                        drawx = dgt.start
+                        drawx = !dgm.backwards ? dgt.start : (dgm.photon.startX - dgt.start )
                     }
                     else {
                         drawx = dgt.hit
@@ -239,20 +216,6 @@
             ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
         }
 
-        //if (yAxis.selectedIndex === 5) {
-            for (dgi = 0; dgi < zs.length; dgi++) {
-                ctxG.beginPath()
-                ctxG.arc(offset + zs[dgi][1] * zoomG, -offset + graph.height - zs[dgi][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
-                ctxG.fill()
-            }
-        //}
-        //if (yAxis.selectedIndex === 0) {
-            for (dgi = 0; dgi < ts.length; dgi++) {
-                ctxG.beginPath()
-                ctxG.arc(offset + ts[dgi][1] * zoomG, -offset + graph.height - zs[dgi][0] * zoomGY * 10000, 2, 0, Math.PI * 2)
-                ctxG.fill()
-            }
-        //}
     }
 
     function setupModel(model) {
@@ -288,7 +251,7 @@
 
         }
             
-        
+        var details = model.div
         details.appendChild(header)
         
         model.canvas = document.createElement("canvas")
@@ -311,7 +274,7 @@
         
         // make a target every 200 million light years until 20 billion
         model.targets = []
-        for (var i = 200; i <= 20000; i+=200) {
+        for (var i = 200; i <= 7800; i+=200) {
             model.targets.push({label: i/1000, start: i, x: i})
         }
 
@@ -337,7 +300,7 @@
         model.photon.x = model.photon.startX
         model.photon.f = 6e5
         model.photon.dx = c
-        model.nextTarget = 0
+        model.nextTarget = !model.backwards ? 0 : (model.targets.length - 1)
         model.targets.forEach(target => {
             target.x = target.start
             target.hit = 0
@@ -390,28 +353,24 @@
                     x2 = model.targets[model.nextTarget].x
                     model.next()
 
-                    if (model.targets[model.nextTarget].x <= model.photon.x) {
-
-                        if (model.targets[model.nextTarget].start === 3400) {
-                            console.log(model.name, 
-                                model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x),
-                                model.t)
-                        }
-
-
+                    if ((!model.backwards && model.targets[model.nextTarget].x <= model.photon.x)
+                            || (model.backwards && model.targets[model.nextTarget].x >= model.photon.x)) {
 
                         model.targets[model.nextTarget].hit = model.t
 
                         model.targets[model.nextTarget].z = (model.photon.f_start - model.photon.f) / model.photon.f
                         model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
                         
-                        model.nextTarget++
+                        model.nextTarget += !model.backwards ? 1 : -1
                     }
+                    
                 }
                 else {
                     clearInterval(model.handle)
+                    console.log("clearing")
                     model.running = false
                     model.ran = true
+                    break
                 }
             }
         }, 0)
@@ -419,7 +378,7 @@
 
 
     setupModel({
-        div: document.getElementById("expandingFast"),
+        div: document.getElementById("details"),
         name: "Expanding, 74 km/s/Mpc",
         expanding: true,
         color: "#888888", 
@@ -433,34 +392,32 @@
             }
         }
     })
+
     setupModel({
-        div: document.getElementById("expandingSlow"),
-        name: "Expanding, 67 km/s/Mpc",
+        div: document.getElementById("details"),
+        name: "Expanding, 74 km/s/Mpc",
         expanding: true,
-        color: "#888888", 
-        H: 0.0688,
+        color: "#880000", 
+        H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {x: 5000, startX: 5000},
+        photon: {x: 8000, startX: 8000},
+        backwards: true,
         next: function () {
-            this.photon.x -= c - this.H / 1000 * this.photon.startX
+            this.photon.x -= c
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].x += this.targets[i].start * this.H / 1000
             }
-
-            if (this.photon.x <= 0) {
-                console.log(this.t)
-                debugger
-            }
         }
     })
+
     setupModel({
-        div: document.getElementById("expandingSlow"),
-        name: "Expanding, 54 km/s/Mpc",
+        div: document.getElementById("details2"),
+        name: "Expanding, 74 km/s/Mpc",
         expanding: true,
         color: "#888888", 
-        H: 0.0556,
+        H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {x: 0},
+        photon: {x: 0, startX: 0},
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -469,6 +426,24 @@
         }
     })
 
+    setupModel({
+        div: document.getElementById("details2"),
+        name: "Expanding, 74 km/s/Mpc",
+        expanding: true,
+        color: "yellow", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {d: 0, x: 8000, sourceX: 8000, source_startX: 8000},
+        backwards: true,
+        next: function () {
+            this.photon.sourceX += this.photon.source_startX * this.H / 1000
+            this.photon.d += c
+            this.photon.x = this.photon.sourceX - this.photon.d
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+        }
+    })
 
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
@@ -489,47 +464,6 @@ document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy
 var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
 
-var zs = [
-[0.0000715, 	1],
-[0.10, 	        1286 ],
-[0.25, 	        2916 ],
-[0.5, 	        5019 ],
-[1, 	        7731 ],
-[2, 	        10324],
-[3, 	        11476],
-[4, 	        12094],
-[5, 	        12469],
-[6, 	        12716],
-[7, 	        12888],
-[8, 	        13014],
-[9, 	        13110],
-[10, 	        13184]
-]
-
-var ts = [
-[1, 	1],
-[1286  	 ,	1349 ],
-[2916  	 ,	3260 ],
-[5019 	 ,	5936 ],
-[7731     ,	10147],
-[10324    , 	15424],
-[11476    , 	18594],
-[12094    , 	20745],
-[12469    , 	22322],
-[12716    , 	23542],
-[12888    , 	24521],
-[13014    , 	25329],
-[13110    , 	26011],
-[13184     , 	26.596] 
-]
-
-setTimeout(() => {
-    //models.forEach(model => runModel(model))
-}, 500)
-
-setTimeout(() => {
-    //models.forEach(model => stopModel(model))
-}, 10000)
 
 </script>
 
