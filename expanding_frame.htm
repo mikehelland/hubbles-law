@@ -66,34 +66,6 @@
 </p>
 
 
-<div id="right-side">
-    <br>
-    <br>
-    X-axis: 
-    <select id="graph-x-axis">
-        <option>starting distance to target (billion light years)</option>
-        <option>time to target (billions of years)</option>
-    </select>
-    <br>    
-    Y-axis: 
-    <select id="graph-y-axis">
-        <option>time to target (billions of years)</option>
-        <option>time difference from static (billions of years)</option>
-        <option>delayed time / static time - 1</option>
-        <option>(1 - static time / delayed time)</option>
-        <option>(1 - v)</option>
-        <option>z redshift</option>
-    </select>
-    <br>
-    <canvas id="graph" height="600" width="600"></canvas>
-    <br>
-    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
-    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
-
-    <hr>
-    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
-</div>
-
 <div id="notes">
 
 <p>If light moves at c, and we model that naively using an absolute frame, we get different restults from the sources's frame of reference and the 
@@ -108,14 +80,43 @@
 
 <div id="details2"></div>
 
+<hr>
+
+<p>To make this work, the source of the photon is put in motion with the targets.
+    The photon's distance (d) from its source still increases as normal, but when checking
+    to see if the photon has reached a target, you use the source's position + the photon's distance.
+
+<pre>
+    photon: {d: 0, x: 8000, sourceX: 8000, source_startX: 8000},
+    next: function () {
+        this.photon.sourceX += this.photon.source_startX * this.H / 1000
+        this.photon.d += c
+        this.photon.x = this.photon.sourceX - this.photon.d
+        for (var i = 0; i < this.targets.length; i++) {
+            this.targets[i].x += this.targets[i].start * this.H / 1000
+        }
+    }
+</pre>
+
+<p>This results in an emission theory of light, which, isn't good news since it's not valid.</p> 
+
+<blockquote>
+    Emission theory, also called emitter theory or ballistic theory of light, was a competing theory for the special theory of relativity, explaining the results of the Michelson–Morley experiment of 1887. Emission theories obey the principle of relativity by having no preferred frame for light transmission, but say that light is emitted at speed "c" relative to its source instead of applying the invariance postulate. Thus, emitter theory combines electrodynamics and mechanics with a simple Newtonian theory. Although there are still proponents of this theory outside the scientific mainstream, this theory is considered to be conclusively discredited by most scientists.
+
+    <br>
+    <br>
+    <a href="https://en.wikipedia.org/wiki/Emission_theory">https://en.wikipedia.org/wiki/Emission_theory</a>
+
+</blockquote>
+
+
+
 </div>
 
 <script>
 
     var details = document.getElementById("details")
 
-    var graph = document.getElementById("graph")
-    var ctxG = graph.getContext("2d")
     var models = []
     
     
@@ -128,96 +129,9 @@
 
     var c = 1
 
-    var zoom = 0.016
-    var zoom_gx = 3
-    var zoom_gy = 3
-    var zoomG = zoom * zoom_gx
-    var zoomGY = zoom * zoom_gy
+    var zoom = 0.03
     var offset = 20
     
-    var zoomz = 10000
-
-    var drawx, drawy, dgt, dgm, dgi
-    function drawGraph() {
-        
-        ctxG.lineWidth = 1
-        ctxG.fillStyle = "black"
-        ctxG.fillRect(0, 0, graph.width, graph.height)
-
-        ctxG.strokeStyle = "white" 
-        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
-        
-        ctxG.lineWidth = 2
-        for (dgm of models) {
-            ctxG.strokeStyle = dgm.color
-            ctxG.beginPath()
-            ctxG.moveTo(offset, graph.height - offset)
-            for (dgt of dgm.targets) {
-                if (dgt.hit) {
-
-                    if (xAxis.selectedIndex === 0) {
-                        drawx = !dgm.backwards ? dgt.start : (dgm.photon.startX - dgt.start )
-                    }
-                    else {
-                        drawx = dgt.hit
-                    }
-
-                    if (yAxis.selectedIndex === 0) {
-                        drawy = dgt.hit
-                    }
-                    else if (yAxis.selectedIndex === 1) {
-                        // show the difference in time with a static model
-                        drawy = dgt.hit - dgt.start
-                    }
-                    else if (yAxis.selectedIndex === 2) {
-                        // show the ratio with a static model
-                        drawy = (dgt.hit / dgt.start - 1) * 10000
-                    }
-                    else if (yAxis.selectedIndex === 3) {
-                        // show the inverse ratio with a static model
-                        drawy = (1 - dgt.start / dgt.hit) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 4) {
-                        // v_light or v_target
-                        drawy = (1 - dgt.dx) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 5) {
-                        // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
-
-                    }
-
-                    ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
-
-                }
-            }
-            ctxG.stroke()
-            
-        }
-
-        ctxG.fillStyle = "white"
-        ctxG.fillText(yAxis.value, offset + 5, offset)
-        ctxG.fillText(xAxis.value, graph.width - 240, graph.height - 30)
-        
-        if (yAxis.selectedIndex < 2) {
-            for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=2) {
-                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
-            }
-        }
-
-        for (dgi = 0; dgi < 16; dgi+=2) {
-            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
-        }
-
-    }
-
     function setupModel(model) {
 
         var header = document.createElement("div")
@@ -298,8 +212,11 @@
     
         model.ran = false
         model.photon.x = model.photon.startX
+        model.photon.d = 0
         model.photon.f = 6e5
         model.photon.dx = c
+        model.photon.sourceX = model.photon.source_startX
+        
         model.nextTarget = !model.backwards ? 0 : (model.targets.length - 1)
         model.targets.forEach(target => {
             target.x = target.start
@@ -311,9 +228,10 @@
         draw(model.ctx, model)
     }
 
+    var offset = 40
+        
     function draw(ctx, exp) {
 
-        var offset = ctx.canvas.width / 2
         ctx.fillStyle = "black"
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
@@ -381,7 +299,7 @@
         div: document.getElementById("details"),
         name: "Expanding, 74 km/s/Mpc",
         expanding: true,
-        color: "#888888", 
+        color: "blue", 
         H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0, startX: 0},
@@ -417,7 +335,7 @@
         color: "orange", 
         H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {d: 0, x: 8000, sourceX: 8000, source_startX: 8000},
+        photon: {d: 0, x: 8000, startX: 8000, sourceX: 8000, source_startX: 8000},
         backwards: true,
         next: function () {
             this.photon.sourceX += this.photon.source_startX * this.H / 1000
@@ -436,17 +354,10 @@
             }
         }
 
-        drawGraph()
     }, 1000 / 60)
 
 document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
 document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
-
-document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
-document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
-
-var yAxis = document.getElementById("graph-y-axis")
-var xAxis = document.getElementById("graph-x-axis")
 
 
 </script>
