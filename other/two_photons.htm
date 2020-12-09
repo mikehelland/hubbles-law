@@ -482,7 +482,7 @@ var zs = [
         H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0},
-        offset: 287,
+        offset: 289,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -515,7 +515,7 @@ var xAxis = document.getElementById("graph-x-axis")
 setTimeout(() => {
     runModel(models[0])
     //models.forEach(model => runModel(model))
-}, 500)
+}, 2000)
 
 setTimeout(() => {
     //models.forEach(model => stopModel(model))
