@@ -1,0 +1,523 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #right-side {
+                left: 730px;
+                top: 20px;
+                position: absolute;
+            
+            }
+            #graph {
+                height:600px;
+                width: 600px;
+            }
+            .model-label {
+                margin: 4px 0;
+                
+                
+            }
+
+            hr {
+                opacity: 0.1;
+                margin:18px;
+            }
+
+            input {
+                width: 80px;
+            }
+
+            .model-units {
+                columns: #444444;
+                font-size: 12px;
+                padding-left:4px;
+            }
+
+            #details, #notes {
+                width:700px;
+            }
+            #notes {
+                margin-left: 20px;
+            }
+
+            .model-header {
+                padding:4px;
+                display:flex;
+                align-items: center;
+            }
+            .header-spacer {
+                flex-grow: 1
+            }
+
+            td, th {
+                padding:4px 20px;
+            }
+        </style>
+    </head>
+<body>
+
+<h3>Hubble's Law Two Photon </h3>
+
+<p>
+    Read more about the models being tested <a href="index.htm">on the home page.</a> 
+</p>
+
+
+<div id="right-side">
+    X-axis: 
+    <select id="graph-x-axis">
+        <option>starting distance to target (billion light years)</option>
+        <option>time to target (billions of years)</option>
+        <option>z redshift</option>
+    </select>
+    <br>    
+    Y-axis: 
+    <select id="graph-y-axis">
+        <option>time to target (billions of years)</option>
+        <option>time difference from static (billions of years)</option>
+        <option>delayed time / static time - 1</option>
+        <option>(1 - static time / delayed time)</option>
+        <option>(1 - v)</option>
+        <option>z redshift</option>
+        <option>starting distance to target (billion light years)</option>
+        
+    </select>
+    <br>
+    <canvas id="graph" height="600" width="600"></canvas>
+    <br>
+    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
+    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
+
+</div>
+
+<p>Click a model to play or reset it.</p>
+
+<div id="details"></div>
+
+
+<div id="notes">
+    <p>Description:</p>
+    <p><img src="../img/two_photons.png"></p>
+    <p>Click "Run", the top will run. The second model will automatically start when Photon A is 500 Mly from the last target.</p>
+    <button id="startButton">Run</button> <button id="stopButton">Stop</button>
+    <pre id="output"></pre>
+</div>
+
+<script>
+var black = true
+
+var zs = [
+    { z: 1, t: 7400, d: 10400 },
+    { z: 2, t: 9880, d: 16400 },
+    { z: 3, t: 11000, d: 20100 },
+    { z: 4, t: 11600, d: 22800 },
+    { z: 5, t: 11900, d: 24700 },
+    { z: 6, t: 12200, d: 26200 },
+    { z: 7, t: 12300, d: 27500 },
+    { z: 8, t: 12400, d: 28500 },
+    { z: 9, t: 12500, d: 29400 },
+    { z: 10, t: 12600, d: 30100 },
+    { z: 11, t: 12700, d: 30700 },
+    { z: 12, t: 12700, d: 31300 },
+    { z: 13, t: 12700, d: 31800 },
+    { z: 14, t: 12800, d: 32300 },
+    { z: 15, t: 12800, d: 32700 },
+    { z: 16, t: 12800, d: 33100 },
+    { z: 17, t: 12800, d: 33400 },
+    { z: 18, t: 12900, d: 33700 },
+    { z: 19, t: 12900, d: 34000 },
+    { z: 20, t: 12900, d: 34300 },
+    { z: 21, t: 12900, d: 34600 },
+    { z: 22, t: 12900, d: 34800 },
+    { z: 23, t: 12900, d: 35000 },
+    { z: 24, t: 12900, d: 35200 },
+    { z: 25, t: 12900, d: 35400 }
+  ]
+
+
+    var details = document.getElementById("details")
+
+    var graph = document.getElementById("graph")
+    var ctxG = graph.getContext("2d")
+    var models = []
+    
+    var output = document.getElementById("output")
+    
+    // the models advance by 1 million years each step
+    // the units for distance are in Mly (million light years)
+
+    // the speed of light is 1 million lightyears per million years
+    
+    // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
+
+    var c = 1
+
+    var zoom = 0.256
+    var zoom_gx = 0.65
+    var zoom_gy = 0.18
+    var zoomG = zoom * zoom_gx
+    var zoomGY = zoom * zoom_gy
+    var offset = 20
+    
+    var zoomz = 10000
+
+    var drawx, drawy, dgt, dgm, dgi
+    function drawGraph() {
+        
+        ctxG.lineWidth = 1
+        ctxG.fillStyle = black ? "black" : "white"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.strokeStyle = !black ? "black" : "white"
+        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        
+        ctxG.lineWidth = 2
+        for (dgm of models) {
+            ctxG.strokeStyle = dgm.color
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+            for (dgt of dgm.targets) {
+                if (dgt.hit) {
+
+                    if (xAxis.selectedIndex === 0) {
+                        drawx = dgt.start
+                    }
+                    else if (xAxis.selectedIndex === 1) {
+                        drawx = dgt.hit
+                    }
+                    else if (xAxis.selectedIndex === 2) {
+                        drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+                    }
+
+                    if (yAxis.selectedIndex === 0) {
+                        drawy = dgt.hit
+                    }
+                    else if (yAxis.selectedIndex === 1) {
+                        // show the difference in time with a static model
+                        drawy = dgt.hit - dgt.start
+                    }
+                    else if (yAxis.selectedIndex === 2) {
+                        // show the ratio with a static model
+                        drawy = (dgt.hit / dgt.start - 1) * 10000
+                    }
+                    else if (yAxis.selectedIndex === 3) {
+                        // show the inverse ratio with a static model
+                        drawy = (1 - dgt.start / dgt.hit) * 10000
+
+                    }
+                    else if (yAxis.selectedIndex === 4) {
+                        // v_light or v_target
+                        drawy = (1 - dgt.dx) * 10000
+
+                    }
+                    else if (yAxis.selectedIndex === 5) {
+                        // z = (freq_emit - freq_observes) / freq_observer
+                        drawy = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+
+                    }
+                    else if (yAxis.selectedIndex === 6) {
+                        drawy = dgt.start
+
+                    }
+
+                    ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
+
+                }
+            }
+            ctxG.stroke()
+            
+        }
+
+        ctxG.font = "14px sans-serif"
+        
+        ctxG.fillStyle = !black ? "black" : "white"
+        ctxG.textAlign = "right"
+        ctxG.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxG.textAlign = "left"
+        ctxG.fillText(yAxis.value, offset + 5, offset)
+        
+        ctxG.font = "10px sans-serif"
+        if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 1000; dgi+=10) {
+                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+            }
+        }
+
+        if (xAxis.selectedIndex < 2) {
+            for (dgi = 0; dgi < 100; dgi+=2) {
+                ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 110; dgi+=10) {
+                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomGY + 4, graph.height - 5)    
+            }
+        }
+
+        if (yAxis.selectedIndex === 5) {
+            for (dgi = 0; dgi < zs.length; dgi++) {
+        
+                if (xAxis.selectedIndex === 1) {
+                    ctxG.beginPath()
+                    ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
+                    ctxG.fill()
+                }
+
+                if (xAxis.selectedIndex === 0) {
+                    ctxG.beginPath()
+                    ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
+                    ctxG.fill()
+                }
+            }
+        }
+    }
+
+    function setupModel(model) {
+
+        var header = document.createElement("div")
+        header.className = "model-header"
+
+
+        label = document.createElement("div")
+        label.innerHTML = model.name
+        label.className = "model-label"
+        header.appendChild(label)
+
+        if (model.H) {
+            var label = document.createElement("div")
+            label.innerHTML = "H = "
+            label.className = "input-label"
+                    
+            var input = document.createElement("input")
+            input.type = "number"
+            input.value = model.H
+            input.step = 0.0001
+            
+            input.onchange = e => model.H = parseFloat(input.value)
+
+            var spacer = document.createElement("div")
+            spacer.innerHTML = "&nbsp;"//model.unitH
+            spacer.className = "header-spacer"
+
+            header.appendChild(spacer)
+            header.appendChild(label)
+            header.appendChild(input)
+
+        }
+            
+        
+        details.appendChild(header)
+        
+        model.canvas = document.createElement("canvas")
+        model.canvas.onclick = () => {
+            if (model.running || model.ran) {
+                resetModel(model)
+            }
+            else {
+                runModel(model)
+            }
+        }
+        details.appendChild(model.canvas)
+        details.appendChild(document.createElement("br"))
+
+        model.ctx = model.canvas.getContext("2d")
+        model.nextTarget = 0
+
+        model.canvas.width = 700
+        model.canvas.height = 30
+        
+        // make a target every 200 million light years until 20 billion
+        model.targets = []
+        var count = models.length === 0 ? 1500 : 500
+        for (var i = 100; i <= count; i+=100) {
+            model.targets.push({label: i/1000, start: i, x: i})
+        }
+
+        model.ctx.lineWidth = 3
+        draw(model.ctx, model)
+
+        models.push(model)
+    }
+
+    function stopModel(model) {
+        clearInterval(model.handle)
+
+        model.running = false
+        model.ran = true
+    }
+
+    function resetModel(model) {
+        
+        stopModel(model)
+    
+        model.ran = false
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+
+        draw(model.ctx, model)
+    }
+
+    function draw(ctx, exp) {
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        for (var i = 0; i < exp.targets.length; i++) {
+            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * zoom, 0)
+            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
+            //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
+
+            if (exp.targets[i].hit) {
+                //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+                //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
+            }
+
+            ctx.stroke()
+        }
+
+        ctx.fillStyle = "yellow"
+        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+    }
+
+    function runModel(model) {
+        resetModel(model)
+        
+        var first = models.indexOf(model) === 0
+        var secondStarted = false
+        model.running = true
+                    
+        var x
+        var i
+        var batch = 1
+        model.handle = setInterval(function () {
+            for (i = 0; i < batch; i++) {
+                if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
+                    model.t++
+                    x = model.photon.x
+                    x2 = model.targets[model.nextTarget].x
+                    model.next()
+
+                    var z = (model.photon.f_start - model.photon.f) / model.photon.f
+                    model.photon.z = z
+                    
+                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+
+                        if (model.targets[model.nextTarget].start === 3400) {
+                            console.log(model.name, 
+                                model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x),
+                                model.t)
+                        }
+
+
+
+                        model.targets[model.nextTarget].hit = model.t
+
+                        model.targets[model.nextTarget].z = z
+                        model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
+                        
+                        model.nextTarget++
+
+                        if (model.nextTarget === model.targets.length) {
+                            output.innerHTML += (first ? "1st" : "2nd") + " ended at t=" + (model.t + model.t_start) + "\n"
+                        }
+                    }
+
+
+                    if (first && !secondStarted) {
+                        if (model.targets[model.targets.length - 1].x - model.photon.x <= 500) {
+                            runModel(models[1])
+                            //output.innerHTML += " 2nd started at " + model.t + "\n"
+                            models[0].t_start = 0
+                            models[1].t_start = model.t
+                            secondStarted = true
+                        }
+                    }
+                }
+                else {
+                    clearInterval(model.handle)
+                    model.running = false
+                    model.ran = true
+                }
+            }
+        }, 0)
+    }
+
+    setupModel({
+        div: document.getElementById("expandingFast"),
+        name: "Photon A",
+        expanding: true,
+        color: "yellow", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+        }
+    })
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Photon B",
+        expanding: true,
+        color: "blue", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+        }
+    })
+    
+
+    setInterval(() => {
+        for (var m = 0; m < models.length; m++) {
+            if (models[m].running) {
+                draw(models[m].ctx, models[m]) 
+            }
+        }
+
+        drawGraph()
+    }, 1000 / 60)
+
+document.getElementById("startButton").onclick = e => runModel(models[0])
+document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
+
+document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
+document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
+
+var yAxis = document.getElementById("graph-y-axis")
+var xAxis = document.getElementById("graph-x-axis")
+
+
+setTimeout(() => {
+    runModel(models[0])
+    //models.forEach(model => runModel(model))
+}, 500)
+
+setTimeout(() => {
+    //models.forEach(model => stopModel(model))
+}, 10000)
+
+</script>
+
