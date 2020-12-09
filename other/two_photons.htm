@@ -379,8 +379,8 @@ var zs = [
         for (var i = 0; i < exp.targets.length; i++) {
             ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
             ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * zoom, 0)
-            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
+            ctx.moveTo(exp.offset + exp.targets[i].x * zoom, 0)
+            ctx.lineTo(exp.offset + exp.targets[i].x * zoom, ctx.canvas.height)
             //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
 
             if (exp.targets[i].hit) {
@@ -392,7 +392,7 @@ var zs = [
         }
 
         ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
+        ctx.fillRect(exp.offset + exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
     }
 
     function runModel(model) {
@@ -466,6 +466,7 @@ var zs = [
         H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0},
+        offset: 0,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
@@ -481,6 +482,7 @@ var zs = [
         H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0},
+        offset: 287,
         next: function () {
             this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
