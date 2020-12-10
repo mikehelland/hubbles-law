@@ -1,0 +1,138 @@
+[b]Part 1. The Evidence[/b]
+
+The expanding universe:
+
+            [list]
+                [*]explains the observed [url=redshift.htm]cosmological redshifts[/url]
+                [*]tells us the age and size of the universe
+                [*]predicts the CMB
+                [*]passes the Tolman Surface Brightness test
+                [*]all based on well understood principles
+            [/list]
+
+The problem is, in 2020, [i]none of that is totally true[/i]. 
+
+[b]Redshift and Hubble tension[/b]
+
+Based on the observed redshifts, how fast do we think the universe is expanding? The latest precise measurements disagree.
+
+        [list]
+        [*][url=https://www.livescience.com/hubble-constant-crisis-deepens.html]No One Can Agree How Fast Universe Is Expanding. New Measure Makes Things Worse.[/url]
+        [*][url=https://www.scientificamerican.com/article/best-yet-measurements-deepen-cosmological-crisis/]Best-Yet Measurements Deepen Cosmological Crisis[/url]
+        [*]More at [url=https://duckduckgo.com/?q=hubble+constant+crisis]DuckDuckGo[/url]
+        [/list]
+
+[b]Age and size of the universe[/b]
+
+If the universe started with a Big Bang, as we look back in space and time, 
+            we should be seeing fewer and fewer mature galaxies, and eventually only young galaxies. 
+            In the 21st century observations show that's not true:
+
+        [list]
+            [*][url=https://skyandtelescope.org/astronomy-news/dead-ringer-milky-way-found-early-universe/]"Dead Ringer" for the Milky Way Found in Early Universe[/url]
+            [*][url=https://www.space.com/how-can-a-star-be-older-than-the-universe.html] How Can a Star Be Older Than the Universe?[/url]
+            [*][url=https://www.sciencedaily.com/releases/2015/03/150302122925.htm] Old-looking galaxy in a young universe: Astronomers find dust in the early universe[/url]
+            [*][url=https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E] Ancient planets are almost as old as the universe[/url]
+            [*]Lots more [url=https://old.reddit.com/r/BigBangSkeptics]here.[/url]
+        [/list]
+
+The size of the things we observe in the universe doesn't seem to be constrained by what we assume are the theoretical limits they could reach
+            given the age and size of the universe. From [url=https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures]Wikipedia[/url]:
+
+        [img]https://mikehelland.github.io/hubbles-law/img/size_limit.png[/img]
+    
+And then there's the weird coincidence that the age of the universe is about equal c/H, the 
+            radius of [url=https://en.wikipedia.org/wiki/Hubble_volume]the Hubble Volume[/url]. 
+            If we were living 5 billion years ago, or 5 billion years from now, the age of the universe and Hubble's radius would be unrelated.
+            By [i]pure[/i] coincidence, we are living when they match.
+
+[b]The CMB[/b]
+
+You may have heard that the Big Bang theory predicted the CMB. That's sort of true. 
+            The Big Bang predicted a black body radition, which was right, although not at the right temperature.
+
+[img]https://mikehelland.github.io/hubbles-law/img/cmb_predictions.png[/img]
+
+CMB was discovered in 1964 at 3K. The most accurate preditions for the background temperature of space were based on a stationary universe, not an expanding one.
+
+That's not a deal breaker, but it's a major coincidence. 
+
+If we were living 5 billion years from now, or 5 billion years in the past, the CMB would be a different temperature according to the Big Bang.
+            It's apparently just a [i]pure coincidence[/i] that the CMB is the same temperature today as the minimum temperature for stuff in our galaxy.        
+
+All of that could be ignored, but in the last decade anomalies have been spotted in the CMB. It's cooler to one side than the other.
+
+        [quote]
+            Two Cosmic Microwave Background anomalous features hinted at by Planck's predecessor, NASA's Wilkinson Microwave Anisotropy Probe (WMAP), 
+            are confirmed in the new high precision data from Planck.  One is an asymmetry in the average temperatures on opposite hemispheres of the 
+            sky, with slightly higher average temperatures in the southern ecliptic hemisphere and slightly lower 
+            average temperatures in the northern ecliptic hemisphere. [b]This runs counter to the prediction made by the standard model that the Universe 
+            should be broadly similar in any direction we look.[/b] There is also a cold spot that extends over a patch of sky that is much larger 
+            than expected. 
+            
+            [url=https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background]
+                https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background[/url]
+        [/quote]
+
+The CMB is predicted to be the same temperature in all directions. It is not.
+
+We see a cold spot to the south. In the diagram, does the south observer see a cold spot to their south? 
+            Does the north observer see the same CMB anomalies as we do?
+
+[img]https://mikehelland.github.io/hubbles-law/img/cmbobservers.png[/img]
+
+This is a question the expanding universe theory doesn't have a clear answer for.
+        
+However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
+            then there are no anomalies or questions. The cold spot is to [i]our[/i] south, but to the southern observer the cold spot is in their vicinity. 
+
+[b]Tolman Surface Brightness Test[/b]
+
+The Tolman Surface Brightness Test is meant to distinguish a static universe from an expanding one.
+
+An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.
+            
+        [quote]"The exponent found is not 4 as expected in the simplest expanding model, but 2.6 or 3.4, depending on the frequency band."
+            
+            [url=https://en.wikipedia.org/wiki/Tolman_surface_brightness_test]https://en.wikipedia.org/wiki/Tolman_surface_brightness_test[/url]
+        [/quote]
+    
+[b]Dark Principles[/b]        
+
+The Big Bang originally was about the universe expanding presently, and thus growing from a single point in the past:
+     
+[img]https://mikehelland.github.io/hubbles-law/img/expansion_classic.jpg[/img]
+
+That model broke in the 1970's. To make a software analogy, there were a lot of bugs that needed patching. Such as:
+
+        [list]
+            [*][url=https://en.wikipedia.org/wiki/Horizon_problem]Horizon Problem[/url]
+            [*][url=https://en.wikipedia.org/wiki/Flatness_problem]Flatness Problem[/url]
+            [*][url=https://en.wikipedia.org/wiki/Big_Bang#Magnetic_monopoles]Magnetic Monopole Problem[/url]
+        [/list]
+
+They came up with a cool trick to solve this problems, cram 1 trillion years of expansion into a single nanosecond, called inflation:
+
+[img]https://mikehelland.github.io/hubbles-law/img/cosmicinflation.jpg[/img]
+
+For these reasons and others, the widely accepted expansion theory is increasingly being compared to outdated software: 
+            burdened by outlandish patches and still full of bugs:
+
+            [quote]
+                [i]The big bang today relies on a growing number of hypothetical entities, things that we have never observed -- inflation, dark matter and dark energy are the most prominent examples. Without them, there would be a fatal contradiction between the observations made by astronomers and the predictions of the big bang theory. In no other field of physics would this continual recourse to new hypothetical objects be accepted as a way of bridging the gap between theory and observation. It would, at the least, raise serious questions about the validity of the underlying theory.
+            
+            What is more, the big bang theory can boast of no quantitative predictions that have subsequently been validated by observation. The successes claimed by the theory's supporters consist of its ability to retrospectively fit observations with a steadily increasing array of adjustable parameters, just as the old Earth-centered cosmology of Ptolemy needed layer upon layer of epicycles.
+                [/i]
+                
+                [url=http://cosmology.info/media/open-letter-on-cosmology.html]Open Letter on Cosmology / Cosmology Statement[/url] (2004)
+            [/quote]
+
+More:
+            [list]
+                [*]1995: [url=https://www.nature.com/articles/377099a0]Nature: Big Bang not yet dead but in decline[/url]
+                [*]2002: [url=http://web.archive.org/web/20160421052311/http://metaresearch.org/cosmology/BB-top-30.asp]Top 30 Problems of the Big Bang[/url]
+                [*]2019: [url=https://blogs.scientificamerican.com/observations/cosmology-has-some-big-problems/]Cosmology Has Some Big Problems[/url]
+                [*]More [url=http://cosmology.info/resources/index.html]here.[/url]
+            [/list]
+
+The evidence in 2020 contorts the Big Bang model into something rather unrecognizable driven by unobserved forces and weird coincidences.
