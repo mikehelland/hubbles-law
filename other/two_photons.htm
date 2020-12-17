@@ -335,7 +335,7 @@ var zs = [
         
         // make a target every 200 million light years until 20 billion
         model.targets = []
-        var count = models.length === 0 ? 1500 : 500
+        var count = models.length%2 === 0 ? 1500 : 500
         for (var i = 100; i <= count; i+=100) {
             model.targets.push({label: i/1000, start: i, x: i})
         }
@@ -398,7 +398,8 @@ var zs = [
     function runModel(model) {
         resetModel(model)
         
-        var first = models.indexOf(model) === 0
+        var modelI = models.indexOf(model)
+        var first = modelI%2 === 0
         var secondStarted = false
         model.running = true
                     
@@ -418,14 +419,6 @@ var zs = [
                     
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
 
-                        if (model.targets[model.nextTarget].start === 3400) {
-                            console.log(model.name, 
-                                model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x),
-                                model.t)
-                        }
-
-
-
                         model.targets[model.nextTarget].hit = model.t
 
                         model.targets[model.nextTarget].z = z
@@ -434,17 +427,17 @@ var zs = [
                         model.nextTarget++
 
                         if (model.nextTarget === model.targets.length) {
-                            output.innerHTML += (first ? "1st" : "2nd") + " ended at t=" + (model.t + model.t_start) + "\n"
+                            output.innerHTML += (modelI+1) + " ended at t=" + (model.t + model.t_start) + "\n"
                         }
                     }
 
 
                     if (first && !secondStarted) {
                         if (model.targets[model.targets.length - 1].x - model.photon.x <= 500) {
-                            runModel(models[1])
+                            runModel(models[modelI + 1])
                             //output.innerHTML += " 2nd started at " + model.t + "\n"
-                            models[0].t_start = 0
-                            models[1].t_start = model.t
+                            models[modelI].t_start = 0
+                            models[modelI + 1].t_start = model.t
                             secondStarted = true
                         }
                     }
@@ -489,8 +482,40 @@ var zs = [
                 this.targets[i].x += this.targets[i].start * this.H / 1000
             }
         }
+    })    
+
+    setupModel({
+        div: document.getElementById("expandingFast"),
+        name: "Photon A2",
+        expanding: true,
+        color: "red", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0},
+        offset: 0,
+        next: function () {
+            this.photon.x += c + this.photon.x * this.H / 1000
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+        }
     })
-    
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Photon B2",
+        expanding: true,
+        color: "green", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0},
+        offset: 289,
+        next: function () {
+            this.photon.x += c + this.photon.x * this.H / 1000
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].start * this.H / 1000
+            }
+        }
+    })
 
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
@@ -514,6 +539,7 @@ var xAxis = document.getElementById("graph-x-axis")
 
 setTimeout(() => {
     runModel(models[0])
+    runModel(models[2])
     //models.forEach(model => runModel(model))
 }, 2000)
 

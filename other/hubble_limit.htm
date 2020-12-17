@@ -418,9 +418,8 @@ var zs = [
                         
                         model.nextTarget++
 
-                        if (model.nextTarget === model.targets.length) {
-                            output.innerHTML += (first ? "1st" : "2nd") + " ended at t=" + (model.t + model.t_start) + "\n"
-                        }
+                        output.innerHTML += model.t + " next target " + model.targets[model.nextTarget].start * model.H + "\n"
+                        
                     }
 
                 }

@@ -65,7 +65,7 @@
 </p>
 
 
-<div id="right-side">
+<div id="graph-side">
     <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
     <br>
     <br>
@@ -96,11 +96,12 @@
     <hr>
     Starting frequency=<input id="start-freq">
     <br>
-    Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v">
+    Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
     
     <pre id="output"></pre>
 </div>
 
+<div id="right-side">
 <p>Click a model to play or reset it.</p>
 
 <div id="details"></div>
@@ -122,7 +123,7 @@
 
     <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
 </notes>
-
+</div>
 <script>
 var black = true
 
@@ -215,9 +216,9 @@ var zs = [
 
     var c = 1
 
-    var zoom = 0.056
-    var zoom_gx = 0.65
-    var zoom_gy = 0.18
+    var zoom = 0.035
+    var zoom_gx = 0.95
+    var zoom_gy = 0.48
     var zoomG = zoom * zoom_gx
     var zoomGY = zoom * zoom_gy
     var offset = 20
@@ -270,12 +271,12 @@ var zs = [
                     }
                     else if (yAxis.selectedIndex === 4) {
                         // v_light or v_target
-                        drawy = (1 - dgt.dx) * 10000
+                        drawy = dgt.dx * 10000
 
                     }
                     else if (yAxis.selectedIndex === 5) {
                         // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+                        drawy = (dgt.z * 10000) //|| ((1 - dgt.dx) / dgt.dx) * 10000
 
                     }
                     else if (yAxis.selectedIndex === 6) {
@@ -318,7 +319,7 @@ var zs = [
         }
         else {
             for (dgi = 0; dgi < 110; dgi+=10) {
-                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomGY + 4, graph.height - 5)    
+                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
             }
         }
 
@@ -410,7 +411,7 @@ var zs = [
             model.targets.push({label: i/1000, start: i, x: i})
         }
 
-        model.ctx.lineWidth = 3
+        model.ctx.lineWidth = 1
         draw(model.ctx, model)
 
         models.push(model)
@@ -478,8 +479,9 @@ var zs = [
         var findD = document.getElementById("find-d").value
         var findZ = document.getElementById("find-z").value
         var findV = document.getElementById("find-v").value
+        var findTarget = document.getElementById("find-target").value
                     
-        var x
+        var x, x2, dx, dx2
         var i
         var batch = 100
         model.handle = setInterval(function () {
@@ -488,9 +490,17 @@ var zs = [
                     model.t++
                     x = model.photon.x
                     x2 = model.targets[model.nextTarget].x
+                    
                     model.next()
 
+                    dx = model.photon.x - x
+                    dx2 = model.targets[model.nextTarget].x - x2
+
                     var z = (model.photon.f_start - model.photon.f) / model.photon.f
+                    if (model.expanding) {
+                        //dx2 = dx2 - (dx - 1)
+                        z = Math.sqrt((1 + dx2) / (1 - dx2)) - 1
+                    }
                     model.photon.z = z
                     
                     if (findT && model.t >= findT) {
@@ -509,21 +519,19 @@ var zs = [
                         output(model, model.photon)
                         findV = 0
                     }
-
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
-
-                        if (model.targets[model.nextTarget].start === 3400) {
-                            console.log(model.name, 
-                                model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x),
-                                model.t)
+                        
+                        if (findTarget && model.targets[model.nextTarget].start >= findTarget) {
+                            output(model, model.photon)
+                            findTarget = 0
                         }
-
-
 
                         model.targets[model.nextTarget].hit = model.t
 
                         model.targets[model.nextTarget].z = z
-                        model.targets[model.nextTarget].dx = model.expanding ? (1 - (model.targets[model.nextTarget].x - x2)) : (model.photon.x - x)
+                        model.targets[model.nextTarget].dx = model.expanding ? 
+                            (model.targets[model.nextTarget].x - x2) :
+                            (1 - (model.photon.x - x))
                         
                         model.nextTarget++
                     }
@@ -550,23 +558,7 @@ var zs = [
     details.appendChild(document.createElement("hr"))
 
     setupModel({
-        div: document.getElementById("expandingFast"),
-        name: "Expanding, 74 km/s/Mpc",
-        expanding: true,
-        color: "#888888", 
-        H: 0.0756,
-        unitH: "ly/y/Mly",
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].start * this.H / 1000
-            }
-        }
-    })
-    setupModel({
-        div: document.getElementById("expandingSlow"),
-        name: "Expanding, 67 km/s/Mpc",
+        name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c",
         expanding: true,
         color: "#888888", 
         H: 0.0688,
@@ -579,31 +571,40 @@ var zs = [
             }
         }
     })
+
     setupModel({
         div: document.getElementById("expandingSlow"),
-        name: "Expanding, 54 km/s/Mpc",
+        name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c + H &times; x",
         expanding: true,
-        color: "#888888", 
-        H: 0.0556,
+        color: "purple", 
+        H: 0.0688,
         unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
-            this.photon.x += c
+            this.photon.dx = c + this.photon.x * this.H / 1000
+            this.photon.x += this.photon.dx
+            this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
+            this.photon.f = 299792460 / this.photon.w
+
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].x += this.targets[i].start * this.H / 1000
             }
         }
     })
+
     setupModel({
-        div: document.getElementById("expandingSlow"),
-        name: "Expanding, 67 km/s/Mpc &times; proper distance",
-        expanding: true,
-        color: "#888888", 
-        H: 0.02668,
+        name: "v<sub>target</sub> = H &times; proper, v<sub>light</sub> = c + H &times; x",
+        color: "lightgreen", 
+        H: 0.0688,
         unitH: "ly/y/Mly",
-        photon: {x: 0},
+        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
         next: function () {
-            this.photon.x += c
+            this.photon.dx = c + this.photon.x * this.H / 1000
+            this.photon.x += this.photon.dx
+            this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
+            this.photon.f = 299792460 / this.photon.w
+    
+            //this.photon.x += c + this.photon.x * this.H / 1000
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].x += this.targets[i].x * this.H / 1000
             }
@@ -677,7 +678,7 @@ var zs = [
         div: document.getElementById("redshift2"),
         name: "v<sub>light</sub> = c / (1 + (H &times; t)<sup>2</sup>)",
         color: "yellow", 
-        H: 0.26,
+        H: 0.0826,
         unitH: "Gly<sup>-1</sup>",
         photon: {x: 0, dx: c},
         next: function () {
@@ -702,7 +703,7 @@ var zs = [
     setupModel({
         div: document.getElementById("redshift1"),
         name: "f = f' - H &times; D",
-        color: "lightgreen", 
+        color: "brown", 
         H: 40000,
         unitH: "ly/y/Mly",
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
