@@ -63,311 +63,305 @@
 <!-- HELLO!!! Source code for the models at the bottom -->
 
 <div class="text">
-<h1>Hubble's Law as Photon Velocity</h1>
+<h1>Fixing Hubble's Law</h1>
 
 <h2>Introduction</h2>
 
-<p>One effect of an expanding universe is that delays are introduced in the journey of light from one galaxy to another. 
-    To demonstate, let's model a single photon that passes a series of targets placed 200 million light years apart.
-    In a simple universe, the photon will reach the first target in 200 million years, the second target in 400 million light years, and so on. </p>
+<p>Finding the right value for Hubble's Constant has been difficult. </p>
+
+<ul>
+    <li><a href="https://www.livescience.com/hubble-constant-crisis-deepens.html">No One Can Agree How Fast Universe Is Expanding. New Measure Makes Things Worse.</a></li>
+    <li><a href="https://www.scientificamerican.com/article/best-yet-measurements-deepen-cosmological-crisis/">Best-Yet Measurements Deepen Cosmological Crisis</a></li>
+    <li>More at <a href="https://duckduckgo.com/?q=hubble+constant+crisis">DuckDuckGo</a></li>
+</ul>
+
+<p>To examine the problem, imagine you shoot a laser beam into space, and it passes a series of targets placed 200 million light years apart.</p>
+
+<p>In a simple universe, the laser beam will reach the first target in 200 million years, the second target in 400 million light years, and so on. </p>
+
+<p>Here's a computer model demonstration.</p>
 
 <div class="model" id="staticModel"></div>
 
-<p>In an expanding universe, the targets move away from the photon's source and take longer and longer to reach.
-
-<div class="model" id="expandingFast"></div>
-
-<p>It just so happens that the same delays could be produced if the photon simply lost speed by the amount given by Hubble's Law:</p>
-
-<div class="model" id="redshift1"></div>
-
-<p>As you can see, the model where the entire universe is in motion produces the same output as a single decelerating photon. Here is the relevant code for each model:</p>
-
-<b>Expanding Universe:</b>
-
-<pre><code>this.photon.x += c + H * this.photon.x
-
-for (var target of this.targets) {
-    target.x += target.x * H
-}
-</code></pre>
-
-<b>Decelerating Photon:</b>
-
-<pre><code>this.photon.x += c - H * this.photon.x
-</code></pre>
-
-<p>(The complete source code and discussion of these models can be found here.)</p>
-
-<p>While I found this interesting, as a physical theory the decelerating photon has some immediate fatal flaws:</p>
-
-<ul>
-    <li>An object in motion remains in motion at a constant speed</li>
-    <li>Light travels at c in a vacuum</li>
-    <li>Energy has to be conserved</li>
-    <li>Redshifts indicate an expanding universe</li>
-    <li>The CMB indicates a hot past</li>
-    <li>The farthest galaxies are younger than nearby galaxies, indicating a beginning of time</li>
-    <li>The Tolman surface brightness test indicates an expanding universe</li> 
-    <li>This is the Tired Light Theory, which is discredited</li>
-    <li>We don't observe slow light</li>
-</ul>
-
-<p>More than a decade has passed since first considering the decelerating photon hypothesis, and much has happened in cosmology:</p>
-
-<ul>
-    <li>Measurements of Hubble's constant don't match measurements of the CMB</li>
-    <li>WMAP and Planck show anomalies in the CMB:</li>
-    <ul>
-        <li>It is cooler to the north than the south</li>
-        <li>There is a cold spot in the south</li>
-    </ul>
-    <li>Observing mature galaxies in the early universe has become a regular occurence</li>
-    <ul>
-    </ul>
-    <li>More objects that suprass the theoretical size limit have been observed</li>
-</ul>
-
-<p>These new observations run counter to the standard model, and the state of cosmology has offically been delcared a crisis.</p>
+<p>The photon moves at a constant speed and reaches the targets at a consistent rate. 
+    The graph to the right plots the time it takes to reach a target (y-axis) over the distance to the target (x-axis).</p>
     
-<p>Yet these new observations pose no threat to the decelerating photon model. 
-    The CMB in the decelerating photon model is not the remnant of an ancient fireball that has traveled 14 billion light years to reach us.
-    If it's not of cosmological origin, then it doesn't tell us what Hubble's constant is. And there's no reason it has to be the same temperature in all directions.
-</p>
-
-<p>Given these new observations and the issues they pose for the standard model of cosmology, 
-    the remainder of this paper will attempt to address the issues of the decelerating photon hypothesis 
-    and propose some ways to test it.
-</p>
-
-<hr>
-
-<h2>Established Laws of Physics</h2>
-
-<h3>Newton's First Law of Motion</h3>
-
-<p>An object in motion remains in motion at a constant velocity. Presumably this should hold to infinity. And why should it not?
-    It holds true for hundreds of light years. Millions even. Billions it seems.</p>
-
-<p>How about 1 trillion light years? Does inertia hold true for 1 trillion light years?</p>
-
-<p>We have no empirical evidence that tells us it does. That does not mean it doesn't. According to the standard model,
-    light traveling for 14 billion light years approaches space that is expanding faster than the light can travel. 
-    This is known as Hubble's limit. Light might possibly be able to travel for 1 trillion years at a constant speed, 
-    but since any light from beyond 14 billion light years will never reach us due to the expansion of the universe,
-    we would never know if it does or not.
-</p>
-
-<p>By pure coincidence, the universe is also only 14 billion years old. So there hasn't been 1 trillion years of time for light 
-    to have even traveled 1 trillion light years. 
-</p>
-
-<p>For the decelerating photon hypothesis to be correct, one of two things must also be correct:</p>
-
-<ol>
-    <li>A dark force slows the photon</li>
-    or
-    <li>Inertia doesn't hold to infinity</li>
-</ol>
-
-<p>Given that dark matter and dark energy are options for cosmologists, a dark force with a direct measurable consequence (cosmological redshift)
-    might seem the most likely solution to this problem.
-</p>
-
-<p>I recommend interpretation 2, that Newtontian dynamics does not hold for infinite distance. 
-    If it's a dark force that keeps a photon from reaching beyond Hubble's limit,
-    or even the expansion of space that causes the barrier, the motion of a photon is still effectively limited to a finite distance. 
-    A patch that holds the laws together might not be the best solution if the laws themselves are ready to change. 
-</p>
-
-<p>That said, a photon is not a Newtonian object. We only have evidence of photons traveling vast distances and arriving redshifted,
-    not Newtonian objects. Perhaps this hypothesis only applies to photons? For that reason we will move on to relativity.</p>
-
-<h3>Special Relativity</h3>
-
-<p>The second postulate of special relativity is that the speed of light in a vacuum is always c in all frames. 
-    And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
-
-<p>Formally, the decelerating photon hypothesis is: the velocity <code>v</code> of a photon is <code>v = c - HD</code>.</p>
-
-<p>Whether the speed of light is <code>c</code> or <code>c - HD</code> only matters when distances are in the million of light years
-    and <code>HD</code> is large enough 
-    to be noticed. For non-cosmological distances, <code>HD = 0</code> and <code>v = c</code>, 
-    which is consistent with special relativity where it is experimentally confirmed.
-</p>
-
-<p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
-
-<h3>Conservation of Energy</h3>
-
-<p>One criticism of the hypothesis is that the photon can't lose speed because then it loses energy, which violates the conservation of energy.
-    However, the redshifting of photons is an observed fact of nature, and redshifted photons have less energy than non-redshifted photons.
-    This seems to be the case for the standard model, according to Sean Carroll.</p>
-    
-    <blockquote>
-    The thing about photons is that they redshift, losing energy as space expands. If we keep track of a certain fixed number of photons, the number stays constant while the energy per photon decreases, so the total energy decreases. A decrease in energy is just as much a “violation of energy conservation” as an increase in energy, but it doesn’t seem to bother people as much. At the end of the day it doesn’t matter how bothersome it is, of course — it’s a crystal-clear prediction of general relativity.
-    </blockquote>
-
-<a href="https://www.preposterousuniverse.com/blog/2010/02/22/energy-is-not-conserved/">https://www.preposterousuniverse.com/blog/2010/02/22/energy-is-not-conserved/</a>
-
-<p>In a universe that is 14 billion years old, losing energy may not be a big deal. 
-    But if the decelerating photon hypothesis is to be believed, the universe would not be 14 billion years old. 
-    It would have no definitive age at all.
-    If the universe were 10<sup>100</sup> years old, and photons lost energy, why is there anything left? Shouldn't the fire have gone out by now?
-</p>
-
-<p>The answer may be as simple as the energy deducted from the photon by redshifting is deposited into space.
-    In this way, the energy of the universe stays the same. Energy leaves a star as light, dropping little bits of energy as it travels intergalactic space,
-    energy that finds its way back into stars and repeats.
-</p>
-
-<p>If the loss of energy due to redshifting is a problem, the decelerating photon hypothesis has a solution, whereas the expanding models do not.</p>
-
-<hr>
-
-<h2>Big Bang Cosmology</h2>
-
-<h3>Redshifts indicate an expanding universe</h3>
-
-<p>The systemic cosmological redshifts first observed by Edwin Hubble are the observational foundations of an expanding universe.</p>
-
-<p>In the expanding model, as the photon travels away from its source, space will expand infront of and behind the photon. 
-    From the frame of reference of the source, the photon would actually appear to pick up speed away from it.
-    This increase in speed can be taken as an increase in wavelength, the observed redshifts.
-</p>
-
-<p>If the original frequency or wavelength is known, using the equation for the velocity of wave 
-    (<code>v = frequency &times; wavelength</code>) the expanding model can be updated to demonstrate the increased wavelength:</p>
+<p>This is the model we will be expanding on, so let's look at the code. We'll use JavaScript for simplicity.</p>
 
 <pre><code>
-next: function () {
-    this.photon.dx = c + this.photon.x * H
-    this.photon.x += this.photon.dx
-    this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
-
-    for (var target of this.targets) {
-        target.x += targets.x * H
+simple = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
     }
 }
 </code></pre>
 
-<p>Inversely, if the observed redshifts are taken as a decrease in frequency, 
-    using the same equation (<code>v = frequency &times; wavelength</code>) the photon's velocity should decrease too. 
-    If the original frequency or wavelength is known,
-    the decelerating photon hypothesis can be modified to show the decreased frequency:
-</p>
-    
+<p>The <code>simple</code> model contains two things, a <code>photon</code> and a <code>next()</code> function. 
+    The <code>photon</code> has a distance <code>d</code> which starts at zero. 
+    Every time <code>next()</code> is called, <code>d</code> increases by <code>c</code>.</p>
+
+<p>We need to define <code>c</code> and also the units of the model:</p>
+
 <pre><code>
-next: function () {
-    this.photon.dx = c - H * this.photon.x
-    this.photon.x += this.photon.dx
-    this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
+// time units:          1 million years
+// distance units:      1 million light years
+
+// the speed of light   1 million light years / million years
+const c = 1
+</code></pre>
+
+<p>Now we need to do three things:</p>
+
+<ul>
+    <li>Add the targets</li>
+    <li>Call the <code>next()</code> function in a loop</li>
+    <li>Record when the photon passes a target</li>
+</ul>
+
+<p>That's what the following function does:</p>
+
+<pre><code>
+function run(model) {
+
+    // create targets at distance (d) 200 million light years apart
+    model.targets = []
+    for (var i = 200; i &lt;= 30000; i+=200) 
+        model.targets.push({d: i})
+
+    var t = 0
+    var nextTarget = 0
+
+    // start the loop
+    while (model.targets[nextTarget]) {
+
+        //advance the model 1 million years
+        t += 1
+        model.next()
+
+        // if we hit a target record the time
+        if (model.photon.d >= model.targets[nextTarget].d) {
+            
+            console.log("Target reached", t)
+            model.targets[nextTarget].hit = t
+
+            nextTarget += 1
+        }
+    }
 }
 </code></pre>
 
-<p>Using the new wavelengths and frequencies and the standard method of calculating z:</p>
-    
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6a999cd6480ab61dddeeb5372c8037c0d533f2c9">
-    
-<p>or</p>
+<p>The <code>run()</code> function creates an array of targets, and then calls <code>next()</code> in a loop, which moves the photon.
+     The time <code>t</code> is recorded whenever the photon passes a target.</p>
 
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7cf28c6ce6fcc3087c62bf506432ce3381236738">
+<p>Pretty simple, right?</p>
 
-<p>We can graph the z's predicted by each model, and find that again they are exactly the same.</p>
+<p>Well, we don't live in such a simple universe. We observe cosmological redshifts. These are an observed fact, and you can learn more about 
+    <a href="redshift.htm">cosmological redshift here</a>.
+    
+<p>The redshifts are interpreted as the expansion of space. In this universe, the targets will be moving away from us according to Hubble's Law:</p>
+
+<pre><code>v = H &times; D</code></pre>
+
+<p>where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, and <code>D</code> is the starting distance of the target.</p>
+
+<p>To demonstrate that, we need a model where the <code>next()</code> function moves the targets:</p>
+
+<pre><code>
+expanding = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
+
+        // targets move at H &times D
+        for (var target of this.targets)
+            target.d += H * target.start
+    }
+}
+</code></pre>
+
+<p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
+
+<p>The important new line in this model is <code>target.d += H * target.start</code>, and it contains a new constant <code>H</code>, 
+    which is Hubble's constant.
+
+<p>So what value do we use for <code>H</code>? 
+    According to observations of relatively near phenomena, <code>H</code> is measured to be 74 km/sec/Mpc. 
+    But according to measurements at our most distant observable range, <code>H</code> is measured as 67 km/sec/Mpc.</p>
+
+<p>To use these values in the model, they must be converted to the proper units.</p>
+
+<ul>
+    <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
+    <li>Step 2: convert (km/s) to (light years / year)</li>
+</ul>
+
+Which gives:
+
+<pre>
+    74 km/s/Mpc = 22.6880185 km/s/Mly = 7.56790836e-5 ly/y/Mly = 0.00076
+    67 km/s/Mpc = 20.5418546 km/s/Mly = 6.85202514e-5 ly/y/Mly = 0.00069
+</pre>
+
+<p>When you run the <code>expanding</code> model, notice that the targets are moving away from the photon's source.
+    The first one (<code>H = 0.00076</code>) expands slightly faster than the second one (<code>H = 0.00069</code>).
+
+<div class="model" id="expandingFast"></div>
+
+<div class="model" id="expandingSlow"></div>
+
+<p>As the targets recede, the time <code>t</code> it takes the photon to reach the next target increases, 
+    as can be seen by the white lines on the graph shooting up and away from the blue line of the simple model.</p>
+
+<p>The difference in the values of <code>H</code> may seem small, but to cosmologists it begs to be resolved.</p>
+
+<hr>
+
+<h2>Hypothesis</h2>
+
+<blockquote> 
+    <i>We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle of nature.
+    We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, 
+    familiar principle by an ad hoc explanation unless we are forced to that step by actual observations.</i>
+
+    <br>
+    <br>
+    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 22, 1937
+</blockquote>
+
+<p>Edwin Hubble said that it was convenient for the redshift to be interpreted as a Doppler-like effect, leading to the expanding universe theory. 
+    He also said redshifts might be interpreted as how nature actually works. 
+    In other words, the redshifts aren't caused by some other phenomenon; cosmological redshift is a new phenomenon in-and-of itself. 
+    However, he cautioned, if there are existing ways to explain the redshifts, adding a new principle of nature should be avoided.</p>
+
+<p>But choosing the path of the familiar principles over a new principle 
+    has forced us to propose several new principles anyways, including dark energy and inflation. 
+    It is also unclear, despite many accurate measurements, how fast space is expanding.</p>
+
+<p>Let's back up then and ask: if cosmological redshifts do represent a new principle of nature, what is that principle? Consider the following premises:</p>
+
+<ul>
+    <li>A decrease in frequency is observed</li>
+    <li>The <a href="https://byjus.com/wave-speed-formula/" target="_out">speed of a wave</a> is <code>v = frequency &times; wavelength</code></li>
+</ul>
+
+<p>Therefore, if these premises are taken literally and plainly (and somewhat naively):</p>
+
+<ul>
+    <li>the observed decrease in frequency should result in a decrease in speed.</li>
+</ul>
+
+<p>To examine this literal interpretation of redshifts, let's make a new model where the speed of a photon begins at <code>c</code> and decreases 
+    as the distance from its source increases.</p>
+
+<p>The simplest of these models is one where <code>H &times; D</code> is subtracted from <code>c</code>.</p>
+
+<p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
+
+<pre><code>
+hypothesis1 = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c - H * this.photon.d
+    }
+}
+</code></pre>
+
+<div class="model" id="redshift1"></div>
+
+<p>This hypothesis achieves something interesting. Even though the targets are stationary, the time it takes to reach the next target increases 
+    in a way that is similar to, but not exactly, the time it would take to reach a moving target.</p>
+
+<p>The difference between the <code>expanding</code> model and <code>hypothesis1</code> is that <code>H &times; D</code> has been moved from the
+    velocity of the <code>targets</code>, to the velocity of the <code>photon</code>.</p>
+
+<pre><code>
+// expanding.next()                       // hypothesis1.next()
+this.photon.d += c                        this.photon.d += c - <span style="color:blue;">H * this.photon.d</span>
+
+for (var target of this.targets) 
+    target.d += <span style="color:blue;">H * target.start</span>
+</code></pre>
+
+
+<p>Let's check to see how this affects frequency and red-shift. We're going to modify <code>hypothesis1</code>, not to do anything different,
+but to log more data. We'll store the photon's velocity as <code>v</code>.
+We'll give the photon an initial wavelength <code>w</code> and frequency <code>freq_init</code> of 499.65 nm and 6&times;10<sup>5</sup>&nbsp;Ghz. 
+Then we'll calculate a new frequency <code>freq</code> based on the photon's new velocity <code>v</code>.</p>
+
+<pre><code>
+hypothesis1 = {
+    photon: {d: 0, freq_init: 6e5, w: 499.65},
+    next: function () {
+        this.photon.v = c - H * this.photon.d
+        this.photon.d += this.photon.v
+
+        this.photon.freq = this.photon.v * 299792458 / this.photon.w
+    }
+}
+</code></pre>
+            
+<p>Now we can update the <code>run()</code> function to log the photon's velocity and frequency at the time it reaches a target.</p>
+
+<pre><code>
+console.log("Target reached", t)
+model.targets[nextTarget].hit  = t
+model.targets[nextTarget].v    = model.photon.v
+model.targets[nextTarget].freq = model.photon.freq
+</code></pre>
+
+<p>With this data, we can graph the velocity and frequency of the photon as it travels. Because we have the 
+    <code>freq</code> and <code>freq_init</code> we can also graph the red-shift of the photon given by:</p>
+
+<pre><code>z = (freq_init - freq) / freq</code></pre>
 
 <button id="set-y-axis">Set y-axis to red-shift</button>
 
+<p>In this view, the green line for <code>hypothesis1</code> covers up the white line for an <code>expanding</code> model using the same value of <code>H</code>.
+    This shows that <code>hypothesis1</code> predicts identical red-shifts for targets of the same distance as the <code>expanding</code> model.</p>
 
-<p>The redshifts predicted by the expanding model and the decelerating photon hypothesis are identical.
-</p>
+<p>However, they are not identical models, of course. <code>hypothesis1</code> predicts the photon reaches the target sooner 
+    than the photon in the <code>expanding</code> model,
+    as seen when the y-axis is set to "time to target".
+    That will be investigated later in this paper.</p>
 
+<p>Hypothesis 1 is a very straightforward implementation of the principle that a photon's speed decreases with distance. 
+    Another possibility is something like an inverse square law:</p>
 
-<p>Based on the observed redshifts, how fast do we think the universe is expanding? The latest precise measurements disagree.<p>
+<p><b>Hypothesis 2: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
 
-    <ul>
-    <li><a href="https://www.livescience.com/hubble-constant-crisis-deepens.html">No One Can Agree How Fast Universe Is Expanding. New Measure Makes Things Worse.</a></li>
-    <li><a href="https://www.scientificamerican.com/article/best-yet-measurements-deepen-cosmological-crisis/">Best-Yet Measurements Deepen Cosmological Crisis</a></li>
-    <li>More at <a href="https://duckduckgo.com/?q=hubble+constant+crisis">DuckDuckGo</a></li>
-    </ul>
+<pre><code>
+hypothesis2 = {
+    photon: {x: 0},
+    next: function () {
+        this.photon.x += c / (1 + Math.pow(H * this.photon.x, 2))
+    }
+}
+</code></pre>
 
-    <h3>Age and size of the universe</h3>
+<div class="model" id="redshift4"></div>
 
-    <p>If the universe started with a Big Bang, as we look back in space and time, 
-        we should be seeing fewer and fewer mature galaxies, and eventually only young galaxies. 
-        In the 21st century observations show that's not true:</p>
+<p>In this hypothesis, the units of <code>H</code> are independent of the units of <code>c</code>. 
+    The units of <code>H</code> are inverse length, which makes <code>(1 + H × D)</code> unitless.
+    Hypothesis 2 has some interesting features, but it doesn't match the expected red-shift data exactly like hypothesis 1 does.
+</p> 
 
+<p>You can examine these models and others for yourself on <a href="test.htm">the Testing Page.</a></p>
 
-    <ul>
-        <li><a href="https://skyandtelescope.org/astronomy-news/dead-ringer-milky-way-found-early-universe/">"Dead Ringer" for the Milky Way Found in Early Universe</a></li>
-        <li><a href="https://www.space.com/how-can-a-star-be-older-than-the-universe.html"> How Can a Star Be Older Than the Universe?</a></li>
-        <li><a href="https://www.sciencedaily.com/releases/2015/03/150302122925.htm"> Old-looking galaxy in a young universe: Astronomers find dust in the early universe</a></li>
-        <li><a href="https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E"> Ancient planets are almost as old as the universe</a></li>
-        <li>Lots more <a href="https://old.reddit.com/r/BigBangSkeptics">here.</a>
-    </ul>
+<p>In these models, the laser beam shows delays in reaching the targets even though the targets are stationary. 
+    The delay occurs because the photon red-shifts and its velocity decreases. In such a universe,
+    space is not expanding. </p>
 
-    <p>The size of the things we observe in the universe doesn't seem to be constrained by what we assume are the theoretical limits they could reach
-        given the age and size of the universe. From <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">Wikipedia</a>:</p>
-
-        <p class="pimg"><img src="img/size_limit.png"></p>
-
-    <p>And then there's the weird coincidence that the age of the universe is about equal c/H, the 
-        radius of <a href="https://en.wikipedia.org/wiki/Hubble_volume">the Hubble Volume</a>. 
-        If we were living 5 billion years ago, or 5 billion years from now, the age of the universe and Hubble's radius would be unrelated.
-        By <i>pure</i> coincidence, we are living when they match.</p>
-
-    <h3>The CMB</h3>
-
-    <p>You may have heard that the Big Bang theory predicted the CMB. That's sort of true. 
-        The Big Bang predicted a black body radition, which was right, although not at the right temperature.</p>
-
-    <p class="pimg"><img src="img/cmb_predictions.png"></p>
-
-    <p>CMB was discovered in 1964 at 3K. The most accurate preditions for the background temperature of space were based on a stationary universe, not an expanding one.</p>
+<p>This conclusion raises many questions. Some of these questions are answered in the FAQ, such as:</p>
     
-    <p>That's not a deal breaker, but it's a major coincidence. </p>
-    <p>If we were living 5 billion years from now, or 5 billion years in the past, the CMB would be a different temperature according to the Big Bang.
-        It's apparently just a <i>pure coincidence</i> that the CMB is the same temperature today as the minimum temperature for stuff in our galaxy.</p>
+<ul>
+    <li><a href="faq.htm#expansion-fact">Isn't the expansion of the universe a fact?</a></li>
+    <li><a href="faq.htm#special-relativity">Doesn't this conflict with special relativity?</a></li>
+    <li><a href="faq.htm#conservation-of-energy">Doesn't this violate the Conservation of Energy?</a></li>    
+</ul>
 
-    <p>All of that could be ignored, but in the last decade anomalies have been spotted in the CMB. It's cooler to one side than the other.</p>
-
-    <blockquote>
-        Two Cosmic Microwave Background anomalous features hinted at by Planck's predecessor, NASA's Wilkinson Microwave Anisotropy Probe (WMAP), 
-        are confirmed in the new high precision data from Planck.  One is an asymmetry in the average temperatures on opposite hemispheres of the 
-        sky, with slightly higher average temperatures in the southern ecliptic hemisphere and slightly lower 
-        average temperatures in the northern ecliptic hemisphere. <b>This runs counter to the prediction made by the standard model that the Universe 
-        should be broadly similar in any direction we look.</b> There is also a cold spot that extends over a patch of sky that is much larger 
-        than expected. 
-        <br>
-        <a href="https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background">
-            https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background</a>
-    </blockquote>
-    
-    <p>The CMB is predicted to be the same temperature in all directions. It is not.</p>
-
-    <p>We see a cold spot to the south. In the diagram, does the south observer see a cold spot to their south? 
-        Does the north observer see the same CMB anomalies as we do?</p>
-    
-    <p class="pimg"><img src="img/cmbobservers.png"></p>
-    
-    <p>This is a question the expanding universe theory doesn't have a clear answer for.</p>
-    
-    <p>However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
-        then there are no anomalies or questions. The cold spot is to <i>our</i> south, but to the southern observer the cold spot is in their vicinity. </p>
-    
-    <h3>Tolman Surface Brightness Test</h3>
-
-    <p>The Tolman Surface Brightness Test is meant to distinguish a static universe from an expanding one.</p>
-
-    <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.</p>
-        
-    <blockquote>"The exponent found is not 4 as expected in the simplest expanding model, but 2.6 or 3.4, depending on the frequency band."
-        <br>
-        <a href="https://en.wikipedia.org/wiki/Tolman_surface_brightness_test">https://en.wikipedia.org/wiki/Tolman_surface_brightness_test</a>
-    </blockquote>
-
-
-
-
+<p>The remainder of this paper will compare this hypothesis to similar sounding models, 
+    discuss the treatment of the photon in the model, and examine possible ways to test the hypothesis.</p>
 
 <hr>
 
@@ -1000,14 +994,28 @@ E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c
         photon: {x: 0},
         zoom: 0.03,
         next: function () {
-            this.photon.x += c + this.H * this.photon.x
+            this.photon.x += c
             for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].dx = this.targets[i].x * this.H
+                this.targets[i].dx = this.targets[i].start * this.H
                 this.targets[i].x += this.targets[i].dx
             }
         }
     })
-    
+    setupModel({
+        div: document.getElementById("expandingSlow"),
+        name: "Expanding Slow",
+        color: "#888888", 
+        H: 0.000069,
+        photon: {x: 0},
+        zoom: 0.03,
+        next: function () {
+            this.photon.x += c
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].dx = this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].dx
+            }
+        }
+    })
     setupModel({
         div: document.getElementById("redshift1"),
         name: "Redshift by distance",
@@ -1021,6 +1029,38 @@ E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c
             this.photon.f = this.photon.v * 299792458 / this.photon.w
         }
     })
+    /*setupModel({
+        div: document.getElementById("redshift2"),
+        name: "Redshift by distance 2",
+        color: "magenta", 
+        H: 0.00035,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / (1 + this.H * this.photon.x)
+        }
+    })
+    setupModel({
+        div: document.getElementById("redshift3"),
+        name: "v_light = c / (1 + H &times; D)^2",
+        color: "purple", 
+        H: 0.00015,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.x += c / Math.pow(1 + this.H * this.photon.x, 2)
+        }
+    })*/
+    setupModel({
+        div: document.getElementById("redshift4"),
+        name: "v_light = c / (1 + (H &times; D)^2)",
+        color: "red", 
+        H: 0.00016,
+        photon: {x: 0, dx: c},
+        next: function () {
+            this.photon.dx = c / (1 + Math.pow(this.H * this.photon.x, 2))
+            this.photon.x += this.photon.dx
+        }
+    })
+
 
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
