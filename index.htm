@@ -243,7 +243,7 @@ for (var target of this.targets) {
 next: function () {
     this.photon.dx = c + this.photon.x * H
     this.photon.x += this.photon.dx
-    this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
+    this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
 
     for (var target of this.targets) {
         target.x += targets.x * H
@@ -261,7 +261,7 @@ next: function () {
 next: function () {
     this.photon.dx = c - H * this.photon.x
     this.photon.x += this.photon.dx
-    this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
+    this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
 }
 </code></pre>
 
@@ -997,10 +997,15 @@ E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c
         name: "Expanding Fast",
         color: "#888888", 
         H: 0.000076,
-        photon: {x: 0},
+        photon: {x: 0, f_start: 6e5},
         zoom: 0.03,
         next: function () {
-            this.photon.x += c + this.H * this.photon.x
+            //this.photon.x += c + this.H * this.photon.x
+
+            this.photon.dx = c + this.photon.x * this.H
+            this.photon.x += this.photon.dx
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+            
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].dx = this.targets[i].x * this.H
                 this.targets[i].x += this.targets[i].dx
