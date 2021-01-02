@@ -69,7 +69,9 @@
 
 <p>One effect of an expanding universe is that delays are introduced in the journey of light from one galaxy to another. 
     To demonstate, let's model a single photon that passes a series of targets placed 200 million light years apart.
-    In a simple universe, the photon will reach the first target in 200 million years, the second target in 400 million light years, and so on. </p>
+</p>
+
+<p>In a simple universe, the photon will reach the first target in 200 million years, the second target in 400 million light years, and so on. </p>
 
 <div class="model" id="staticModel"></div>
 
@@ -83,9 +85,14 @@
 
 <p>As you can see, the model where the entire universe is in motion produces the same output as a single decelerating photon. Here is the relevant code for each model:</p>
 
+<b>Simple Universe:</b>
+
+<pre><code>this.photon.d += c
+</code></pre>
+
 <b>Expanding Universe:</b>
 
-<pre><code>this.photon.x += c + H * this.photon.x
+<pre><code>this.photon.d += c + H * this.photon.d
 
 for (var target of this.targets) {
     target.x += target.x * H
@@ -94,12 +101,16 @@ for (var target of this.targets) {
 
 <b>Decelerating Photon:</b>
 
-<pre><code>this.photon.x += c - H * this.photon.x
+<pre><code>this.photon.d += c - H * this.photon.d
 </code></pre>
 
 <p>(The complete source code and discussion of these models can be found here.)</p>
 
-<p>While I found this interesting, as a physical theory the decelerating photon has some immediate fatal flaws:</p>
+<p>The hypothesis is that the velocity <code>v</code> of a photon is a function of the distance <code>D</code> it has traveled:</p>
+
+<p class="pimg"><img src="img/v=c-HD.png"></p>
+
+<p>While I found this interesting, as a physical theory the decelerating photon hypothesis has some immediate fatal flaws:</p>
 
 <ul>
     <li>An object in motion remains in motion at a constant speed</li>
@@ -132,7 +143,7 @@ for (var target of this.targets) {
     
 <p>Yet these new observations pose no threat to the decelerating photon model. 
     The CMB in the decelerating photon model is not the remnant of an ancient fireball that has traveled 14 billion light years to reach us.
-    If it's not of cosmological origin, then it doesn't tell us what Hubble's constant is. And there's no reason it has to be the same temperature in all directions.
+    It's not of cosmological origin. It doesn't tell us what Hubble's constant is. And there's no reason it has to be the same temperature in all directions.
 </p>
 
 <p>Given these new observations and the issues they pose for the standard model of cosmology, 
@@ -174,10 +185,9 @@ for (var target of this.targets) {
     might seem the most likely solution to this problem.
 </p>
 
-<p>I recommend interpretation 2, that Newtontian dynamics does not hold for infinite distance. 
+<p>However, I recommend interpretation 2, that Newtontian dynamics does not hold for infinite distance. 
     If it's a dark force that keeps a photon from reaching beyond Hubble's limit,
     or even the expansion of space that causes the barrier, the motion of a photon is still effectively limited to a finite distance. 
-    A patch that holds the laws together might not be the best solution if the laws themselves are ready to change. 
 </p>
 
 <p>That said, a photon is not a Newtonian object. We only have evidence of photons traveling vast distances and arriving redshifted,
@@ -188,9 +198,11 @@ for (var target of this.targets) {
 <p>The second postulate of special relativity is that the speed of light in a vacuum is always c in all frames. 
     And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
 
-<p>Formally, the decelerating photon hypothesis is: the velocity <code>v</code> of a photon is <code>v = c - HD</code>.</p>
+<p>The hypothesis is that the velocity <code>v</code> of a photon is determined by its distance <code>D</code>:</p>
 
-<p>Whether the speed of light is <code>c</code> or <code>c - HD</code> only matters when distances are in the million of light years
+<p class="pimg"><img src="img/v=c-HD.png"></p>
+
+<p>Whether the speed of light is <code>c</code> or <code>c - HD</code> only matters when distances are in the millions of light years
     and <code>HD</code> is large enough 
     to be noticed. For non-cosmological distances, <code>HD = 0</code> and <code>v = c</code>, 
     which is consistent with special relativity where it is experimentally confirmed.
@@ -241,9 +253,9 @@ for (var target of this.targets) {
 
 <pre><code>
 next: function () {
-    this.photon.dx = c + this.photon.x * H
-    this.photon.x += this.photon.dx
-    this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+    this.photon.v = c + this.photon.d * H
+    this.photon.d += this.photon.v
+    this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
 
     for (var target of this.targets) {
         target.x += targets.x * H
@@ -259,19 +271,17 @@ next: function () {
     
 <pre><code>
 next: function () {
-    this.photon.dx = c - H * this.photon.x
-    this.photon.x += this.photon.dx
-    this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+    this.photon.v = c - H * this.photon.d
+    this.photon.x += this.photon.v
+    this.photon.f = (this.photon.v * 299792458 / this.photon.w) 
 }
 </code></pre>
 
-<p>Using the new wavelengths and frequencies and the standard method of calculating z:</p>
+<p>Using the new wavelengths and frequencies and the standard method of calculating redshift:</p>
     
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6a999cd6480ab61dddeeb5372c8037c0d533f2c9">
-    
-<p>or</p>
+<p class="pimg"><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6a999cd6480ab61dddeeb5372c8037c0d533f2c9"></p>
 
-<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7cf28c6ce6fcc3087c62bf506432ce3381236738">
+<p class="pimg"><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7cf28c6ce6fcc3087c62bf506432ce3381236738"></p>
 
 <p>We can graph the z's predicted by each model, and find that again they are exactly the same.</p>
 
@@ -282,39 +292,6 @@ next: function () {
 </p>
 
 
-<p>Based on the observed redshifts, how fast do we think the universe is expanding? The latest precise measurements disagree.<p>
-
-    <ul>
-    <li><a href="https://www.livescience.com/hubble-constant-crisis-deepens.html">No One Can Agree How Fast Universe Is Expanding. New Measure Makes Things Worse.</a></li>
-    <li><a href="https://www.scientificamerican.com/article/best-yet-measurements-deepen-cosmological-crisis/">Best-Yet Measurements Deepen Cosmological Crisis</a></li>
-    <li>More at <a href="https://duckduckgo.com/?q=hubble+constant+crisis">DuckDuckGo</a></li>
-    </ul>
-
-    <h3>Age and size of the universe</h3>
-
-    <p>If the universe started with a Big Bang, as we look back in space and time, 
-        we should be seeing fewer and fewer mature galaxies, and eventually only young galaxies. 
-        In the 21st century observations show that's not true:</p>
-
-
-    <ul>
-        <li><a href="https://skyandtelescope.org/astronomy-news/dead-ringer-milky-way-found-early-universe/">"Dead Ringer" for the Milky Way Found in Early Universe</a></li>
-        <li><a href="https://www.space.com/how-can-a-star-be-older-than-the-universe.html"> How Can a Star Be Older Than the Universe?</a></li>
-        <li><a href="https://www.sciencedaily.com/releases/2015/03/150302122925.htm"> Old-looking galaxy in a young universe: Astronomers find dust in the early universe</a></li>
-        <li><a href="https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E"> Ancient planets are almost as old as the universe</a></li>
-        <li>Lots more <a href="https://old.reddit.com/r/BigBangSkeptics">here.</a>
-    </ul>
-
-    <p>The size of the things we observe in the universe doesn't seem to be constrained by what we assume are the theoretical limits they could reach
-        given the age and size of the universe. From <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">Wikipedia</a>:</p>
-
-        <p class="pimg"><img src="img/size_limit.png"></p>
-
-    <p>And then there's the weird coincidence that the age of the universe is about equal c/H, the 
-        radius of <a href="https://en.wikipedia.org/wiki/Hubble_volume">the Hubble Volume</a>. 
-        If we were living 5 billion years ago, or 5 billion years from now, the age of the universe and Hubble's radius would be unrelated.
-        By <i>pure</i> coincidence, we are living when they match.</p>
-
     <h3>The CMB</h3>
 
     <p>You may have heard that the Big Bang theory predicted the CMB. That's sort of true. 
@@ -322,7 +299,9 @@ next: function () {
 
     <p class="pimg"><img src="img/cmb_predictions.png"></p>
 
-    <p>CMB was discovered in 1964 at 3K. The most accurate preditions for the background temperature of space were based on a stationary universe, not an expanding one.</p>
+    <p>CMB was discovered in 1964 at 3K. The most accurate 
+        <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation"
+        >preditions for the background temperature of space</a> were based on a stationary universe, not an expanding one.</p>
     
     <p>That's not a deal breaker, but it's a major coincidence. </p>
     <p>If we were living 5 billion years from now, or 5 billion years in the past, the CMB would be a different temperature according to the Big Bang.
@@ -352,8 +331,34 @@ next: function () {
     <p>This is a question the expanding universe theory doesn't have a clear answer for.</p>
     
     <p>However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
-        then there are no anomalies or questions. The cold spot is to <i>our</i> south, but to the southern observer the cold spot is in their vicinity. </p>
-    
+        then there are no anomalies or questions. </p>
+
+        
+    <h3>Age and size of the universe</h3>
+
+    <p>If the universe started with a Big Bang, as we look back in space and time, 
+        we should be seeing fewer and fewer mature galaxies, and eventually only young galaxies. 
+        In the 21st century observations show that's not true:</p>
+
+
+    <ul>
+        <li><a href="https://skyandtelescope.org/astronomy-news/dead-ringer-milky-way-found-early-universe/">"Dead Ringer" for the Milky Way Found in Early Universe</a></li>
+        <li><a href="https://www.space.com/how-can-a-star-be-older-than-the-universe.html"> How Can a Star Be Older Than the Universe?</a></li>
+        <li><a href="https://www.sciencedaily.com/releases/2015/03/150302122925.htm"> Old-looking galaxy in a young universe: Astronomers find dust in the early universe</a></li>
+        <li><a href="https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E"> Ancient planets are almost as old as the universe</a></li>
+        <li>Lots more <a href="https://old.reddit.com/r/BigBangSkeptics">here.</a>
+    </ul>
+
+    <p>The size of the things we observe in the universe doesn't seem to be constrained by what we assume are the theoretical limits they could reach
+        given the age and size of the universe. From <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">Wikipedia</a>:</p>
+
+        <p class="pimg"><img src="img/size_limit.png"></p>
+
+    <p>And then there's the weird coincidence that the age of the universe is about equal c/H, the 
+        radius of <a href="https://en.wikipedia.org/wiki/Hubble_volume">the Hubble Volume</a>. 
+        If we were living 5 billion years ago, or 5 billion years from now, the age of the universe and Hubble's radius would be unrelated.
+        By <i>pure</i> coincidence, we are living when they match.</p>
+
     <h3>Tolman Surface Brightness Test</h3>
 
     <p>The Tolman Surface Brightness Test is meant to distinguish a static universe from an expanding one.</p>
@@ -365,7 +370,11 @@ next: function () {
         <a href="https://en.wikipedia.org/wiki/Tolman_surface_brightness_test">https://en.wikipedia.org/wiki/Tolman_surface_brightness_test</a>
     </blockquote>
 
-
+    <p>In the decelerating photon hypothesis, a photon experiences the same delays in the journey as a photon would in expanding space. 
+        But successive photons in an expanding universe would experience higher delays, whereas each successive photon in the decelerating photon hypothesis
+        the same delay.</p>
+        
+    <p>The decelerating photon hypothesis predicts one fewer factor than the expanding universe, matching the 3 observed factors.</p>
 
 
 
@@ -493,10 +502,6 @@ photon = {
 </pre>
 
 </p>the photon's velocity, frequency, and wavelength can be determined at any time from its distance and initial energy.</p>
-
-<p>However, those values don't need to be there at all times, and since the photon is a quantum particle, they probably shouldn't be there until we need them.</p>
-
-<p>What we know about a photon we determine from its interaction with a measurement apparatus, not because we can observe it in-flight.</p>
 
 <p>We know that a red-shifted photon will deliver less energy than it started out with.  
     Assuming the ratio of energy observed to energy emitted is the same ratio as the photon's velocity to <code>c</code>,
@@ -805,9 +810,9 @@ E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c
 
     var c = 1
 
-    var zoom = 0.056
-    var zoomG = zoom * 0.65
-    var zoomGY = zoom * 0.18
+    var zoom = 0.046
+    var zoomG = zoom * 0.75
+    var zoomGY = zoom * 0.28
     var offset = 20
     
     var dgi
@@ -997,14 +1002,13 @@ E<sub>observed</sub> = E<sub>emitted</sub> &times; v/c
         name: "Expanding Fast",
         color: "#888888", 
         H: 0.000076,
-        photon: {x: 0, f_start: 6e5},
-        zoom: 0.03,
+        photon: {x: 0, f_init: 6e5, w: 499.65},
+        //zoom: 0.03,
         next: function () {
-            //this.photon.x += c + this.H * this.photon.x
-
             this.photon.dx = c + this.photon.x * this.H
             this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_init) 
+            this.photon.f = 299792458 / this.photon.w
             
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].dx = this.targets[i].x * this.H

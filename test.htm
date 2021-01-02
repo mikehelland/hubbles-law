@@ -187,7 +187,7 @@ var zs = [
                                 "t=" + model.t.toString().padEnd(8) + " d=" + 
                                 trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
                                 trunc(photon.dx) + ", f=" + trunc(photon.f) + 
-                                ", w=" + trunc(299792460/photon.f) + "\n"
+                                ", w=" + trunc(299792458/photon.f) + "\n"
     }
     
     var zoutput = document.getElementById("zoutput")
@@ -432,7 +432,7 @@ var zs = [
         model.photon.x = 0
         model.photon.f_start = startFreqInput.value || model.photon.f_start || 6e5 
         model.photon.f = model.photon.f_start
-        model.photon.w = 299792460 / model.photon.f
+        model.photon.w = 299792458 / model.photon.f
         model.photon.dx = c
         model.nextTarget = 0
         model.targets.forEach(target => {
@@ -582,8 +582,8 @@ var zs = [
         next: function () {
             this.photon.dx = c + this.photon.x * this.H / 1000
             this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
-            this.photon.f = 299792460 / this.photon.w
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+            this.photon.f = 299792458 / this.photon.w
 
             for (var i = 0; i < this.targets.length; i++) {
                 this.targets[i].x += this.targets[i].start * this.H / 1000
@@ -600,8 +600,8 @@ var zs = [
         next: function () {
             this.photon.dx = c + this.photon.x * this.H / 1000
             this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792460 / this.photon.f_start) 
-            this.photon.f = 299792460 / this.photon.w
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+            this.photon.f = 299792458 / this.photon.w
     
             //this.photon.x += c + this.photon.x * this.H / 1000
             for (var i = 0; i < this.targets.length; i++) {
@@ -619,11 +619,11 @@ var zs = [
         H: 0.0688,
         unitH: "ly/y/Mly",
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        //photon: {x: 0, dx: c, f: 1, w: 299792460, f_start: 1},
+        //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.photon.x
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
         }
     })
     setupModel({
@@ -637,7 +637,7 @@ var zs = [
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.t
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792460 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
         }
     })
     setupModel({
