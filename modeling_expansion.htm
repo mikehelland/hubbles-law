@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/hubbleslaws_graph.png"/>
+        <meta property="og:description" content="A demonstration of Hubble's tension and its resolution."/>
+        <meta property="og:title" content="Fixing Hubble's Law"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            #right {
+                position:fixed;
+                left:750px;
+                top:10px;    
+            }
+            
+            #graph {
+                height:600px;
+                width: 600px;
+            }
+
+            .text {
+                background-color: white;
+                max-width: 700px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li {
+                line-height: 1.5em;
+            }
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            #y-axis {
+                display: none;
+            }
+
+            .model {
+                min-height: 74px;
+            }
+
+            pre code {
+                display:block;
+                padding:0.5em;
+                background: #f0f0f0;
+            }
+        </style>
+
+    </head>
+<body>
+
+<!-- HELLO!!! Source code for the models at the bottom -->
+
+<div class="text">
+    <h1>Modeling Expansion</h1>
+
+    <p>The goal is to model an expanding universe so we have something to compare hypotheses to. 
+        The scenario: a single photon that passes a series of targets placed 200 million light years apart</p>
+    
+    <h2>Basics</h2>
+    
+    <p>We start with a non-expanding model first.</p>
+    
+    <pre><code>
+    var simple = {
+        photon: {d: 0},
+        next: function () {
+            this.photon.d += c
+        }
+    }
+    </code></pre>
+    
+    <p>This JavaScript code defines an object, called <code>simple</code> that contains two things, a <code>photon</code> and a <code>next()</code> function. 
+        The <code>photon</code> has a distance <code>d</code> which starts at zero. 
+        Every time <code>next()</code> is called, <code>d</code> increases by <code>c</code>.</p>
+    
+    <p>The operator <code>+=</code> means "add this to myself", so this line of code:</p>
+    
+    <pre><code>
+            this.photon.d += c
+    </code></pre>
+    
+    <p>is shorthand for this line of code:</p>
+    
+    <pre><code>
+            this.photon.d = this.photon.d + c
+    </code></pre>
+    
+    <p>Now we need to do a few things:</p>
+    
+    <ul>
+        <li>Define the model's units</li>
+        <li>Define c</li>
+        <li>Add the targets</li>
+        <li>Call the <code>next()</code> function in a loop</li>
+        <li>Record when the photon passes a target</li>
+    </ul>
+    
+    <p>That's what the following function does:</p>
+    
+    <pre><code>
+    // time units:          1 million years
+    // distance units:      1 million light years
+    
+    // the speed of light   1 million light years / million years
+    const c = 1
+    
+    function run(model) {
+    
+        // create targets at distance (d) 200 million light years apart
+        model.targets = []
+        for (var i = 200; i &lt;= 30000; i+=200) 
+            model.targets.push({d: i, start: i})
+    
+        var t = 0
+        var nextTarget = 0
+    
+        // start the loop
+        while (model.targets[nextTarget]) {
+    
+            //advance the model 1 million years
+            t += 1
+            model.next()
+    
+            // if we hit a target record the time
+            if (model.photon.d >= model.targets[nextTarget].d) {
+                
+                console.log("Target reached", t)
+                model.targets[nextTarget].hit = t
+    
+                nextTarget += 1
+            }
+        }
+    }
+    </code></pre>
+    
+    <p>The <code>run()</code> function creates an array of targets, and then calls <code>next()</code> in a loop, which moves the photon.
+         The time <code>t</code> is recorded whenever the photon passes a target.</p>
+    
+    <p>Pretty simple, right?</p>
+    
+    <hr>
+
+    <h2>Expansion</h2>
+    
+    <p>Hubble's law is <code>v = HD</code>, where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, 
+        and <code>D</code> is the distance of the target. How could anyone mess this up?</p>
+    
+    <h3>Attempt 1</h3>
+    
+    <p>It seemed all I would have to do to model the expansion of space is calculate the velocity a target have be based on its distance, like this:</p>
+    
+    <pre><code>
+    var expanding1 = {
+        photon: {d: 0},
+        next: function () {
+            this.photon.d += c
+    
+            // targets move at H &times D
+            for (var target of this.targets)
+                target.d += H * target.d
+        }
+    }
+    </code></pre>
+    
+    <p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
+    
+    <p>The important new line in this model is <code>target.d += H * target.start</code>, and it contains a new constant <code>H</code>, 
+        which is Hubble's constant, which was recently measured to be 74 km/sec/Mpc. 
+        </p>
+    
+    <p>To use this values in the model, it must be converted to the proper units.</p>
+    
+    <ul>
+        <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
+        <li>Step 2: convert (km/s) to (light years / year)</li>
+    </ul>
+    
+    Which gives:
+    
+    <pre>
+        74 km/s/Mpc = 22.6880185 km/s/Mly = 7.56790836e-5 ly/y/Mly = 0.00076
+    </pre>
+    
+    <p>Here is attempt 1:</p>
+
+    <div class="model" id="attempt1"></div>
+    
+    <p>This sends the targets flying away too fast. It's not even close to my hypothesis or what the standard model should predict. Something isn't right.</p>
+
+    <h3>Attempt 2</h3>
+
+    <p>In Hubble's Law, the <code>D</code> supposedly stands for 
+        <a href="https://en.wikipedia.org/wiki/Comoving_and_proper_distances">co-moving distance</a>, and not good ol' proper distance.
+    </p>
+    
+    <blockquote>Comoving distance factors out the expansion of the universe, giving a distance that does not change in time due to the expansion of space
+    </blockquote>
+
+    <p>Ok, then. If Hubble's Law calls for co-moving distance, and co-moving distance doesn't change with the expansion of the universe,
+        then the model should be changed to calculate the target's velocity based on it's initial distance, which will always be the same.
+    </p>
+    
+    <div class="model" id="attempt2"></div>
+    
+    <pre><code>
+    var expanding2 = {
+        photon: {d: 0},
+        next: function () {
+            this.photon.d += c
+    
+            // targets move at H &times D
+            for (var target of this.targets)
+                target.d += H * target.start
+        }
+    }
+    </code></pre>
+
+    <p>This seemed to be a bit more manageable. And for some reason, this actually produces the same z's as my hypothesis, 
+        but only plotted against distance, not time. I just assumed at this point that my hypothesis and Hubble's law weren't
+        complete analogs after all. I thought they were. This showed they weren't.
+    </p>
+
+    <p>But people on the internet told me I was wrong. And they were right.</p>
+
+    <h3>Attempt 3</h3>
+
+    <p>It turns out, this doesn't really capture expansion very well. According to expansion, the target doesn't simply move away from the photon.
+        The target and the photon are both part of the Hubble flow. Space expands in front and and behind the photon, boosting it down the way.</p>
+
+    <p>Here's a good discussion on this: 
+        <a href="https://old.reddit.com/r/askscience/comments/kef0kf/does_a_photon_travel_more_than_1_billion_light/"
+        >Does a photon travel more than 1 billion light years in 1 billion years due to the expansion of space?</a></p>
+
+    <p>So not only should the targets be moving according to Hubble's Law, so should the photon. Not only that,
+        but the targets should be updating their velocity as they go, so revert the change in attempt 2.</p>
+
+    <pre><code>
+    var expanding3 = {
+        photon: {d: 0},
+        next: function () {
+            this.photon.d += c + H * this.photon.d
+    
+            // targets move at H &times D
+            for (var target of this.targets)
+                target.d += H * target.d
+        }
+    }
+    </code></pre>
+
+    <div class="model" id="expandingSlow"></div>
+    
+    <p>By gaining some speed in the Hubble flow, we can use that to easily calculate the redshifts:
+    </p>
+
+    <pre><code>
+    next: function () {
+        this.photon.v = c + this.photon.d * H
+        this.photon.d += this.photon.v
+        this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
+    
+        for (var target of this.targets) {
+            target.x += targets.x * H
+        }
+    }
+    </code></pre>
+        
+    <p>And this worked great. This is a perfect analog to my hypothesis. I would thank the internet people here by name, but they
+        didn't seem interested in getting credited.</p>
+
+    <hr>
+
+    <h2>Decelerating Photons</h2>
+
+
+    <p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
+    
+    <pre><code>
+    hypothesis1 = {
+        photon: {d: 0},
+        next: function () {
+            this.photon.d += c - H * this.photon.d
+        }
+    }
+    </code></pre>
+    
+    
+    <p><b>Hypothesis 2: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
+    
+    <pre><code>
+    hypothesis2 = {
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c / (1 + Math.pow(H * this.photon.x, 2))
+        }
+    }
+    </code></pre>
+    
+
+</div>
+
+<div id="right">
+    <canvas id="graph" height="600" width="600"></canvas>
+    <br>
+    <div id="y-axis">
+        Y-axis: <select id="graph-y-axis">
+            <option>time to target (billions of years)</option>
+            <option>z red-shift</option>
+        </select>
+    </div>
+</div>
+
+<script>
+
+    var graph = document.getElementById("graph")
+    var ctxG = graph.getContext("2d")
+    var models = []
+    
+    var yAxis = document.getElementById("graph-y-axis")
+    yAxis.selectedIndex = 0
+    
+    // the models advance by 1 million years each step
+    // the units for distance are in Mly (million light years)
+
+    // the speed of light is 1 million lightyears per 1 million years
+    // Hubble's Constant is in units of Mly^-1 
+
+    var c = 1
+
+    var zoom = 0.046
+    var zoomG = zoom * 0.75
+    var zoomGY = zoom * 0.28
+    var offset = 20
+    
+    var dgi
+    function drawGraph() {
+        
+        ctxG.lineWidth = 1
+
+        ctxG.fillStyle = "black"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.fillStyle = "white"
+
+        ctxG.strokeStyle = "white" 
+        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        
+        ctxG.lineWidth = 2
+        for (var m = 0; m < models.length; m++) {
+            ctxG.strokeStyle = models[m].color
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+            for (var i = 0; i < models[m].targets.length; i++) {
+                if (models[m].targets[i].hit) {
+                    //ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    if (yAxis.selectedIndex === 0) {
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
+                                    -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                    }
+                    else if (yAxis.selectedIndex === 1) {
+                        // show the difference in time with a static model
+                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
+                        models[m].targets[i].z * 10000
+                            * zoomGY)
+                    }
+                }
+            }
+            ctxG.stroke()            
+        }
+
+        ctxG.fillText(yAxis.value, offset + 5, offset)
+        ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
+        
+        if (yAxis.selectedIndex === 0) {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 110; dgi+=2) {
+                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+            }
+        }
+
+        for (dgi = 0; dgi < 16; dgi+=2) {
+            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
+        }
+    }
+
+    function setupModel(model) {
+        
+        var playButton = document.createElement("button")
+        playButton.innerHTML = "Click HERE to run"
+        playButton.onclick = () => {
+            if (playButton.innerHTML === "Reset") {
+                playButton.innerHTML = "Click HERE to run"
+                resetModel(model)
+                draw(model.ctx, model)
+            }
+            else {
+                runModel(model)
+                playButton.innerHTML = "Reset"
+            }
+        }
+
+        model.canvas = document.createElement("canvas")
+
+        model.div.appendChild(playButton)
+        model.div.appendChild(model.canvas)
+
+        model.ctx = model.canvas.getContext("2d")
+        model.nextTarget = 0
+
+        model.canvas.width = 700
+        model.canvas.height = 40
+        
+        // make a target every 200 million light years 
+        model.targets = []
+        for (var i = 200; i <= 26800; i+=200) {
+            model.targets.push({label: i/1000, start: i, x: i})
+        }
+
+        model.ctx.font = "8px sans-serif"
+
+        draw(model.ctx, model)
+
+        models.push(model)
+    }
+
+    function draw(ctx, exp) {
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        for (var i = 0; i < exp.targets.length; i++) {
+            if (exp.targets[i].hit) {
+                ctx.strokeStyle = exp.color
+                ctx.lineWidth = 3
+            }
+            else {
+                ctx.strokeStyle = "white"
+                ctx.lineWidth = 2
+            }
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * (exp.zoom || zoom), 0)
+            ctx.lineTo(exp.targets[i].x * (exp.zoom || zoom), ctx.canvas.height)
+            
+            ctx.stroke()
+        }
+
+        ctx.fillStyle = "yellow"
+        ctx.fillRect(exp.photon.x * (exp.zoom || zoom) - 2, ctx.canvas.height / 2, 5, 5)
+    }
+
+    function resetModel(model) {
+        model.running = false
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+    }
+
+    function runModel(model) {
+        
+        resetModel(model)
+
+        model.running = true
+
+        var i, v, z
+        var batch = 30
+        var handle = setInterval(function () {
+            for (i = 0; i < batch; i++) {
+                if (model.running && model.targets[model.nextTarget] && model.t < 80000) {
+                    model.t++
+                    model.next()
+
+                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+                        model.targets[model.nextTarget].hit = model.t
+
+                        if (model.photon.f_init) {
+                            z = (model.photon.f_init - model.photon.f) / model.photon.f
+                        }
+                        else if (model.targets[model.nextTarget].dx) {
+                            v = 1 - model.targets[model.nextTarget].dx 
+                            z = (1 - v) / v
+                        }
+                        else {
+                            v = model.photon.dx
+                            z = (1 - v) / v
+                        }
+                        model.targets[model.nextTarget].z = z || 0
+                        model.nextTarget++
+                    }
+                }
+                else {
+                    clearInterval(handle)
+                    model.running = false
+                }
+            }
+        }, 0)
+    }
+
+    setupModel({
+        div: document.getElementById("staticModel"),
+        name: "Static",
+        color: "blue", 
+        photon: {x: 0},
+        next: function () {
+            this.photon.x += c
+        }
+    })
+    setupModel({
+        div: document.getElementById("expandingFast"),
+        name: "Expanding Fast",
+        color: "#888888", 
+        H: 0.000076,
+        photon: {x: 0, f_init: 6e5, w: 499.65},
+        //zoom: 0.03,
+        next: function () {
+            this.photon.dx = c + this.photon.x * this.H
+            this.photon.x += this.photon.dx
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_init) 
+            this.photon.f = 299792458 / this.photon.w
+            
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].dx = this.targets[i].x * this.H
+                this.targets[i].x += this.targets[i].dx
+            }
+        }
+    })
+    
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "Redshift by distance",
+        color: "green", 
+        H: 0.000076,
+        photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
+        next: function () {
+            //this.photon.x += c - this.H * this.photon.x
+            this.photon.v = c - this.H * this.photon.x
+            this.photon.x += this.photon.v
+            this.photon.f = this.photon.v * 299792458 / this.photon.w
+        }
+    })
+
+    setInterval(() => {
+        for (var m = 0; m < models.length; m++) {
+            if (models[m].running) {
+                draw(models[m].ctx, models[m]) 
+            }
+        }
+
+        drawGraph()
+    }, 1000 / 60)
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
