@@ -63,250 +63,247 @@
 <!-- HELLO!!! Source code for the models at the bottom -->
 
 <div class="text">
-    <h1>Modeling Expansion</h1>
+<h1>Modeling Expansion</h1>
 
-    <p>The goal is to model an expanding universe so we have something to compare hypotheses to. 
-        The scenario: a single photon that passes a series of targets placed 200 million light years apart</p>
-    
-    <h2>Basics</h2>
-    
-    <p>We start with a non-expanding model first.</p>
-    
-    <pre><code>
-    var simple = {
-        photon: {d: 0},
-        next: function () {
-            this.photon.d += c
-        }
-    }
-    </code></pre>
-    
-    <p>This JavaScript code defines an object, called <code>simple</code> that contains two things, a <code>photon</code> and a <code>next()</code> function. 
-        The <code>photon</code> has a distance <code>d</code> which starts at zero. 
-        Every time <code>next()</code> is called, <code>d</code> increases by <code>c</code>.</p>
-    
-    <p>The operator <code>+=</code> means "add this to myself", so this line of code:</p>
-    
-    <pre><code>
-            this.photon.d += c
-    </code></pre>
-    
-    <p>is shorthand for this line of code:</p>
-    
-    <pre><code>
-            this.photon.d = this.photon.d + c
-    </code></pre>
-    
-    <p>Now we need to do a few things:</p>
-    
-    <ul>
-        <li>Define the model's units</li>
-        <li>Define c</li>
-        <li>Add the targets</li>
-        <li>Call the <code>next()</code> function in a loop</li>
-        <li>Record when the photon passes a target</li>
-    </ul>
-    
-    <p>That's what the following function does:</p>
-    
-    <pre><code>
-    // time units:          1 million years
-    // distance units:      1 million light years
-    
-    // the speed of light   1 million light years / million years
-    const c = 1
-    
-    function run(model) {
-    
-        // create targets at distance (d) 200 million light years apart
-        model.targets = []
-        for (var i = 200; i &lt;= 30000; i+=200) 
-            model.targets.push({d: i, start: i})
-    
-        var t = 0
-        var nextTarget = 0
-    
-        // start the loop
-        while (model.targets[nextTarget]) {
-    
-            //advance the model 1 million years
-            t += 1
-            model.next()
-    
-            // if we hit a target record the time
-            if (model.photon.d >= model.targets[nextTarget].d) {
-                
-                console.log("Target reached", t)
-                model.targets[nextTarget].hit = t
-    
-                nextTarget += 1
-            }
-        }
-    }
-    </code></pre>
-    
-    <p>The <code>run()</code> function creates an array of targets, and then calls <code>next()</code> in a loop, which moves the photon.
-         The time <code>t</code> is recorded whenever the photon passes a target.</p>
-    
-    <p>Pretty simple, right?</p>
-    
-    <hr>
+<p><b>Goal:</b> model an expanding universe.
+    <br> 
+    <b>Scenario:</b> a single photon that passes a series of targets placed 200 million light years apart</p>
 
-    <h2>Expansion</h2>
-    
-    <p>Hubble's law is <code>v = HD</code>, where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, 
-        and <code>D</code> is the distance of the target. How could anyone mess this up?</p>
-    
-    <h3>Attempt 1</h3>
-    
-    <p>It seemed all I would have to do to model the expansion of space is calculate the velocity a target have be based on its distance, like this:</p>
-    
-    <pre><code>
-    var expanding1 = {
-        photon: {d: 0},
-        next: function () {
-            this.photon.d += c
-    
-            // targets move at H &times D
-            for (var target of this.targets)
-                target.d += H * target.d
-        }
-    }
-    </code></pre>
-    
-    <p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
-    
-    <p>The important new line in this model is <code>target.d += H * target.start</code>, and it contains a new constant <code>H</code>, 
-        which is Hubble's constant, which was recently measured to be 74 km/sec/Mpc. 
-        </p>
-    
-    <p>To use this values in the model, it must be converted to the proper units.</p>
-    
-    <ul>
-        <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
-        <li>Step 2: convert (km/s) to (light years / year)</li>
-    </ul>
-    
-    Which gives:
-    
-    <pre>
-        74 km/s/Mpc = 22.6880185 km/s/Mly = 7.56790836e-5 ly/y/Mly = 0.00076
-    </pre>
-    
-    <p>Here is attempt 1:</p>
+<h2>Basics</h2>
 
-    <div class="model" id="attempt1"></div>
-    
-    <p>This sends the targets flying away too fast. It's not even close to my hypothesis or what the standard model should predict. Something isn't right.</p>
+<p>We start with a non-expanding model first.</p>
 
-    <h3>Attempt 2</h3>
-
-    <p>In Hubble's Law, the <code>D</code> supposedly stands for 
-        <a href="https://en.wikipedia.org/wiki/Comoving_and_proper_distances">co-moving distance</a>, and not good ol' proper distance.
-    </p>
-    
-    <blockquote>Comoving distance factors out the expansion of the universe, giving a distance that does not change in time due to the expansion of space
-    </blockquote>
-
-    <p>Ok, then. If Hubble's Law calls for co-moving distance, and co-moving distance doesn't change with the expansion of the universe,
-        then the model should be changed to calculate the target's velocity based on it's initial distance, which will always be the same.
-    </p>
-    
-    <div class="model" id="attempt2"></div>
-    
-    <pre><code>
-    var expanding2 = {
-        photon: {d: 0},
-        next: function () {
-            this.photon.d += c
-    
-            // targets move at H &times D
-            for (var target of this.targets)
-                target.d += H * target.start
-        }
-    }
-    </code></pre>
-
-    <p>This seemed to be a bit more manageable. And for some reason, this actually produces the same z's as my hypothesis, 
-        but only plotted against distance, not time. I just assumed at this point that my hypothesis and Hubble's law weren't
-        complete analogs after all. I thought they were. This showed they weren't.
-    </p>
-
-    <p>But people on the internet told me I was wrong. And they were right.</p>
-
-    <h3>Attempt 3</h3>
-
-    <p>It turns out, this doesn't really capture expansion very well. According to expansion, the target doesn't simply move away from the photon.
-        The target and the photon are both part of the Hubble flow. Space expands in front and and behind the photon, boosting it down the way.</p>
-
-    <p>Here's a good discussion on this: 
-        <a href="https://old.reddit.com/r/askscience/comments/kef0kf/does_a_photon_travel_more_than_1_billion_light/"
-        >Does a photon travel more than 1 billion light years in 1 billion years due to the expansion of space?</a></p>
-
-    <p>So not only should the targets be moving according to Hubble's Law, so should the photon. Not only that,
-        but the targets should be updating their velocity as they go, so revert the change in attempt 2.</p>
-
-    <pre><code>
-    var expanding3 = {
-        photon: {d: 0},
-        next: function () {
-            this.photon.d += c + H * this.photon.d
-    
-            // targets move at H &times D
-            for (var target of this.targets)
-                target.d += H * target.d
-        }
-    }
-    </code></pre>
-
-    <div class="model" id="expandingSlow"></div>
-    
-    <p>By gaining some speed in the Hubble flow, we can use that to easily calculate the redshifts:
-    </p>
-
-    <pre><code>
+<pre><code>var simple = {
+    photon: {d: 0},
     next: function () {
-        this.photon.v = c + this.photon.d * H
-        this.photon.d += this.photon.v
-        this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
-    
-        for (var target of this.targets) {
-            target.x += targets.x * H
+        this.photon.d += c
+    }
+}
+</code></pre>
+
+<p>This JavaScript code defines an object, called <code>simple</code> that contains two things, a <code>photon</code> and a <code>next()</code> function. 
+    The <code>photon</code> has a distance <code>d</code> which starts at zero. 
+    Every time <code>next()</code> is called, <code>d</code> increases by <code>c</code>.</p>
+
+<p>The operator <code>+=</code> means "add this to myself", so this line of code:</p>
+
+<pre><code>        this.photon.d += c
+</code></pre>
+
+<p>is shorthand for this line of code:</p>
+
+<pre><code>        this.photon.d = this.photon.d + c
+</code></pre>
+
+<p>Now we need to do a few things:</p>
+
+<ul>
+    <li>Define the model's units</li>
+    <li>Define c</li>
+    <li>Add the targets</li>
+    <li>Call the <code>next()</code> function in a loop</li>
+    <li>Record when the photon passes a target</li>
+</ul>
+
+<p>That's what the following code does:</p>
+
+<pre><code>// time units:          1 million years
+// distance units:      1 million light years
+
+// the speed of light   1 million light years / million years
+const c = 1
+
+function run(model) {
+
+    // create targets at distance (d) 200 million light years apart
+    model.targets = []
+    for (var i = 200; i &lt;= 30000; i+=200) 
+        model.targets.push({d: i, start: i})
+
+    var t = 0
+    var nextTarget = 0
+
+    // start the loop
+    while (model.targets[nextTarget]) {
+
+        //advance the model 1 million years
+        t += 1
+        model.next()
+
+        // if we hit a target record the time
+        if (model.photon.d >= model.targets[nextTarget].d) {
+            
+            console.log("Target reached", t)
+            model.targets[nextTarget].hit = t
+
+            nextTarget += 1
         }
     }
-    </code></pre>
+}
+</code></pre>
+
+<p>The <code>run()</code> function creates an array of targets, and then calls <code>next()</code> in a loop, which moves the photon.
+        The time <code>t</code> is recorded whenever the photon passes a target.</p>
+
+<div class="model" id="simple"></div>
+
+<hr>
+
+<h2>Expansion</h2>
+
+<p>Hubble's law is <code>v = HD</code>, where <code>v</code> is the velocity of the target, <code>H</code> is Hubble's Constant, 
+    and <code>D</code> is the distance of the target. How hard could that be?</p>
+
+<h3>Attempt 1</h3>
+
+<p>It seemed all I would have to do to model the expansion of space is calculate the velocity a target have be based on its distance, like this:</p>
+
+<pre><code>var expanding1 = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
+
+        // targets move at H &times D
+        for (var target of this.targets)
+            target.d += H * target.d
+    }
+}
+</code></pre>
+
+<p>While <code>simple.next()</code> just moves the photon, <code>expanding.next()</code> moves the photon and the targets.
+
+<p>The important new line in this model is <code>target.d += H * target.start</code>, and it contains a new constant <code>H</code>, 
+    which is Hubble's constant, which was recently measured to be 74 km/sec/Mpc. 
+    </p>
+
+<p>To use this values in the model, it must be converted to the proper units.</p>
+
+<ul>
+    <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
+    <li>Step 2: convert (km/s) to (light years / year)</li>
+</ul>
+
+Which gives:
+
+<pre>
+    74 km/s/Mpc = 22.6880185 km/s/Mly = 7.56790836e-5 ly/y/Mly = 0.00076
+</pre>
+
+<p>Here is attempt 1:</p>
+
+<div class="model" id="attempt1"></div>
+
+<p><i>(note these are zoomed way out so you can see more of what happens)</i></p>
+
+<p>This sends the targets flying away too fast. It's not even close to what the standard model should predict. Something isn't right.</p>
+
+<h3>Attempt 2</h3>
+
+<p>In Hubble's Law, the <code>D</code> supposedly stands for 
+    <a href="https://en.wikipedia.org/wiki/Comoving_and_proper_distances">co-moving distance</a>, and not good ol' proper distance.
+</p>
+
+<blockquote><i>"Comoving distance factors out the expansion of the universe, giving a distance that does not change in time due to the expansion of space"</i>
+</blockquote>
+
+<p>Ok, then. If Hubble's Law calls for co-moving distance, and co-moving distance doesn't change with the expansion of the universe,
+    then the model should be changed to calculate the target's velocity based on it's initial distance, which will always be the same.
+</p>
+
+<div class="model" id="attempt2"></div>
+
+<pre><code>var expanding2 = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c
+
+        // targets move at H &times D
+        for (var target of this.targets)
+            target.d += H * target.start
+    }
+}
+</code></pre>
+
+<p>This seemed to be a bit more manageable. And for some reason, this actually produces the right z's one would expect in an expanding universe, 
+    but only plotted against distance, not time.
+</p>
+
+<h3>Attempt 3</h3>
+
+<p>It turns out, this doesn't really capture expansion very well. According to expansion, the target doesn't simply move away from the photon.
+    The target and the photon are both part of the Hubble flow. Space expands in front and and behind the photon, giving it a speed boost along the way.</p>
+
+<p>Here's a good discussion on this: 
+    <a href="https://old.reddit.com/r/askscience/comments/kef0kf/does_a_photon_travel_more_than_1_billion_light/"
+    >Does a photon travel more than 1 billion light years in 1 billion years due to the expansion of space?</a></p>
+
+<p>So not only should the targets be moving according to Hubble's Law, so should the photon. Not only that,
+    but the targets should be updating their velocity as they go, so we have to also revert the change made in attempt 2.</p>
+
+<pre><code>var expanding3 = {
+    photon: {d: 0},
+    next: function () {
         
-    <p>And this worked great. This is a perfect analog to my hypothesis. I would thank the internet people here by name, but they
-        didn't seem interested in getting credited.</p>
+        // photon and targets move at H &times D
 
-    <hr>
+        this.photon.d += c + H * this.photon.d
 
-    <h2>Decelerating Photons</h2>
-
-
-    <p><b>Hypothesis 1: the speed of light = c - H &times; D</b></p>
-    
-    <pre><code>
-    hypothesis1 = {
-        photon: {d: 0},
-        next: function () {
-            this.photon.d += c - H * this.photon.d
-        }
+        for (var target of this.targets)
+            target.d += H * target.d
     }
-    </code></pre>
-    
-    
-    <p><b>Hypothesis 2: the speed of light = c / (1 + (H &times; D)<sup>2</sup>)</b></p>
-    
-    <pre><code>
-    hypothesis2 = {
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c / (1 + Math.pow(H * this.photon.x, 2))
-        }
+}
+</code></pre>
+
+<div class="model" id="attempt3"></div>
+
+<p>By gaining some speed in the Hubble flow, we can interpret the photon's change in speed as stretching in wavelength to easily calculate the redshifts:
+</p>
+
+<pre><code>next: function () {
+    this.photon.v = c + this.photon.d * H
+    this.photon.d += this.photon.v
+    this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
+
+    for (var target of this.targets) {
+        target.x += targets.x * H
     }
-    </code></pre>
+}
+</code></pre>
     
+<p>And this worked great. They were just as expected. I would thank the internet people here by name, but they
+    didn't seem interested in getting credited.</p>
+
+<hr>
+
+<p>My intuition at the beginning was that the <a href="index.htm">decelerating photon hypothesis</a> and the expanding universe were analogs,
+    insofar as they should predict the same time delays in light signals from galaxy to galaxy. </p>
+
+<p>When I arrived at Attempt 2, I just accepted that my intuition was wrong, and my hypothesis is not identical to the expanding universe the way I thought it was.</p>
+
+<p>Of course, through feedback on the internet, and sheer dumb luck,
+    I got Attempt 3. Attempt 3 was originally going to be Attempt 2 with a wavelength stretching photon.
+    I copy-and-pasted Attempt 1 by mistake, and that worked. It took me hours to recreate the results, because I didn't realize I copy-and-pasted the wrong 
+    (but actually right) Attempt 1 code to begin Attempt 3.</p>
+
+<p>Attempt 3 matches the decelerating photon hypothesis exactly.</p>
+    
+<pre><code>hypothesis1 = {
+    photon: {d: 0},
+    next: function () {
+        this.photon.d += c - H * this.photon.d
+    }
+}
+</code></pre>
+    
+<div class="model" id="redshift1"></div>
+    
+<hr>
+
+<p>Go back to <a href="index.htm">Hubble's Law as Photon Velocity</a></p>
+
+<p>Or check out the <a href="test.htm">Testing Page</a></p>
+
+
 
 </div>
 
@@ -446,11 +443,11 @@
         for (var i = 0; i < exp.targets.length; i++) {
             if (exp.targets[i].hit) {
                 ctx.strokeStyle = exp.color
-                ctx.lineWidth = 3
+                ctx.lineWidth = exp.zoom * 100
             }
             else {
                 ctx.strokeStyle = "white"
-                ctx.lineWidth = 2
+                ctx.lineWidth = 1
             }
             ctx.beginPath()
             ctx.moveTo(exp.targets[i].x * (exp.zoom || zoom), 0)
@@ -517,7 +514,7 @@
     }
 
     setupModel({
-        div: document.getElementById("staticModel"),
+        div: document.getElementById("simple"),
         name: "Static",
         color: "blue", 
         photon: {x: 0},
@@ -525,13 +522,43 @@
             this.photon.x += c
         }
     })
+
     setupModel({
-        div: document.getElementById("expandingFast"),
-        name: "Expanding Fast",
+        div: document.getElementById("attempt1"),
+        color: "red", 
+        H: 0.000076,
+        photon: {x: 0, f_init: 6e5, w: 499.65},
+        zoom: 0.01,
+        next: function () {
+            this.photon.x += c
+            
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].dx = this.targets[i].x * this.H
+                this.targets[i].x += this.targets[i].dx
+            }
+        }
+    })
+    setupModel({
+        div: document.getElementById("attempt2"),
+        color: "purple", 
+        H: 0.000076,
+        photon: {x: 0, f_init: 6e5, w: 499.65},
+        zoom: 0.01,
+        next: function () {
+            this.photon.x += c
+
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].dx = this.targets[i].start * this.H
+                this.targets[i].x += this.targets[i].dx
+            }
+        }
+    })
+    setupModel({
+        div: document.getElementById("attempt3"),
         color: "#888888", 
         H: 0.000076,
         photon: {x: 0, f_init: 6e5, w: 499.65},
-        //zoom: 0.03,
+        zoom: 0.01,
         next: function () {
             this.photon.dx = c + this.photon.x * this.H
             this.photon.x += this.photon.dx
@@ -544,7 +571,7 @@
             }
         }
     })
-    
+
     setupModel({
         div: document.getElementById("redshift1"),
         name: "Redshift by distance",

@@ -58,7 +58,7 @@
     </head>
 <body>
 
-<h3>Hubble's Law Testing Page </h3>
+<h3>Hubble's Law Photon Arrival Rate Test </h3>
 
 <p>
     Read more about the models being tested <a href="index.htm">on the home page.</a> 
@@ -291,24 +291,6 @@ var black = true
         }
     })
 
-    details.appendChild(document.createElement("hr"))
-
-    setupModel({
-        name: "expanding",
-        color: "gray", 
-        photons: [],
-        next: function () {
-            this.target.x += targetDistance * (H/1000)
-            for (var i = this.photons.length - 1; i >= 0 ; i--) {
-                this.photons[i].x += c
-
-                checkPhoton(this, i)
-            }
-        }
-    })
-
-    details.appendChild(document.createElement("hr"))
-
     setupModel({
         name: "hypothesis 1",
         color: "green", 
@@ -322,6 +304,21 @@ var black = true
         }
     })
 
+    setupModel({
+        name: "expanding",
+        color: "gray", 
+        photons: [],
+        next: function () {
+            this.target.x += this.target.x * (H/1000)
+            for (var i = this.photons.length - 1; i >= 0 ; i--) {
+                this.photons[i].x += c + (H/1000) * this.photons[i].x
+
+                checkPhoton(this, i)
+            }
+        }
+    })
+
+    details.appendChild(document.createElement("hr"))
 
     /*setupModel({
         div: document.getElementById("expandingFast"),

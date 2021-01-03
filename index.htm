@@ -235,6 +235,23 @@ for (var target of this.targets) {
 
 <p>If the loss of energy due to redshifting is a problem, the decelerating photon hypothesis has a solution, whereas the expanding models do not.</p>
 
+<p>In fact, the expansion model from earlier is still running. The decelerating photon burned out long ago, but the photon in expanding space
+    is traveling faster and farther, yet hasn't hit a target for hundreds of trillions of years.</p>
+
+<p>
+    Photon Distance: <span id="expanding-photon-distance"></span> million light years
+<br>
+Photon Speed: <span id="expanding-photon-speed"></span> c
+<br>
+Time since last target: <span id="expanding-last-target"></span> million years
+<br>
+<button id="stop-models-button">Stop</button>
+</p>
+
+<p>The photons in the expanding universe that approach the Hubble limit just cruise forever never hitting anything. 
+    In the decelerating photon hypothesis, photons decay and get recycled back into the universe.
+    The expanding universe is almost comically ineffecient by comparison.   
+</p>
 <hr>
 
 <h2>Big Bang Cosmology</h2>
@@ -301,7 +318,7 @@ next: function () {
 
     <p class="pimg"><img src="img/cmb_predictions.png"></p>
 
-    <p>CMB was discovered in 1964 at 2.8 K. The most accurate 
+    <p>The CMB was discovered in 1964 at 2.8 K. The most accurate 
         predictions for the background temperature of space were based on a stationary universe, not an expanding one.</p>
     
     <p>That's a major coincidence. 
@@ -369,6 +386,8 @@ next: function () {
     <p>In the decelerating photon hypothesis, a photon experiences the same delays in the journey as a photon would in expanding space. 
         But successive photons in an expanding universe would experience higher delays, whereas each successive photon in the decelerating photon hypothesis
         experiences the same delay as the first photon.</p>
+
+    <p>You can see this in action on the <a href="freqtest.htm">Photon Arrival Rate page</a></p>
 
     <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.</p>
             
@@ -617,7 +636,7 @@ photon = {
 
 <p>At about a z of 8.0, the hypothesis starts to go off the path of the standard model, predicting a slower rise in z over time. 
     In other words, this hypothesis predicts more redshift nearby and less far away than the standard model, giving it the illusion
-    of acceleration.
+    that the effect is currently accelerating compared to expectations.
 </p>
 
 <h3>Test 3: breadcrumbs</h3> 
@@ -941,7 +960,7 @@ photon = {
         var batch = 30
         var handle = setInterval(function () {
             for (i = 0; i < batch; i++) {
-                if (model.running && model.targets[model.nextTarget] && model.t < 80000) {
+                if (model.running && model.targets[model.nextTarget]) {// && model.t < 80000) {
                     model.t++
                     model.next()
 
@@ -961,6 +980,7 @@ photon = {
                         }
                         model.targets[model.nextTarget].z = z || 0
                         model.nextTarget++
+                        model.lastTarget = model.t
                     }
                 }
                 else {
@@ -980,7 +1000,7 @@ photon = {
             this.photon.x += c
         }
     })
-    setupModel({
+    var expandingModel = {
         div: document.getElementById("expandingFast"),
         name: "Expanding Fast",
         color: "#888888", 
@@ -998,7 +1018,18 @@ photon = {
                 this.targets[i].x += this.targets[i].dx
             }
         }
-    })
+    }
+    setupModel(expandingModel)
+    var expandingPhotonSpeed = document.getElementById("expanding-photon-speed")
+    var expandingPhotonDistance = document.getElementById("expanding-photon-distance")
+    var expandingLastTarget = document.getElementById("expanding-last-target")
+
+    var expandingEnergyInterval = setInterval(() => {
+        expandingPhotonDistance.innerHTML = Math.floor(expandingModel.photon.x)        
+        expandingPhotonSpeed.innerHTML = Math.floor(expandingModel.photon.dx)
+        expandingLastTarget.innerHTML = expandingModel.t - expandingModel.lastTarget
+
+    }, 500)
     
     setupModel({
         div: document.getElementById("redshift1"),
@@ -1024,6 +1055,12 @@ photon = {
         drawGraph()
     }, 1000 / 60)
 
+    document.getElementById("stop-models-button").onclick = () => {
+        for (var m = 0; m < models.length; m++) {
+            models[m].running = false
+        }
+        clearInterval(expandingEnergyInterval)
+    }
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
