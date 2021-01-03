@@ -207,10 +207,8 @@ Which gives:
 </blockquote>
 
 <p>Ok, then. If Hubble's Law calls for co-moving distance, and co-moving distance doesn't change with the expansion of the universe,
-    then the model should be changed to calculate the target's velocity based on it's initial distance, which will always be the same.
+    then the model should be changed to calculate the target's velocity based on it's <code>start</code> distance, which will always be the same.
 </p>
-
-<div class="model" id="attempt2"></div>
 
 <pre><code>var expanding2 = {
     photon: {d: 0},
@@ -223,6 +221,8 @@ Which gives:
     }
 }
 </code></pre>
+
+<div class="model" id="attempt2"></div>
 
 <p>This seemed to be a bit more manageable. And for some reason, this actually produces the right z's one would expect in an expanding universe, 
     but only plotted against distance, not time.
