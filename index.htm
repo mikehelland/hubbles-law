@@ -22,7 +22,7 @@
                 width: 600px;
             }
 
-            .text {
+            .maintext {
                 background-color: white;
                 max-width: 700px;
                 font-family: Arial, Helvetica, sans-serif;
@@ -62,7 +62,7 @@
 
 <!-- HELLO!!! Source code for the models at the bottom -->
 
-<div class="text">
+<div class="maintext">
 <h1>Hubble's Law as Photon Velocity</h1>
 
 <h2>Introduction</h2>
@@ -87,21 +87,21 @@
 
 <b>Simple Universe:</b>
 
-<pre><code>this.photon.d += c
+<pre class="js"><code>photon.d += c
 </code></pre>
 
 <b>Expanding Universe:</b>
 
-<pre><code>this.photon.d += c + H * this.photon.d
+<pre class="js"><code>photon.d += c + H * photon.d
 
-for (var target of this.targets) {
-    target.x += target.x * H
+for (var target of targets) {
+    target.d += H * target.d
 }
 </code></pre>
 
 <b>Decelerating Photon:</b>
 
-<pre><code>this.photon.d += c - H * this.photon.d
+<pre class="js"><code>photon.d += c - H * photon.d
 </code></pre>
 
 <p>(Read more: <a href="modeling_expansion.htm">explanation of the models with source code</a>)</p>
@@ -127,19 +127,21 @@ for (var target of this.targets) {
 <p>More than a decade has passed since first considering the decelerating photon hypothesis, and much has happened in cosmology:</p>
 
 <ul>
-    <li>Measurements of Hubble's constant don't match measurements of the CMB</li>
-    <li>WMAP and Planck show anomalies in the CMB:</li>
+    <li>Measurements of Hubble's constant don't match measurements of the CMB<sup>[1][2][3]</sup></li>
+    <li>WMAP and Planck show anomalies in the CMB<sup>[4][5]</sup>:</li>
     <ul>
         <li>It is cooler to the north than the south</li>
         <li>There is a cold spot in the south</li>
     </ul>
-    <li>Observing mature galaxies in the early universe has become a regular occurence</li>
+    <li>Observing mature galaxies in the early universe has become a regular occurence<sup>[6][7][8][9][10][11][12][13][14][15][16][17][18]</sup></li>
     <ul>
     </ul>
-    <li>More objects that surpass the theoretical size limit have been observed</li>
+    <li>More objects that surpass the theoretical size limit have been observed
+        <sup>[19][20][21][22][23][24]</sup>
+    </li>
 </ul>
 
-<p>These new observations run counter to the standard model, and the state of cosmology has officially been declared a crisis.</p>
+<p>These new observations run counter to the standard model, and the state of cosmology has officially been declared a crisis<sup>[25]</sup>.</p>
     
 <p>Yet these new observations pose no threat to the decelerating photon model. 
     The CMB in the decelerating photon model is not the remnant of an ancient fireball that has traveled 14 billion light years to reach us.
@@ -314,7 +316,7 @@ next: function () {
     <p>The Big Bang theory didn't predict the right temperature for the CMB, which is understandable because Hubble's constant 
         was much higher in the early days of the theory. But the temperature discovered <i>was</i> 
         <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation"
-        >accurately predicted by several astronomers</a> working from non-expanding models</a>.</p>
+        >accurately predicted by several astronomers</a> working from non-expanding models</a><sup>[26]</sup>.</p>
 
     <p class="pimg"><img src="img/cmb_predictions.png"></p>
 
@@ -325,7 +327,7 @@ next: function () {
         If we were living 5 billion years from now, or 5 billion years in the past, the CMB would be a different temperature according to the Big Bang.
         It's pure coincidence that the CMB is the same temperature today as the minimum temperature for stuff in our galaxy.</p>
 
-    <p>All of that could be ignored, but in the last decade anomalies have been spotted in the CMB:</p>
+    <p>All of that could be ignored, but in the last decade anomalies have been spotted in the CMB<sup>[4][5]</sup>:</p>
 
     <blockquote>
         Two Cosmic Microwave Background anomalous features hinted at by Planck's predecessor, NASA's Wilkinson Microwave Anisotropy Probe (WMAP), 
@@ -348,17 +350,22 @@ next: function () {
     
     <p>This is a question the expanding universe theory doesn't have a clear answer for.</p>
     
-    <p>However, if the observable region is, as Hubble puts it, "an insignificant sample of a universe that extends indefinitely in space and in time",
-        then there are no anomalies or questions. </p>
+    <p>In the Milky Way galaxy, our sun is located slightly to the north of the galactic disk.</p>
 
+    <p class="pimg"><img src="img/milkyway.png"></p>
+
+    <p>That means, there are more stars of our own galaxy to the south than there are to the north. 
+        And the CMB's southern hemisphere is warmer than the northern hemisphere.
+        The CMB may be the heat of our own galaxy. </p>
+    
     <p>Finally, it is the measurements of the CMB that aren't fitting measurements of Hubble's constant that is at the source of the 
-        Hubble tension. If the CMB is not an ancient fireball, there is no tension.</p>
+        Hubble tension<sup>[3]</sup>. If the CMB is not an ancient fireball, there is no tension.</p>
         
     <h3>Age and size of the universe</h3>
 
     <p>If the universe started with a Big Bang, as we look back in space and time, 
         we should be seeing fewer and fewer mature galaxies, and eventually only young galaxies. 
-        In the 21st century observations show that's not true:</p>
+        In the 21st century observations show that's not true<sup>[6][7][8][9][10][11][12][13][14][15][16][17][18]</sup>:</p>
 
 
     <ul>
@@ -370,7 +377,7 @@ next: function () {
     </ul>
 
     <p>The size of the things we observe in the universe doesn't seem to be constrained by what we assume are the theoretical limits they could reach
-        given the age and size of the universe. From <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">Wikipedia</a>:</p>
+        given the age and size of the universe<sup>[19][20][21][22][23][24]</sup>. From <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">Wikipedia</a>:</p>
 
         <p class="pimg"><img src="img/size_limit.png"></p>
 
@@ -408,8 +415,8 @@ next: function () {
 <h3>Tired Light</h3>
 
 <p>There have been 
-    <a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">hundreds of theories</a> that don't involve expanding space
-    trying to explain how light gets "tired" during long intergalactic journeys, 
+    hundreds of theories that don't involve expanding space
+    trying to explain how light gets "tired" during long intergalactic journeys<sup>[27]</sup>, 
     starting all the way back in 1929 when the redshift-distance relation was first published.
 </p>
 
@@ -440,7 +447,7 @@ next: function () {
 <a name="vsl"></a>
 <h3>Varying Speed of Light (VSL)</h3>
 
-<p>For the last few decades there have been versions of a theory going around known as Varying Speed of Light:</p>
+<p>For the last few decades there have been versions of a theory going around known as Varying Speed of Light<sup>[28]</sup>:</p>
 
 <blockquote><i>
     There are others that think such dark energy ideas are now getting too convoluted, and that a much simpler explanation, one that even Einstein considered, should now be given serious consideration; a change in the speed of light, or VSL (Varying Speed of Light) as others know it by.
@@ -697,8 +704,7 @@ photon = {
     <i>We seem to face, as once before in the days of Copernicus, a choice between a small, finite universe, 
     and a universe indefinitely large plus a new principle of nature.</i> 
     <br>
-    <br>
-    E. Hubble, <a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a>, pg. 52, 1937
+    -Edwin Hubble, pg. 52
 
 </blockquote>
 
@@ -755,6 +761,124 @@ photon = {
 
 <p><a href="img/paper1941.png">Newspaper article</a> announcing Edwin Hubble has refuted the expanding universe theory, Dec. 30, 1941:</p>
 
+<hr>
+
+<h2>Sources</h2>
+
+
+<ol>
+    <li>
+        A. G. Riess et al. [Supernova Search Team], <i>Astron. J.</i>, 116, 1009 (1998).
+    </li>
+    <li>
+        N. Aghanim et al., <i>“Planck 2018 results. VI. Cosmological parameters</i>, (2018)
+    </li>
+    <li>
+        A. G. Riess et al., <a href="https://arxiv.org/abs/2012.08534">arXiv:2012.08534 [astro-ph.CO]</a> <i>ApJ.</i>, 116, 1009 (2020).
+    </li>
+    <li>
+        Cruz, M.; Martinez-Gonzalez, E.; Vielva, P.; Cayon, L. (2005). "Detection of a non-Gaussian Spot in WMAP". <i>Monthly Notices of the Royal Astronomical Society</i>. <b>356</b> (1): 29–40. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/astro-ph/0405341">astro-ph/0405341</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2005MNRAS.356...29C">2005MNRAS.356...29C</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1111%2Fj.1365-2966.2004.08419.x">10.1111/j.1365-2966.2004.08419.x</a>.
+    </li>
+    <li>
+        Ade, P. A. R.;  et al. (Planck Collaboration) (2013). "Planck 2013 results. XXIII. Isotropy and statistics of the CMB". <i>Astronomy &amp; Astrophysics</i>. <b>571</b>: A23. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1303.5083">1303.5083</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014A&amp;A...571A..23P">2014A&amp;A...571A..23P</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1051%2F0004-6361%2F201321534">10.1051/0004-6361/201321534</a>.
+    </li>
+
+
+<!-- mature galaxies in a young universe -->
+
+    <li>
+        Neeleman, M., Prochaska, J.X., Kanekar, N. et al. A cold, massive, rotating disk galaxy 1.5 billion years after the Big Bang. Nature 581, 269–272 (2020). 
+        <a href="https://doi.org/10.1038/s41586-020-2276-y">https://doi.org/10.1038/s41586-020-2276-y</a>
+    </li>
+    <li>
+        Marco  Mignoli, et el., A&A 642 L1 (2020) DOI: 10.1051/0004-6361/202039045
+        Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524
+    </li>
+    <li>
+        Rizzo, F., Vegetti, S., Powell, D. et al. A dynamically cold disk galaxy in the early Universe. Nature 584, 201–204 (2020). 
+        <a href="https://doi.org/10.1038/s41586-020-2572-6">https://doi.org/10.1038/s41586-020-2572-6</a>
+    </li>
+    <li>
+        Don A. VandenBerg et al 2014 ApJ 792 110 
+        <a href="http://dx.doi.org/10.1088/0004-637X/792/2/110">http://dx.doi.org/10.1088/0004-637X/792/2/110</a>
+    </li>
+    <li>
+        Wang, T., Schreiber, C., Elbaz, D. et al. A dominant population of optically invisible massive galaxies in the early Universe. Nature 572, 211–214 (2019). 
+        <a href="https://doi.org/10.1038/s41586-019-1452-4">https://doi.org/10.1038/s41586-019-1452-4</a>
+    </li>
+    <li>
+        K. Caputi et al., “Spitzer Bright, UltraVISTA Faint Sources in COSMOS: The Contribution to the Overall Population of Massive Galaxies at z = 3-7”, Astrophysical Journal.
+    </li>
+    <li>
+        P. L. Capak et al. “Galaxies at redshifts 5 to 6 with systematically low dust content and high [CII] emission.” Nature. June 25, 2015.
+    </li>
+    <li>
+        Adi Zitrin et al 2015 ApJL 810 L12 
+        <a href="https://iopscience.iop.org/article/10.1088/2041-8205/810/1/L12">https://iopscience.iop.org/article/10.1088/2041-8205/810/1/L12</a>
+    </li>
+    <li>
+        Watson, D., Christensen, L., Knudsen, K. et al. A dusty, normal galaxy in the epoch of reionization. Nature 519, 327–330 (2015). 
+        <a href="https://doi.org/10.1038/nature14164">https://doi.org/10.1038/nature14164</a>
+    </li>
+    <li>
+        Straatman, Caroline MS, et al. "A substantial population of massive quiescent galaxies at z∼ 4 from ZFOURGE." The Astrophysical Journal Letters 783.1 (2014): L14. 
+        <a href="https://arxiv.org/abs/1312.4952">https://arxiv.org/abs/1312.4952</a>
+    </li>
+    <li>
+        B. D. Simmons et al. Galaxy Zoo: CANDELS Barred Disks and Bar Fractions. Monthly Notices of the Royal Astronomical Society, 2014 DOI: 10.1093/mnras/stu1817
+    </li>
+    <li>
+        Charles L. Steinhardt et al 2014 ApJL 791 L25 
+        <a href="https://iopscience.iop.org/article/10.1088/2041-8205/791/2/L25">https://iopscience.iop.org/article/10.1088/2041-8205/791/2/L25</a>
+    </li>
+    <li>
+        J.  Setiawan, et el., Planetary companions around the metal-poor star HIP 11952, A&A 540 A141 (2012) DOI: 10.1051/0004-6361/201117826
+    </li>
+
+    <!-- too big -->
+
+    <li>
+        Daniel Pomarède et al 2020 ApJ 897 133 
+        <a href="https://iopscience.iop.org/article/10.3847/1538-4357/ab9952">https://iopscience.iop.org/article/10.3847/1538-4357/ab9952</a>
+    </li>
+    <li>
+        Gott, J. Richard, III;  et al. (May 2005), "A Map of the Universe", <i>The Astrophysical Journal</i>, <b>624</b> (2): 463–484, <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/astro-ph/0310571">astro-ph/0310571</a></span>, <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2005ApJ...624..463G">2005ApJ...624..463G</a>, <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1086%2F428890">10.1086/428890</a>
+    </li>
+    <li>
+        Clowes, Roger; Luis E. Campusano; Matthew J. Graham &amp; Ilona K. S¨ochting (2012). "Two close Large Quasar Groups of size ∼ 350 Mpc at z ∼ 1.2". <i>Monthly Notices of the Royal Astronomical Society</i>. <b>419</b> (1): 556. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1108.6221">1108.6221</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2012MNRAS.419..556C">2012MNRAS.419..556C</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1111%2Fj.1365-2966.2011.19719.x">10.1111/j.1365-2966.2011.19719.x</a>.
+    </li>
+    <li>
+        Clowes, Roger G.; Harris, Kathryn A.; Raghunathan, Srinivasan; Campusano, Luis E.; Söchting, Ilona K.; Graham, Matthew J. (2013-01-11). <a rel="nofollow" class="external text" href="http://mnras.oxfordjournals.org/content/early/2013/01/07/mnras.sts497.full">"A structure in the early Universe at z ∼ 1.3 that exceeds the homogeneity scale of the R-W concordance cosmology"</a>. <i>Monthly Notices of the Royal Astronomical Society</i>. <b>1211</b> (4): 6256. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1211.6256">1211.6256</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2013MNRAS.429.2910C">2013MNRAS.429.2910C</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1093%2Fmnras%2Fsts497">10.1093/mnras/sts497</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:486490">486490</a><span class="reference-accessdate">. Retrieved <span class="nowrap">14 January</span> 2013</span>.
+    </li>
+    <li>
+        Balazs, L.G.; Bagoly, Z.; Hakkila, J.E.; Horvath, I.; Kobori, J.; Racz, I.I.; Toth, L.V. (2015-08-05). <a rel="nofollow" class="external text" href="http://mnras.oxfordjournals.org/content/452/3/2236.abstract">"A giant ring-like structure at 0.78 &lt; z &lt; 0.86 displayed by GRBs"</a>. <i>Monthly Notices of the Royal Astronomical Society</i>. <b>452</b> (3): 2236–2246. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1507.00675">1507.00675</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2015MNRAS.452.2236B">2015MNRAS.452.2236B</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1093%2Fmnras%2Fstv1421">10.1093/mnras/stv1421</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:109936564">109936564</a><span class="reference-accessdate">. Retrieved <span class="nowrap">5 August</span> 2015</span>.
+    </li>
+    <li>
+        Horvath, Istvan; Bagoly, Zsolt; Hakkila, Jon; Tóth, L. Viktor (2014). "Anomalies in the GRB spatial distribution". <i>Proceedings of Science</i>: 78. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1507.05528">1507.05528</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014styd.confE..78H">2014styd.confE..78H</a>.
+    </li>
+
+    <li>
+        Jones, David, "Crisis in Cosmology: Measuring The Local Value of the Hubble Constant"  
+        APS April Meeting 2018 63,4 <a href="http://meetings.aps.org/Meeting/APR18/Session/H07.1">APR18-2018-000816</a> (2018)
+    </li>
+
+
+    <li>
+        Assis, A. K. T.; Neves, M. C. D., Astrophysics and Space Science, Volume 227, Issue 1-2, pp. 13-24 (1995)
+    </li>
+
+    <li>
+        H.J. Reboul, <i><a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">Astron. Astrophys. Supp. Ser.</a></i> 45, 129--144 (1981).
+    </li>
+    <li>
+        J. Magueijo, <i>Reports on Progress in Physics</i>, Vol. 66, Iss. 11, 2025-2068 (2003).
+    </li>
+
+
+    <li>
+        E. Hubble, in <i><a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a></i>, p22, (1937)
+    </li>
+</ol>
 
 <hr>
 
