@@ -156,7 +156,7 @@ function run(model) {
 
 <h3>Attempt 1</h3>
 
-<p>It seemed all I would have to do to model the expansion of space is calculate the velocity a target have be based on its distance, like this:</p>
+<p>It seemed all I would have to do to model the expansion of space is calculate the velocity of a target based on its distance, like this:</p>
 
 <pre><code>var expanding1 = {
     photon: {d: 0},
@@ -176,7 +176,7 @@ function run(model) {
     which is Hubble's constant, which was recently measured to be 74 km/sec/Mpc. 
     </p>
 
-<p>To use this values in the model, it must be converted to the proper units.</p>
+<p>To use this value in the model, it must be converted to the proper units.</p>
 
 <ul>
     <li>Step 1: convert (km/s / Megaparsec) to (km/s / Million light years)</li>
@@ -231,7 +231,7 @@ Which gives:
 <h3>Attempt 3</h3>
 
 <p>It turns out, this doesn't really capture expansion very well. According to expansion, the target doesn't simply move away from the photon.
-    The target and the photon are both part of the Hubble flow. Space expands in front and and behind the photon, giving it a speed boost along the way.</p>
+    The target and the photon are both part of the Hubble flow. Space expands in front of and behind the photon, giving it a speed boost along the way.</p>
 
 <p>Here's a good discussion on this: 
     <a href="https://old.reddit.com/r/askscience/comments/kef0kf/does_a_photon_travel_more_than_1_billion_light/"
