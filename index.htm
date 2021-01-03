@@ -83,30 +83,10 @@
 
 <div class="model" id="redshift1"></div>
 
-<p>As you can see, the model where the entire universe is in motion produces the same output as a single decelerating photon. Here is the relevant code for each model:</p>
-
-<b>Simple Universe:</b>
-
-<pre class="js"><code>photon.d += c
-</code></pre>
-
-<b>Expanding Universe:</b>
-
-<pre class="js"><code>photon.d += c + H * photon.d
-
-for (var target of targets) {
-    target.d += H * target.d
-}
-</code></pre>
-
-<b>Decelerating Photon:</b>
-
-<pre class="js"><code>photon.d += c - H * photon.d
-</code></pre>
-
 <p>(Read more: <a href="modeling_expansion.htm">explanation of the models with source code</a>)</p>
 
-<p>The hypothesis is that the velocity <code>v</code> of a photon is a function of the distance <code>D</code> it has traveled:</p>
+<p>As you can see, the model where the entire universe is in motion produces the same output as a single decelerating photon. 
+    The hypothesis is that the velocity <code>v</code> of a photon is a function of the distance <code>D</code> it has traveled:</p>
 
 <p class="pimg"><img src="img/v=c-HD.png"></p>
 
@@ -751,15 +731,12 @@ photon = {
 
 <h2>More:</h2>
 
-<p><a href="test.htm">The Testing Page</a> - try your own hypotheses and values, more models and options</p>
-
-<p><a href="https://github.com/mikehelland/hubbles-law/blob/master/index.htm">Source code for the models</a> on GitHub.</p>
-
-<p><a href="redshift.htm">Understanding Cosmological Red-shift</a></p>
-
-<p><a href="faq.htm">Frequency Asked Questions</a></p>
-
-<p><a href="img/paper1941.png">Newspaper article</a> announcing Edwin Hubble has refuted the expanding universe theory, Dec. 30, 1941:</p>
+<ul>
+    <li><a href="test.htm">The Testing Page</a> - try your own hypotheses and values, more models and options</li>
+    <li><a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code for the models</a> on GitHub.</li>
+    <li><a href="redshift.htm">Understanding Cosmological Red-shift</a></li>
+    <li><a href="bigbang.htm">History and context of the Big Bang</a></li>
+</ul>
 
 <hr>
 
