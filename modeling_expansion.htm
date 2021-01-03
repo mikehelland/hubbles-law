@@ -259,15 +259,9 @@ Which gives:
 <p>By gaining some speed in the Hubble flow, we can interpret the photon's change in speed as stretching in wavelength to easily calculate the redshifts:
 </p>
 
-<pre><code>next: function () {
-    this.photon.v = c + this.photon.d * H
+<pre><code>    this.photon.v = c + this.photon.d * H
     this.photon.d += this.photon.v
     this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
-
-    for (var target of this.targets) {
-        target.x += targets.x * H
-    }
-}
 </code></pre>
     
 <p>And this worked great. They were just as expected. I would thank the internet people here by name, but they
