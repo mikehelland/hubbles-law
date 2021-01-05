@@ -250,16 +250,9 @@ Time since last target: <span id="expanding-last-target"></span> million years
 <p>If the original frequency or wavelength is known, using the equation for the velocity of wave 
     (<code>v = frequency &times; wavelength</code>) the expanding model can be updated to demonstrate the increased wavelength:</p>
 
-<pre><code>
-next: function () {
-    this.photon.v = c + this.photon.d * H
-    this.photon.d += this.photon.v
-    this.photon.w = (this.photon.v * 299792458 / this.photon.f) 
-
-    for (var target of this.targets) {
-        target.x += targets.x * H
-    }
-}
+<pre class="js"><code>photon.v = c + H * photon.d
+photon.d += photon.v
+photon.w = (photon.v * 299792458 / photon.f) 
 </code></pre>
 
 <p>Inversely, if the observed redshifts are taken as a decrease in frequency, 
@@ -268,12 +261,9 @@ next: function () {
     the decelerating photon hypothesis can be modified to show the decreased frequency:
 </p>
     
-<pre><code>
-next: function () {
-    this.photon.v = c - H * this.photon.d
-    this.photon.x += this.photon.v
-    this.photon.f = (this.photon.v * 299792458 / this.photon.w) 
-}
+<pre class="js"><code>photon.v = c - H * photon.d
+photon.d += photon.v
+photon.f = (photon.v * 299792458 / photon.w) 
 </code></pre>
 
 <p>Using the new wavelengths and frequencies and the standard method of calculating redshift:</p>
@@ -613,7 +603,7 @@ photon = {
     22             12.9        34.8                   14.2        38.2 
     23             12.9        35.0                   14.2        38.4 
     24             12.9        35.2                   14.2        38.7 
-    25             12.9        35.4                   14.2        38.9                                                                                                                                                                                                         
+    25             12.9        35.4                   14.2        38.9
 </pre>
 
 <p>
