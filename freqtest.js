@@ -131,7 +131,7 @@ function checkPhoton(model, i) {
         model.photons.splice(i, 1)
         
         if (model.first) {
-            model.freqDiv.value = (model.hitCount - 1) / (model.t - model.first)
+            model.freqDiv.value = 1000 * (model.hitCount - 1) / (model.t - model.first)
         }
         else {
             model.first = model.t
@@ -171,7 +171,10 @@ setupFreqModel({
     color: "gray", 
     photons: [],
     next: function () {
-        this.target.x += this.target.x * (H/1000)
+        if (this.hitCount) {
+            this.target.x += this.target.x * (H/1000)
+        }
+
         for (var i = this.photons.length - 1; i >= 0 ; i--) {
             this.photons[i].x += c + (H/1000) * this.photons[i].x
 
