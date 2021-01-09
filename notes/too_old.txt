@@ -10,9 +10,13 @@ Neeleman, M., Prochaska, J.X., Kanekar, N. et al. A cold, massive, rotating disk
 
 ----
 
+https://astronomy.com/news/2020/10/six-ancient-galaxies-found-in-the-web-of-a-supermassive-black-hole
+
 https://www.eso.org/public/news/eso2016/
 
 “Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524” to appear in Astronomy & Astrophysics (doi: 10.1051/0004-6361/202039045).
+
+“This research was mainly driven by the desire to understand some of the most challenging astronomical objects — supermassive black holes in the early Universe. These are extreme systems and to date we have had no good explanation for their existence,”
 
 @article{ refId0,
 	author = {{Mignoli, Marco} and {Gilli, Roberto} and {Decarli, Roberto} and {Vanzella, Eros} and {Balmaverde, Barbara} and {Cappelluti, Nico} and {Cassar\`a, Letizia P.} and {Comastri, Andrea} and {Cusano, Felice} and {Iwasawa, Kazushi} and {Marchesi, Stefano} and {Prandoni, Isabella} and {Vignali, Cristian} and {Vito, Fabio} and {Zamorani, Giovanni} and {Chiaberge, Marco} and {Norman, Colin}},
@@ -84,6 +88,8 @@ A dominant population of optically invisible massive galaxies in the early Unive
 
 Wang, T., Schreiber, C., Elbaz, D. et al. A dominant population of optically invisible massive galaxies in the early Universe. Nature 572, 211–214 (2019). https://doi.org/10.1038/s41586-019-1452-4
 
+Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
+
 ----
 
 https://www.sciencedaily.com/releases/2015/11/151118070758.htm
@@ -98,14 +104,16 @@ https://www.eso.org/public/news/eso1545/
 
  ----
 
- https://skyandtelescope.org/astronomy-news/dust-poor-early-galaxies-0624201523/#sthash.Vlkn6oBZ.dpuf
+~https://skyandtelescope.org/astronomy-news/dust-poor-early-galaxies-0624201523/#sthash.Vlkn6oBZ.dpuf
 
  P. L. Capak et al. “Galaxies at redshifts 5 to 6 with systematically low dust content and high [CII] emission.” Nature. June 25, 2015.
 
+https://www.nature.com/articles/nature14500
+
  ----
 
- ? https://www.sciencedaily.com/releases/2015/09/150925085546.htm
- ? 'Fossils' of galaxies reveal the formation and evolution of massive galaxies
+ ~https://www.sciencedaily.com/releases/2015/09/150925085546.htm
+ ~ 'Fossils' of galaxies reveal the formation and evolution of massive galaxies
 
 ---
 
@@ -133,6 +141,13 @@ https://www.nature.com/articles/nature14164
 
 Watson, D., Christensen, L., Knudsen, K. et al. A dusty, normal galaxy in the epoch of reionization. Nature 519, 327–330 (2015). https://doi.org/10.1038/nature14164
 
+The galaxy
+is highly evolved: it has a large stellar mass, and is heavily en-
+riched in dust, with a dust-to-gas ratio close to that of the Milky
+Way. Dusty, evolved galaxies are thus present among the fainter
+star-forming population at z > 7, in spite of the very short time
+since they first appeared.
+
 ----
 
 ?? https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E
@@ -151,6 +166,7 @@ https://arxiv.org/abs/1312.4952
 
 Straatman, Caroline MS, et al. "A substantial population of massive quiescent galaxies at z∼ 4 from ZFOURGE." The Astrophysical Journal Letters 783.1 (2014): L14. https://arxiv.org/abs/1312.4952
 
+Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
 
 @article{straatman2014substantial,
   title={A substantial population of massive quiescent galaxies at z~ 4 from ZFOURGE},
@@ -184,6 +200,8 @@ Charles L. Steinhardt et al 2014 ApJL 791 L25 https://iopscience.iop.org/article
 ----
 
 https://www.nationalgeographic.com/news/2012/3/120326-oldest-planets-found-jupiter-big-bang-space-science/
+
+Oldest Alien Planets Found—Born at Dawn of Universe
 
 "The idea of planets springing from such a stellar makeup runs counter to a widely accepted theory called the accretion model, which says that heavy elements are needed to form planets."
 
