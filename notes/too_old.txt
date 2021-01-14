@@ -153,6 +153,13 @@ since they first appeared.
 ?? https://www.newscientist.com/article/dn26856-ancient-planets-are-almost-as-old-as-the-universe/?ignored=irrelevant#.VMlP1PlVK1E
 ?? Ancient planets are almost as old as the universe
 
+"Five small planets orbit an 11.2 billion-year-old star, making them about 80 per cent as old as the universe itself. That means our galaxy started building rocky planets earlier than we thought."
+
+
+https://arxiv.org/abs/1501.06227
+An ancient extrasolar system with five sub-Earth-size planets
+
+
 ----
 
 https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly
