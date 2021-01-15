@@ -63,12 +63,14 @@
             table {
                 margin:auto;
                 border-collapse: collapse;
+                border-bottom: 2px solid #808080;
+                border-top: 2px solid #808080;
             }
             thead {
-                border-bottom: 2px solid #808080;
+                border-bottom: 1px solid #808080;
             }
             td {
-                padding: 5px;
+                padding: 10px;
             }
         </style>
 
@@ -350,15 +352,23 @@ photon.f = (photon.v * 299792458 / photon.w)
     <p>That means, there are more stars of our own galaxy to the south than there are to the north. 
         And the CMB's southern hemisphere is warmer than the northern hemisphere.
         The CMB may be the heat of our own galaxy. </p>
-    
-    <p>Finally, if we use the CMB to determine Hubble's constant, it doesn't fit with the other methods.</p>
+
+    <p>This could be tested in theory by sending a CMB probe south of the Milky Way's galactic disk. 
+        If the temperature of the northern hemisphere gets warmer as the probe travels south, 
+        that would indicate the CMB temperature in a given direction is dictated by how many stars are in that direction.
+        If that were the case, the CMB is not of cosmological origin, and the temperature differences are not anomalous.
+    </p>
+
+        <p>On the other hand, if the probe sees the same north and south temperatures from all locations in the galaxy,
+            it must be of cosmological origin. If it's of cosmological origin,  
+            we can use the CMB to determine Hubble's constant. When we do, we find it doesn't fit with the other methods:</p>
         
         <table>
             <thead>
                 <td>Method</td><td>Hubble's constant</td>
             </thead>
             <tr>
-                <td>Supernova</td><td>74.0 km/s/Mpc<sup>[1]</sup></td>
+                <td>Cepheids</td><td>74.0 km/s/Mpc<sup>[1]</sup></td>
             </tr>
             <tr>
                 <td>Parallax</td><td>73.2 km/s/Mpc<sup>[3]</sup></td>
@@ -891,13 +901,15 @@ photon = {
 
 <ol>
     <li>
-        A. G. Riess et al. [Supernova Search Team], <i>Astron. J.</i>, 116, 1009 (1998).
+        A. G. Riess et al. "Large Magellanic Cloud Cepheid Standards Provide a 1% Foundation for the Determination of the Hubble Constant and Stronger Evidence for Physics Beyond LambdaCDM"
+        <a href="https://arxiv.org/abs/1903.07603">arXiv:1903.07603</a>, (2019).
     </li>
     <li>
         N. Aghanim et al., <i>“Planck 2018 results. VI. Cosmological parameters</i>, (2018)
     </li>
     <li>
-        A. G. Riess et al., <a href="https://arxiv.org/abs/2012.08534">arXiv:2012.08534 [astro-ph.CO]</a> <i>ApJ.</i>, 116, 1009 (2020).
+        A. G. Riess et al., "Cosmic Distances Calibrated to 1% Precision with Gaia EDR3 Parallaxes and Hubble Space Telescope Photometry of 75 Milky Way Cepheids Confirm Tension with LambdaCDM"
+        <a href="https://arxiv.org/abs/2012.08534">arXiv:2012.08534 [astro-ph.CO]</a> <i>ApJ.</i>, 116, 1009 (2020).
     </li>
 
     <li>
