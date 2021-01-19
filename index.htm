@@ -151,97 +151,7 @@
     and propose some ways to test it.
 </p>
 
-<hr>
 
-<h2>Established Laws of Physics</h2>
-
-<a name="newton"></a>
-<h3>Newton's First Law of Motion</h3>
-
-<p>An object in motion remains in motion at a constant velocity. Presumably this should hold to infinity. And why should it not?
-    It holds true for hundreds of light years. Millions even. Billions it seems.</p>
-
-<p>How about 1 trillion light years? Does inertia hold true for 1 trillion light years?</p>
-
-<p>We have no empirical evidence that tells us it does. That does not mean it doesn't. According to the standard model,
-    light traveling for 14 billion light years approaches space that is expanding faster than the light can travel. 
-    This is known as Hubble's limit. Light might possibly be able to travel for 1 trillion years at a constant speed, 
-    but since any light from beyond 14 billion light years will never reach us due to the expansion of the universe,
-    we would never know if it does or not.
-</p>
-
-<p>By pure coincidence, the universe is also only 14 billion years old. So there hasn't been 1 trillion years of time for light 
-    to have even traveled 1 trillion light years. 
-</p>
-
-<p>For the decelerating photon hypothesis to be correct, one of two things must also be correct:</p>
-
-<ol>
-    <li>A dark force slows the photon</li>
-    or
-    <li>Inertia doesn't hold to infinity</li>
-</ol>
-
-<p>Given that dark matter and dark energy are options for cosmologists, a dark force with a direct measurable consequence (cosmological redshift)
-    might seem the most likely solution to this problem.
-</p>
-
-<p>However, I recommend interpretation 2, that Newtontian dynamics does not hold for infinite distance. 
-    If it's a dark force that keeps a photon from reaching beyond Hubble's limit,
-    or even the expansion of space that causes the barrier, the motion of a photon is still effectively limited to a finite distance. 
-</p>
-
-<p>That said, a photon is not a Newtonian object. We only have evidence of photons traveling vast distances and arriving redshifted,
-    not Newtonian objects. Perhaps this hypothesis only applies to photons? For that reason we will move on to relativity.</p>
-
-<a name="special-relativity"></a>
-<h3>Special Relativity</h3>
-
-<p>The second postulate of special relativity is that the speed of light in a vacuum is always c in all frames. 
-    And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
-
-<p>The hypothesis is that the velocity <code>v</code> of a photon is determined by its distance <code>D</code>:</p>
-
-<p class="pimg"><img src="img/v=c-HD.png"></p>
-
-<p>Whether the speed of light is <code>c</code> or <code>c - HD</code> only matters when distances are in the millions of light years
-    and <code>HD</code> is large enough 
-    to be noticed. For non-cosmological distances, <code>HD = 0</code> and <code>v = c</code>, 
-    which is consistent with special relativity where it is experimentally confirmed.
-</p>
-
-<p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
-
-<a name="conservation-of-energy"></a>
-<h3>Conservation of Energy</h3>
-
-<p>One criticism of the hypothesis is that the photon can't lose speed because then it loses energy, which violates the conservation of energy.
-    And if photons are losing energy, why is there anything left? Shouldn't the fire have gone out by now?
-</p>
-
-<p>The answer may be as simple as the energy deducted from the photon by redshifting is deposited into space.
-    In this way, the energy of the universe stays the same. Energy leaves a star as light, dropping little bits of energy as it travels intergalactic space,
-    energy that finds its way back into stars and repeats.
-</p>
-
-<p>The expanding model is a different story. 
-    In fact, the expansion model from earlier is still running. The decelerating photon burned out long ago, but the photon in expanding space
-    is traveling faster and farther, yet it hasn't hit a target for hundreds of trillions of years. And it never will hit another one.</p>
-
-<p>
-    Photon Distance: <span id="expanding-photon-distance"></span> million light years
-<br>
-Photon Speed: <span id="expanding-photon-speed"></span> c
-<br>
-Time since last target: <span id="expanding-last-target"></span> million years
-<br>
-<button id="stop-models-button">Stop</button>
-</p>
-
-<p>The photons in the expanding universe that approach the Hubble limit just cruise forever in rapidly increasing space. 
-    According to the decelerating photon hypothesis, photons decay and get recycled back into the universe.
-    The expanding universe is almost comically inefficient by comparison.   
-</p>
 <hr>
 
 <h2>Big Bang Cosmology</h2>
@@ -249,25 +159,18 @@ Time since last target: <span id="expanding-last-target"></span> million years
 <a name="redshifts"></a>
 <h3>Redshifts indicate an expanding universe</h3>
 
-<p>The systemic cosmological redshifts first observed by Edwin Hubble are the observational foundations of an expanding universe.</p>
-
-<p>In the expanding model, as the photon travels away from its source, space will expand in front of and behind the photon. 
-    From the frame of reference of the source, the photon would actually appear to pick up speed away from it.
-    This increase in speed can be taken as an increase in wavelength, the observed redshifts.
+<p>The systemic cosmological redshifts reported by Edwin Hubble are the observational foundations of an expanding universe.
+    The expansion of space stretches a photon's wavelength as it travels, producing the observed redshifts.
 </p>
 
-<p>If the original frequency or wavelength is known, using the equation for the velocity of wave 
-    (<code>v = frequency &times; wavelength</code>) the expanding model can be updated to demonstrate the increased wavelength:</p>
+<p>A photon redshifts when its wavelength increases. But a photon also redshifts when its frequency decreases.
+    If we calculate the velocity of a photon with a decreased frequency using the wave speed equation, <code>v = frequency &times; wavelength</code>,
+    the result is a decrease in velocity.
+    A redshift interpreted this way correlates to a decrease in photon velocity.
+</p>
 
-<pre class="js"><code>photon.v = c + H * photon.d
-photon.d += photon.v
-photon.w = (photon.v * 299792458 / photon.f) 
-</code></pre>
-
-<p>Inversely, if the observed redshifts are taken as a decrease in frequency, 
-    using the same equation (<code>v = frequency &times; wavelength</code>) the photon's velocity should decrease too. 
-    If the original frequency or wavelength is known,
-    the decelerating photon hypothesis can be modified to show the decreased frequency:
+<p>
+   We can update the computer model for the decelerating photon to calculate a new frequency from its decreased speed.
 </p>
     
 <pre class="js"><code>photon.v = c - H * photon.d
@@ -275,13 +178,11 @@ photon.d += photon.v
 photon.f = (photon.v * 299792458 / photon.w) 
 </code></pre>
 
-<p>We can apply the standard method of calculating redshift on the new wavelengths and frequencies:</p>
-    
-<p class="pimg"><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6a999cd6480ab61dddeeb5372c8037c0d533f2c9"></p>
+<p>We can apply the standard method of calculating redshift to the new frequencies:</p>
 
 <p class="pimg"><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7cf28c6ce6fcc3087c62bf506432ce3381236738"></p>
 
-<p>When we graph the z's predicted by each model, we find again that the models match exactly.</p>
+<p>When we graph the z's predicted by both the stretching wavelength and the decreasing velocity models, we find again that the models match exactly.</p>
 
 <button id="set-y-axis">Set y-axis to redshift</button>
 
@@ -335,25 +236,26 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <table>
             <thead>
-                <td>Method</td><td>Hubble's constant</td>
+                <td>Year</td><td>Method</td><td>Hubble's constant</td>
             </thead>
             <tr>
-                <td>Cepheids</td><td>74.0 km/s/Mpc<sup>[1]</sup></td>
+                <td>2018</td><td>CMB<td>67.4 km/s/Mpc<sup>[2]</sup></td>
             </tr>
             <tr>
-                <td>Parallax</td><td>73.2 km/s/Mpc<sup>[3]</sup></td>
+                <td>2019</td><td>Cepheids</td><td>74.0 km/s/Mpc<sup>[1]</sup></td>
             </tr>
             <tr>
-                <td>Infrared SB Fluctuation </td><td>73.3 km/s/Mpc<sup>[4]</sup></td>
+                <td>2020</td><td>Parallax</td><td>73.2 km/s/Mpc<sup>[3]</sup></td>
             </tr>
             <tr>
-                <td>CMB<td>67.4 km/s/Mpc<sup>[2]</sup></td>
+                <td>2021</td><td>Infrared SB Fluctuation </td><td>73.3 km/s/Mpc<sup>[4]</sup></td>
             </tr>
         </table>            
         
-        <p>If the CMB is not an ancient fireball, there is no coincidence between the temperature of the galaxy
-            and the age of the universe, its temperature variations are not anomalous, 
-            and it doesn't conflict with measurements of Hubble's constant.</p>
+        <p>If the CMB is not an ancient fireball
+            its temperature variations are not anomalous, 
+            it doesn't conflict with measurements of Hubble's constant,
+            and there is no coincidence between its temperature and the temperature of our galaxy .</p>
         
     <a name="age"></a>
     <h3>Age of the universe</h3>
@@ -374,19 +276,8 @@ photon.f = (photon.v * 299792458 / photon.w)
         </li>
         
         <li>
-            <a href="https://www.eso.org/public/news/eso2016/">Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524
-            </a><sup>[8]</sup>
         
-            <blockquote>
-        
-            “This research was mainly driven by the desire to understand some of the most challenging astronomical objects — supermassive black holes in the early Universe. These are extreme systems and to date we have had no good explanation for their existence,”
-            </blockquote>
-        
-        </li>
-        
-        <li>
-        
-            <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[9]</sup>
+            <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[8]</sup>
 
             <blockquote>
                 Interferometric imaging at a spatial resolution of about 60 pc reveals
@@ -399,12 +290,16 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
         <a href="https://www.space.com/how-can-a-star-be-older-than-the-universe.html">How Can a Star Be Older Than the Universe?</a>
-        <sup>[10]</sup>
+        <sup>[9]</sup>
+
+        <blockquote>
+            Bond and his collaborators estimated HD 140283's age to be 14.46 billion years — a significant reduction on the 16 billion previously claimed. That was, however, still more than the age of the universe itself, but the scientists posed a residual uncertainty of 800 million years, which Bond said made the star's age compatible with the age of the universe, even though it wasn't entirely perfect.
+        </blockquote>
         </li>
         <br>
         <li>
             <a href="https://www.nature.com/articles/s41586-019-1452-4">A dominant population of optically invisible massive galaxies in the early Universe</a>
-            <sup>[11]</sup>
+            <sup>[10]</sup>
             <blockquote>
                 Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
             </blockquote>
@@ -412,7 +307,7 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
             <a href=https://www.sciencedaily.com/releases/2015/11/151118070758.htm>Earliest giant galaxies: The birth of monsters</a>
-            <sup>[12]</sup>
+            <sup>[11]</sup>
             <blockquote>
                 "To complicate things further, if massive galaxies are unexpectedly dustier in the early Universe than astronomers predict then even UltraVISTA wouldn't be able to detect them. If this is indeed the case, the currently-held picture of how galaxies formed in the early Universe may also require a complete overhaul."
             </blockquote>
@@ -420,7 +315,7 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
             <a href="https://www.caltech.edu/about/news/farthest-galaxy-detected-47761">Lyman α Emission from a Luminous z = 8.68 Galaxy: Implications for Galaxies as Tracers of Cosmic Reionization</a>
-            <sup>[13]</sup>
+            <sup>[12]</sup>
             <blockquote>
             "If you look at the galaxies in the early universe, there is a lot of neutral hydrogen that is not transparent to this emission," says Zitrin. "We expect that most of the radiation from this galaxy would be absorbed by the hydrogen in the intervening space. Yet still we see Lyman-alpha from this galaxy."
             </blockquote>
@@ -428,7 +323,7 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
             <a href="https://www.nature.com/articles/nature14164">A dusty, normal galaxy in the epoch of reionization</a>
-            <sup>[14]</sup>
+            <sup>[13]</sup>
 
             <blockquote>
                 The galaxy
@@ -441,7 +336,7 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
             <a href="https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly">Some galaxies in the early universe grew up quickly</a>
-            <sup>[15]</sup>
+            <sup>[14]</sup>
             <blockquote>Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
             </blockquote>
         </li>
@@ -450,7 +345,7 @@ photon.f = (photon.v * 299792458 / photon.w)
             <a href="http://www.sciencedaily.com/releases/2014/10/141030101241.htm">
                 Galaxy Zoo: CANDELS Barred Disks and Bar Fractions
             </a>
-            <sup>[16]</sup>
+            <sup>[15]</sup>
             <blockquote>
                 The newly classified galaxies are striking in that they look a lot like those in today's universe, with disks, bars and spiral arms. But theorists predict that these should have taken another 2 billion years to begin to form, so things seem to have been settling down a lot earlier than expected.
             </blockquote>
@@ -458,7 +353,7 @@ photon.f = (photon.v * 299792458 / photon.w)
         
         <li>
             <a href="https://www.nasa.gov/jpl/spitzer/splash-project-dives-deep-for-galaxies">Spitzer Splash Project Dives Deep for Galaxies</a>
-            <sup>[17]</sup>
+            <sup>[16]</sup>
             <blockquote>
                 "The findings cast doubt on current models of galaxy formation, which struggle to explain how these remote and young galaxies grew so big so fast."
             </blockquote>
@@ -468,11 +363,23 @@ photon.f = (photon.v * 299792458 / photon.w)
             <a href="https://www.nationalgeographic.com/news/2012/3/120326-oldest-planets-found-jupiter-big-bang-space-science/">
                 Oldest Alien Planets Found—Born at Dawn of Universe
             </a>
-            <sup>[18]</sup>
+            <sup>[17]</sup>
             <blockquote>
         "The idea of planets springing from such a stellar makeup runs counter to a widely accepted theory called the accretion model, which says that heavy elements are needed to form planets."
             </blockquote>
         </li>
+
+        <li>
+            <a href="https://www.eso.org/public/news/eso2016/">Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524
+            </a><sup>[18]</sup>
+        
+            <blockquote>
+        
+            “This research was mainly driven by the desire to understand some of the most challenging astronomical objects — supermassive black holes in the early Universe. These are extreme systems and to date we have had no good explanation for their existence,”
+            </blockquote>
+        
+        </li>
+        
     </ul>
 
 
@@ -625,7 +532,103 @@ photon.f = (photon.v * 299792458 / photon.w)
 <p>The speed of light does vary in this hypothesis, but in a novel way to  
     <a href="https://en.wikipedia.org/wiki/Variable_speed_of_light">Varying Speed of Light</a> theories.</p>
 
+
+
 <hr>
+
+<h2>Established Laws of Physics</h2>
+
+<a name="newton"></a>
+<h3>Newton's First Law of Motion</h3>
+
+<p>An object in motion remains in motion at a constant velocity. Presumably this should hold to infinity. And why should it not?
+    It holds true for hundreds of light years. Millions even. Billions it seems.</p>
+
+<p>How about 1 trillion light years? Does inertia hold true for 1 trillion light years?</p>
+
+<p>We have no empirical evidence that tells us it does. That does not mean it doesn't. According to the standard model,
+    light traveling for 14 billion light years approaches space that is expanding faster than the light can travel. 
+    This is known as Hubble's limit. Light might possibly be able to travel for 1 trillion years at a constant speed, 
+    but since any light from beyond 14 billion light years will never reach us due to the expansion of the universe,
+    we would never know if it does or not.
+</p>
+
+<p>By pure coincidence, the universe is also only 14 billion years old. So there hasn't been 1 trillion years of time for light 
+    to have even traveled 1 trillion light years. 
+</p>
+
+<p>For the decelerating photon hypothesis to be correct, one of two things must also be correct:</p>
+
+<ol>
+    <li>A dark force slows the photon</li>
+    or
+    <li>Inertia doesn't hold to infinity</li>
+</ol>
+
+<p>Given that dark matter and dark energy are options for cosmologists, a dark force with a direct measurable consequence (cosmological redshift)
+    might seem the most likely solution to this problem.
+</p>
+
+<p>However, I recommend interpretation 2, that Newtontian dynamics does not hold for infinite distance. 
+    If it's a dark force that keeps a photon from reaching beyond Hubble's limit,
+    or even the expansion of space that causes the barrier, the motion of a photon is still effectively limited to a finite distance. 
+</p>
+
+<p>That said, a photon is not a Newtonian object. We only have evidence of photons traveling vast distances and arriving redshifted,
+    not Newtonian objects. Perhaps this hypothesis only applies to photons? For that reason we will move on to relativity.</p>
+
+<a name="special-relativity"></a>
+<h3>Special Relativity</h3>
+
+<p>The second postulate of special relativity is that the speed of light in a vacuum is always c in all frames. 
+    And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
+
+<p>The hypothesis is that the velocity <code>v</code> of a photon is determined by its distance <code>D</code>:</p>
+
+<p class="pimg"><img src="img/v=c-HD.png"></p>
+
+<p>Whether the speed of light is <code>c</code> or <code>c - HD</code> only matters when distances are in the millions of light years
+    and <code>HD</code> is large enough 
+    to be noticed. For non-cosmological distances, <code>HD = 0</code> and <code>v = c</code>, 
+    which is consistent with special relativity where it is experimentally confirmed.
+</p>
+
+<p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
+
+<a name="conservation-of-energy"></a>
+<h3>Conservation of Energy</h3>
+
+<p>One criticism of the hypothesis is that the photon can't lose speed because then it loses energy, which violates the conservation of energy.
+    And if photons are losing energy, why is there anything left? Shouldn't the fire have gone out by now?
+</p>
+
+<p>The answer may be as simple as the energy deducted from the photon by redshifting is deposited into space.
+    In this way, the energy of the universe stays the same. Energy leaves a star as light, dropping little bits of energy as it travels intergalactic space,
+    energy that finds its way back into stars and repeats.
+</p>
+
+<p>The expanding model is a different story. 
+    In fact, the expansion model from earlier is still running. The decelerating photon burned out long ago, but the photon in expanding space
+    is traveling faster and farther, yet it hasn't hit a target for hundreds of trillions of years. And it never will hit another one.</p>
+
+<p>
+    Photon Distance: <span id="expanding-photon-distance"></span> million light years
+<br>
+Photon Speed: <span id="expanding-photon-speed"></span> c
+<br>
+Time since last target: <span id="expanding-last-target"></span> million years
+<br>
+<button id="stop-models-button">Stop</button>
+</p>
+
+<p>The photons in the expanding universe that approach the Hubble limit just cruise forever in rapidly increasing space. 
+    According to the decelerating photon hypothesis, photons decay and get recycled back into the universe.
+    The expanding universe is almost comically inefficient by comparison.   
+</p>
+
+
+<hr>
+
 
 <a name="photons"></a>
 <h2>Photons</h2>
@@ -903,10 +906,6 @@ photon = {
         <a href="https://doi.org/10.1038/s41586-020-2276-y">https://doi.org/10.1038/s41586-020-2276-y</a>
     </li>
     <li>
-        Marco  Mignoli, et al., A&A 642 L1 (2020) DOI: 10.1051/0004-6361/202039045
-        Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524
-    </li>
-    <li>
         Rizzo, F., Vegetti, S., Powell, D. et al. A dynamically cold disk galaxy in the early Universe. Nature 584, 201–204 (2020). 
         <a href="https://doi.org/10.1038/s41586-020-2572-6">https://doi.org/10.1038/s41586-020-2572-6</a>
     </li>
@@ -943,6 +942,10 @@ photon = {
     </li>
     <li>
         J.  Setiawan, et al., Planetary companions around the metal-poor star HIP 11952, A&A 540 A141 (2012) DOI: 10.1051/0004-6361/201117826
+    </li>
+    <li>
+        Marco  Mignoli, et al., A&A 642 L1 (2020) DOI: 10.1051/0004-6361/202039045
+        Web of the giant: Spectroscopic confirmation of a large-scale structure around the z = 6.31 quasar SDSS J1030+0524
     </li>
 
     <!-- too big -->
