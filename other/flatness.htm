@@ -67,9 +67,9 @@ H > 0
             for (o2 of o) {
                 if (o1 === o2) continue
 
-                o1.dx += G * o1.m * o2.m / (Math.pow(o1.x - o2.x, 2)) // + H * (o1.x - o2.x))
-                o1.dy += G * o1.m * o2.m / (Math.pow(o1.y - o2.y, 2))// + H * (o1.x - o2.x))
-                o1.dz += G * o1.m * o2.m / (Math.pow(o1.z - o2.z, 2))// + H * (o1.x - o2.x))
+                o1.dx += G * o1.m * o2.m / (Math.pow(o1.x - o2.x, 2))
+                o1.dy += G * o1.m * o2.m / (Math.pow(o1.y - o2.y, 2))
+                o1.dz += G * o1.m * o2.m / (Math.pow(o1.z - o2.z, 2))
 
             }
             o1.x += o1.dx
