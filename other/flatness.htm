@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+        </style>
+    </head>
+<body>
+H = 0
+<br>
+<canvas width="500" height="500" id="canvas1"></canvas>
+<br>
+H > 0
+<br>
+<canvas width="500" height="500" id="canvas2"></canvas>
+
+<script>
+
+    var canvas = document.getElementById("canvas1")
+    var ctx = canvas.getContext("2d")
+    ctx.translate(canvas.width / 2, canvas.height / 2)
+
+    var canvas2 = document.getElementById("canvas2")
+    var ctx2 = canvas2.getContext("2d")
+    ctx2.translate(canvas2.width / 2, canvas2.height / 2)
+
+    var o = []
+    for (var i = 0; i < 1000; i++) {
+        o.push({
+            x: Math.random() * (Math.random() > 0.5 ? -1 : 1), 
+            y: Math.random() * (Math.random() > 0.5 ? -1 : 1), 
+            z: Math.random() * (Math.random() > 0.5 ? -1 : 1),
+            //dx: (-0.5 + Math.random()) / 100, dy: (-0.5 + Math.random()) / 100, dz: (-0.5 + Math.random()) / 100,
+            dx: 0, dy: 0, dz: 0,
+            m: Math.random() / 1000
+        })
+    }
+
+    var p = JSON.parse(JSON.stringify(o))
+
+    var zoom = 0.5
+
+    var pp
+    var oo
+    function draw() {
+        ctx.fillStyle = "black"
+        ctx.fillRect(-canvas.width, -canvas.height, canvas.width * 2, canvas.height * 2)
+        ctx.fillStyle = "white"
+        for (oo of o) {
+            ctx.fillRect(canvas.width * oo.x * zoom, canvas.height * oo.y * zoom, 1, 1)
+        }
+        
+        ctx2.fillStyle = "black"
+        ctx2.fillRect(-canvas.width, -canvas.height, canvas.width * 2, canvas.height * 2)
+        ctx2.fillStyle = "white"
+        for (pp of p) {
+            ctx2.fillRect(canvas.width * pp.x * zoom, canvas.height * pp.y * zoom, 1, 1)
+        }
+    }
+
+    draw()
+
+    const H = 0.001
+    const G = 0.00001
+    var o1, o2, fg
+    setInterval(() => {
+        for (o1 of o) {
+            for (o2 of o) {
+                if (o1 === o2) continue
+
+                o1.dx += G * o1.m * o2.m / (Math.pow(o1.x - o2.x, 2)) // + H * (o1.x - o2.x))
+                o1.dy += G * o1.m * o2.m / (Math.pow(o1.y - o2.y, 2))// + H * (o1.x - o2.x))
+                o1.dz += G * o1.m * o2.m / (Math.pow(o1.z - o2.z, 2))// + H * (o1.x - o2.x))
+
+            }
+            o1.x += o1.dx
+            o1.y += o1.dy
+            o1.z += o1.dz
+        }
+
+        for (o1 of p) {
+            for (o2 of p) {
+                if (o1 === o2) continue
+
+                o1.dx += G * o1.m * o2.m / (Math.pow(o1.x - o2.x, 2) + H * (o1.x - o2.x))
+                o1.dy += G * o1.m * o2.m / (Math.pow(o1.y - o2.y, 2) + H * (o1.x - o2.x))
+                o1.dz += G * o1.m * o2.m / (Math.pow(o1.z - o2.z, 2) + H * (o1.x - o2.x))
+
+            }
+            o1.x += o1.dx
+            o1.y += o1.dy
+            o1.z += o1.dz
+        }
+        draw()
+    }, 1000/60)
+</script>
