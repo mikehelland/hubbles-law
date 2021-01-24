@@ -183,7 +183,7 @@ var zs = [
     var outputDiv = document.getElementById("output")
     var trunc = n => Math.trunc(n * 1000) / 1000
     var output = (model, photon) => {
-        outputDiv.innerHTML += model.name + "\n" + 
+        outputDiv.innerHTML += model.name + ", " + 
                                 "t=" + model.t.toString().padEnd(8) + " d=" + 
                                 trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
                                 trunc(photon.dx) + ", f=" + trunc(photon.f) + 
@@ -503,7 +503,10 @@ var zs = [
                     }
                     model.photon.z = z
                     
-                    if (findT && model.t >= findT) {
+                    if (findT && fintdT === "all") {
+                        output(model, model.photon)
+                    }
+                    else if (findT && model.t >= findT) {
                         output(model, model.photon)
                         findT = 0
                     }
@@ -511,7 +514,10 @@ var zs = [
                         output(model, model.photon)
                         findZ = 0
                     }
-                    if (findD && model.photon.x >= findD) {
+                    if (findD && findD === "all") {
+                        output(model, model.photon)
+                    }
+                    else if (findD && model.photon.x >= findD) {
                         output(model, model.photon)
                         findD = 0
                     }
@@ -521,7 +527,10 @@ var zs = [
                     }
                     if (model.targets[model.nextTarget].x <= model.photon.x) {
                         
-                        if (findTarget && model.targets[model.nextTarget].start >= findTarget) {
+                        if (findTarget && findTarget === "all") {
+                            output(model, model.photon)
+                        }
+                        else if (findTarget && model.targets[model.nextTarget].start >= findTarget) {
                             output(model, model.photon)
                             findTarget = 0
                         }
@@ -561,7 +570,7 @@ var zs = [
         name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c",
         expanding: true,
         color: "#888888", 
-        H: 0.0688,
+        H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
@@ -576,7 +585,7 @@ var zs = [
         div: document.getElementById("expandingSlow"),
         name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c + H &times; x",
         color: "purple", 
-        H: 0.0688,
+        H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0},
         next: function () {
@@ -594,7 +603,7 @@ var zs = [
     setupModel({
         name: "v<sub>target</sub> = H &times; proper, v<sub>light</sub> = c + H &times; x",
         color: "lightgreen", 
-        H: 0.0688,
+        H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
         next: function () {
@@ -616,7 +625,7 @@ var zs = [
         div: document.getElementById("redshift1"),
         name: "v<sub>light</sub> = c - H &times; D",
         color: "green", 
-        H: 0.0688,
+        H: 0.0756,
         unitH: "ly/y/Mly",
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
         //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
@@ -630,7 +639,7 @@ var zs = [
         div: document.getElementById("redshift1"),
         name: "v<sub>light</sub> = c - H &times; t",
         color: "green", 
-        H: 0.0688,
+        H: 0.0756,
         unitH: "ly/y/Mly",
         //photon: {x: 0, dx: c},
         photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
