@@ -633,7 +633,7 @@ photon.f = (photon.v * 299792458 / photon.w)
 <p>Recall the graph of the time delays from the introduction. If that graph were to include a second photon headed in the opposite direction,
     it would produce a reflected image, like this:</p>
 
-<p class="pimg"><img src="img/lightcones3.png" width="600"></p>
+<p class="pimg"><img src="img/lightcones3.png" width="500"></p>
 
 <p>The straight (blue) lines that make the traditional light cone represent special relativity.
     The curved (green) lines that make the upside down bell shape represent Hubble's law, both as the expansion of space and as  
@@ -654,37 +654,27 @@ photon.f = (photon.v * 299792458 / photon.w)
 
 <p>These extra individual paths that diverge from the common path can be seen as time dilations localized to an individual photon.</p> 
 
+<p class="pimg"><img src="img/lightcone_q.png" width="500"></p>
+
+<p>This actually allows for different Hubble volumes to communicate between relays. 
+    Information can be sent from one galaxy to a distant one within range. That signal can be received and retransmitted with
+    fresh photons, leaving the original broadcaster's Hubble volume.
+</p>
+
 <a name="quantum-mechanics"></a>
-<h3>Quantum Mechancics</h3>
+<h3>Quantum Mechanics</h3>
 
-<p>One criticism of the hypothesis is that the photon can't lose speed because then it loses energy, which violates the conservation of energy.
-    And if photons are losing energy, why is there anything left? Shouldn't the fire have gone out by now?
-</p>
+<p>There is nothing in quantum mechanics that resembles anything discussed in this paper. 
+    No known interaction will cause the photon to redshift in the manner needed by the decelerating photon hypothesis.
+    So the following Feyman diagram is proposed:</p>
 
-<p>The answer may be as simple as the energy deducted from the photon by redshifting is deposited into space.
-    In this way, the energy of the universe stays the same. Energy leaves a star as light, dropping little bits of energy as it travels intergalactic space,
-    energy that finds its way back into stars and repeats.
-</p>
+<p class="pimg"><img src="img/feynman.png" width="400"></p>
 
-<p>The expanding model is a different story. 
-    In fact, the expansion model from earlier is still running. The decelerating photon burned out long ago, but the photon in expanding space
-    is traveling faster and farther, yet it hasn't hit a target for hundreds of trillions of years. And it never will hit another one.</p>
+<p>Here is a photon cruising along, and then it discards some energy, and also decelerates.</p>
 
-<p>
-    Photon Distance: <span id="expanding-photon-distance"></span> million light years
-<br>
-Photon Speed: <span id="expanding-photon-speed"></span> c
-<br>
-Time since last target: <span id="expanding-last-target"></span> million years
-<br>
-<button id="stop-models-button">Stop</button>
-</p>
+<p>As mentioned in the section on the CMB, this action could be thought of as transferring energy from the photon to the "background" field.</p>
 
-<p>The photons in the expanding universe that approach the Hubble limit just cruise forever in rapidly increasing space. 
-    According to the decelerating photon hypothesis, photons decay and get recycled back into the universe.
-    The expanding universe is almost comically inefficient by comparison.   
-</p>
-
+<p>The treatment of photons in the model needs more explaining.</p>
 
 <hr>
 
@@ -801,48 +791,48 @@ photon = {
 <a name="test3"></a>
 <h3>Test 3: deviations from the standard model</h3> 
 
-<p>The decelerating photon hypothesis is identical to the expanding model provided here. However, the expanding model
+<p>The decelerating photon hypothesis is identical to a simple expanding model. However, the expanding model
     provided here is much simpler than the standard model of cosmology, with its dark matter and dark energy components. </p>
     
 <p>To compare the hypothesis with the standard model, the following chart of z, lookback time, and co-moving distance was made using  
-     <a href="https://www.wolframalpha.com">WolframAlpha</a> for the standard model. 
+     <a href="https://www.wolframalpha.com">WolframAlpha</a> for the standard model using a Hubble constant of 74 km/s/Mpc. 
      See the <a href="notes/zdata_full">full list of data and sources</a>. 
-     Units are billion years and billion light years.</p>
+</p>
 
-<pre>
-                     
-    z       [H=74 lookback     co-distance]   [H=67.4 lookback    co-distance]
-    --------------------------------------------------------------------------
-     1              7.4        10.4                    8.1        11.4 
-     2              9.8        16.4                   10.8        18.0 
-     3             11.0        20.1                   12.1        22.1 
-     4             11.6        22.8                   12.7        25.0 
-     5             11.9        24.7                   13.1        27.1 
-     6             12.2        26.2                   13.4        28.8 
-     7             12.3        27.5                   13.5        30.2 
-     8             12.4        28.5                   13.7        31.3 
-     9             12.5        29.4                   13.8        32.2 
-    10             12.6        30.1                   13.8        33.0 
-    11             12.7        30.7                   13.9        33.8 
-    12             12.7        31.3                   14.0        34.4 
-    13             12.7        31.8                   14.0        34.9 
-    14             12.8        32.3                   14.0        35.4 
-    15             12.8        32.7                   14.1        35.9 
-    16             12.8        33.1                   14.1        36.3 
-    17             12.8        33.4                   14.1        36.7 
-    18             12.9        33.7                   14.1        37.0 
-    19             12.9        34.0                   14.1        37.4 
-    20             12.9        34.3                   14.2        37.7 
-    21             12.9        34.6                   14.2        37.9 
-    22             12.9        34.8                   14.2        38.2 
-    23             12.9        35.0                   14.2        38.4 
-    24             12.9        35.2                   14.2        38.7 
-    25             12.9        35.4                   14.2        38.9
+<pre style="text-align: center;">
+ z      lookback time (By)   co-moving distance (Bly)
+-----------------------------------------------------
+ 1             7.4                   10.4            
+ 2             9.8                   16.4            
+ 3            11.0                   20.1            
+ 4            11.6                   22.8            
+ 5            11.9                   24.7            
+ 6            12.2                   26.2            
+ 7            12.3                   27.5            
+ 8            12.4                   28.5            
+ 9            12.5                   29.4            
+10            12.6                   30.1            
+11            12.7                   30.7            
+12            12.7                   31.3            
+13            12.7                   31.8            
+14            12.8                   32.3            
+15            12.8                   32.7            
+16            12.8                   33.1            
+17            12.8                   33.4            
+18            12.9                   33.7            
+19            12.9                   34.0            
+20            12.9                   34.3            
+21            12.9                   34.6            
+22            12.9                   34.8            
+23            12.9                   35.0            
+24            12.9                   35.2            
+25            12.9                   35.4            
+
 </pre>
 
 <p>
     In the expanding model, the lookback time refers to how long ago the light was emitted, and the co-moving distance refers to 
-    how far away the light source is now, given that space has expanded since the light was emitted.
+    how far away the light source is now given that space has expanded since the light was emitted.
 </p>
 
 <p>
@@ -855,14 +845,14 @@ photon = {
 </p>
     
 <p class="pimg">
-    <a href="img/graph_distance_z.png"><img width="345" src="img/graph_distance_z.png"></a>
-    <a href="img/graph_time_z.png"><img width="345" src="img/graph_time_z.png"></a>
+    <a href="img/z_distance.png"><img width="345" src="img/z_distance.png"></a>
+    <a href="img/z_time.png"><img width="345" src="img/z_time.png"></a>
 <br>green = decelerating photon hypothesis, white dots = standard model via WolframAlpha
-<br> lookback (left) co-moving distance (right)</p>
+<br> lookback time (left) co-moving distance (right)</p>
 
-<p>At about a z of 8.0, the hypothesis starts to go off the path of the standard model, predicting a slower rise in z over time. 
+<p>At about z=8.0, the hypothesis starts to go off the path of the standard model, predicting a slower rise in z over time. 
     In other words, this hypothesis predicts more redshift nearby and less far away than the standard model, giving it the illusion
-    that the effect is currently accelerating compared to expectations.
+    that the effect is currently accelerating compared to the expectations of the standard model.
 </p>
 
 <hr>
