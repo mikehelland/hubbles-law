@@ -689,15 +689,6 @@ photon.f = (photon.v * 299792458 / photon.w)
 <p>As mentioned in the section on the CMB, this action could be thought of as transferring energy from the photon to the "background" field.</p>
 
 <p>The treatment of photons in the model is explained further in the next section.</p>
-
-<p>Some quantum theories of gravity include a graviton, a massless particle that is also assumed to travel at c.
-    Gravitational wave <a href="https://en.wikipedia.org/wiki/GW170817">GW170817</a> was observed 
-    at the same time as light from the same event. This means the graviton and photon would have traveled at the same speed.
-    For the decelerating photon hypothesis to be true, it must apply to the graviton as well, making it the decelerating boson hypothesis.</p>
-    
-<p>In any case, if v=c-HD holds true for a graviton, that means the force of gravity is limited in range by Hubble's law
-    the same way the electromagnetic force is. A diminishing force of gravity limited to a finite distance applied to an 
-    indefinitely large field of galaxies would never be at risk of a collapse. 
     
 </p>
 
@@ -727,52 +718,6 @@ Gravity with finite range
 
 <a name="photons"></a>
 <h2>Photons</h2>
-
-<p>This model represents light at the individual photon level. 
-    It's not a quantum theory, nor is it a relativistic theory, but it's also not completely classical. 
-    To illustrate, the photon was defined as having a distance from its source.</p>
-
-<pre><code>
-photon = {
-    distance: 0
-}
-</code></pre>
-
-<p>Where is this photon? It doesn't have an <i>(x,y,z)</i> coordinate. Instead, it occupies every point around its source 
-    at the specified distance.
-    It's not a classical particle or wave in this form.</p> 
-
-<p>Later, we added velocity, frequency, and wavelength to the photon.</p>
-
-<pre><code>
-photon = {
-    distance: 0, 
-    velocity: 1, 
-    frequency: 6e5, 
-    wavelength: 499.65
-}
-</code></pre>
-
-<p>For the purposes of this model, the photon actually only needs distance and energy.</p>
-
-<pre><code>
-photon = {
-    distance: 0, 
-    energy: 2.48, 
-}
-</code></pre>
-    
-<p>We know from classical mechanics that the speed of a wave is its frequency &times; wavelength. 
-    In quantum mechanics the <a href="https://en.wikipedia.org/wiki/Photon_energy">energy of a photon</a> is frequency &times; Planck's constant (<code>h</code>).
-    And the decelerating photon hypothesis says the speed of a photon is <code>c - HD</code>. Given these formulas:</p>
-
-<pre>
-    speed of a photon     v = c - HD
-    speed of wave         v = f &times; w 
-    energy of a photon    E = h &times; f 
-</pre>
-
-</p>the photon's velocity, frequency, and wavelength can be determined at any time from its distance and initial energy.</p>
 
 <p>The photon's distance from where it was emitted is crucial to keep in mind at all times. 
     Consider light that has traveled billions of years to reach your telescope. 
