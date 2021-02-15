@@ -1,3 +1,33 @@
+New TODO add to paper:
+
+PerspectiveAstronomy
+Speedy galaxy evolution
+
+    Julie Wardlow
+
+See all authors and affiliations
+Science  12 Feb 2021:
+Vol. 371, Issue 6530, pp. 674-675
+DOI: 10.1126/science.abg2907
+https://science.sciencemag.org/content/371/6530/674
+
+
+ Lelli et al. (1) report a galaxy that had evolved features (both a disk and a bulge) when only 1.2 billion years had elapsed since 
+ the Big Bang (∼12.5 billion years ago) (see the figure). This finding suggests that the processes that generate the key features 
+ of a mature galaxy arose more rapidly than has been thought.
+
+https://science.sciencemag.org/content/371/6530/713
+
+A massive stellar bulge in a regularly rotating galaxy 1.2 billion years after the Big Bang
+
+Cosmological models predict that galaxies forming in the early Universe experience a chaotic phase of gas accretion and star formation, 
+followed by gas ejection due to feedback processes. Galaxy bulges may assemble later via mergers or internal evolution. Here we present 
+submillimeter observations (with spatial resolution of 700 parsecs) of ALESS 073.1, a starburst galaxy at redshift z≃5 when the Universe 
+was 1.2 billion years old. This galaxy’s cold gas forms a regularly rotating disk with negligible noncircular motions. The galaxy 
+rotation curve requires the presence of a central bulge in addition to a star-forming disk. We conclude that massive bulges and regularly 
+rotating disks can form more rapidly in the early Universe than predicted by models of galaxy formation.
+
+done:
 
 
 ----
