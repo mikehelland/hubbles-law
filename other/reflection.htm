@@ -58,15 +58,15 @@
                             photon.xx = 0
                             photon.yy = 0
 
-                            var ndx = canvas.width - photon.x
-                            var ndy = canvas.height - photon.y
+                            var ndx = canvas.width / 2 - photon.x
+                            var ndy = canvas.height * 0.48 - photon.y
 
                             var hyp = Math.sqrt(ndx*ndx + ndy*ndy)
                             photon.dx = ndx / hyp //* 0.5
-                            photon.dy = -1 * ndy / hyp //* 0.5
+                            photon.dy = ndy / hyp //* 0.5
                         }
 
-                        if (photon.flipped && !photon.place && photon.x >= canvas.width / 2 && photon.y <= canvas.height * 0.4) {
+                        if (photon.flipped && !photon.place && photon.x >= canvas.width / 2 && photon.y <= canvas.height * 0.48) {
                             photon.place = ++finished
                         }
 
