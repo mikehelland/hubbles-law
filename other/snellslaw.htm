@@ -41,7 +41,6 @@
                     ctx.stroke()
 
                     ctx.fillStyle = "yellow"
-                    ctx.strokeStyle = "yellow"
                     for (var photon of photons) {
 
                         var h = photon.flipped ? 0 : H //(H * Math.sqrt(Math.pow(photon.x, 2) + Math.pow(photon.y, 2)))
@@ -68,7 +67,10 @@
                         }
 
                         if (photon.place) {
-                            ctx.globalAlpha = Math.max(0, 1 - (photon.place / 20))
+                            ctx.strokeStyle = photon.place === 1 ? "green" : "yellow"
+                            ctx.lineWidth = photon.place === 1 ? 4 : 1
+                    
+                            ctx.globalAlpha = photon.place === 1 ? 1 : 0.5
                             ctx.beginPath()
                             ctx.moveTo(0, 0)
                             ctx.lineTo(photon.flipX, boundary)
