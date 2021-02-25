@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+        </style>
+    </head>
+    <body>
+        <h1>Snell's law and v=c-HD</h1>
+        
+        <script>
+
+            var static = setup(0)
+            var vcHD = setup(0.005)
+
+
+            function setup(H) {
+                var canvas = document.createElement("canvas")
+                var ctx = canvas.getContext("2d")
+                canvas.width = 300
+                document.body.appendChild(canvas)
+
+                var photons = []
+                for (var i = 0; i < 90; i++) {
+                    photons.push({x: 0, y: 0, xx: 0, yy: 0,
+                        angle: i,
+                        dx: Math.sin(i * Math.PI / 180), 
+                        dy: Math.cos(i * Math.PI / 180)})
+                }
+
+                var boundary = canvas.height / 2
+
+                var finished = 0
+
+                return () => {
+                    ctx.fillStyle = "black"
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+                    ctx.strokeStyle = "red"
+                    ctx.beginPath()
+                    ctx.moveTo(0, boundary)
+                    ctx.lineTo(canvas.width, boundary)
+                    ctx.stroke()
+
+                    ctx.fillStyle = "yellow"
+                    for (var photon of photons) {
+
+                        //var h = photon.flipped ? 0 : H 
+                        photon.x += photon.dx - H * photon.xx
+                        photon.y += photon.dy - H * photon.yy //* (photon.flipped ? -1 : 1)
+                        photon.xx += photon.dx - H * photon.xx 
+                        photon.yy += photon.dy - H * photon.yy //* (photon.flipped ? -1 : 1)
+
+                        ctx.fillRect(photon.x, photon.y, 2, 2)
+
+                        if (!photon.flipped && photon.y > boundary) {
+                            photon.flipped = true
+                            photon.flipX = photon.x
+                            photon.xx = 0
+                            photon.yy = 0
+
+                            var ndx = canvas.width - photon.x
+                            var ndy = canvas.height - photon.y
+
+                            var hyp = Math.sqrt(ndx*ndx + ndy*ndy)
+                            photon.dx = ndx / hyp //* 0.5
+                            photon.dy = -1 * ndy / hyp //* 0.5
+                        }
+
+                        if (!photon.place && photon.x >= canvas.width && photon.y <= 0) {
+                            photon.place = ++finished
+                        }
+
+                        if (photon.place) {
+                            ctx.strokeStyle = photon.place === 1 ? "green" : "yellow"
+                            ctx.lineWidth = photon.place === 1 ? 4 : 1
+                    
+                            ctx.globalAlpha = photon.place === 1 ? 1 : Math.max(0, 0.5 - photon.place/50)
+                            ctx.beginPath()
+                            ctx.moveTo(0, 0)
+                            ctx.lineTo(photon.flipX, boundary)
+                            ctx.lineTo(photon.x, photon.y)
+                            ctx.stroke()
+                            
+                        }
+
+                        ctx.globalAlpha = 1
+                    }
+                }
+            }
+            
+            static()
+            vcHD()
+            
+            setTimeout(() => {
+            setInterval(() => {
+                static()
+                vcHD()
+            }, 1000/60)
+            },
+            2000)
+
+        </script>
+
+    </body>
+</html>
