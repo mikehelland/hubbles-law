@@ -7,24 +7,49 @@
     <body>
         <h1>Snell's law and v=c-HD</h1>
         
+        <input id="o-x" value="300">
+        <input id="o-y" value="0">
+        <button id="run-button">Run</button>
+        <br>
+        <div id="models"></div>
         <script>
 
-            var static = setup(0)
-            var vcHD = setup(0.005)
-
+            var modelsDiv = document.getElementById("models")
+            var res = 10
+            var handle 
+            
+            document.getElementById("run-button").onclick = e => {
+                modelsDiv.innerHTML = ""
+                clearInterval(handle)
+                var static = setup(0)
+                var vcHD = setup(0.005 / res)
+            
+                static()
+                vcHD()
+                
+                handle = setInterval(() => {
+                    for (var i = 0; i < res; i++) {
+                        static()
+                        vcHD()
+                    }
+                }, 1000/60)
+            }
 
             function setup(H) {
                 var canvas = document.createElement("canvas")
                 var ctx = canvas.getContext("2d")
                 canvas.width = 300
-                document.body.appendChild(canvas)
+                modelsDiv.appendChild(canvas)
+
+                var observerPoint = [document.getElementById("o-x").value * 1, 
+                                    document.getElementById("o-y").value * 1]
 
                 var photons = []
-                for (var i = 0; i < 90; i++) {
+                for (var i = 0; i < 90; i += 0.5) {
                     photons.push({x: 0, y: 0, xx: 0, yy: 0,
                         angle: i,
-                        dx: Math.sin(i * Math.PI / 180), 
-                        dy: Math.cos(i * Math.PI / 180)})
+                        dx: Math.sin(i * Math.PI / 180) / res, 
+                        dy: Math.cos(i * Math.PI / 180) / res})
                 }
 
                 var boundary = canvas.height / 2
@@ -36,10 +61,13 @@
                     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
                     ctx.strokeStyle = "red"
+                    ctx.fillStyle = "red"
                     ctx.beginPath()
                     ctx.moveTo(0, boundary)
                     ctx.lineTo(canvas.width, boundary)
                     ctx.stroke()
+
+                    ctx.fillRect(observerPoint[0], observerPoint[1], 2, 2)
 
                     ctx.fillStyle = "yellow"
                     for (var photon of photons) {
@@ -58,19 +86,23 @@
                             photon.xx = 0
                             photon.yy = 0
 
-                            var ndx = canvas.width / 2 - photon.x
-                            var ndy = canvas.height * 0.48 - photon.y
+                            var ndx = observerPoint[0] - photon.x
+                            var ndy = observerPoint[1] - photon.y
 
                             var hyp = Math.sqrt(ndx*ndx + ndy*ndy)
-                            photon.dx = ndx / hyp //* 0.5
-                            photon.dy = ndy / hyp //* 0.5
+                            photon.dx = ndx / hyp / res //* 0.5
+                            photon.dy = ndy / hyp / res//* 0.5
                         }
 
-                        if (photon.flipped && !photon.place && photon.x >= canvas.width / 2 && photon.y <= canvas.height * 0.48) {
+                        if (photon.flipped && !photon.place && photon.x >= observerPoint[0] && photon.y <= observerPoint[1]) {
                             photon.place = ++finished
                         }
 
                         if (photon.place) {
+                            if (photon.place === 1) {
+                                ctx.fillText(photon.flipX, 150, 80)
+                            }
+
                             ctx.strokeStyle = photon.place === 1 ? "green" : "yellow"
                             ctx.lineWidth = photon.place === 1 ? 4 : 1
                     
@@ -88,16 +120,6 @@
                 }
             }
             
-            static()
-            vcHD()
-            
-            setTimeout(() => {
-            setInterval(() => {
-                static()
-                vcHD()
-            }, 1000/60)
-            },
-            2000)
 
         </script>
 
