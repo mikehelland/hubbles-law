@@ -66,7 +66,7 @@
                             photon.dy = -1 * ndy / hyp //* 0.5
                         }
 
-                        if (!photon.place && photon.x >= canvas.width && photon.y <= 0) {
+                        if (photon.flipped && !photon.place && photon.x >= canvas.width / 2 && photon.y <= canvas.height * 0.4) {
                             photon.place = ++finished
                         }
 
