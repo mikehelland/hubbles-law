@@ -44,9 +44,9 @@
                     ctx.strokeStyle = "yellow"
                     for (var photon of photons) {
 
-                        var h = photon.flipped ? 0 : (H * Math.sqrt(Math.pow(photon.x, 2) + Math.pow(photon.y, 2)))
-                        photon.x += Math.max(0, photon.dx - h)
-                        photon.y += Math.max(0, photon.dy - h)
+                        var h = photon.flipped ? 0 : H //(H * Math.sqrt(Math.pow(photon.x, 2) + Math.pow(photon.y, 2)))
+                        photon.x += Math.max(0, photon.dx - h * photon.x)
+                        photon.y += Math.max(0, photon.dy - h * photon.y)
 
                         ctx.fillRect(photon.x, photon.y, 2, 2)
 
