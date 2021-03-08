@@ -176,7 +176,8 @@
 
         </details>
         
-        <details>
+        <a name="cmb"></a>
+        <details id="a_cmb">
 
             <summary>The CMB indicates a hot past</summary>
 
@@ -694,5 +695,11 @@
 
      
         </div>
+
+        <script>
+            if (window.location.href.indexOf("#cmb") > -1) {
+                document.getElementById("a_cmb").open = true
+            }
+        </script>
     </body>
 </html>
