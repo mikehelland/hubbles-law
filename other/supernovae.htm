@@ -10,7 +10,15 @@
                 position: absolute;
             
             }
-            #graph {
+            #graphs {
+                height:600px;
+                width: 600px;
+                position:relative;
+            }
+            #graphs canvas {
+                position:absolute;
+                top: 0;
+                left: 0;
                 height:600px;
                 width: 600px;
             }
@@ -58,7 +66,7 @@
     </head>
 <body>
 
-<h3>Hubble's Law Testing Page </h3>
+<h3>Supernovae Data </h3>
 
 <p>
     Read more about the models being tested <a href="index.htm">on the home page.</a> 
@@ -89,7 +97,10 @@
         
     </select>
     <br>
+    <div id="graphs">
+    <canvas id="background" height="600" width="600"></canvas>
     <canvas id="graph" height="600" width="600"></canvas>
+    </div>
     <br>
     Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
@@ -128,59 +139,6 @@
 <script>
 var black = true
 
-var zs = [
-    { z: 1, t: 7400, d: 10400 },
-    { z: 2, t: 9880, d: 16400 },
-    { z: 3, t: 11000, d: 20100 },
-    { z: 4, t: 11600, d: 22800 },
-    { z: 5, t: 11900, d: 24700 },
-    { z: 6, t: 12200, d: 26200 },
-    { z: 7, t: 12300, d: 27500 },
-    { z: 8, t: 12400, d: 28500 },
-    { z: 9, t: 12500, d: 29400 },
-    { z: 10, t: 12600, d: 30100 },
-    { z: 11, t: 12700, d: 30700 },
-    { z: 12, t: 12700, d: 31300 },
-    { z: 13, t: 12700, d: 31800 },
-    { z: 14, t: 12800, d: 32300 },
-    { z: 15, t: 12800, d: 32700 },
-    { z: 16, t: 12800, d: 33100 },
-    { z: 17, t: 12800, d: 33400 },
-    { z: 18, t: 12900, d: 33700 },
-    { z: 19, t: 12900, d: 34000 },
-    { z: 20, t: 12900, d: 34300 },
-    { z: 21, t: 12900, d: 34600 },
-    { z: 22, t: 12900, d: 34800 },
-    { z: 23, t: 12900, d: 35000 },
-    { z: 24, t: 12900, d: 35200 },
-    { z: 25, t: 12900, d: 35400 },
-    /*{ z: 1, t: 8130, d: 11400 },
-    { z: 2, t: 10800, d: 18000 },
-    { z: 3, t: 12100, d: 22100 },
-    { z: 4, t: 12700, d: 25000 },
-    { z: 5, t: 13100, d: 27100 },
-    { z: 6, t: 13400, d: 28800 },
-    { z: 7, t: 13500, d: 30200 },
-    { z: 8, t: 13700, d: 31300 },
-    { z: 9, t: 13800, d: 32200 },
-    { z: 10, t: 13800, d: 33000 },
-    { z: 11, t: 13900, d: 33800 },
-    { z: 12, t: 14000, d: 34400 },
-    { z: 13, t: 14000, d: 34900 },
-    { z: 14, t: 14000, d: 35400 },
-    { z: 15, t: 14100, d: 35900 },
-    { z: 16, t: 14100, d: 36300 },
-    { z: 17, t: 14100, d: 36700 },
-    { z: 18, t: 14100, d: 37000 },
-    { z: 19, t: 14100, d: 37400 },
-    { z: 20, t: 14200, d: 37700 },
-    { z: 21, t: 14200, d: 37900 },
-    { z: 22, t: 14200, d: 38200 },
-    { z: 23, t: 14200, d: 38400 },
-    { z: 24, t: 14200, d: 38700 },
-    { z: 25, t: 14200, d: 38900 }*/
-  ]
-
     var outputDiv = document.getElementById("output")
     var trunc = n => Math.trunc(n * 1000) / 1000
     var output = (model, photon) => {
@@ -191,17 +149,11 @@ var zs = [
                                 ", w=" + trunc(299792458/photon.f) + "\n"
     }
     
-    var zoutput = document.getElementById("zoutput")
-    for (var zz of zs) {
-        zoutput.innerHTML += zz.z.toString().padEnd(12) +
-                            (zz.t).toString().padEnd(14) + 
-                            (zz.d).toString().padEnd(14) + 
-                             "\n" 
-    }
-
     var details = document.getElementById("details")
 
+    var background = document.getElementById("background")
     var graph = document.getElementById("graph")
+    var ctxB = background.getContext("2d")
     var ctxG = graph.getContext("2d")
     var models = []
 
@@ -226,15 +178,35 @@ var zs = [
     
     var zoomz = 10000
 
+    var drawnSN = false
+
+    var snData = []
+
+    function drawSN() {
+        ctxB.fillStyle = "yellow"
+        for (var sn of snData) {
+            ctxB.fillRect(sn.z, graph.height - offset - sn.d, 1, 1)
+        }
+    }
+    fetch("supernovae.json").then(res=>res.json()).then(data=> {
+        snData = data
+        drawSN()
+    }
+    )
     var drawx, drawy, dgt, dgm, dgi
     function drawGraph() {
         
-        ctxG.lineWidth = 1
-        ctxG.fillStyle = black ? "black" : "white"
-        ctxG.fillRect(0, 0, graph.width, graph.height)
+        ctxB.lineWidth = 1
+        ctxB.fillStyle = black ? "black" : "white"
+        ctxB.fillRect(0, 0, graph.width, graph.height)
 
-        ctxG.strokeStyle = !black ? "black" : "white"
-        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        ctxB.strokeStyle = !black ? "black" : "white"
+        ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+
+        if (!drawnSN) {
+            drawSN()
+            drawnSN = true
+        }
         
         ctxG.lineWidth = 2
         for (dgm of models) {
@@ -297,34 +269,34 @@ var zs = [
             
         }
 
-        ctxG.font = "14px sans-serif"
+        ctxB.font = "14px sans-serif"
         
-        ctxG.fillStyle = !black ? "black" : "white"
-        ctxG.textAlign = "right"
-        ctxG.fillText(xAxis.value, graph.width - 4, graph.height - 30)
-        ctxG.textAlign = "left"
-        ctxG.fillText(yAxis.value, offset + 5, offset)
+        ctxB.fillStyle = !black ? "black" : "white"
+        ctxB.textAlign = "right"
+        ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxB.textAlign = "left"
+        ctxB.fillText(yAxis.value, offset + 5, offset)
         
-        ctxG.font = "10px sans-serif"
+        ctxB.font = "10px sans-serif"
         if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
             for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+                ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
             }
         }
         else {
             for (dgi = 0; dgi < 1000; dgi+=10) {
-                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+                ctxB.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
             }
         }
 
         if (xAxis.selectedIndex < 2) {
             for (dgi = 0; dgi < 100; dgi+=2) {
-                ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
+                ctxB.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
             }
         }
         else {
             for (dgi = 0; dgi < 110; dgi+=10) {
-                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
+                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
             }
         }
 
@@ -830,5 +802,6 @@ setTimeout(() => {
     //models.forEach(model => stopModel(model))
 }, 10000)
 
+    
 </script>
 

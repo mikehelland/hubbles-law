@@ -74,18 +74,14 @@
         <option>starting distance to target (billion light years)</option>
         <option>time to target (billions of years)</option>
         <option>z redshift</option>
+        <option>log z redshift</option>
     </select>
     <br>    
     Y-axis: 
     <select id="graph-y-axis">
         <option>time to target (billions of years)</option>
-        <option>time difference from static (billions of years)</option>
-        <option>delayed time / static time - 1</option>
-        <option>(1 - static time / delayed time)</option>
-        <option>(1 - v)</option>
-        <option>z redshift</option>
         <option>starting distance to target (billion light years)</option>
-        <option>reached distance of target (billion light years)</option>
+        
         
     </select>
     <br>
@@ -129,58 +125,8 @@
 var black = true
 
 var zs = [
-    { z: 1, t: 7400, d: 10400 },
-    { z: 2, t: 9880, d: 16400 },
-    { z: 3, t: 11000, d: 20100 },
-    { z: 4, t: 11600, d: 22800 },
-    { z: 5, t: 11900, d: 24700 },
-    { z: 6, t: 12200, d: 26200 },
-    { z: 7, t: 12300, d: 27500 },
-    { z: 8, t: 12400, d: 28500 },
-    { z: 9, t: 12500, d: 29400 },
-    { z: 10, t: 12600, d: 30100 },
-    { z: 11, t: 12700, d: 30700 },
-    { z: 12, t: 12700, d: 31300 },
-    { z: 13, t: 12700, d: 31800 },
-    { z: 14, t: 12800, d: 32300 },
-    { z: 15, t: 12800, d: 32700 },
-    { z: 16, t: 12800, d: 33100 },
-    { z: 17, t: 12800, d: 33400 },
-    { z: 18, t: 12900, d: 33700 },
-    { z: 19, t: 12900, d: 34000 },
-    { z: 20, t: 12900, d: 34300 },
-    { z: 21, t: 12900, d: 34600 },
-    { z: 22, t: 12900, d: 34800 },
-    { z: 23, t: 12900, d: 35000 },
-    { z: 24, t: 12900, d: 35200 },
-    { z: 25, t: 12900, d: 35400 },
-    /*{ z: 1, t: 8130, d: 11400 },
-    { z: 2, t: 10800, d: 18000 },
-    { z: 3, t: 12100, d: 22100 },
-    { z: 4, t: 12700, d: 25000 },
-    { z: 5, t: 13100, d: 27100 },
-    { z: 6, t: 13400, d: 28800 },
-    { z: 7, t: 13500, d: 30200 },
-    { z: 8, t: 13700, d: 31300 },
-    { z: 9, t: 13800, d: 32200 },
-    { z: 10, t: 13800, d: 33000 },
-    { z: 11, t: 13900, d: 33800 },
-    { z: 12, t: 14000, d: 34400 },
-    { z: 13, t: 14000, d: 34900 },
-    { z: 14, t: 14000, d: 35400 },
-    { z: 15, t: 14100, d: 35900 },
-    { z: 16, t: 14100, d: 36300 },
-    { z: 17, t: 14100, d: 36700 },
-    { z: 18, t: 14100, d: 37000 },
-    { z: 19, t: 14100, d: 37400 },
-    { z: 20, t: 14200, d: 37700 },
-    { z: 21, t: 14200, d: 37900 },
-    { z: 22, t: 14200, d: 38200 },
-    { z: 23, t: 14200, d: 38400 },
-    { z: 24, t: 14200, d: 38700 },
-    { z: 25, t: 14200, d: 38900 }*/
-  ]
 
+]
     var outputDiv = document.getElementById("output")
     var trunc = n => Math.trunc(n * 1000) / 1000
     var output = (model, photon) => {
@@ -241,9 +187,10 @@ var zs = [
             ctxG.strokeStyle = dgm.color
             ctxG.beginPath()
             ctxG.moveTo(offset, graph.height - offset)
+            var i = 0
             for (dgt of dgm.targets) {
                 if (dgt.hit) {
-
+                    drawy = false
                     if (xAxis.selectedIndex === 0) {
                         drawx = dgt.start
                     }
@@ -251,47 +198,28 @@ var zs = [
                         drawx = dgt.hit
                     }
                     else if (xAxis.selectedIndex === 2) {
-                        drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+                        drawx = dgt.z * 1000
                     }
-
+                    else if (xAxis.selectedIndex === 3) {
+                        drawx = ((graph.width/2) + graph.width/10*Math.log10(dgt.z)) / zoomG
+                    }
+                    
                     if (yAxis.selectedIndex === 0) {
-                        drawy = dgt.hit
+                        if (models[0].targets[i].hit) {
+                            drawy = dgt.hit - models[0].targets[i].hit
+                        }
                     }
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
-                        drawy = dgt.hit - dgt.start
-                    }
-                    else if (yAxis.selectedIndex === 2) {
-                        // show the ratio with a static model
-                        drawy = (dgt.hit / dgt.start - 1) * 10000
-                    }
-                    else if (yAxis.selectedIndex === 3) {
-                        // show the inverse ratio with a static model
-                        drawy = (1 - dgt.start / dgt.hit) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 4) {
-                        // v_light or v_target
-                        drawy = dgt.dx * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 5) {
-                        // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (dgt.z * 10000) //|| ((1 - dgt.dx) / dgt.dx) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 6) {
-                        drawy = dgt.start
-
-                    }
-                    else if (yAxis.selectedIndex === 7) {
-                        drawy = dgt.hitX
-
+                        drawy = dgt.start - models[0].targets[i].start
                     }
 
-                    ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
+                    if (typeof drawy === "number") {
+                        ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height/2 - drawy * zoomGY)
+                    }
 
                 }
+                i++
             }
             ctxG.stroke()
             
@@ -317,16 +245,26 @@ var zs = [
             }
         }
 
-        if (xAxis.selectedIndex < 2) {
+        if (xAxis.selectedIndex === 3) {
+            ctxG.fillText("10",    (graph.width/2) + graph.width/10*Math.log10(10), graph.height - 5)    
+            ctxG.fillText("1",     (graph.width/2) + graph.width/10*Math.log10(1), graph.height - 5)    
+            ctxG.fillText("0.1",   (graph.width/2) + graph.width/10*Math.log10(0.1), graph.height - 5)    
+            ctxG.fillText("0.01",  (graph.width/2) + graph.width/10*Math.log10(0.01), graph.height - 5)
+            ctxG.fillText("0.001", (graph.width/2) + graph.width/10*Math.log10(0.001), graph.height - 5)    
+            
+            
+            
+        }
+        else if (xAxis.selectedIndex === 2) {
+            for (dgi = 0; dgi < 110; dgi+=10) {
+                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
+            }
+        }else {
             for (dgi = 0; dgi < 100; dgi+=2) {
                 ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
             }
         }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=10) {
-                ctxG.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-            }
-        }
+        
 
         if (yAxis.selectedIndex === 5) {
             for (dgi = 0; dgi < zs.length; dgi++) {
@@ -562,36 +500,6 @@ var zs = [
             }
         }, 0)
     }
-
-    setupModel({
-        div: document.getElementById("staticModel"),
-        name: "Static",
-        color: "darkblue", 
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-        }
-    })
-
-    setupModel({
-        name: "v<sub>target</sub> = H &times; proper, v<sub>light</sub> = c + H &times; x",
-        label: "expand",
-        color: "lightgreen", 
-        H: 0.0756,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        next: function () {
-            this.photon.dx = c + this.photon.x * this.H / 1000
-            this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
-            this.photon.f = 299792458 / this.photon.w
-    
-            //this.photon.x += c + this.photon.x * this.H / 1000
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].x += this.targets[i].x * this.H / 1000
-            }
-        }
-    })
 
     setupModel({
         div: document.getElementById("redshift1"),
