@@ -612,5 +612,6 @@ lines.forEach(line => {
     ) 
 })
 
+var out = out.sort((a,b)=>{return a.d-b.d})
 var fs = require("fs")
 fs.writeFile("supernovae.json", JSON.stringify(out), ()=>{})

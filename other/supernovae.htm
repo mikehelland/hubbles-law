@@ -87,12 +87,6 @@
     Y-axis: 
     <select id="graph-y-axis">
         <option>time to target (billions of years)</option>
-        <option>time difference from static (billions of years)</option>
-        <option>delayed time / static time - 1</option>
-        <option>(1 - static time / delayed time)</option>
-        <option>(1 - v)</option>
-        <option>z redshift</option>
-        <option>starting distance to target (billion light years)</option>
         <option>reached distance of target (billion light years)</option>
         
     </select>
@@ -183,10 +177,43 @@ var black = true
     var snData = []
 
     function drawSN() {
+        ctxB.lineWidth = 1
+        ctxB.fillStyle = black ? "black" : "white"
+        ctxB.fillRect(0, 0, graph.width, graph.height)
+
+        ctxB.strokeStyle = !black ? "black" : "white"
+        ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            ctxB.fillRect(sn.z * 1000, graph.height - offset - sn.d, 1, 1)
+            ctxB.fillRect(offset + sn.z * 10080 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
         }
+
+        ctxB.font = "14px sans-serif"
+        
+        ctxB.fillStyle = !black ? "black" : "white"
+        ctxB.textAlign = "right"
+        ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxB.textAlign = "left"
+        ctxB.fillText(yAxis.value, offset + 5, offset)
+        
+        var dgi
+        ctxB.font = "10px sans-serif"
+        for (dgi = 0; dgi < 80; dgi+=5) {
+            ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+        }
+        
+        if (xAxis.selectedIndex < 2) {
+            for (dgi = 0; dgi < 100; dgi+=2) {
+                ctxB.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 110; dgi+=10) {
+                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
+            }
+        }
+
     }
     fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
         snData = data
@@ -196,18 +223,7 @@ var black = true
     var drawx, drawy, dgt, dgm, dgi
     function drawGraph() {
         
-        ctxB.lineWidth = 1
-        ctxB.fillStyle = black ? "black" : "white"
-        ctxB.fillRect(0, 0, graph.width, graph.height)
-
-        ctxB.strokeStyle = !black ? "black" : "white"
-        ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
-
-        if (!drawnSN) {
-            drawSN()
-            drawnSN = true
-        }
-        
+        graph.width = graph.width 
         ctxG.lineWidth = 2
         for (dgm of models) {
             ctxG.strokeStyle = dgm.color
@@ -231,7 +247,7 @@ var black = true
                     }
                     else if (yAxis.selectedIndex === 1) {
                         // show the difference in time with a static model
-                        drawy = dgt.hit - dgt.start
+                        drawy = dgt.hitX
                     }
                     else if (yAxis.selectedIndex === 2) {
                         // show the ratio with a static model
@@ -269,63 +285,7 @@ var black = true
             
         }
 
-        ctxB.font = "14px sans-serif"
         
-        ctxB.fillStyle = !black ? "black" : "white"
-        ctxB.textAlign = "right"
-        ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
-        ctxB.textAlign = "left"
-        ctxB.fillText(yAxis.value, offset + 5, offset)
-        
-        ctxB.font = "10px sans-serif"
-        if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
-            for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 1000; dgi+=10) {
-                ctxB.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
-            }
-        }
-
-        if (xAxis.selectedIndex < 2) {
-            for (dgi = 0; dgi < 100; dgi+=2) {
-                ctxB.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=10) {
-                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-            }
-        }
-
-        if (yAxis.selectedIndex === 5) {
-            for (dgi = 0; dgi < zs.length; dgi++) {
-        
-                if (xAxis.selectedIndex === 1) {
-                    if (dgi < 25) {
-                        ctxG.beginPath()
-                        ctxG.arc(offset + zs[dgi].d * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
-                        ctxG.fill()
-                    }
-                    else {
-                        ctxG.fillRect(-3 + offset + zs[dgi].d * zoomG, -3 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 6, 6)
-                    }
-                }
-
-                if (xAxis.selectedIndex === 0) {
-                    if (dgi < 25) {
-                        ctxG.beginPath()
-                        ctxG.arc(offset + zs[dgi].t * zoomG, -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 3, 0, Math.PI * 2)
-                        ctxG.fill()
-                    }
-                    else {
-                        ctxG.fillRect(-3 + offset + zs[dgi].t * zoomG, -3 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 6, 6)
-                    }
-                }
-            }
-        }
     }
 
     function setupModel(model) {
@@ -787,8 +747,14 @@ var black = true
 document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
 document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
 
-document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
-document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
+document.getElementById("graph-zoom-x").onchange = e => {
+    zoomG = zoom * zoom_gx * e.target.value
+    drawSN()
+}
+document.getElementById("graph-zoom-y").onchange = e => {
+    zoomGY = zoom * zoom_gy * e.target.value
+    drawSN()
+}
 
 var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
