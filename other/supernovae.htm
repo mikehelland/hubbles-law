@@ -186,8 +186,12 @@ var black = true
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            //ctxB.fillRect(offset + sn.z * 10080 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
-            ctxB.fillRect(offset + sn.z * 10080 * zoomG, graph.height - offset - sn.t * zoomGY, 2, 2)
+            if (yAxis.selectedIndex === 1) {
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
+            }
+            else {
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.t * zoomGY, 2, 2)
+            }
         }
 
         ctxB.font = "14px sans-serif"
@@ -196,6 +200,7 @@ var black = true
         ctxB.fillRect(offset + 36, offset + 30, 2, 2)
         ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 36)
 
+        /*
         ctxB.fillStyle = "green"
         ctxB.fillRect(offset + 30, offset + 56, 8, 2)
         ctxB.fillText("Simple Expanding Universe", offset + 5 + 40, offset + 62)
@@ -207,7 +212,7 @@ var black = true
         ctxB.fillRect(offset + 75, offset + 89, 44, 1)
         ctxB.fillText("      (1+HD)", offset + 5 + 40, offset + 108)
         ctxB.fillText("            2", offset + 5 + 66, offset + 100)
-
+*/
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "right"
         ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
@@ -811,6 +816,8 @@ document.getElementById("graph-zoom-y").onchange = e => {
 
 var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
+yAxis.onchange = e => drawSN()
+xAxis.onchange = e => drawSN()
 
 
 setTimeout(() => {
