@@ -185,10 +185,10 @@ var black = true
     function drawSN() {
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            ctxB.fillRect(sn.z, graph.height - offset - sn.d, 1, 1)
+            ctxB.fillRect(sn.z * 1000, graph.height - offset - sn.d, 1, 1)
         }
     }
-    fetch("supernovae.json").then(res=>res.json()).then(data=> {
+    fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
         snData = data
         drawSN()
     }

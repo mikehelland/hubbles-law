@@ -607,7 +607,7 @@ lines.forEach(line => {
     d = d / 1000000
     out.push({
         name: cols[0], 
-        z: cols[1], 
+        z: 1 * cols[1], 
         d: d}
     ) 
 })
