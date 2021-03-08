@@ -1,878 +1,550 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8"/>
-        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/hubbleslaws_graph.png"/>
-        <meta property="og:description" content="A demonstration of Hubble's tension and its resolution."/>
-        <meta property="og:title" content="Fixing Hubble's Law"/>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/supernovae.png"/>
+        <meta property="og:description" content="A Testable Cosmology with Practical Applications"/>
+        <meta property="og:title" content="Finite Light"/>
         <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
         <style>
             body {
                 background-color: #CCCCCC;
                 color:black;
             }
-            #right {
-                position:fixed;
-                left:750px;
-                top:10px;    
-            }
-            
-            #graph {
-                height:600px;
-                width: 600px;
-            }
-
-            .maintext {
+            .text {
                 background-color: white;
-                max-width: 700px;
+                max-width: 900px;
                 font-family: Arial, Helvetica, sans-serif;
                 padding: 15px;
+                margin:auto;
             }
 
             .pimg  {
                 text-align: center;
             }
 
-            li {
-                line-height: 1.5em;
-            }
             li code, p code {
                 background-color: #EEEEEE;
                 padding:2px;
                 font-weight: bold;
             }
 
-            #y-axis {
-                display: none;
+            details {
+                border:1px solid #eeeeee;
+                margin: 6px;
+                padding: 16px;
             }
 
-            .model {
-                min-height: 74px;
+            summary {
+                font-weight: bold;
+                cursor: pointer;
             }
 
-            pre code {
-                display:block;
-                padding:0.5em;
-                background: #f0f0f0;
-            }
-
-            blockquote {
-                font-style: italic;
-            }
-
-            table {
-                margin:auto;
-                border-collapse: collapse;
-                border-bottom: 2px solid #808080;
-                border-top: 2px solid #808080;
-            }
-            thead {
-                border-bottom: 1px solid #808080;
-            }
-            td {
-                padding: 10px;
-            }
         </style>
-
     </head>
-<body>
 
-<!-- HELLO!!! Source code for the models at the bottom -->
+    <body>
 
-<div class="maintext">
-<h1>Hubble's Law as Photon Velocity</h1>
+        <div class="text">
 
-<h2>Introduction</h2>
 
-<p>One effect of an expanding universe is that delays are introduced in the journey of light from one galaxy to another. 
-    To demonstrate, let's model a single photon that passes a series of targets placed 100 million light years apart.
-</p>
-
-<p>In a simple universe, the photon will reach the first target in 100 million years, the second target in 200 million light years, and so on. </p>
-
-<div class="model" id="staticModel"></div>
-
-<p>In an expanding universe, objects move away from each other at <code>v = HD</code> as per Hubble's Law, and thus the targets take longer and longer to reach.
-
-<div class="model" id="expandingFast"></div>
-
-<p>The same delays can be produced if the photon simply lost speed <code>HD</code>, as per Hubble's Law:</p>
-
-<div class="model" id="redshift1"></div>
-
-<p>(Read more: <a href="modeling_expansion.htm">explanation of the models with source code</a>)</p>
-
-<p>As you can see, the model where the entire universe is in motion produces the same output as a single decelerating photon. 
-    The hypothesis is that the velocity <code>v</code> of a photon is a function of the distance <code>D</code> it has traveled:</p>
-
-<p class="pimg"><img src="img/v=c-HD.png"></p>
-
-<p>While I found this interesting, non-expanding theories of the universe have some immediate fatal flaws:</p>
-
-<ul>
-    <li>This is the Tired Light Theory, which is discredited</li>
-    <li>Redshifts indicate an expanding universe</li>
-    <li>The CMB indicates a hot past</li>
-    <li>The farthest galaxies are younger than nearby galaxies, indicating a beginning of time</li>
-    <li>The Tolman surface brightness test indicates an expanding universe</li> 
-    <li>Time dilation in supernovae light curves indicate an expanding universe</li> 
-</ul>
-
-<p>To add to these problems, the idea of a decelerating photon violates both relativity and the first law of motion.
-</p>
-
-<p>More than a decade has passed since first considering the decelerating photon hypothesis, and much has happened in cosmology:</p>
-
-<ul>
-    <li>Measurements of Hubble's constant don't match measurements of the CMB<sup>[1][2][3][4]</sup></li>
-    <li>WMAP and Planck show anomalies in the CMB<sup>[5][6]</sup>:</li>
-    <li>Observing mature galaxies in the early universe has become a regular occurence<sup>[7][8][9][10][11][12][13][14][15]</sup></li>
-    <ul>
-    </ul>
-    <li>More objects that surpass the theoretical size limit have been observed
-        <sup>[16][17][18][19][20][21]</sup>
-    </li>
-</ul>
-
-<p>These new observations run counter to the standard model, and the state of cosmology has officially been declared a crisis<sup>[22]</sup>.</p>
-    
-<p>Yet these observations pose no threat to the decelerating photon hypothesis.
-    Without expanding space, there would be no beginning of time, and objects in the universe would not be restricted in age or size.
-    There would also be no ancient heat that could be used to determine Hubble's constant.
-</p>
-
-<p>Given these new observations and the issues they pose for the standard model of cosmology, 
-    the remainder of this paper will attempt to address the issues of the decelerating photon hypothesis 
-    and propose some ways to test it.
-</p>
-
-<hr>
-
-<a name="tired-light"></a>
-<h2>Tired Light</h2>
-
-<p>The expanding model has been challenged by hundreds of non-expanding theories, and all of them have failed.<sup>[23]</sup> 
-    These theories propose different ways light can interact with matter or other forces to reduce the light's energy, and they are known
-    as <a href="https://en.wikipedia.org/wiki/Tired_light">tired light</a> theories.
-</p>
-
-<p>Light loses energy in the tired light theories, but it never loses speed as the theories are consistent with Newton's first law of motion and special relativity. 
-    Because tired light moves at c, there are no time delays in a photon's journey
-    like there are in the expanding model or the decelerating photon hypothesis. 
-    Tired light photons match the arrival time of the simple static model (blue on the graph), while 
-    the decelerating photon hypothesis (green) has time delays that match the expanding model (white).
-</p>
-
-<p>In general, tired light theories have the following in common:</p>
-
-<ul>
-    <li>Photons lose energy as they travel</li>
-    <li>There are no delays in light's journey, matching a simple static model</li> 
-    <li>Some other phenomenon causes the redshifts</li>
-    <li>Light travels at <code>c</code></li>
-</ul>
-
-<p>The decelerating photon hypothesis is different:</p>
-
-<ul>
-    <li>Photons lose energy and speed as they travel</li>
-    <li>There are delays in light's journey, matching the expanding model</li> 
-    <li>Nothing causes the redshifts, they are as fundamental to nature as inertia</li>
-    <li>Light travels at <code>c-HD</code></li>
-</ul>
-
-<p>In this hypothesis, one could say light <i>does</i> get "tired",  
-    but it does so in a way that is conceptually and mathematically unique to the established 
-    tired light theories.</p>
-
-<!--
-<a name="vsl"></a>
-<h3>Varying Speed of Light (VSL)</h3>
-
-<p>Another theory that sounds similar to the decelerating light hypothesis is Varying Speed of Light (VSL).
-    According to VSL, the speed of light in the past was different than it is today<sup>[30]</sup>. 
-    The speed of light would change simultaneously for all photons equally. 
-    This change in the speed of light over history is claimed to explain the recently observed acceleration of the universe's expansion.
-</p> 
-
-<p>
-    The decelerating photon hypothesis is different. A photon's velocity is dependent on the distance it has traveled from its source,
-    and photons that have traveled different distances travel at different speeds.
-</p>
-
-<p>In VSL theories:</p>
-
-<ul>
-    <li><code>c</code> changes</li>
-    <li><i>All</i> photons in the universe slow to the same speed </li>
-    <li>Space is expanding</li>
-    <li>Intends to represent the accelerating rate of expansion</li>
-</ul>
-
-<p>The decelerating photon hypothesis is different:</p>
-
-<ul>
-    <li><code>c</code> is constant</li>
-    <li><i>Individual</i> photons slow down according to their own history, not the universe's</li>
-    <li>Space is not expanding</li>
-    <li>Intends to represent cosmological redshift</li>
-</ul>
-
-<p>The speed of light does vary in this hypothesis, but in a novel way to  
-    <a href="https://en.wikipedia.org/wiki/Variable_speed_of_light">Varying Speed of Light</a> theories.</p>
--->
-
-
-<hr>
-
-<h2>Big Bang Cosmology</h2>
-
-<a name="redshifts"></a>
-<h3>Redshifts indicate an expanding universe</h3>
-
-<p>The redshift-distance relation reported by Edwin Hubble is the observational foundation of an expanding universe.
-    The expansion of space stretches a photon's wavelength as it travels, producing the observed redshifts.
-</p>
-
-<p>A photon redshifts when its wavelength increases. But a photon also redshifts when its frequency decreases.
-    If we calculate the velocity of a photon with a decreased frequency using the wave speed equation, <code>v = frequency &times; wavelength</code>,
-    the result is a decrease in velocity.
-    A redshift interpreted this way correlates to a decrease in photon velocity.
-</p>
-
-<p>
-   We can update the computer model for the decelerating photon to calculate a new frequency from its decreased speed.
-</p>
-    
-<pre class="js"><code>photon.v = c - H * photon.d
-photon.d += photon.v
-photon.f = (photon.v * 299792458 / photon.w) 
-</code></pre>
-
-<p>We can apply the standard method of calculating redshift to the new frequencies:</p>
-
-<p class="pimg"><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7cf28c6ce6fcc3087c62bf506432ce3381236738"></p>
-
-<p>When we graph the z's predicted by both the expanding model and the decelerating photon hypothesis, we find again they match exactly.</p>
-
-<button id="set-y-axis">Set y-axis to redshift</button>
-
-
-<p>The redshifts predicted by the expanding model and the decelerating photon hypothesis are identical.
-</p>
-
-    <a name="cmb"></a>
-    <h3>The CMB indicates a hot past</h3>
-
-    <p>The Cosmic Microwave Background was predicted by the big bang theory
-        as a remnant of the fiery conditions at the beginning of the universe, and its discovery is an important piece of evidence for the theory. </p>
-
-    <p>If the decelerating photon hypothesis is correct, the CMB must have some other explanation. Considering the following facts:</p>
-
-    <ol>
-        <li>Photons lose energy proportional with distance</li>
-        <li>There is energy coming from all directions as microwave background radiation</li>
-    </ol>
-
-    <p>The energy lost through redshifting and the energy of the CMB might be more closely related than we currently think.
-        If the energy lost by redshifting is discarded into space it would start to pile up.</p>
-
-    <p>If space is filling up with the energy discarded by redshifting photons,
-        when the energy in a volume of space is greater than the energy equivalent of 
-        the temperature of its surroundings, that volume of space should start emitting radiation to cool to equilibrium.
-    </p>
-
-    <p>This might take the form of a "background" field that receives the energy lost by redshifting photons 
-        and returns the energy to the EM field as photons to reach a thermal equilibrium.</p>
-    
-    <p>Early 20th century astronomers calculated that the minimum temperature to which a black body in our galaxy
-        would cool is 2.8 K 
-        <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
-            well before the CMB was discovered</a>.<sup>[24]</sup></p>
-
-    <!--<p class="pimg"><img src="img/cmb_predictions.png"></p>-->
-
-    <p>The CMB was discovered in 1964 at 3 K, which has been refined to 2.725 K.
-
-    <p>In the expanding model, the similarity between the predicted effective temperature of our galaxy and the temperature
-        of the CMB is a coincidence.</p> 
-
-    <p>In the decelerating photon hypothesis, the temperature of the CMB is an effect of the 
-        background field cooling to the effective temperature of the galaxy. 
-    </p>
-
-
-    <!--
-    <p>In the expanding theory, it is by pure coincidence that after almost 14 billion years the CMB arrives at the same temperature as our galaxy.
-        If we were living a billion years from now, or a billion years in the past, the CMB in the expanding universe wouldn't match
-        our home galaxy's temperature like it does today.
-    </p> 
-        
-
-    <p>Coincidences aside, the last decade brought new observations and measurements, including  
-        <a href="https://sci.esa.int/web/planck/-/51559-hemispheric-asymmetry-and-cold-spot-in-the-cosmic-microwave-background">
-            two confirmed anomalies in the CMB</a><sup>[5][6]</sup>. 
-        There is a cold spot and a 
-        difference between the northern and southern average temperatures. 
-        These are unexpected as the CMB should look the same in all directions:</p>
-
-    <p class="pimg"><img src="img/cmb.jpg"></p>
-
-        <p>In the decelerating photon hypothesis, there is no reason to expect the CMB to be the same in all directions.
-            These features of the CMB are not be contrary to expectations. 
+        <h1>Hubble's Law as Photon Velocity</h1>
+        <h2>A Testable Cosmology with Practical Applications</h2>
+        <p>
+            The standard model of cosmology can be traced back to one assumption and one observational discovery:
         </p>
 
-        <table>
-            <thead>
-                <td>Year</td><td>Method</td><td>Hubble's constant</td>
-            </thead>
-            <tr>
-                <td>2018</td><td>CMB<td>67.4 km/s/Mpc<sup>[2]</sup></td>
-            </tr>
-            <tr>
-                <td>2019</td><td>Cepheids</td><td>74.0 km/s/Mpc<sup>[1]</sup></td>
-            </tr>
-            <tr>
-                <td>2020</td><td>Parallax</td><td>73.2 km/s/Mpc<sup>[3]</sup></td>
-            </tr>
-            <tr>
-                <td>2021</td><td>Infrared SB Fluctuation </td><td>73.3 km/s/Mpc<sup>[4]</sup></td>
-            </tr>
-        </table>-
-        
-        <p>If the CMB is not an ancient fireball
-            its temperature variations are not anomalous, 
-            it doesn't conflict with measurements of Hubble's constant,
-            and there is no coincidence between its temperature and the temperature of our galaxy .</p>
-        -->
-        
-    <a name="age"></a>
-    <h3>Age of the universe</h3>
+        <ul>
+            <li><b>Assumption 1</b>: in a vacuum, light travels at c to infinity and never loses energy</li>
+            <li><b>Observation 1</b>: light loses energy proportional to the distance it has traveled</li>
+        </ul>
 
-    <p>If the universe started with a Big Bang, as we look back in space and time, 
-        we should be seeing fewer and fewer mature galaxies and eventually only young galaxies. 
-        In the 21st century observations show that's not true:</p>
-
-
-    <ul>
-        <li>
-            <a href="https://science.sciencemag.org/content/371/6530/674">A massive stellar bulge in a regularly rotating galaxy 1.2 billion years after the Big Bang</a><sup>[7]</sup>
-
-            <blockquote>
-                Lelli et al. (1) report a galaxy that had evolved features (both a disk and a bulge) when only 1.2 billion years had elapsed since the Big Bang 
-                (∼12.5 billion years ago) (see the figure). This finding suggests that the processes that generate the key features of a mature galaxy arose more rapidly than 
-                has been thought.
-            </blockquote>
-            
-        </li>
-        <li>
-            <a href="https://www.nature.com/articles/s41586-020-2276-y">A cold, massive, rotating disk galaxy 1.5 billion years after the Big Bang
-            </a><sup>[8]</sup>
-        
-            <blockquote>
-                The existence of such a massive, rotationally supported, cold disk galaxy when the Universe was only 1.5 billion years old favours formation through either cold-mode accretion or mergers, although its large rotational velocity and large content of cold gas remain challenging to reproduce with most numerical simulations.
-            </blockquote>
-        </li>
-        
-        <li>
-        
-            <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[9]</sup>
-
-            <blockquote>
-                Interferometric imaging at a spatial resolution of about 60 pc reveals
-        a ratio of rotational-to-random motions of V/σ = 9.7 ± 0.4, which is at least four times larger
-        than expected from any galaxy evolution model at this epoch, but similar to the ratios of
-        spiral galaxies in the local Universe.</blockquote>
-        
-        
-        </li>
-        
-        <li>
-            <a href="https://www.nature.com/articles/s41586-019-1452-4">A dominant population of optically invisible massive galaxies in the early Universe</a>
-            <sup>[10]</sup>
-            <blockquote>
-                Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
-            </blockquote>
-        </li>
-        
-        <li>
-            <a href=https://www.sciencedaily.com/releases/2015/11/151118070758.htm>Earliest giant galaxies: The birth of monsters</a>
-            <sup>[11]</sup>
-            <blockquote>
-                "To complicate things further, if massive galaxies are unexpectedly dustier in the early Universe than astronomers predict then even UltraVISTA wouldn't be able to detect them. If this is indeed the case, the currently-held picture of how galaxies formed in the early Universe may also require a complete overhaul."
-            </blockquote>
-        </li>
-        
-        
-        <li>
-            <a href="https://www.nature.com/articles/nature14164">A dusty, normal galaxy in the epoch of reionization</a>
-            <sup>[12]</sup>
-
-            <blockquote>
-                The galaxy
-                is highly evolved: it has a large stellar mass, and is heavily enriched in dust, with a dust-to-gas ratio close to that of the Milky
-                Way. Dusty, evolved galaxies are thus present among the fainter
-                star-forming population at z > 7, in spite of the very short time
-                since they first appeared.
-            </blockquote>
-        </li>
-        
-        <li>
-            <a href="https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly">Some galaxies in the early universe grew up quickly</a>
-            <sup>[13]</sup>
-            <blockquote>Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
-            </blockquote>
-        </li>
-        
-        <li>
-            <a href="http://www.sciencedaily.com/releases/2014/10/141030101241.htm">
-                Galaxy Zoo: CANDELS Barred Disks and Bar Fractions
-            </a>
-            <sup>[14]</sup>
-            <blockquote>
-                The newly classified galaxies are striking in that they look a lot like those in today's universe, with disks, bars and spiral arms. But theorists predict that these should have taken another 2 billion years to begin to form, so things seem to have been settling down a lot earlier than expected.
-            </blockquote>
-        </li>
-        
-        <li>
-            <a href="https://www.nasa.gov/jpl/spitzer/splash-project-dives-deep-for-galaxies">Spitzer Splash Project Dives Deep for Galaxies</a>
-            <sup>[15]</sup>
-            <blockquote>
-                "The findings cast doubt on current models of galaxy formation, which struggle to explain how these remote and young galaxies grew so big so fast."
-            </blockquote>
-        </li>
-        
-            
-    </ul>
-
-    <p>In a universe that expands, there is a race against the clock for the universe to take shape, and lately the clock has been winning.
-        A universe that doesn't expand, on the other hand, has no discernible age or hurried time schedules for galaxy formation
-        to squeeze into. 
-    </p>
-
-    <!--<p>There's also the coincidence that the age of the universe is about equal to c/H, the 
-        radius of <a href="https://en.wikipedia.org/wiki/Hubble_volume">the Hubble Volume</a>. 
-        Billions of years in the future or billions of years in the past they would be unrelated.
-    </p>
-    
-    <p>In the decelerating photon hypothesis, there is no time schedule to rush galaxies into existence, 
-        and there is no coincidental relationship between Hubble's constant and the age of the universe.
-    </p>-->
-
-    <a name="size"></a>
-    <h3>Size of the universe</h3>
-
-    <p>The things we observe in the universe 
-        don't seem to be constrained in size by what we assume are the theoretical limits they could reach.
-        <sup>[16][17][18][19][20][20][21]</sup>:</p>
-
-        <p class="pimg">
-            <a href="https://en.wikipedia.org/wiki/List_of_largest_cosmic_structures">
-                <img src="img/size_limit.png">
-            </a>
+        <p>
+            Under the known laws of physics, assumption 1 and observation 1 are compatible if  
+            every galaxy in the universe is in motion away from every other galaxy in the universe. In that case, 
+            the motion of the galaxies is given by Hubble's law:
         </p>
 
-    <p>In the decelerating photon hypothesis, the size and age of the universe are indefinite and there is no cosmic size limit.</p>
+        <ul>
+            <li><b>Model 1</b>: v=H<sub>0</sub>D</li>
+        </ul>
 
-    <a name="tolman"></a>
-    <h3>Tolman Surface Brightness Test</h3>
+        <p>
+            One feature of such a universe is that the travel time from one place to another increases with distance.
+            If you were to shine a laser toward a target 100 million light years away, it would take longer than 100 million years 
+            for the laser beam to reach the target. The expansion of space moves the target farther away, meaning the light has new space to travel through, 
+            which takes time.
+        </p>
 
-    <p>The Tolman Surface Brightness Test is meant to distinguish a static universe from an expanding one.</p>
+        <p class="pimg"><img src="img/vcHD.gif"></p>
 
-    <p>In the decelerating photon hypothesis, a photon experiences the same delays in the journey as a photon would in expanding space. 
-        But successive photons in an expanding universe would experience higher delays, whereas each successive photon in the decelerating photon hypothesis
-        experiences the same delay as the first photon.</p>
+        <p>
+            An alternative cosmology that can produce the exact same time delays without the expansion of space requires that
+            assumption 1 is wrong, and the photon will indeed lose energy and speed during intergalactic journeys. 
+            If a photon loses speed when it redshifts, its travel time to a target in space will also increase, despite the target remaining stationary.
+            This cosmology is shown in green in the image above, given by a variation on Hubble's law:
+        </p>
+        
+        <ul>
+            <li><b>Model 2</b>: v=c-H<sub>0</sub>D</li>
+        </ul>
 
-    <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
-    <div id="freqtest"></div>
+        <p>
+            Since <a href="modeling_expansion.htm">model 1 and model 2 produce the exact same time delays and redshifts</a>, they are both in conflict with 
+            the observation that the expansion of space is accelerating:
+        </p>
 
-    <!--<p>You can see this in action on the <a href="freqtest.htm">Photon Arrival Rate page</a></p>-->
+        <ul>
+            <li><b>Observation 2</b>: there appears to be more redshifting in the nearby universe than farther away</li>
+        </ul>
 
-    <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.
-        Based on observations, it predicts one factor too many<sup>[25]</sup>:
-    </p>
+        <p>
+            To address this in the standard model of cosmology, a new concept is introduced called dark energy. This has the effect
+            that Hubble's constant isn't actually constant, but changes with time:
+        </p>
             
-    <blockquote>"The exponent found is not 4 as expected in the simplest expanding model, but 2.6 or 3.4, depending on the frequency band."
-        <br>
-        <a href="https://en.wikipedia.org/wiki/Tolman_surface_brightness_test">https://en.wikipedia.org/wiki/Tolman_surface_brightness_test</a>
-    </blockquote>
+        <ul>
+            <li><b>Model 3</b>: dark energy</li>
+        </ul>
 
-    <p>The decelerating photon hypothesis predicts one fewer factor than the expanding universe, matching observations.</p>
+        <p>
+            The alternative cosmology offers other options. In model 2, the speed of a photon begins at c and decreases with distance.
+            It does this by subtracting H<sub>0</sub>D from c. But there are other ways to do this. It could divide c by (1+H<sub>0</sub>D). 
+            The photon would still start at c, and it would still decelerate with distanace. Just along a different curve. 
+        </p>
 
-    <a name="supernovae"></a>
-    <h3>Time Dilation in Supernovae Light Curves</h3>
+        <p>This opens up a whole new class of hypotheses to try. One of them, an inverse square law, 
+            produces a decent fit of the data from the Supernovae Cosmology project:
+        </p>
 
-    <p>Due to the expanding universe, a nearby event that lasts for 20 days, such as a supernova, would appear to last longer when the event takes place far away.
-        That is because of the same reason that an expanding universe predicts a fourth dimming factor in the surface brightness test: the galaxy is 
-        farther away each time it emits light.
-        This is known as time dilation, and it is observed in the light curves of distant supernovae. 
-        The more dilated the duration of the event, the farther away it must be.
+        <ul>
+            <li><b>Model 4</b>: v=c / (1+H<sub>0</sub>D)<sup>2</sup></li>
+        </ul>
+
+        <p class="pimg"><img src="img/supernovae.png"></p>
+
+        <p>
+            In this model, H<sub>0</sub> is still constant throughout time, however it has different units. 
+            The line shown (red) is using a value of H<sub>0</sub>=0.04 billion Gly<sup>-1</sup>.
+            The inverse distance and distance units cancel out in the denominator.
+        </p>
+
+        <h3>Direct Test of Hypothesis</h3>
+
+        <p>
+            If ancient photons have indeed decelerated, a simple test could be devised using existing technology.
+        </p>
+
+        <p>
+            Launch a probe that scans for supernovae, and send it out by Pluto. When it detects a supernova, send a signal back to Earth with its location.
+        </p>
+
+        <p>If all the photons involved are moving at c, the signal from the probe should reach Earth at the same time as the supernova.
+        </p>
+
+        <p>If the decelerating photon hypothesis is correct, the signal from the probe to Earth should travel at c and reach
+            us sooner than the slow light from the distant supernova.
+        </p>
+
+        <p>If confirmed, such a test would provide a working technology for astronomers to apply immediately to get advanced warnings
+            on Earth about events such as supernovae.
+        </p>
+
+        <h3>Problems and Responses</h3>
+
+        <p>The hypothesis in relation to standard cosmology:</p>
+
+        <details>
+            <summary>This is the Tired Light Theory, which is discredited</summary>
+
+
+            <p>The expanding model has been challenged by hundreds of non-expanding theories, and all of them have failed.
+                These theories propose different ways light can interact with matter or other forces to reduce the light's energy, and they are known
+                as <a href="https://en.wikipedia.org/wiki/Tired_light">tired light</a> theories.
+            </p>
+            
+            <p>Light loses energy in the tired light theories, but it never loses speed as the theories are consistent with Newton's first law of motion and special relativity. 
+                Because tired light moves at c, there are no time delays in a photon's journey
+                like there are in the expanding model or the decelerating photon hypothesis. 
+                Tired light photons match the arrival time of the simple static model (blue in the gif), while 
+                the decelerating photon hypothesis (green) has time delays that match the expanding model (white).
+            </p>
+            
+            <p>In this hypothesis, one could say light <i>does</i> get "tired",  
+                but it does so in a way that is conceptually and mathematically unique to the established 
+                tired light theories.</p>
+            
+
+        </details>
+        
+        <details>
+
+            <summary>The CMB indicates a hot past</summary>
+
+            <p>The Cosmic Microwave Background was predicted by the big bang theory
+                as a remnant of the fiery conditions at the beginning of the universe, and its discovery is an important piece of evidence for the theory. </p>
+        
+            <p>If the decelerating photon hypothesis is correct, the CMB must have some other explanation. Considering the following facts:</p>
+        
+            <ol>
+                <li>Photons lose energy proportional with distance</li>
+                <li>There is energy coming from all directions as microwave background radiation</li>
+            </ol>
+        
+            <p>The energy lost through redshifting and the energy of the CMB might be more closely related than we currently think.
+                If the energy lost by redshifting is discarded into space it would start to pile up.</p>
+        
+            <p>If space is filling up with the energy discarded by redshifting photons,
+                when the energy in a volume of space is greater than the energy equivalent of 
+                the temperature of its surroundings, that volume of space should start emitting radiation to cool to equilibrium.
+            </p>
+        
+            <p>This might take the form of a "background" field that receives the energy lost by redshifting photons 
+                and returns the energy to the EM field as photons to reach a thermal equilibrium.</p>
+            
+            <p>Early 20th century astronomers calculated that the minimum temperature to which a black body in our galaxy
+                would cool is about 3 K 
+                <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
+                    well before the CMB was discovered</a>.</p>
+        
+            <!--<p class="pimg"><img src="img/cmb_predictions.png"></p>-->
+        
+            <p>The CMB was discovered in 1964 at 3 K, which has been refined to around 2.7 K.
+        
+            <p>In the expanding model, the similarity between the predicted effective temperature of our galaxy and the temperature
+                of the CMB is a coincidence.</p> 
+        
+            <p>In the decelerating photon hypothesis, the temperature of the CMB is an effect of the 
+                background field cooling to the effective temperature of the galaxy. 
+            </p>
+        
+        </details>
+        <details>
+
+            <summary>The farthest galaxies are younger than nearby galaxies, indicating a beginning of time</summary>
+
+            <p>A universe that begins with a big bang should contain younger and younger galaxies as we look back in space and time.
+                As we've been getting a better look at the universe, we are finding that the distant universe isn't meeting our expectations
+                for when galaxies become massive, dusty, spiraled, barred, disced, buldged, and having shut down star formation:</p>
+        
+        
+            <ul>
+                <li>
+                    <a href="https://science.sciencemag.org/content/371/6530/674">A massive stellar bulge in a regularly rotating galaxy 1.2 billion years after the Big Bang</a><sup>[7]</sup>
+        
+                    <blockquote>
+                        Lelli et al. (1) report a galaxy that had evolved features (both a disk and a bulge) when only 1.2 billion years had elapsed since the Big Bang 
+                        (∼12.5 billion years ago) (see the figure). This finding suggests that the processes that generate the key features of a mature galaxy arose more rapidly than 
+                        has been thought.
+                    </blockquote>
+                    
+                </li>
+                <li>
+                    <a href="https://www.nature.com/articles/s41586-020-2276-y">A cold, massive, rotating disk galaxy 1.5 billion years after the Big Bang
+                    </a><sup>[8]</sup>
+                
+                    <blockquote>
+                        The existence of such a massive, rotationally supported, cold disk galaxy when the Universe was only 1.5 billion years old favours formation through either cold-mode accretion or mergers, although its large rotational velocity and large content of cold gas remain challenging to reproduce with most numerical simulations.
+                    </blockquote>
+                </li>
+                
+                <li>
+                
+                    <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[9]</sup>
+        
+                    <blockquote>
+                        Interferometric imaging at a spatial resolution of about 60 pc reveals
+                a ratio of rotational-to-random motions of V/σ = 9.7 ± 0.4, which is at least four times larger
+                than expected from any galaxy evolution model at this epoch, but similar to the ratios of
+                spiral galaxies in the local Universe.</blockquote>
+                
+                
+                </li>
+                
+                <li>
+                    <a href="https://www.nature.com/articles/s41586-019-1452-4">A dominant population of optically invisible massive galaxies in the early Universe</a>
+                    <sup>[10]</sup>
+                    <blockquote>
+                        Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href=https://www.sciencedaily.com/releases/2015/11/151118070758.htm>Earliest giant galaxies: The birth of monsters</a>
+                    <sup>[11]</sup>
+                    <blockquote>
+                        "To complicate things further, if massive galaxies are unexpectedly dustier in the early Universe than astronomers predict then even UltraVISTA wouldn't be able to detect them. If this is indeed the case, the currently-held picture of how galaxies formed in the early Universe may also require a complete overhaul."
+                    </blockquote>
+                </li>
+                
+                
+                <li>
+                    <a href="https://www.nature.com/articles/nature14164">A dusty, normal galaxy in the epoch of reionization</a>
+                    <sup>[12]</sup>
+        
+                    <blockquote>
+                        The galaxy
+                        is highly evolved: it has a large stellar mass, and is heavily enriched in dust, with a dust-to-gas ratio close to that of the Milky
+                        Way. Dusty, evolved galaxies are thus present among the fainter
+                        star-forming population at z > 7, in spite of the very short time
+                        since they first appeared.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly">Some galaxies in the early universe grew up quickly</a>
+                    <sup>[13]</sup>
+                    <blockquote>Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="http://www.sciencedaily.com/releases/2014/10/141030101241.htm">
+                        Galaxy Zoo: CANDELS Barred Disks and Bar Fractions
+                    </a>
+                    <sup>[14]</sup>
+                    <blockquote>
+                        The newly classified galaxies are striking in that they look a lot like those in today's universe, with disks, bars and spiral arms. But theorists predict that these should have taken another 2 billion years to begin to form, so things seem to have been settling down a lot earlier than expected.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="https://www.nasa.gov/jpl/spitzer/splash-project-dives-deep-for-galaxies">Spitzer Splash Project Dives Deep for Galaxies</a>
+                    <sup>[15]</sup>
+                    <blockquote>
+                        "The findings cast doubt on current models of galaxy formation, which struggle to explain how these remote and young galaxies grew so big so fast."
+                    </blockquote>
+                </li>
+                
+                    
+            </ul>
+        
+            <p>In a universe that expands, there is a race against the clock for the universe to take shape, and lately the clock has been winning.
+                A universe that doesn't expand, on the other hand, has no discernible age or hurried time schedules for galaxy formation and evolution
+                to squeeze into. 
+            </p>
+        
+
+        </details>
+        <details>
+
+            <summary>The Tolman surface brightness test indicates an expanding universe</summary>
+
+
+            <p>The Tolman Surface Brightness Test is meant to distinguish a static universe from an expanding one.</p>
+
+            <p>In the decelerating photon hypothesis, a photon experiences the same delays in the journey as a photon would in expanding space. 
+                But successive photons in an expanding universe would experience higher delays, whereas each successive photon in the decelerating photon hypothesis
+                experiences the same delay as the first photon.</p>
+
+            <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
+            <div id="freqtest"></div>
+
+            <!--<p>You can see this in action on the <a href="freqtest.htm">Photon Arrival Rate page</a></p>-->
+
+            <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.
+                Based on observations, it predicts one factor too many<sup>[25]</sup>:
+            </p>
+                    
+            <blockquote>"The exponent found is not 4 as expected in the simplest expanding model, but 2.6 or 3.4, depending on the frequency band."
+                <br>
+                <a href="https://en.wikipedia.org/wiki/Tolman_surface_brightness_test">https://en.wikipedia.org/wiki/Tolman_surface_brightness_test</a>
+            </blockquote>
+
+            <p>The decelerating photon hypothesis predicts one fewer factor than the expanding universe, matching observations.</p>
+
+            <p>Also note that the frequency of the light made a difference here. In an exanding universe, that would be impossible.</p>
+
+        </details>
+        <details>
+ 
+            <summary>Time dilation in supernovae light curves indicate an expanding universe</summary>
+
+            <p>Due to the expanding universe, a nearby event that lasts for 20 days, such as a supernova, would appear to last longer when the event takes place far away.
+                That is because of the same reason that an expanding universe predicts a fourth dimming factor in the surface brightness test: the galaxy is 
+                farther away each time it emits light.
+                This is known as time dilation, and it is observed in the light curves of distant supernovae. 
+                The more dilated the duration of the event, the farther away it must be.
+            </p>
+        
+            <p>In the decelerating photon hypothesis, space is not expanding, and thus it cannot stretch the time it takes for an event to occur. The only way
+                the decelerating photon hypothesis could be true then, is if the longer supernovae observed are not time dilated, but actually much bigger supernovae than we
+                assume they are.</p>
+        
+            <p>This is the position argued by Jensen<sup>[26]</sup>, page 5:</p>
+        
+            <blockquote>On the other hand, the Delta(15) values seem to indicate the opposite trend, the
+                light curves and therefore the supernovae themselves are actually getting smaller with increasing
+                redshift! Why would this be true? Why would we find smaller supernova with increasing
+                redshift? Unless the morphology of supernova are changing, and the spectra indicate that they are
+                not, we should expect the size of the supernova we actually observe to increase slightly with
+                distance, a predictable Malmquist type II bias of about 4%.
+            </blockquote>
+        
+            <p>And page 6:</p>
+        
+            <blockquote>
+                This same argument can be made with the most basic piece of statistical data: Supernovae rise
+                    times: In the local universe, the average rise time is 20 days, but in the redshifted universe; it is
+                    17.5 days, which again, would tend to indicate more distant supernova are smaller (Li). If this
+                    time dilation factor is removed, the high redshift sample has an average rise time of about 25
+                    days. This is too long for normal Ia, but not if the distance modulus and
+                    the corresponding attenuation factor are underestimated. In this case, the higher redshifted SNe Ia
+                    would indeed be over-represented by very high magnitude ‘peculiar’ Ia, or hypernova. Credence
+                    is given to this conjecture by the fact the number of supernova actually found in high redshift
+                    surveys represent only a small fraction (~4%) of the expected yield (Tonry).
+            </blockquote>
+        
+            <p>Jensen argues that the farther we look into space and the larger our sample size becomes, the smaller the average supernova appears to be, contrary 
+                to expectations. 
+                He advocates adjusting for a Malmquist type II bias, meaning the farther into space we look,
+                the lower the fraction of the galaxy's light will reach us, altering our measurements. 
+                These particularly long lasting supernovae are then 
+                not only larger events than we think they are, they are also farther away than we think.</p>
+        </details>
+        
+        </ul>
+        
+        <p>The hypothesis in relation to fundamental physics:
+        </p>
+
+        <details>
+            <summary>Newton's first law of motion</summary>
+
+            <p>An object in motion remains in motion at a constant velocity. Does this hold true to infinity?
+                Even if a photon could travel at c to infinity, Hubble's law would place a limit on how far it can 
+                effectively travel.
+            </p>
+
+            <p>The decelerating photon hypothesis alters inertia at a fundamental level.</p>
+            
+        </details>
+        <details>
+            <summary>Special Relativity</summary>
+
+            <p>The second postulate of special relativity is that the speed of light in a vacuum is always c. 
+                And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
+            
+            <p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, <code>v = c - HD</code>. 
+                In the domain where cosmological redshifts aren't observed <code>HD = 0</code>, so <code>v = c - HD</code> becomes <code>v = c</code>,
+                and there is no conflict. The hypothesis is consistent with special relativity where it is experimentally confirmed.
+            </p>
+            
+            <p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
+            
+            <p>But cosmological redshifts are the domain of general relativity.</p>
+            
+        </details>
+        <details>
+            <summary>General Relativity</summary>
+            <p>Recall the graph of the time delays from the introduction. If that graph were to include a second photon headed in the opposite direction,
+                it would produce a reflected image, like this:</p>
+            
+            <p class="pimg"><img src="img/lightcones3.png" width="500"></p>
+            
+            <p>The straight (blue) lines that make the traditional light cone represent special relativity.
+                The curved (green) lines that make the upside down bell shape represent Hubble's law, both as the expansion of space and as  
+                the decelerating photon hypothesis. 
+                The green shaded area represents the Hubble volume.</p> 
+            
+            <p>To accommodate the observed redshifts, the light cone in relativity must be curved in a way that exactly matches 
+                the decelerating photon hypothesis.
+            </p>
+            
+            <p>But there is a very big difference between the two. In general relativity, space expands the null geodesic for all photons. 
+                All photons stick to the same geodesic at the same speed.
+            </p>
+            
+            <p class="pimg"><img src="img/lightcone_gr.png" width="400"></p>
+            
+            <p>In the decelerating photon hypothesis, each photon begins on the null geodesic, but then diverges according to v=c-HD along its own individual path. 
+                The length of each path has a maximum range of c/H, Hubble's length.
+                Put another way, Hubble's law would be removed as the scale factor and reapplied in the geodesic equation.
+                The <a href="https://youtu.be/-UPSiKugRW0?t=881">velocity vector for a photon</a> 
+                should have a distance of HD instead of 0, 
+                where D is the sum of the absolute value of its changes in the space direction.
+            </p>
+            
+            <p class="pimg"><img src="img/geodesics.png"></p>
+            
+            <p>These extra individual paths that diverge from the common path can be seen as time dilations localized to an individual photon.</p> 
+            
+            <p class="pimg"><img src="img/lightcone_q.png" width="400"></p>
+            
+            <p>This actually allows for different Hubble volumes to communicate between relays. 
+                Information can be sent from one galaxy to a distant one within range. That signal can be received and retransmitted with
+                fresh photons, eventually leaving the original broadcaster's Hubble volume.
+            </p>
+            
+            <p>Given an indefinitely old universe, the ability to communicate between Hubble volumes avoids any issues posed by
+                <a href="https://en.wikipedia.org/wiki/Horizon_problem">the horizon problem</a>, which says different parts of the sky
+                should not be the same temperature because they are causally separated by the Hubble limit of their respective Hubble volumes
+                and too little time since the big bang.
+            
+        </details>
+        <details>
+            <summary>Quantum Mechanics</summary>
+            <p>There is nothing in quantum mechanics that resembles anything discussed in this paper. 
+                No known interaction will cause the photon to redshift in the manner needed by the decelerating photon hypothesis.
+                So the following Fenyman diagram is proposed:</p>
+            
+            <p class="pimg"><img src="img/feynman.png" width="400"></p>
+            
+            <p>Here is a photon cruising along, and then it discards some energy, and also decelerates.</p>
+            
+            <p>As mentioned in the section on the CMB, this action could be thought of as transferring energy from the photon to the "background" field.</p>
+            
+        </details>
+
+        <!--
+        <h3>Advantages</h3>
+
+        <p>In addition to a simple alternative to dark energy, the hypothesis offers several other advantages. 
+            Observations have shown that redshifts might be quantized.
+            And the expansion of the universe may differ for light of different wavelengths. If redshifts are caused by space expanding, 
+            these would be downright impossible. 
+        </p>
+
+        
+        
+        <p>
+            A decelerating photon, if it redshifts in a quantum event, would cause quantized redshifts. And if that might differ slightly 
+            for different wavelengths, those features could easily be accommodated too.
+        </p>-->
+
+
+        <hr>
+        <h2>Conclusion</h2>
+
+
+    <p>The decelerating photon hypothesis changes the physics of light at cosmological distances to accommodate the redshifts.
+        On the other hand, the expanding interpretation of redshifts has lead to a change in just about everything in the universe except for light.
     </p>
-
-    <p>In the decelerating photon hypothesis, space is not expanding, and thus it cannot stretch the time it takes for an event to occur. The only way
-        the decelerating photon hypothesis could be true then, is if the longer supernovae observed are not time dilated, but actually much bigger supernovae than we
-        assume they are.</p>
-
-    <p>This is the position argued by Jensen<sup>[26]</sup>, page 5:</p>
-
-    <blockquote>On the other hand, the Delta(15) values seem to indicate the opposite trend, the
-        light curves and therefore the supernovae themselves are actually getting smaller with increasing
-        redshift! Why would this be true? Why would we find smaller supernova with increasing
-        redshift? Unless the morphology of supernova are changing, and the spectra indicate that they are
-        not, we should expect the size of the supernova we actually observe to increase slightly with
-        distance, a predictable Malmquist type II bias of about 4%.
-    </blockquote>
-
-    <p>And page 6:</p>
-
+        
+    <p>When interpreting the redshifts as Doppler effects in the 20th century, astronomers didn't know this idea 
+        would lead to inflation or dark energy. In fact, they chose the velocity-shift interpretation because it 
+        was known and familiar and didn't require new laws of physics.</p>
+    
     <blockquote>
-        This same argument can be made with the most basic piece of statistical data: Supernovae rise
-            times: In the local universe, the average rise time is 20 days, but in the redshifted universe; it is
-            17.5 days, which again, would tend to indicate more distant supernova are smaller (Li). If this
-            time dilation factor is removed, the high redshift sample has an average rise time of about 25
-            days. This is too long for normal Ia, but not if the distance modulus and
-            the corresponding attenuation factor are underestimated. In this case, the higher redshifted SNe Ia
-            would indeed be over-represented by very high magnitude ‘peculiar’ Ia, or hypernova. Credence
-            is given to this conjecture by the fact the number of supernova actually found in high redshift
-            surveys represent only a small fraction (~4%) of the expected yield (Tonry).
+        We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle  of nature. 
+        We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, familiar principle by an 
+        ad hoc explanation unless we are forced to that step by  actual observations. 
+        - 
+        <span style="font-style: normal !important">Edwin Hubble</span>
+
     </blockquote>
 
-    <p>Jensen argues that the farther we look into space and the larger our sample size becomes, the smaller the average supernova appears to be, contrary 
-        to expectations. 
-        He advocates adjusting for a Malmquist type II bias, meaning the farther into space we look,
-        the lower the fraction of the galaxy's light will reach us, altering our measurements. 
-        These particularly long lasting supernovae are then 
-        not only larger events than we think they are, they are also farther away than we think.</p>
-
-
-
-<hr>
-
-<h2>Established Laws of Physics</h2>
-
-<a name="newton"></a>
-<h3>Newton's First Law of Motion</h3>
-
-<p>An object in motion remains in motion at a constant velocity. Does this hold true to infinity?
-    Even if a photon could travel at c to infinity, Hubble's law would place a limit on how far it can 
-    effectively travel.
-</p>
-
-<p>
-    To illustrate, remember those models of photons from the Introduction?
-    The decelerating photon burned out long ago, but the photon in expanding space
-    is still traveling, ever faster and farther. It hasn't hit a target for hundreds of trillions of years, and it never will.</p>
+    <p>The observed acceleration of the redshifts has forced us to that step.</p>
 
     <p>
-        Photon Distance: <span id="expanding-photon-distance"></span> million light years
-    <br>
-    Photon Speed: <span id="expanding-photon-speed"></span> c
-    <br>
-    Time since last target: <span id="expanding-last-target"></span> million years
-    <br>
-    <button id="stop-models-button">Stop</button>
-    </p>
-
-    <p>The photons in the expanding universe that approach the Hubble limit just cruise forever in rapidly increasing space. 
-        Alternatively, energy that is redshifted away in the decelerating photon hypothesis gets recycled back into the universe.
-        The expanding universe is almost comically inefficient by comparison.   
-    </p>
-
-    <p>That said, the hypothesis <code>v=c-HD</code> needs a <code>D</code>, which is the distance the particle has traveled 
-        since it was emitted. This would not apply to a Newtonian object.</p>
-
-
-<a name="special-relativity"></a>
-<h3>Special Relativity</h3>
-
-<p>The second postulate of special relativity is that the speed of light in a vacuum is always c. 
-    And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
-
-<p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, <code>v = c - HD</code>. 
-    In the domain where cosmological redshifts aren't observed <code>HD = 0</code>, so <code>v = c - HD</code> becomes <code>v = c</code>,
-    and there is no conflict. The hypothesis is consistent with special relativity where it is experimentally confirmed.
-</p>
-
-<p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
-
-<p>But cosmological redshifts are the domain of general relativity.</p>
-
-<a name="general-relativity"></a>
-<h3>General Relativity</h3>
-
-<p>Recall the graph of the time delays from the introduction. If that graph were to include a second photon headed in the opposite direction,
-    it would produce a reflected image, like this:</p>
-
-<p class="pimg"><img src="img/lightcones3.png" width="500"></p>
-
-<p>The straight (blue) lines that make the traditional light cone represent special relativity.
-    The curved (green) lines that make the upside down bell shape represent Hubble's law, both as the expansion of space and as  
-    the decelerating photon hypothesis. 
-    The green shaded area represents the Hubble volume.</p> 
-
-<p>To accommodate the observed redshifts, the light cone in relativity must be curved in a way that exactly matches 
-    the decelerating photon hypothesis.
-</p>
-
-<p>But there is a very big difference between the two. In general relativity, space expands the null geodesic for all photons. 
-    All photons stick to the same geodesic at the same speed.
-</p>
-
-<p class="pimg"><img src="img/lightcone_gr.png" width="400"></p>
-
-<p>In the decelerating photon hypothesis, each photon begins on the null geodesic, but then diverges according to v=c-HD along its own individual path. 
-    The length of each path has a maximum range of c/H, Hubble's length.
-    Put another way, Hubble's law would be removed as the scale factor and reapplied in the geodesic equation.
-    The <a href="https://youtu.be/-UPSiKugRW0?t=881">velocity vector for a photon</a> 
-    should have a distance of HD instead of 0, 
-    where D is the sum of the absolute value of its changes in the space direction.
-</p>
-
-<p class="pimg"><img src="img/geodesics.png"></p>
-
-<p>These extra individual paths that diverge from the common path can be seen as time dilations localized to an individual photon.</p> 
-
-<p class="pimg"><img src="img/lightcone_q.png" width="400"></p>
-
-<p>This actually allows for different Hubble volumes to communicate between relays. 
-    Information can be sent from one galaxy to a distant one within range. That signal can be received and retransmitted with
-    fresh photons, eventually leaving the original broadcaster's Hubble volume.
-</p>
-
-<p>Given an indefinitely old universe, the ability to communicate between Hubble volumes avoids any issues posed by
-    <a href="https://en.wikipedia.org/wiki/Horizon_problem">the horizon problem</a>, which says different parts of the sky
-    should not be the same temperature because they are causally separated by the Hubble limit of their respective Hubble volumes
-    and too little time since the big bang.
-
-<a name="quantum-mechanics"></a>
-<h3>Quantum Mechanics</h3>
-
-<p>There is nothing in quantum mechanics that resembles anything discussed in this paper. 
-    No known interaction will cause the photon to redshift in the manner needed by the decelerating photon hypothesis.
-    So the following Fenyman diagram is proposed:</p>
-
-<p class="pimg"><img src="img/feynman.png" width="400"></p>
-
-<p>Here is a photon cruising along, and then it discards some energy, and also decelerates.</p>
-
-<p>As mentioned in the section on the CMB, this action could be thought of as transferring energy from the photon to the "background" field.</p>
-
-<p>The treatment of photons in the model is explained further in the next section.</p>
-    
-</p>
-
-<!--
-Here is a demonstration of its stability:
-<div style="text-align: center;">
-<button id="run-flatness">Run</button>
-<br>
-<div style="display: inline-block;">
-<canvas width="300" height="300" id="flat1"></canvas>
-<br>
-Gravity with infinite range
-</div>
-<div style="display: inline-block;">
-<canvas width="300" height="300" id="flat2"></canvas>
-<br>
-Gravity with finite range
-</div>
-</div>
-
-<script src="js/flatness.js"></script>
--->
-<!--<p>In this way quantum gravity may be the solution to <a href="https://en.wikipedia.org/wiki/Flatness_problem">the flatness problem</a>.</p>-->
-
-<hr>
-
-
-<a name="photons"></a>
-<h2>Photons</h2>
-
-<p>The photon's distance from where it was emitted is crucial to keep in mind at all times. 
-    Consider light that has traveled billions of years to reach your telescope. 
-    The light enters the lens, gets focused to the eyepiece, and then into your eyeball.</p>
-
-<p>Seems pretty straightforward. But at some level, some type of interaction with the light and the lens must be focusing the light. 
-    At the quantum level, the photon will have been <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mod5.html">absorbed by atoms</a> in the lens. 
-        Then it is re-emitted (or an entirely new photon is emitted), and focused to your telescope's eyepiece.</p>
-
-<p>The photon may have traveled great distances from its source before it encountered your telescope, 
-    but the light inside the telescope will be very close to its source: the lens that focused it. 
-    The distance to the source of the photons in the telescope will be less than a meter, not millions of light years.</p>
-
-<p>In that case the refreshed photon will be traveling at <code>c</code>, which now results in an elongated wavelength when calculated.</p>
-
-
-<hr>
-
-<a name="tests"></a>
-<h2>Tests</h2>
-
-<a name="test1"></a>
-<h3>Test 1: measure the speed of a cosmologically redshifted photon</h3>
-
-<p>This is the first obvious test of the hypothesis.</p>
-
-<p>But it would take thousands or millions of years to perform a fully controlled experiment where light is emitted with a known energy at a 
-    known time and travels across a known distance to see the effects of redshift.</p>
-    
-<p>Using light that has already traveled millions of years seems to be the only choice.</p>
-
-<p>But interacting with the photon will cause it to reset its distance and speed, as mentioned in the previous section. 
-    The task then is to come up with a clever way to measure the speed of ancient light without disturbing the photon.
-</p>
-
-<p>Consider a long tube in space with a telescope at one end and an open shutter at the other. 
-    The telescope has a nearby galaxy and a highly redshifted galaxy in its sight. </p>
-
-<p class="pimg">
-    <img src="img/experiment1.png">
-<p>
-
-<p>What happens when the shutter is closed?</p>
-
-<p><b>Prediction:</b> Because the red light is moving slower than the yellow light, first the nearby galaxy will disappear from view, then the distant one.</p>
-
-<a name="test2"></a>
-<h3>Test 2: extra doppler shifts from high z galaxies</h3> 
-
-<p>Because photons from high z galaxies should be moving slower than c, their relative velocity to Earth should be detectable
-    by the Hubble Space Telescope as Doppler effects. </p>
-    
-    <p><b>Prediction:</b> Observing a high z galaxy on Earth's horizon, when Earth is on opposite sides of the sun,
-    should produce more redshift when the Earth is moving away from the distant galaxy than when the Earth is moving toward the galaxy, to a degree
-    more exaggerated than for nearby galaxies.
-</p>
-
-<p class="pimg">
-    <img src="img/dopplertest.png">
-<p>
-
-<a name="test3"></a>
-<h3>Test 3: deviations from the standard model</h3> 
-
-<p>The decelerating photon hypothesis is identical to a simple expanding model. However, the expanding model
-    provided here is much simpler than the standard model of cosmology, with its dark matter and dark energy components. </p>
-    
-<p>To compare the hypothesis with the standard model, the following chart of z, lookback time, and co-moving distance was made using  
-     <a href="https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+1+hubble+parameter+%3D+74">WolframAlpha</a> 
-     for the standard model using a Hubble constant of 74 km/s/Mpc. 
-     See the <a href="notes/zdata_full">full list of data and sources</a>. 
-</p>
-
-<pre style="text-align: center;">
- z      lookback time (By)   co-moving distance (Bly)
------------------------------------------------------
- 1             7.4                   10.4            
- 2             9.8                   16.4            
- 3            11.0                   20.1            
- 4            11.6                   22.8            
- 5            11.9                   24.7            
- 6            12.2                   26.2            
- 7            12.3                   27.5            
- 8            12.4                   28.5            
- 9            12.5                   29.4            
-10            12.6                   30.1            
-11            12.7                   30.7            
-12            12.7                   31.3            
-13            12.7                   31.8            
-14            12.8                   32.3            
-15            12.8                   32.7            
-16            12.8                   33.1            
-17            12.8                   33.4            
-18            12.9                   33.7            
-19            12.9                   34.0            
-20            12.9                   34.3            
-21            12.9                   34.6            
-22            12.9                   34.8            
-23            12.9                   35.0            
-24            12.9                   35.2            
-25            12.9                   35.4            
-
-</pre>
-
-<p>
-    In the expanding model, the lookback time refers to how long ago the light was emitted, and the co-moving distance refers to 
-    how far away the light source is now given that space has expanded since the light was emitted.
-</p>
-
-<p>
-    In the decelerating photon hypothesis, the time it takes to make the journey increases due to the photon slowing down.
-    A distant light source won't have moved from expansion between then and now (though it may have its own particular motion).
-    In this case distance and duration trade places.
-    The lookback time correlates with the distance of the target, and the co-moving distance correlates with the time
-    it takes to reach the target.
-    
-</p>
-    
-<p class="pimg">
-    <a href="img/z_distance.png"><img width="345" src="img/z_distance.png"></a>
-    <a href="img/z_time.png"><img width="345" src="img/z_time.png"></a>
-<br>green = decelerating photon hypothesis, white dots = standard model via WolframAlpha
-<br> lookback time (left) co-moving distance (right)</p>
-
-<p>At about z=8.0, the hypothesis starts to go off the path of the standard model, predicting a slower rise in z over time. 
-    In other words, this hypothesis predicts more redshift nearby and less far away than the standard model, giving it the illusion
-    that the effect is currently accelerating compared to the expectations of the standard model.
-</p>
-
-<p><b>Prediction</b>: A new telescope such as JWST should show the galaxy population extending indefinitely, 
-    distributed evenly by lookback time (which, in the decelerating photon hypothesis, is the galaxy's distance)
-    rather than by co-moving distance (which represents the time required to reach the galaxy). 
-
-<a name="test4"></a>
-<h3>Test 4: the universe needs more light for redshifts to power the CMB</h3>
-
-<p>The amount of energy coming in from space is mostly contributed to the CMB. If the CMB is powered by extragalactic light redshifting,
-    there isn't enough of it coming at us to add up to the power of the CMB.
-</p>
-
-<p><b>Prediction</b>: for the CMB to be powered by redshifts, the JWST has to observe that the number of galaxies visible to it
-    is many orders of magnitude larger than current estimates.
-<hr>
-
-<a name="conclusion"></a>
-<h2>Conclusion</h2>
-
-<blockquote>
-    We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle  of nature. 
-    We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, familiar principle by an 
-    ad hoc explanation unless we are forced to that step by  actual observations. 
-    - 
-    <span style="font-style: normal !important">Edwin Hubble</span>
-
-</blockquote>
-
-<p>Cosmological redshifts have been a known, observed fact since 1929.</p>
-
-<p>We could assume the redshifts indicate expansion, which means:</p> 
-
-<ul>
-    <li>there are age and size limits to the universe</li>
-    <li>the universe inflated in the first nanosecond</li>
-    <li>it is dominated by dark matter and dark energy</li>
-    <li>it's currently accelerating</li>
-</ul>
-
-<p>Or we could assume the redshifts are themselves a new feature of the universe, which means:</p>
-
-<ul>
-    <li>light doesn't travel to infinity at a constant speed</li>
-    <li>what we can see is an insignificant sample of an indefinitely large and old universe</li>
-</ul>
-
-<p>When interpreting the redshifts as Doppler effects in the 20th century, astronomers didn't know this idea 
-    would lead to inflation or dark energy. In fact, they chose the velocity-shift interpretation because it 
-    was known and familiar and didn't require new laws of physics.</p>
-
-<p>In retrospect, it should come as no surprise to us that when telescopes could show us what's beyond the Milky Way,
-    they would also reveal a new fundamental law of nature.</p>
-
-<p>If dark energy is in the consideration as a possible fundamental ingredient of nature despite having never been observed, 
-    then the actual observations that led to its conjecture, cosmological redshift, should be considered as well.</p>
+        If dark energy is in the consideration as a possible fundamental ingredient of nature, 
+        then the actual observations that led to its conjecture, cosmological redshift, should be considered as well.</p>
 
 <br>
+
+<h3>Acknowledgements</h3>
+
+<p>Thank you to Robert Marshall for suggesting the supernova warning test.</p>
+
 
 <hr>
 
@@ -1020,329 +692,7 @@ Gravity with finite range
     </li>
 </ol>
 
-<script>
-    var sources = {
-
-    }
-</script>
-
-
-
-<hr>
-
-<a name="change-log"></a>
-<h2>Change Log:</h2>
-
-<ul>
-    <li><i>23 Jan 2021</i> - Rearranged and updated. </li>
-    <li><i>01 Jan 2021</i> - Rewrite. </li>
-    <li><i>28 Nov 2020</i> - Revised Original. </li>
-    <li><i>12 Nov 2020</i> - Original. </li>
-</ul>
-
-</div>
-
-<div id="right">
-    <canvas id="graph" height="600" width="600"></canvas>
-    <br>
-    <div id="y-axis">
-        Y-axis: <select id="graph-y-axis">
-            <option>time to target (billions of years)</option>
-            <option>z redshift</option>
-        </select>
-    </div>
-</div>
-
-<script>
-
-    var graph = document.getElementById("graph")
-    var ctxG = graph.getContext("2d")
-    var models = []
-    
-    var yAxis = document.getElementById("graph-y-axis")
-    yAxis.selectedIndex = 0
-    document.getElementById("set-y-axis").onclick = e => {
-        yAxis.selectedIndex = 1
-        document.getElementById("y-axis").style.display = "block"
-    }
-    
-    // the models advance by 1 million years each step
-    // the units for distance are in Mly (million light years)
-
-    // the speed of light is 1 million lightyears per 1 million years
-    // Hubble's Constant is in units of Mly^-1 
-
-    var c = 1
-
-    var zoom = 0.046
-    var zoomG = zoom * 0.75
-    var zoomGY = zoom * 0.28
-    var offset = 20
-    
-    var dgi
-    function drawGraph() {
-        
-        ctxG.lineWidth = 1
-
-        ctxG.fillStyle = "black"
-        ctxG.fillRect(0, 0, graph.width, graph.height)
-
-        ctxG.fillStyle = "white"
-
-        ctxG.strokeStyle = "white" 
-        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
-        
-        ctxG.lineWidth = 2
-        for (var m = 0; m < models.length; m++) {
-            ctxG.strokeStyle = models[m].color
-            ctxG.beginPath()
-            ctxG.moveTo(offset, graph.height - offset)
-            for (var i = 0; i < models[m].targets.length; i++) {
-                if (models[m].targets[i].hit) {
-                    //ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - models[m].targets[i].hit * zoomGY)
-                    if (yAxis.selectedIndex === 0) {
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, 
-                                    -offset + graph.height - models[m].targets[i].hit * zoomGY)
-                    }
-                    else if (yAxis.selectedIndex === 1) {
-                        // show the difference in time with a static model
-                        ctxG.lineTo(offset + models[m].targets[i].start * zoomG, -offset + graph.height - 
-                        models[m].targets[i].z * 10000
-                            * zoomGY)
-                    }
-                }
-            }
-            ctxG.stroke()            
-        }
-
-        ctxG.fillText(yAxis.value, offset + 5, offset)
-        ctxG.fillText("starting distance to target (billion light years)", graph.width - 240, graph.height - 30)
-        
-        if (yAxis.selectedIndex === 0) {
-            for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=2) {
-                ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
-            }
-        }
-
-        for (dgi = 0; dgi < 16; dgi+=2) {
-            ctxG.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
-        }
-    }
-
-    function setupModel(model) {
-        
-        var playButton = document.createElement("button")
-        playButton.innerHTML = "Click HERE to run"
-        playButton.onclick = () => {
-            if (playButton.innerHTML === "Reset") {
-                playButton.innerHTML = "Click HERE to run"
-                resetModel(model)
-                draw(model.ctx, model)
-            }
-            else {
-                runModel(model)
-                playButton.innerHTML = "Reset"
-            }
-        }
-
-        model.canvas = document.createElement("canvas")
-
-        model.div.appendChild(playButton)
-        model.div.appendChild(model.canvas)
-
-        model.ctx = model.canvas.getContext("2d")
-        model.nextTarget = 0
-
-        model.canvas.width = 700
-        model.canvas.height = 40
-        
-        // make a target every 200 million light years 
-        model.targets = []
-        for (var i = 200; i <= 26800; i+=200) {
-            model.targets.push({label: i/1000, start: i, x: i})
-        }
-
-        model.ctx.font = "8px sans-serif"
-
-        draw(model.ctx, model)
-
-        models.push(model)
-    }
-
-    function draw(ctx, exp) {
-
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-        for (var i = 0; i < exp.targets.length; i++) {
-            if (exp.targets[i].hit) {
-                ctx.strokeStyle = exp.color
-                ctx.lineWidth = 3
-            }
-            else {
-                ctx.strokeStyle = "white"
-                ctx.lineWidth = 2
-            }
-            ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * (exp.zoom || zoom), 0)
-            ctx.lineTo(exp.targets[i].x * (exp.zoom || zoom), ctx.canvas.height)
-            
-            ctx.stroke()
-        }
-
-        ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * (exp.zoom || zoom) - 2, ctx.canvas.height / 2, 5, 5)
-    }
-
-    function resetModel(model) {
-        model.running = false
-        model.photon.x = 0
-        model.photon.dx = c
-        model.nextTarget = 0
-        model.targets.forEach(target => {
-            target.x = target.start
-            target.hit = 0
-        })
-    
-        model.t = 0
-    }
-
-    function runModel(model) {
-        
-        resetModel(model)
-
-        model.running = true
-
-        var i, v, z
-        var batch = 30
-        var handle = setInterval(function () {
-            for (i = 0; i < batch; i++) {
-                if (model.running && model.targets[model.nextTarget]) {// && model.t < 80000) {
-                    model.t++
-                    model.next()
-
-                    if (model.targets[model.nextTarget].x <= model.photon.x) {
-                        model.targets[model.nextTarget].hit = model.t
-
-                        if (model.photon.f_init) {
-                            z = (model.photon.f_init - model.photon.f) / model.photon.f
-                        }
-                        else if (model.targets[model.nextTarget].dx) {
-                            v = 1 - model.targets[model.nextTarget].dx 
-                            z = (1 - v) / v
-                        }
-                        else {
-                            v = model.photon.dx
-                            z = (1 - v) / v
-                        }
-                        model.targets[model.nextTarget].z = z || 0
-                        model.nextTarget++
-                        model.lastTarget = model.t
-                    }
-                }
-                else {
-                    clearInterval(handle)
-                    model.running = false
-                }
-            }
-        }, 0)
-    }
-
-    setupModel({
-        div: document.getElementById("staticModel"),
-        name: "Static",
-        color: "blue", 
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-        }
-    })
-    var expandingModel = {
-        div: document.getElementById("expandingFast"),
-        name: "Expanding Fast",
-        color: "#888888", 
-        H: 0.000076,
-        photon: {x: 0, f_init: 6e5, w: 499.65},
-        //zoom: 0.03,
-        next: function () {
-            this.photon.dx = c + this.photon.x * this.H
-            this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_init) 
-            this.photon.f = 299792458 / this.photon.w
-            
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].dx = this.targets[i].x * this.H
-                this.targets[i].x += this.targets[i].dx
-            }
-        }
-    }
-    setupModel(expandingModel)
-    var expandingPhotonSpeed = document.getElementById("expanding-photon-speed")
-    var expandingPhotonDistance = document.getElementById("expanding-photon-distance")
-    var expandingLastTarget = document.getElementById("expanding-last-target")
-
-    var expandingEnergyInterval = setInterval(() => {
-        expandingPhotonDistance.innerHTML = Math.floor(expandingModel.photon.x)        
-        expandingPhotonSpeed.innerHTML = Math.floor(expandingModel.photon.dx)
-        expandingLastTarget.innerHTML = expandingModel.t - expandingModel.lastTarget
-
-    }, 500)
-    
-    setupModel({
-        div: document.getElementById("redshift1"),
-        name: "Redshift by distance",
-        color: "green", 
-        H: 0.000076,
-        photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
-        next: function () {
-            //this.photon.x += c - this.H * this.photon.x
-            this.photon.v = c - this.H * this.photon.x
-            this.photon.x += this.photon.v
-            this.photon.f = this.photon.v * 299792458 / this.photon.w
-        }
-    })
-
-    setInterval(() => {
-        for (var m = 0; m < models.length; m++) {
-            if (models[m].running) {
-                draw(models[m].ctx, models[m]) 
-            }
-        }
-
-        drawGraph()
-    }, 1000 / 60)
-
-    document.getElementById("stop-models-button").onclick = () => {
-        for (var m = 0; m < models.length; m++) {
-            models[m].running = false
-        }
-        clearInterval(expandingEnergyInterval)
-    }
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-<script src="freqtest.js"></script>
-
-<script>
-(function () {
-    var cites = document.getElementsByTagName("sup")
-    for (var i = 0; i < cites.length; i++) {
-
-        if (!cites[i].innerHTML.startsWith("[")) {
-            continue
-        }
-
-        var citeHTML = cites[i].innerHTML
-        cites[i].innerHTML = "<a href='#sources'>" + citeHTML + "</a>"
-
-    }
-})()
-
-</script>
+     
+        </div>
+    </body>
+</html>
