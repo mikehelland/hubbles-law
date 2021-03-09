@@ -133,7 +133,9 @@
         <p>The code to produce the SCP data points is:</p>
         
         <pre>
-fetch("http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt).then(res=res.text()).then(data => {
+// note this fetch may not work from an https request, and may have to be done as a separate step
+fetch("http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt")
+.then(res=res.text()).then(data => {
 
     var out = []
     var lines = data.split("\n")
