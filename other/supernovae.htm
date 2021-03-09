@@ -195,22 +195,23 @@ var black = true
         ctxB.font = "14px sans-serif"
 
         ctxB.fillStyle = "yellow"
-        ctxB.fillRect(offset + 36, offset + 30, 2, 2)
-        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 36)
+        ctxB.fillRect(offset + 36, offset + 56, 2, 2)
+        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 62)
 
         /*
         ctxB.fillStyle = "green"
         ctxB.fillRect(offset + 30, offset + 56, 8, 2)
         ctxB.fillText("Simple Expanding Universe", offset + 5 + 40, offset + 62)
-
-        ctxB.fillStyle = "red"
+        */
+        ctxB.fillStyle = "white"
         ctxB.fillRect(offset + 30, offset + 86, 8, 2)
+        ctxB.fillStyle = "white"
         ctxB.fillText("v =", offset + 5 + 40, offset + 92)
         ctxB.fillText("           c", offset + 5 + 40, offset + 82)
         ctxB.fillRect(offset + 75, offset + 89, 44, 1)
         ctxB.fillText("      (1+HD)", offset + 5 + 40, offset + 108)
         ctxB.fillText("            2", offset + 5 + 66, offset + 100)
-*/
+
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "right"
         ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
@@ -629,7 +630,7 @@ var black = true
         setupModel({
             div: document.getElementById("redshift2"),
             name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
-            color: "red", 
+            color: "white", 
             H: 0.04,
             unitH: "Gly<sup>-1</sup>",
             photon: {x: 0, dx: c},
