@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/supernovae.png"/>
-        <meta property="og:description" content="A Testable Cosmology with Practical Applications"/>
-        <meta property="og:title" content="Finite Light"/>
-        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/sn_expanding.png"/>
+        <meta property="og:description" content="v = c - / (1 + HD)^2"/>
+        <meta property="og:title" content="Hubble's Law as an Inverse Square"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/inversesquare.htm"/>
         <style>
             body {
                 background-color: #CCCCCC;
@@ -48,6 +48,12 @@
 
 
         <h1>Hubble's Law as an Inverse Square</h1>
+
+        <p>Hubble's law rewritten as an inverse square law matches the "acceleration" curve using a constant H<sub>0</sub>=0.04 Gly<sup>-1</sup>.
+
+        <p class="pimg"><img src="img/sn_expanding.png"></p>
+
+        <h3>Method</h3>
         
         <p>According to Hubble's law, objects move away from each other proportionally with distance.</p>
 
@@ -118,9 +124,53 @@
         </ul>
 
         <p class="pimg"><img src="img/sn_expanding.png"></p>
-
+        
         <p>Model 4 and model 5 fit the acceleration well by changing Hubble's law into an inverse square law. 
         </p>
+
+        <hr>
+
+        <p>The code to produce the SCP data points is:</p>
+        
+        <pre>
+fetch("http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt).then(res=res.text()).then(data => {
+
+    var out = []
+    var lines = data.split("\n")
+
+    //ignore the first 6 lines
+    lines = lines.slice(6)
+    
+    var d
+    var cols
+    lines.forEach(line => {
+        cols = line.split("\t")
+        
+        // distance modulus to parsec luminosity distance
+        d = Math.pow(10, cols[2]/5+1) 
+
+        // convert to comoving distance
+        //d = d / (1+z)
+        d = d / (1+(1*cols[1]))
+
+        // parsec to light years
+        d = d * 3.261564
+
+        // ly to Mly
+        d = d / 1000000
+        
+        out.push({
+            name: cols[0], 
+            z: 1 * cols[1], 
+            d: d}
+        ) 
+    })
+
+    var out = out.sort((a,b)=>{return a.d-b.d})
+
+    // plot the points in "out"
+})
+        </pre>
 
     </body>
 </html>
