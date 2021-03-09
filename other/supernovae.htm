@@ -79,8 +79,6 @@
     <br>
     X-axis: 
     <select id="graph-x-axis">
-        <option>starting distance to target (billion light years)</option>
-        <option>time to target (billions of years)</option>
         <option>z redshift</option>
     </select>
     <br>    
@@ -226,17 +224,10 @@ var black = true
             ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
         }
         
-        if (xAxis.selectedIndex < 2) {
-            for (dgi = 0; dgi < 100; dgi+=2) {
-                ctxB.fillText(dgi, offset + dgi * 1000 * zoomG, graph.height - 5)    
-            }
+        for (dgi = 0; dgi < 110; dgi+=2) {
+            ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
         }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=2) {
-                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-            }
-        }
-
+        
     }
     fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
         snData = data
@@ -256,16 +247,8 @@ var black = true
             for (dgt of dgm.targets) {
                 if (dgt.hit) {
 
-                    if (xAxis.selectedIndex === 0) {
-                        drawx = dgt.start
-                    }
-                    else if (xAxis.selectedIndex === 1) {
-                        drawx = dgt.hit
-                    }
-                    else if (xAxis.selectedIndex === 2) {
-                        drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
-                    }
-
+                    drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+                    
                     if (yAxis.selectedIndex === 0) {
                         drawy = dgt.hit
                     }
@@ -369,8 +352,9 @@ var black = true
         // make a target every 200 million light years until 20 billion
         model.targets = []
         for (var i = 100; i <= 20000; i+=100) {
-        //for (var sn of snData) {
             model.targets.push({label: i/1000, start: i, x: i})
+        //for (var sn of snData) {
+        //    model.targets.push({label: sn.d/1000, start: sn.d, x: sn.d})
         }
 
         model.ctx.lineWidth = 1
@@ -495,7 +479,7 @@ var black = true
                         console.log(model.targets[model.nextTarget-1].dx)
                         findV = 0
                     }
-                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+                    while (model.targets[model.nextTarget] && model.targets[model.nextTarget].x <= model.photon.x) {
                         
                         if (findTarget && findTarget === "all") {
                             output(model, model.photon)
@@ -504,6 +488,8 @@ var black = true
                             output(model, model.photon)
                             findTarget = 0
                         }
+
+                        //snData[model.nextTarget].t = model.t
 
                         model.targets[model.nextTarget].hit = model.t
                         model.targets[model.nextTarget].hitX = model.targets[model.nextTarget].x
