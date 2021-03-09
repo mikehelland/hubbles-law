@@ -84,8 +84,8 @@
     <br>    
     Y-axis: 
     <select id="graph-y-axis">
+        <option>distance of target (billion light years)</option>
         <option>time to target (billions of years)</option>
-        <option>reached distance of target (billion light years)</option>
         
     </select>
     <br>
@@ -184,7 +184,7 @@ var black = true
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            if (yAxis.selectedIndex === 1) {
+            if (yAxis.selectedIndex === 0) {
                 ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
             }
             else {
@@ -204,13 +204,21 @@ var black = true
         ctxB.fillText("Simple Expanding Universe", offset + 5 + 40, offset + 62)
         */
         ctxB.fillStyle = "white"
-        ctxB.fillRect(offset + 30, offset + 86, 8, 2)
+        ctxB.fillRect(offset + 30, offset + 86, 8, 1)
         ctxB.fillStyle = "white"
         ctxB.fillText("v =", offset + 5 + 40, offset + 92)
         ctxB.fillText("           c", offset + 5 + 40, offset + 82)
         ctxB.fillRect(offset + 75, offset + 89, 44, 1)
         ctxB.fillText("      (1+HD)", offset + 5 + 40, offset + 108)
-        ctxB.fillText("            2", offset + 5 + 66, offset + 100)
+
+        ctxB.fillText("H = 0.04 Gly", offset + 5 + 40, offset + 140)
+
+        ctxB.font = "12px sans-serif"
+
+        ctxB.fillText("2", offset + 5 + 122, offset + 100)
+        ctxB.fillText("-1", offset + 5 + 132, offset + 132)
+        
+        ctxB.font = "14px sans-serif"
 
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "right"
@@ -240,7 +248,7 @@ var black = true
     function drawGraph() {
         
         graph.width = graph.width 
-        ctxG.lineWidth = 2
+        ctxG.lineWidth = 1
         for (dgm of models) {
             ctxG.strokeStyle = dgm.color
             ctxG.beginPath()
@@ -250,41 +258,13 @@ var black = true
 
                     drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
                     
-                    if (yAxis.selectedIndex === 0) {
+                    if (yAxis.selectedIndex === 1) {
                         drawy = dgt.hit
                     }
-                    else if (yAxis.selectedIndex === 1) {
+                    else if (yAxis.selectedIndex === 0) {
                         // show the difference in time with a static model
                         drawy = dgt.hitX
                     }
-                    else if (yAxis.selectedIndex === 2) {
-                        // show the ratio with a static model
-                        drawy = (dgt.hit / dgt.start - 1) * 10000
-                    }
-                    else if (yAxis.selectedIndex === 3) {
-                        // show the inverse ratio with a static model
-                        drawy = (1 - dgt.start / dgt.hit) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 4) {
-                        // v_light or v_target
-                        drawy = dgt.dx * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 5) {
-                        // z = (freq_emit - freq_observes) / freq_observer
-                        drawy = (dgt.z * 10000) //|| ((1 - dgt.dx) / dgt.dx) * 10000
-
-                    }
-                    else if (yAxis.selectedIndex === 6) {
-                        drawy = dgt.start
-
-                    }
-                    else if (yAxis.selectedIndex === 7) {
-                        drawy = dgt.hitX
-
-                    }
-
                     ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
 
                 }
