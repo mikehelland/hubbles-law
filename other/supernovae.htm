@@ -457,7 +457,7 @@ var black = true
                     
                     model.next()
 
-                    if (snData[nextSN] && snData[nextSN].d <= model.photon.x) {
+                    while (snData[nextSN] && snData[nextSN].d <= model.photon.x) {
                         //snData[nextSN].t = model.t
                         nextSN++
                     }

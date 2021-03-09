@@ -597,8 +597,12 @@ var cols
 lines.forEach(line => {
     cols = line.split("\t")
     
-    // distance modulus to parsec
+    // distance modulus to parsec luminosity distance
     d = Math.pow(10, cols[2]/5+1) 
+
+    // convert to comoving distance
+    //d = d / (1+z)
+    d = d / (1+(1*cols[1]))
 
     // parsec to light years
     d = d * 3.261564
