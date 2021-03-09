@@ -590,32 +590,32 @@ P-009	0.821	43.6409387868	0.194013591972	0.551671793295
 R-012	1.215	45.2465209495	0.560317445151	0.000147652666
 Z-005	0.623	42.5145239973	0.241428134977	0.551671793295`
 
-var out = []
-var lines = data.split("\n")
-var d
-var cols
-lines.forEach(line => {
-    cols = line.split("\t")
-    
-    // distance modulus to parsec luminosity distance
-    d = Math.pow(10, cols[2]/5+1) 
+    var out = []
+    var lines = data.split("\n")
+    var d
+    var cols
+    lines.forEach(line => {
+        cols = line.split("\t")
+        
+        // distance modulus to parsec luminosity distance
+        d = Math.pow(10, cols[2]/5+1) 
 
-    // convert to comoving distance
-    //d = d / (1+z)
-    d = d / (1+(1*cols[1]))
+        // convert to comoving distance
+        //d = d / (1+z)
+        d = d / (1+(1*cols[1]))
 
-    // parsec to light years
-    d = d * 3.261564
+        // parsec to light years
+        d = d * 3.261564
 
-    // ly to Mly
-    d = d / 1000000
-    out.push({
-        name: cols[0], 
-        z: 1 * cols[1], 
-        d: d}
-    ) 
-})
+        // ly to Mly
+        d = d / 1000000
+        out.push({
+            name: cols[0], 
+            z: 1 * cols[1], 
+            d: d}
+        ) 
+    })
 
-var out = out.sort((a,b)=>{return a.d-b.d})
-var fs = require("fs")
-fs.writeFile("supernovae.json", JSON.stringify(out), ()=>{})
+    var out = out.sort((a,b)=>{return a.d-b.d})
+    var fs = require("fs")
+    fs.writeFile("supernovae.json", JSON.stringify(out), ()=>{})

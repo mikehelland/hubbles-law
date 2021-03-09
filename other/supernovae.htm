@@ -86,6 +86,7 @@
     <select id="graph-y-axis">
         <option>distance of target (billion light years)</option>
         <option>time to target (billions of years)</option>
+        <option>start distance to target (billions of years)</option>
         
     </select>
     <br>
@@ -184,41 +185,59 @@ var black = true
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            if (yAxis.selectedIndex === 0) {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
+            if (yAxis.selectedIndex === 1) {
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.t * zoomGY, 2, 2)
             }
             else {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.t * zoomGY, 2, 2)
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
             }
         }
 
         ctxB.font = "14px sans-serif"
 
         ctxB.fillStyle = "yellow"
-        ctxB.fillRect(offset + 36, offset + 56, 2, 2)
-        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 62)
-
-        /*
+        ctxB.fillRect(offset + 36, offset + 36, 2, 2)
+        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 38)
+/*
+        
         ctxB.fillStyle = "green"
-        ctxB.fillRect(offset + 30, offset + 56, 8, 2)
-        ctxB.fillText("Simple Expanding Universe", offset + 5 + 40, offset + 62)
-        */
-        ctxB.fillStyle = "white"
-        ctxB.fillRect(offset + 30, offset + 86, 8, 1)
-        ctxB.fillStyle = "white"
-        ctxB.fillText("v =", offset + 5 + 40, offset + 92)
-        ctxB.fillText("           c", offset + 5 + 40, offset + 82)
-        ctxB.fillRect(offset + 75, offset + 89, 44, 1)
-        ctxB.fillText("      (1+HD)", offset + 5 + 40, offset + 108)
+        ctxB.fillRect(offset + 30, offset + 54, 8, 1)
+        ctxB.fillText("v = H D", offset + 5 + 40, offset + 61)
 
-        ctxB.fillText("H = 0.04 Gly", offset + 5 + 40, offset + 140)
+        ctxB.fillText("H = 74 km/s/Mpc", offset + 5 + 40, offset + 86)
+
+
+        ctxB.font = "8px sans-serif"
+        ctxB.fillText("0", offset + 5 + 79, offset + 66)
+        ctxB.fillText("0", offset + 5 + 50, offset + 88)
+
+
+        ctxB.font = "14px sans-serif"
+        ctxB.fillStyle = "white"
+        ctxB.fillRect(offset + 30, offset + 106, 8, 1)
+        ctxB.fillStyle = "white"
+        ctxB.fillText("v = c - ", offset + 5 + 40, offset + 112)
+        ctxB.fillText("                 c", offset + 5 + 40, offset + 102)
+        ctxB.fillRect(offset + 100, offset + 109, 44, 1)
+        ctxB.fillText("            (1+H D)", offset + 5 + 40, offset + 128)
+
+        ctxB.fillText("H = 0.04 Gly", offset + 5 + 40, offset + 160)
 
         ctxB.font = "12px sans-serif"
 
-        ctxB.fillText("2", offset + 5 + 122, offset + 100)
-        ctxB.fillText("-1", offset + 5 + 132, offset + 132)
+        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
+        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
+
+        ctxB.fillText("       2", offset + 5 + 122, offset + 120)
+        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
         
         ctxB.font = "14px sans-serif"
+
+        ctxB.font = "8px sans-serif"
+        ctxB.fillText("0", offset + 5 + 129, offset + 134)
+        ctxB.fillText("0", offset + 5 + 50, offset + 166)
+        */
+
 
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "right"
@@ -264,6 +283,10 @@ var black = true
                     else if (yAxis.selectedIndex === 0) {
                         // show the difference in time with a static model
                         drawy = dgt.hitX
+                    }
+                    else if (yAxis.selectedIndex === 2) {
+                        // show the difference in time with a static model
+                        drawy = dgt.start
                     }
                     ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
 
@@ -332,7 +355,7 @@ var black = true
         
         // make a target every 200 million light years until 20 billion
         model.targets = []
-        for (var i = 100; i <= 20000; i+=100) {
+        for (var i = 100; i <= 200000; i+=100) {
             model.targets.push({label: i/1000, start: i, x: i})
         //for (var sn of snData) {
         //    model.targets.push({label: sn.d/1000, start: sn.d, x: sn.d})
@@ -521,6 +544,26 @@ var black = true
                 //this.photon.x += c + this.photon.x * this.H / 1000
                 for (var i = 0; i < this.targets.length; i++) {
                     this.targets[i].x += this.targets[i].x * this.H / 1000
+                }
+            }
+        })
+
+        setupModel({
+            name: "v<sub>target</sub> = c/(1+HD)<sup>2</sup>",
+            label: "expand",
+            color: "blue", 
+            H: 0.04,
+            unitH: "ly/y/Mly",
+            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+            next: function () {
+                this.photon.dx = c * Math.pow(1 + this.H/1000 * this.photon.x, 2)
+                this.photon.x += this.photon.dx
+                this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
+                this.photon.f = 299792458 / this.photon.w
+        
+                //this.photon.x += c + this.photon.x * this.H / 1000
+                for (var i = 0; i < this.targets.length; i++) {
+                    this.targets[i].x +=  c/Math.pow(1 + this.H/1000 * this.targets[i].x, 2)
                 }
             }
         })
