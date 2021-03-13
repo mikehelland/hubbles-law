@@ -23,7 +23,10 @@
         <div id="models"></div>
         <script>
 
-            const c = 0.299792458 // m/ns
+            // we're going to try to advance light by 3 nm at a time
+            // so I think that needs a time step of nm-8
+            const c = 0.299792458 // nm/ns-8
+            
 
             var modelsDiv = document.getElementById("models")
             var res = 0.01
@@ -168,17 +171,22 @@
                 var ndx
                 var ndy
                 var hyp
+                var t = 0
                 var next = (handle) => {
-                    if (done) return 
+                    if (done) return
+                    t++
+
                     for (var photon of photons) {
                         if (!photon.place) {
-                            photon.dial +=  (Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) 
+                            photon.dial +=  c //(Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) 
                         }
                         //var h = photon.flipped ? 0 : H 
                         photon.x += photon.dx 
                         photon.y += photon.dy //* (photon.flipped ? -1 : 1)
                         photon.xx += photon.dx  
                         photon.yy += photon.dy  //* (photon.flipped ? -1 : 1)
+
+                        //if (photon.y >= 360) debugger 
 
                         if (!photon.flipped && photon.y > boundary) {
                             //ray.push([Math.sin(photon.dial*Math.PI/180), Math.cos(photon.dial*Math.PI/180)])
@@ -205,8 +213,8 @@
                             
                                 //ray.push([Math.cos(photon.dial*Math.PI/180), Math.sin(-1*photon.dial*Math.PI/180)])
                                 ray.push([Math.sin(photon.dial*Math.PI/180), Math.cos(photon.dial*Math.PI/180)])
-                                photon.dialx = Math.sin(photon.dial*Math.PI/180)
-                                photon.dialy = Math.cos(photon.dial*Math.PI/180)
+                                photon.dialx = Math.cos(photon.dial*Math.PI/180)
+                                photon.dialy = Math.sin(-1*photon.dial*Math.PI/180)
                         }
 
                     

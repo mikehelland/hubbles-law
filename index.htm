@@ -10,7 +10,7 @@
                 background-color: #CCCCCC;
                 color:black;
             }
-            .text {
+            .maintext {
                 background-color: white;
                 max-width: 900px;
                 font-family: Arial, Helvetica, sans-serif;
@@ -44,11 +44,24 @@
 
     <body>
 
-        <div class="text">
+        <div class="maintext">
 
 
         <h1>Hubble's Law as Photon Velocity</h1>
         <h2>A Testable Cosmology with Practical Applications</h2>
+        
+        <p>A change to Hubble's law provides a new cosmology that fits the observed acceleration
+            of redshifts using distance, the speed of light, and a static 
+            Hubble constant with zero other parameters. The CMB is proposed to be not of cosmological origin,
+            but a consequence of the conservation of energy and thermodynamics applied to the redshifted energy of photons. 
+            Testing the hypothesis is presently feasible and would yield working practical technology 
+            if confirmed.</p>
+
+            <hr>
+
+        <h3>Introduction</h3>
+                 
+
         <p>
             The standard model of cosmology can be traced back to one assumption and one observational discovery:
         </p>
@@ -78,9 +91,9 @@
         <p class="pimg"><img src="img/vcHD.gif"></p>
 
         <p>
-            An alternative cosmology that can produce the exact same time delays without the expansion of space requires that
-            assumption 1 is wrong, and the photon will indeed lose energy and speed during intergalactic journeys. 
-            If a photon loses speed when it redshifts, its travel time to a target in space will also increase, despite the target remaining stationary.
+            An alternative method of producing the exact same time delays without the expansion of space requires that
+            assumption 1 is wrong, and observation 1 is literally what happens: photons indeed lose energy and speed during intergalactic journeys. 
+            If a photon loses speed when it redshifts, its travel time to a target in space will also increase despite the target remaining stationary.
             This cosmology is shown in green in the image above, given by a variation on Hubble's law:
         </p>
         
@@ -90,7 +103,7 @@
 
         <p>
             Since <a href="modeling_expansion.htm">model 1 and model 2 produce the exact same time delays and redshifts</a>, they are both in conflict with 
-            the observation that the expansion of space is accelerating:
+            the observation that <a href="https://iopscience.iop.org/article/10.1086/300499/fulltext/">the expansion of space is accelerating</a>:
         </p>
 
         <ul>
@@ -98,7 +111,8 @@
         </ul>
 
         <p>
-            To address this in the standard model of cosmology, a new concept is introduced called dark energy. This has the effect
+            To address this in the standard model of cosmology, 
+            <a href="https://ui.adsabs.harvard.edu/abs/2008ARA%26A..46..385F/abstract">a new concept is introduced called dark energy</a>. This has the effect
             that Hubble's constant isn't actually constant, but changes with time:
         </p>
             
@@ -109,7 +123,7 @@
         <p>
             The alternative cosmology offers other options. In model 2, the speed of a photon begins at c and decreases with distance.
             It does this by subtracting H<sub>0</sub>D from c. But there are other ways to do this. It could divide c by (1+H<sub>0</sub>D). 
-            The photon would still start at c, and it would still decelerate with distanace. Just along a different curve. 
+            The photon would still start at c, and it would still decelerate with distance but along a different curve. 
         </p>
 
         <p>This opens up a whole new class of hypotheses to try. One of them, an inverse square law, 
@@ -123,11 +137,12 @@
         <p class="pimg"><img src="img/supernovae.png"></p>
 
         <p>
-            In this model, H<sub>0</sub> is still constant throughout time, however it has different units. 
+            In this model, H<sub>0</sub> has different units than the traditional km/s/Mpc. 
             The line shown is using a value of H<sub>0</sub>=0.04 Gly<sup>-1</sup>.
             The inverse distance and distance units cancel out in the denominator.
         </p>
 
+        <hr>
         <h3>Direct Test of Hypothesis</h3>
 
         <p>
@@ -135,7 +150,7 @@
         </p>
 
         <p>
-            Launch a probe that scans for supernovae, and send it out by Pluto. When it detects a supernova, send a signal back to Earth with its location.
+            Launch a probe that scans for supernovae, and send it out past Mars. When it detects a supernova, send a signal back to Earth with its location.
         </p>
 
         <p>If all the photons involved are moving at c, the signal from the probe should reach Earth at the same time as the supernova.
@@ -149,6 +164,7 @@
             on Earth about events such as supernovae.
         </p>
 
+        <hr>
         <h3>Problems and Responses</h3>
 
         <p>The hypothesis in relation to standard cosmology:</p>
@@ -162,7 +178,7 @@
                 as <a href="https://en.wikipedia.org/wiki/Tired_light">tired light</a> theories.
             </p>
             
-            <p>Light loses energy in the tired light theories, but it never loses speed as the theories are consistent with Newton's first law of motion and special relativity. 
+            <p>Light loses energy in the tired light theories, but it never loses speed as the theories are consistent with special relativity. 
                 Because tired light moves at c, there are no time delays in a photon's journey
                 like there are in the expanding model or the decelerating photon hypothesis. 
                 Tired light photons match the arrival time of the simple static model (blue in the gif), while 
@@ -192,6 +208,7 @@
             </ol>
         
             <p>The energy lost through redshifting and the energy of the CMB might be more closely related than we currently think.
+                What happens to the energy a photon loses when it redshifts? It has to go somewhere.
                 If the energy lost by redshifting is discarded into space it would start to pile up.</p>
         
             <p>If space is filling up with the energy discarded by redshifting photons,
@@ -225,7 +242,7 @@
 
             <p>A universe that begins with a big bang should contain younger and younger galaxies as we look back in space and time.
                 As we've been getting a better look at the universe, we are finding that the distant universe isn't meeting our expectations
-                for when galaxies become massive, dusty, spiraled, barred, disced, buldged, and having shut down star formation:</p>
+                for when galaxies become massive, dusty, spiraled, barred, disced, buldged, and have shut down star formation:</p>
         
         
             <ul>
@@ -340,6 +357,8 @@
             <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
             <div id="freqtest"></div>
 
+            <script src="freqtest.js"></script>
+
             <!--<p>You can see this in action on the <a href="freqtest.htm">Photon Arrival Rate page</a></p>-->
 
             <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.
@@ -409,31 +428,17 @@
         </p>
 
         <details>
-            <summary>Newton's first law of motion</summary>
-
-            <p>An object in motion remains in motion at a constant velocity. Does this hold true to infinity?
-                Even if a photon could travel at c to infinity, Hubble's law would place a limit on how far it can 
-                effectively travel.
-            </p>
-
-            <p>The decelerating photon hypothesis alters inertia at a fundamental level.</p>
-            
-        </details>
-        <details>
             <summary>Special Relativity</summary>
 
-            <p>The second postulate of special relativity is that the speed of light in a vacuum is always c. 
-                And like Newtonian inertia, it is implied that this holds to infinite distance.</p>
+            <p>The second postulate of special relativity is that the speed of light in a vacuum is always c, to infinity.</p>
             
-            <p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, <code>v = c - HD</code>. 
-                In the domain where cosmological redshifts aren't observed <code>HD = 0</code>, so <code>v = c - HD</code> becomes <code>v = c</code>,
-                and there is no conflict. The hypothesis is consistent with special relativity where it is experimentally confirmed.
+            <p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, v=c-HD in model 1,
+                and v=c/(1+HD)<sup>2</sup> in model. However, in the domain where cosmological redshifts aren't observed, 
+                HD=0, so v=c in both models at non-cosmological distances.
             </p>
-            
-            <p>Testing the constancy of the speed of light from very distant sources is a topic in a later section of this paper.</p>
-            
-            <p>But cosmological redshifts are the domain of general relativity.</p>
-            
+
+            <p>If the speed of a photon is constant to all observable distances, the proposed tests of the hypothesis would establish that.</p>
+
         </details>
         <details>
             <summary>General Relativity</summary>
@@ -521,8 +526,7 @@
         On the other hand, the expanding interpretation of redshifts has lead to a change in just about everything in the universe except for light.
     </p>
         
-    <p>When interpreting the redshifts as Doppler effects in the 20th century, astronomers didn't know this idea 
-        would lead to inflation or dark energy. In fact, they chose the velocity-shift interpretation because it 
+    <p>When interpreting the redshifts as Doppler effects in the early 20th century, astronomers did so because it  
         was known and familiar and didn't require new laws of physics.</p>
     
     <blockquote>
@@ -544,7 +548,7 @@
 
 <h3>Acknowledgements</h3>
 
-<p>Thanks go to Robert Marshall for suggesting the supernova warning test, and Robert Helland for multiple insights.</p>
+<p>Robert Marshall for suggesting the supernova warning test.</p>
 
 
 <hr>
