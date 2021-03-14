@@ -15,8 +15,8 @@
         For visible light the wavelength is ~0.5 microns and the paths and mirror are much larger. It's still a cartoon, but you should be able to demonstrate 
         the principle if you fix that problem. 
         -->
-        boundary: <input id="boundary-input" value="1800" type="number">nm
-        target x:<input id="o-x" value="3000">
+        boundary: <input id="boundary-input" value="5000" type="number">nm
+        target x:<input id="o-x" value="12000">
         y:<input id="o-y" value="0">
         <button id="run-button">Run</button>
         <br>
@@ -25,12 +25,12 @@
 
             // we're going to try to advance light by 3 nm at a time
             // so I think that needs a time step of nm-8
-            const c = 0.299792458 // nm/ns-8
+            const c = 2.99792458 // nm/ns-8
             
 
             var modelsDiv = document.getElementById("models")
-            var res = 0.01
-            var steps = 100
+            var res = 0.1
+            var steps = 5
             var handle 
             var models = []
             var iii
@@ -82,7 +82,7 @@
                 var boundary = boundaryInput.value * 1
 
                 var photons = []
-                var pcount = 40
+                var pcount = 80
                 for (var i  = 0; i < pcount; i++) {
                     let x = i * (canvas.width / (pcount - 1))
                     let y = boundary * res
