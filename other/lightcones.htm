@@ -489,6 +489,21 @@ var zs = [
         }
     })
 
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
+        color: "red", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+        //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
+        next: function () {
+            this.photon.dx = c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+        }
+    })
+
 
     setInterval(() => {
         for (var m = 0; m < models.length; m++) {
