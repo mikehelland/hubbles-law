@@ -134,7 +134,9 @@
                         ctx.beginPath()
                         if (photon.flipped) {
                             ctx.moveTo(photon.flipX * res + 10, boundary * res + 20)
-                            ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial*Math.PI/180) * 10, boundary * res + 20 + Math.sin(-1*photon.dial*Math.PI/180) * 10)
+                            ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial0*Math.PI/180) * 10, boundary * res + 20 + Math.sin(-1*photon.dial0*Math.PI/180) * 10)
+                            ctx.moveTo(photon.flipX * res + 10, boundary * res + 40)
+                            ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial*Math.PI/180) * 10, boundary * res + 40 + Math.sin(-1*photon.dial*Math.PI/180) * 10)
                         }
                         else {
                             ctx.moveTo(photon.x * res, photon.y * res)
@@ -146,17 +148,21 @@
 
                     if (finished === pcount) {
                         ctx.beginPath()
-                        lastr = [canvas.width/2, boundary * res]
+                        lastr = [canvas.width/2, canvas.height/2]
                         ctx.moveTo(lastr[0], lastr[1])
+                        for (var photon of photons) {
+                            lastr = [lastr[0] + photon.dialx0 * 10, lastr[1] + photon.dialy0 * 10]
+                            ctx.lineTo(lastr[0], lastr[1])
+                        }
                         for (var photon of photons) {
                             lastr = [lastr[0] + photon.dialx * 10, lastr[1] + photon.dialy * 10]
                             ctx.lineTo(lastr[0], lastr[1])
                         }
                         ctx.stroke()
 
-                        ctx.strokeStyle = "red"
+                        ctx.strokeStyle = "green"
                         ctx.beginPath()
-                        ctx.moveTo(canvas.width/2, boundary * res)
+                        ctx.moveTo(canvas.width/2, canvas.height/2)
                         ctx.lineTo(lastr[0], lastr[1])
                         ctx.stroke()
 
@@ -178,7 +184,7 @@
 
                     for (var photon of photons) {
                         if (!photon.place) {
-                            photon.dial +=  c //(Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) 
+                            photon.dial +=  c / dv //(Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) 
                         }
                         //var h = photon.flipped ? 0 : H 
                         photon.x += photon.dx 
@@ -192,6 +198,7 @@
                             //ray.push([Math.sin(photon.dial*Math.PI/180), Math.cos(photon.dial*Math.PI/180)])
                             //photon.dial = 0
                             photon.flipped = true
+                            dv = 1
                             photon.flipX = photon.x
                             photon.xx = 0
                             photon.yy = 0
@@ -202,6 +209,11 @@
                             hyp = Math.sqrt(ndx*ndx + ndy*ndy)
                             photon.dx = ndx / hyp  * c// / res * 0.5
                             photon.dy = ndy / hyp  * c// / res * 0.5
+
+                            photon.dialx0 = Math.cos(photon.dial*Math.PI/180)
+                            photon.dialy0 = Math.sin(-1*photon.dial*Math.PI/180)
+                            photon.dial0 = photon.dial
+                            photon.dial = 0
                         }
 
                         if (photon.flipped && !photon.place && 
