@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas{margin:1px;}
+        </style>
+    </head>
+    <body>
+
+        <h1>Light and Matter</h1>
+
+        boundary: <input id="boundary-input" value="5000" type="number">nm
+        target x:<input id="o-x" value="12000">
+        y:<input id="o-y" value="0">
+        <button id="run-button">Run</button>
+        <br>
+        <div id="models"></div>
+        <script>
+
+            // we're going to try to advance light by 3 nm at a time
+            // so I think that needs a time step of nm-8
+            const c = 2.99792458 // nm/ns-8
+            
+
+            var modelsDiv = document.getElementById("models")
+            var res = 0.1
+            var steps = 1
+            var handle 
+            var models = []
+            var iii
+            
+            animH = setInterval(() => {
+                for (var i = 0; i < models.length; i++) {
+                    models[i].draw()
+                }
+            }, 1000/60)
+
+            
+            var runButton = document.getElementById("run-button")
+            runButton.onclick = e => {
+                modelsDiv.innerHTML = ""
+                models = []
+                clearInterval(handle)
+                
+                models.push(setup(1))
+                //models.push(setup(2))
+                
+                handle = setInterval(() => {
+                    for (iii = 0; iii < steps; iii++) { 
+                        for (var i = 0; i < models.length; i++) {
+                            models[i].next(handle)
+                        }
+                    }
+                }, 100)
+                
+            }
+
+            var boundaryInput = document.getElementById("boundary-input")
+            boundaryInput.onkeypress = e => {
+                if (e.key === "Enter") {
+                    runButton.onclick()
+                }
+            }
+
+            function setup(dv) {
+                var done
+                var canvas = document.createElement("canvas")
+                var ctx = canvas.getContext("2d")
+                canvas.width = 1200
+                canvas.height = 600
+                modelsDiv.appendChild(canvas)
+
+                var observerPoint = [document.getElementById("o-x").value * 1, 
+                                    document.getElementById("o-y").value * 1]
+
+                var boundary = boundaryInput.value * 1
+
+                var atoms = [{x: 1000, y: 1000}]
+
+                var photons = []
+                var pcount = 1
+                for (var i  = 0; i < pcount; i++) {
+                    photons.push({x: 0, y: 0, d: 0})
+                }
+                console.log(photons)
+
+                var draw = (handle) => {
+                    if (done) return 
+                    ctx.fillStyle = "black"
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+                    ctx.strokeStyle = "red"
+                    ctx.fillStyle = "red"
+                    ctx.beginPath()
+                    ctx.moveTo(0, boundary * res)
+                    ctx.lineTo(canvas.width, boundary * res)
+                    ctx.stroke()
+
+                    ctx.fillRect(observerPoint[0], observerPoint[1], 2, 2)
+
+                    ctx.strokeStyle = "yellow"
+                    for (var photon of photons) {
+
+                        ctx.beginPath()
+                        ctx.arc(photon.x, photon.y, photon.d, 0, Math.PI*2)
+                        ctx.stroke()
+                        
+                        
+                    }
+                    for (var atom of atoms){
+                        ctx.beginPath()
+                        ctx.arc(atom.x * res, atom.y * res, 10, 0, Math.PI*2)
+                        ctx.fill()
+                    }
+                        
+
+                }
+
+                var ndx
+                var ndy
+                var hyp
+                var t = 0
+                var next = (handle) => {
+                    if (done) return
+                    t++
+
+                    for (var photon of photons) {
+                        photon.d += c / dv
+                    
+                        for (var atom of atoms) {
+                            if (atom.d <= photon.d) {
+
+                            }
+                        }
+                    }
+
+                }
+
+                return {next, draw}
+            }
+            
+
+        </script>
+
+    </body>
+</html>
