@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #right-side {
+                left: 730px;
+                top: 20px;
+                position: absolute;
+            
+            }
+            #canvas {
+                height:300px;
+                width: 600px;
+            }
+            .model-label {
+                margin: 4px 0;
+                
+                
+            }
+
+            hr {
+                opacity: 0.1;
+                margin:18px;
+            }
+
+            input {
+                width: 80px;
+            }
+
+            .model-units {
+                columns: #444444;
+                font-size: 12px;
+                padding-left:4px;
+            }
+
+            #details, #notes {
+                width:700px;
+            }
+            #notes {
+                margin-left: 20px;
+            }
+
+            .model-header {
+                padding:4px;
+                display:flex;
+                align-items: center;
+            }
+            .header-spacer {
+                flex-grow: 1
+            }
+
+            td, th {
+                padding:4px 20px;
+            }
+        </style>
+    </head>
+<body>
+
+<h3>Slow Clocks </h3>
+ 
+Observer 1: <span id="o1-in-count"></span>/<span id="o1-out-count"></span>
+<br>
+Observer 2: <span id="o2-in-count"></span>/<span id="o2-out-count"></span>
+<br>
+<button id="go-left">Go Left</button>
+<button id="stop">Stop</button>
+<button id="go-right">Go Right</button>
+<br>
+H=<input id="h" value="0.005">
+<br>
+<canvas height="300" width="600" id="canvas"></canvas>
+<script>
+
+    var goLeft = document.getElementById("go-left")
+    var stopButton = document.getElementById("stop")
+    var goRight = document.getElementById("go-right")
+    goLeft.onclick = e => {observer2.dx = -0.1}
+    stopButton.onclick = e => {observer2.dx = 0}
+    goRight.onclick = e => {observer2.dx = 0.1}
+    
+    
+    var hInput = document.getElementById("h")
+    var o1Count = document.getElementById("o1-in-count")
+    var o2Count = document.getElementById("o2-in-count")
+    var o1OutCount = document.getElementById("o1-out-count")
+    var o2OutCount = document.getElementById("o2-out-count")
+
+    var canvas = document.getElementById("canvas")
+    var ctx = canvas.getContext("2d")
+
+    var photons = []
+    var observer1 = {x: 0, dx: 0, sent: 0, pCount: 0, t: 0}
+    var observer2 = {x: 100, dx: 0, sent: 0, pCount: 0, t: 0}
+
+    var left = 10
+    var oSize = 10
+    var oSize2 = oSize/2
+    var draw = () => {
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+
+        ctx.fillStyle = "blue"
+        ctx.fillRect(left + observer1.x - oSize2, canvas.height*0.5-oSize2, oSize, oSize)
+
+        ctx.fillStyle = "red"
+        ctx.fillRect(left + observer2.x - oSize2, canvas.height*0.5-oSize2, oSize, oSize)
+    
+        ctx.fillStyle = "yellow"
+        for (var photon of photons) {
+            ctx.fillRect(left + photon.x - 1 + photon.direction, canvas.height*0.5-1 + photon.direction, 3, 3)
+        
+        }    
+    }
+
+    var t = 0
+    const c = 1
+    var H
+    var next = () => {
+        H =  hInput.value * 1
+        
+        observer1.x += observer1.dx
+        observer2.x += observer2.dx
+
+        for (var i = photons.length - 1; i >= 0; i--) {
+            var photon = photons[i]
+            photon.x += photon.direction * c / Math.pow(1 + H * photon.x, 2)
+
+            if (photon.direction > 0 && photon.x >= observer2.x) {
+                photons.splice(i, 1)
+                observer2.pCount++
+                o2Count.innerHTML = observer2.pCount
+            }
+
+            if (photon.direction < 0 && photon.x <= observer1.x) {
+                photons.splice(i, 1)
+                observer1.pCount++
+                o1Count.innerHTML = observer1.pCount
+            }
+        }
+
+        if (t%10 === 0) {
+            photons.push({x: observer1.x, direction: 1})
+            observer1.sent++
+            o1OutCount.innerHTML = observer1.sent
+            photons.push({x: observer2.x, direction: -1})
+            observer2.sent++
+            o2OutCount.innerHTML = observer2.sent
+        }
+
+        t++
+    }
+
+    setInterval(() => draw(), 1000/60)
+
+
+    setInterval(() => next(), 1000/60)
+
+</script>
+

@@ -27,7 +27,7 @@
 
             var modelsDiv = document.getElementById("models")
             var res = 0.01
-            var steps = 100
+            var steps = 400
             var handle 
             var models = []
             var iii
@@ -45,7 +45,7 @@
                 models = []
                 clearInterval(handle)
                 
-                models.push(setup(1))
+                models.push(setup(2))
                 //models.push(setup(2))
                 
                 handle = setInterval(() => {
@@ -79,7 +79,7 @@
                 var boundary = boundaryInput.value * 1
 
                 var photons = []
-                var pcount = 40
+                var pcount = 400
                 for (var i  = 0; i < pcount; i++) {
                     let x = i * (canvas.width / (pcount - 1))
                     let y = boundary * res
@@ -130,8 +130,8 @@
                         
                         ctx.beginPath()
                         if (photon.flipped) {
-                            ctx.moveTo(photon.flipX * res + 10, boundary * res + 20)
-                            ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial*Math.PI/180) * 10, boundary * res + 20 + Math.sin(-1*photon.dial*Math.PI/180) * 10)
+                            ctx.moveTo(photon.flipX * res + 10, boundary * res - 20)
+                            ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial*Math.PI/180) * 10, boundary * res - 20 + Math.sin(-1*photon.dial*Math.PI/180) * 10)
                         }
                         else {
                             ctx.moveTo(photon.x * res, photon.y * res)
@@ -172,7 +172,7 @@
                     if (done) return 
                     for (var photon of photons) {
                         if (!photon.place) {
-                            photon.dial +=  (Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) 
+                            photon.dial +=  c  * dv / dv//Math.sqrt(Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2)) / dv
                         }
                         //var h = photon.flipped ? 0 : H 
                         photon.x += photon.dx 
@@ -183,6 +183,7 @@
                         if (!photon.flipped && photon.y > boundary) {
                             //ray.push([Math.sin(photon.dial*Math.PI/180), Math.cos(photon.dial*Math.PI/180)])
                             //photon.dial = 0
+                            dv = 1
                             photon.flipped = true
                             photon.flipX = photon.x
                             photon.xx = 0

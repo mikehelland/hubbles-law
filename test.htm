@@ -508,10 +508,12 @@ var zs = [
                     }
                     model.photon.z = z
                     
-                    if (findT && fintdT === "all") {
+                    /*if (findT && fintdT === "all") {
                         output(model, model.photon)
                     }
-                    else if (findT && model.t >= findT) {
+                    else 
+                    */
+                    if (findT && model.t >= findT) {
                         output(model, model.photon)
                         findT = 0
                     }
@@ -777,6 +779,23 @@ var zs = [
     })
 
     
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "photontime",
+        color: "white", 
+        H: 0.04,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c, f: 6e5, w: 500.68, f_start: 6e5, clock: 0},
+        next: function () {
+            this.photon.dt = 1 / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+            this.photon.clock += 0
+            this.photon.dx = c * this.photon.dt
+            this.photon.x += this.photon.dx
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+
+        }
+    })
+
     /*setupModel({
         div: document.getElementById("redshift2"),
         name: "f = f' / (1 + H &times; D)<sup>2</sup>",

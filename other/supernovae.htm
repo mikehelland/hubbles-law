@@ -671,7 +671,7 @@ var black = true
             unitH: "Gly<sup>-1</sup>",
             photon: {x: 0, dx: c},
             next: function () {
-                this.photon.dx = c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+                this.photon.dx = c / Math.pow(1 + this.photon.x / 25000, 2)
                 this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
             }

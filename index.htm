@@ -47,16 +47,16 @@
         <div class="text">
 
 
-        <h1>The Redshift-Distance Relation as an Inverse Square</h1>
+        <h1>Hubble's Law as an Inverse Square</h1>
 
         <h3>Background</h3>
 
         <p>
-        Many years ago I found a trick that could in a sense mimic the expansion of space in a physics model. It's based on the fact that as space expands, the travel time to any galaxy in the universe increases. One consequence of the expansion of space is, loosely speaking, the expansion of time: increasing distances means increasing durations. 
+        Many years ago I found a trick that could in a sense mimic the expansion of space in a physics model. It's based on the fact that as space expands, the travel time to a distant galaxy increases. One consequence of the expansion of space is, loosely speaking, that time expands too: increasing distances means increasing durations. 
         </p>
 
         <p>
-        To demonstrate this, here's a model of targets placed in space 100 million light years apart. A beam of light is emitted, and in the static universe (blue) the light reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
+        To demonstrate this, here's a model of targets placed in space 100 million light years apart. A photon is emitted, and in the static universe (blue) the photon reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
         </p>
 
         <p class="pimg"><img src="img/vcHD.gif"></p>
@@ -80,7 +80,7 @@
         </p>
 
         <p>
-        With that in mind, I considered the mock-expansion idea and different ways to change it. The photon in these models begins with a velocity of c that decreases by HD as it travels. Something similar happens if, rather than subtract HD from c, you divide c by 1 + HD. At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
+        With that in mind, I considered the mock-expansion idea and different ways to change it. A photon in the mock expansion model begins with a velocity of c that decreases by HD as it travels. Something similar happens if, rather than subtract HD from c, you divide c by 1 + HD. At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
         </p>
 
         <p>
@@ -120,7 +120,6 @@
             Hypothesis 3, H=0.04 Gly<sup>-1</sup> (red), Hypothesis 4, H=0.26 Gly<sup>-1</sup> (orange)
 
         </p>
-
         <p>
         This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + HD)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
         </p>
@@ -134,7 +133,7 @@
         </h3>
 
         <p>
-        When originally conceived, the mock-expansion would set the photon's initial velocity to c, then, after millions of years, have it decelerate. This would mean that a photon from a galaxy with z=1 would arrive to us traveling at 0.5c. In addition to being directly in violation of special relativity, a slow moving photon would wreak havoc on the physics of reflection, which would be observed in the images of the Hubble Space Telescope, which it is not.
+        When originally conceived, the mock-expansion model would set the photon's initial velocity to c and have it decelerate over millions of years. This would mean that a photon from a galaxy with z=1 would arrive to us traveling at 0.5c. In addition to being directly in violation of special relativity, a slow moving photon would wreak havoc on the physics of reflection, which would be observed in the images of the Hubble Space Telescope, which it is not.
         </p>
 
         <p>
@@ -219,9 +218,9 @@
         The expanding theory of the universe does much more than explain the redshifts, and any alternative explanation to an expanding universe is deemed a failure if it cannot explain a whole host of phenomena that are attributed to an expanding universe, from the Cosmic Microwave Background, to the creation of nucleons and light elements at the beginning of time. As such, the hypothesis presented here faces a difficult road ahead. 
         </p>
 
-        <p>
+        <!--<p>
         Additionally, this hypothesis that every observer perceives a spacetime where time and the forces of nature fall off with distance, places them in a somewhat special place in the universe. Since all observers in the universe should observe the same kind of universe wherever they are, then each observer would apparently have their own version of spacetime. This essentially defeats the purpose of relativity. The solution, perhaps, would come in the form of a slightly "more general" theory of relativity, a mathematical framework that can produce the seemingly bespoke spacetimes of each observer. 
-        </p>
+        </p>-->
 
         <h3>
         Conclusion
@@ -232,10 +231,16 @@
         </p>
 
         <p>
-        The value for Hubble's constant then, is reported to be H=0.04 Gly<sup>-1</sup>. This value does not need to change with time or require the concept of dark energy to fit to the data. 
+        The value for Hubble's constant then, is reported to be H=0.40 Mly<sup>-1</sup>. This value does not need to change with time or require the concept of dark energy to fit to the data. 
         </p>
 
+        <h3>Models and Source Code</h3>
         
+        <ul>
+            <li><a href="test.htm">Testing Page</a> for models and customizable views</li>
+            <li><a href="https://github.com/mikehelland/hubbles-law">GitHub Repository</a> for all the source code</li>
+        </ul>
+
         <h3>Data</h3>
         
         Supernovae Cosmology Project
@@ -288,6 +293,11 @@ fetch("http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt")
     // plot the points in "out"
 })
         </pre>
+
+        <hr>
+        March 18, 2021
+        <br>
+        <p><a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a></p>
 
     </body>
 </html>
