@@ -48,8 +48,8 @@
                 models = []
                 clearInterval(handle)
                 
+                models.push(setup(1))
                 models.push(setup(2))
-                //models.push(setup(2))
                 
                 setTimeout(() => {
                 handle = setInterval(() => {
@@ -75,7 +75,7 @@
                 var canvas = document.createElement("canvas")
                 var ctx = canvas.getContext("2d")
                 canvas.width = 1200
-                canvas.height = 600
+                canvas.height = 400
                 modelsDiv.appendChild(canvas)
 
                 var observerPoint = [document.getElementById("o-x").value * 1, 
@@ -145,9 +145,9 @@
                         //if (photon.flipped) {
                             //ctx.moveTo(photon.flipX * res + 10, boundary * res + 20)
                             //ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial0*Math.PI/180) * 10, boundary * res + 20 + Math.sin(-1*photon.dial0*Math.PI/180) * 10)
-                            ctx.moveTo(photon.clockX  + 10, boundary * res + 40)
+                            ctx.moveTo(photon.clockX  + 10, boundary * res + 20)
                             ctx.lineTo(photon.clockX  + 10 + Math.cos(photon.dial * Math.PI / photon.dv) * 10, 
-                                            boundary * res + 40 + Math.sin(-1*photon.dial * Math.PI / photon.dv) * 10)
+                                            boundary * res + 20 + Math.sin(-1*photon.dial * Math.PI / photon.dv) * 10)
                         //}
                         //else {
                         //    ctx.moveTo(photon.x * res, photon.y * res)
