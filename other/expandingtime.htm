@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/sn_expanding.png"/>
+        <meta property="og:description" content="v = c - c / (1 + HD)^2"/>
+        <meta property="og:title" content="Hubble's Law as an Inverse Square"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/inversesquare.htm"/>
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            .text {
+                background-color: white;
+                max-width: 900px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin:auto;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            details {
+                border:1px solid #eeeeee;
+                margin: 6px;
+                padding: 16px;
+            }
+
+            summary {
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class="text">
+
+
+        <h1>Hubble's Law as an Inverse Square</h1>
+
+        <h3>Background</h3>
+
+        <p>
+        Many years ago I found a trick that could in a sense mimic the expansion of space in a physics model. It's based on the fact that as space expands, the travel time to a distant galaxy increases. One consequence of the expansion of space is, loosely speaking, that time expands too: increasing distances means increasing durations. 
+        </p>
+
+        <p>
+        To demonstrate this, here's a model of targets placed in space 100 million light years apart. A photon is emitted, and in the static universe (blue) the photon reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
+        </p>
+
+        <p class="pimg"><img src="img/vcHD.gif"></p>
+
+
+        <p>
+        The trick is, rather than place everything in the physics model in motion away from everything else, these time delays could be exactly reproduced by just slowing down the photon (green).
+        </p>
+
+        <p>
+        In a simple expanding universe, everything moves away from the observer at v=HD. In this mock-expansion model, the photon's velocity is v=c-HD. This just moves HD from one velocity to another. These models also produce the exact same redshifts as each other, for the same value of H.
+        </p>
+
+        <p>
+        The code for calculating the time delays and redshifts is here: <a href="modeling_expansion.htm">Modeling Expansion</a>.
+        </p>
+
+        <h3>The Expansion Rate of the Universe</h3>
+        <p>
+        Recently, the question of exactly how fast space is expanding has received a lot of attention. The current expansion rate seems to be faster than it was in the past.
+        </p>
+
+        <p>
+        With that in mind, I considered the mock-expansion idea and different ways to change it. A photon in the mock expansion model begins with a velocity of c that decreases by HD as it travels. Something similar happens if, rather than subtract HD from c, you divide c by 1 + HD. At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
+        </p>
+
+        <p>
+        Hubble's constant usually has units of km/s/Mpc, which works out to units of inverse time. Those units no longer work for v=c/(1+HD). This requires new units that are of inverse distance. 
+        </p>
+
+        <p>
+        By putting variations on a theme, I devised similar but different mathematical models to compare:
+        </p>
+
+        <ul>
+        <li> hypothesis 1: v = c - HD</li>
+        <li> hypothesis 2: v = c / (1 + HD)</li>
+        <li> hypothesis 3: v = c / (1 + HD)<sup>2</sup></li>
+        <li> hypothesis 4: v = c / (1 + (HD)<sup>2</sup>)</li>
+        </ul>
+
+        <p>
+        When graphed, the time delays and redshifts in all four are, as expected, different from each other. 
+        </p>
+
+        <p class="pimg">
+            <img width="400" src="img/timedelays4.png">
+            <br>
+            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=0.08 Gly<sup>-1</sup> (magenta),<br>
+            Hypothesis 3, H=0.04 Gly<sup>-1</sup> (red), Hypothesis 4, H=0.26 Gly<sup>-1</sup> (orange)
+        </p>
+
+
+        <p>
+        The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=0.04 Gly<sup>-1</sup>. 
+        </p>
+
+        <p class="pimg"><img src="img/supernovae4.png">
+            <br>
+            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=0.08 Gly<sup>-1</sup> (magenta),<br>
+            Hypothesis 3, H=0.04 Gly<sup>-1</sup> (red), Hypothesis 4, H=0.26 Gly<sup>-1</sup> (orange)
+
+        </p>
+        <p>
+        This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + HD)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
+        </p>
+
+        <p>
+        Although the inverse square variation looked promising for a moment, it appears to be a dead end.
+        </p>
+
+        <h3>
+        A Radical Proposal
+        </h3>
+
+        <p>
+        When originally conceived, the mock-expansion model would set the photon's initial velocity to c and have it decelerate over millions of years. This would mean that a photon from a galaxy with z=1 would arrive to us traveling at 0.5c. In addition to being directly in violation of special relativity, a slow moving photon would wreak havoc on the physics of reflection, which would be observed in the images of the Hubble Space Telescope, which it is not.
+        </p>
+
+        <p>
+        There is a way for such a hypothesis to be consistent with established physics, although it is very counter-intuitive. The solution is that D is not the distance the light has traveled; D is the photon's distance to the observer. 
+        </p>
+
+        <p>
+        It works like this. If you emit a beam of light that travels out into space and out of the galaxy, that light will actually decelerate relative to you. However, as the observer, the opposite is observed. The photon begins moving slowly, and then accelerates toward the observer, reaching c in the observer's frame of reference only when the light is at distance D=0 from the observer.
+        </p>
+
+        <p>
+        This sounds logically impossible, and under the standard assumptions, it is. An underlying assumption in relativity is that, in the absence of gravity, two clocks should always tick at the same rate if they are stationary relative to each other. A clock on Earth should tick at the same rate as a clock 1 million light years away, or 100 billion light years away, so long as they are at rest with respect to each other.
+        </p>
+
+        <p>
+        The interpretation of the observed redshifts proposed is that due to an until now unrecognized principle of nature, an observer's clock runs at "full speed", while distant clocks do not, they lag behind at a rate of 1/(1+z). To illustrate, if a giant clock was placed at a distance of z=1 and was observable by a giant telescope on Earth, according to this interpretation, the distant clock would be ticking at half speed compared to a clock on Earth.
+        </p>
+
+        <p> 
+        If an event were to take 1 second and produce a wave of 1 hz, an observer at distance z=1 would perceive the event to take 2 seconds, due to their clock moving twice as fast as clocks where the event takes place. The frequency observed from a distance then, would be once every 2 seconds, or 0.5 hz. In this interpretation, when the light is emitted, in the frame of reference of an observer at z=1, it would be moving at 0.5 c with a frequency of 0.5 hz. As the light travels to the observer, and the distance to the observer decreases, the frequency will stay the same, but the speed will go up according to v=c/(1+HD)<sup>2</sup>. This in turn will elongate the light's wavelength. The frequency and energy never change, but the speed and wavelength increase to the familiar values when they reach an observer.
+        </p>
+
+        <h3>
+        An Updated Redshift-Distance Relation
+        </h3>
+
+        <p>
+        While the idea of a photon that decelerates when it moves away from you, and accelerates when it moves toward you might seem bizarre, hypothesis 3 yields a relationship between redshift and distance that can be practically applied to empirical data with minimal effort. The hypothesis recall is:
+        </p>
+
+        <blockquote>
+            v = c / (1 + HD)<sup>2</sup>
+        </blockquote>
+
+        <p>
+        When used to calculate redshifts, the standard pattern arises that at z=1, v=0.5c, and at z=2, v=0.333c, and so on, such that:
+        </p>
+
+        <blockquote>
+            v = c / (1 + z)
+        </blockquote>
+
+        <p>
+        Therefore:
+        </p>
+
+        <blockquote>
+            c / (1 + z) = c / (1 + HD)<sup>2</sup>
+            <br><br>
+            1 + z = (1 + HD)<sup>2</sup>
+            <br><br>
+            sqrt(1 + z) = 1 + HD
+        </blockquote>
+
+        <p>
+        Solving for D we get:
+        </p>
+
+        <blockquote>
+            D = (sqrt(1 + Z) - 1) / H
+        </blockquote>
+
+        <p>
+        And solving for z we get:
+        </p>
+
+        <blockquote>
+            1 + z = 1 + 2HD + HD<sup>2</sup>
+            <br><br>
+            z = HD<sup>2</sup> + 2HD
+        </blockquote>
+
+        <p>
+        These formulas predict the observed z and D of a galaxy in an expanding universe that is accelerating, without a cosmological constant or dark energy.
+        </p>
+
+        <h3>
+        Problems
+        </h3>
+
+        <p>
+        The expanding theory of the universe does much more than explain the redshifts, and any alternative explanation to an expanding universe is deemed a failure if it cannot explain a whole host of phenomena that are attributed to an expanding universe, from the Cosmic Microwave Background, to the creation of nucleons and light elements at the beginning of time. As such, the hypothesis presented here faces a difficult road ahead. 
+        </p>
+
+        <!--<p>
+        Additionally, this hypothesis that every observer perceives a spacetime where time and the forces of nature fall off with distance, places them in a somewhat special place in the universe. Since all observers in the universe should observe the same kind of universe wherever they are, then each observer would apparently have their own version of spacetime. This essentially defeats the purpose of relativity. The solution, perhaps, would come in the form of a slightly "more general" theory of relativity, a mathematical framework that can produce the seemingly bespoke spacetimes of each observer. 
+        </p>-->
+
+        <h3>
+        Conclusion
+        </h3>
+
+        <p>
+        Whether or not the strange interpretation of redshifts given here, with its change to Hubble's law and the units of Hubble's constant, is deemed physically possible or mathematically necessary, the approach does produce a new redshift-distance relationship that fits the modern evidence. By correlating redshifts with units of inverse distance rather than inverse time, the redshifts don't increase as rapidly, producing a natural fit to the acceleration of the expansion of the universe.
+        </p>
+
+        <p>
+        The value for Hubble's constant then, is reported to be H=0.40 Mly<sup>-1</sup>. This value does not need to change with time or require the concept of dark energy to fit to the data. 
+        </p>
+
+        <h3>Models and Source Code</h3>
+        
+        <ul>
+            <li><a href="test.htm">Testing Page</a> for models and customizable views</li>
+            <li><a href="https://github.com/mikehelland/hubbles-law">GitHub Repository</a> for all the source code</li>
+        </ul>
+
+        <h3>Data</h3>
+        
+        Supernovae Cosmology Project
+        <br>
+        <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt</a>
+        
+        <p>
+        Code to parse into JSON and convert distance modulus to co-moving distance:
+        </p>
+
+        
+        <pre>
+// note this fetch may not work from an https request, and may have to be done as a separate step
+fetch("http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt")
+.then(res=res.text()).then(data => {
+
+    var out = []
+    var lines = data.split("\n")
+
+    //ignore the first 6 lines
+    lines = lines.slice(6)
+    
+    var d
+    var cols
+    lines.forEach(line => {
+        cols = line.split("\t")
+        
+        // distance modulus to parsec luminosity distance
+        d = Math.pow(10, cols[2]/5+1) 
+
+        // convert to comoving distance
+        //d = d / (1+z)
+        d = d / (1+(1*cols[1]))
+
+        // parsec to light years
+        d = d * 3.261564
+
+        // ly to Mly
+        d = d / 1000000
+        
+        out.push({
+            name: cols[0], 
+            z: 1 * cols[1], 
+            d: d}
+        ) 
+    })
+
+    var out = out.sort((a,b)=>{return a.d-b.d})
+
+    // plot the points in "out"
+})
+        </pre>
+
+        <hr>
+        March 18, 2021
+        <br>
+        <p><a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a></p>
+
+    </body>
+</html>
