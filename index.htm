@@ -201,13 +201,13 @@
         
         <pre>    photon.dx = c / Math.pow(1 + photon.x / H, 2)</pre>
 
-        <p>The hypothesis was directly changing the velocity based on distance. So solve our problems, we'll approach this slightly differently. The photon needs a clock 
-            that stats at zero, and this is what the hypothesis directly changes, like so:
+        <p>The hypothesis was directly changing the velocity based on distance. To solve our problems, we'll approach this slightly differently. The photon needs a clock 
+            that starts at zero, and this is what the hypothesis directly changes, like so:
         </p>
 
         <pre>    
     // find out the time slice for a photon at this distance
-    photon.dt = 1 / Math.pow(1 + photon.x / H, 2)
+    dt = 1 / Math.pow(1 + photon.x / H, 2)
     
     // add that time slice to the photon's clock
     photon.clock += dt
@@ -221,13 +221,14 @@
             the photon appears to decelerate according to the observers in the model.
         </p>
 
+        <p>Lastly, when the photon hits the mirror, it will be emitted as a new photon with D=0, causing dt=1, causing the v=c, and creating an elongated wavelength.
+        </p>
+
         <p>Now when we run the problem demonstration of Fermat's least time principle, rather than choose the photon that arrived first according to the master clock,
             we choose the photon whose clock has the lowest reading. 
         </p>
 
-        <p>Lastly, when the photon hits the mirror, it will be emitted as a new photon with D=0, causing dt=1, causing the v=c, and creating an elongated wavelength.
-        </p>
-
+        
         <p>See: <a href="other/reflection3.htm">Reflection in classical physics</a></p>
 
         <p>When run, photons reflect at the same angle as photons moving at c in a vacuum, no longer demonstrating a problem with the hypothesis.
@@ -241,8 +242,6 @@
         <p>A similar resolution can be added to Feynman's path integral in quantum electrodynamics. Each photon has a clock, which provides the time slice to be used.
             Photons that are redshifted have slow clocks dt&lt;1, when they are reflected as fresh photons, their clock speed returns to dt=1.
         </p>
-
-        <p class="pimg"><img src="img/feynmanpathintegral.png"></p>
 
         <p>Accounting for the difference in dt before and after the reflection, the problem demonstration again shows there is no problem at all. </p>
 

@@ -23,6 +23,12 @@
         <br>
         <br>
         <div id="models"></div>
+        Top: Photons always move at c.
+        <br>
+        Middle: Photon's speed start at 0.5c, and reflect at c
+        <br>
+        Bottom: Photon's clocks start at half speed, and reflect at full speed. 
+        
         <script>
 
             // we're going to try to advance light by 3 nm at a time
@@ -52,6 +58,7 @@
                 
                 models.push(setup(1))
                 models.push(setup(0.5))
+                models.push(setup(0.5, true))
                 
                 setTimeout(() => {
                 handle = setInterval(() => {
@@ -72,12 +79,12 @@
                 }
             }
 
-            function setup(dt) {
+            function setup(dt, testHypothesis) {
                 var done
                 var canvas = document.createElement("canvas")
                 var ctx = canvas.getContext("2d")
                 canvas.width = 1200
-                canvas.height = 400
+                canvas.height = 300
                 modelsDiv.appendChild(canvas)
 
                 var observerPoint = [document.getElementById("o-x").value * 1, 
@@ -173,7 +180,11 @@
 
                     for (var photon of photons) {
                         if (!photon.place) {
-                            photon.dial +=  Math.sqrt(Math.pow(photon.dx * photon.dt , 2) + Math.pow(photon.dy * photon.dt , 2))  / photon.wavelength  * photon.dt
+                            var dd = Math.sqrt(Math.pow(photon.dx * photon.dt , 2) + Math.pow(photon.dy * photon.dt , 2))  / photon.wavelength
+                            if (testHypothesis) {
+                                dd = dd * photon.dt
+                            }
+                            photon.dial +=  dd
                         }
                         photon.x += photon.dx * photon.dt
                         photon.y += photon.dy * photon.dt
