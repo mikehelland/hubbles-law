@@ -51,7 +51,7 @@
                 clearInterval(handle)
                 
                 models.push(setup(1))
-                models.push(setup(2))
+                models.push(setup(0.5))
                 
                 setTimeout(() => {
                 handle = setInterval(() => {
@@ -72,7 +72,7 @@
                 }
             }
 
-            function setup(dv) {
+            function setup(dt) {
                 var done
                 var canvas = document.createElement("canvas")
                 var ctx = canvas.getContext("2d")
@@ -95,30 +95,18 @@
                     let hyp = Math.sqrt(x*x + y*y)
                     console.log(x, y)
                     photons.push({x: 0, y: 0, 
-                        dv: dv,
+                        dt: dt,
                         angle: i,
                         dial: 0,
-                        dx: x / hyp * c / dv, 
-                        dy: y / hyp * c / dv,
-                        //dx: x / hyp * c, 
-                        //dy: y / hyp * c,
+                        dx: x / hyp * c, 
+                        dy: y / hyp * c,
                         clockX: x,
-                        wavelength: 500 / dv
+                        wavelength: 500 * dt
                     })
 
                 }
                 console.log(photons)
-                /*var angles = [90, 80, 80, 60, 50, 40,  
-                              35, 30, 28, 25, 22, 20, 18]
-                for (var i of angles) {
-                    photons.push({x: 0, y: 0, xx: 0, yy: 0,
-                        angle: i,
-                        dial: 0,
-                        dx: Math.cos(i * Math.PI / 180) / res, 
-                        dy: Math.sin(i * Math.PI / 180) / res})
-                }*/
-
-
+                
                 var finished = 0
 
                 var ray = [[canvas.width/2, canvas.height*0.5]]
@@ -144,17 +132,9 @@
                         ctx.fillRect(photon.x * res, photon.y * res, 2, 2)
                         
                         ctx.beginPath()
-                        //if (photon.flipped) {
-                            //ctx.moveTo(photon.flipX * res + 10, boundary * res + 20)
-                            //ctx.lineTo(photon.flipX * res + 10 + Math.cos(photon.dial0*Math.PI/180) * 10, boundary * res + 20 + Math.sin(-1*photon.dial0*Math.PI/180) * 10)
                             ctx.moveTo(photon.clockX  + 10, boundary * res + 20)
-                            ctx.lineTo(photon.clockX  + 10 + Math.cos(photon.dial * Math.PI / photon.dv) * 10, 
-                                            boundary * res + 20 + Math.sin(-1*photon.dial * Math.PI / photon.dv) * 10)
-                        //}
-                        //else {
-                        //    ctx.moveTo(photon.x * res, photon.y * res)
-                        //    ctx.lineTo(photon.x * res + Math.cos(photon.dial*Math.PI/180) * 10, photon.y * res + Math.sin(-1*photon.dial*Math.PI/180) * 10)
-                        //}
+                            ctx.lineTo(photon.clockX  + 10 + Math.cos(photon.dial * Math.PI / photon.dt) * 10, 
+                                            boundary * res + 20 + Math.sin(-1*photon.dial * Math.PI / photon.dt) * 10)
                         ctx.stroke()
                         
                     }
@@ -193,25 +173,25 @@
 
                     for (var photon of photons) {
                         if (!photon.place) {
-                            photon.dial +=  Math.sqrt(Math.pow(photon.dx, 2) + Math.pow(photon.dy , 2))  / photon.wavelength / photon.dv 
+                            photon.dial +=  Math.sqrt(Math.pow(photon.dx * photon.dt , 2) + Math.pow(photon.dy * photon.dt , 2))  / photon.wavelength  * photon.dt
                         }
-                        photon.x += photon.dx 
-                        photon.y += photon.dy //* (photon.flipped ? -1 : 1)
+                        photon.x += photon.dx * photon.dt
+                        photon.y += photon.dy * photon.dt
                         
                         //if (photon.y >= 500) debugger 
 
                         if (!photon.flipped && photon.y > boundary) {
                             photon.flipped = true
-                            photon.wavelength = photon.wavelength * photon.dv
-                            photon.dv = 1
+                            photon.wavelength = photon.wavelength / photon.dt
+                            photon.dt = 1
                             photon.flipX = photon.x
                             
                             ndx = observerPoint[0] - photon.x
                             ndy = observerPoint[1] - photon.y
 
                             hyp = Math.sqrt(ndx*ndx + ndy*ndy)
-                            photon.dx = ndx / hyp  * c// / res * 0.5
-                            photon.dy = ndy / hyp  * c// / res * 0.5
+                            photon.dx = ndx / hyp  * c
+                            photon.dy = ndy / hyp  * c
 
                             photon.dialx0 = Math.cos(photon.dial*Math.PI/180)
                             photon.dialy0 = Math.sin(-1*photon.dial*Math.PI/180)

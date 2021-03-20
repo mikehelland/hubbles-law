@@ -15,7 +15,7 @@
         <script>
 
             var modelsDiv = document.getElementById("models")
-            var res = 0.1
+            var res = 0.01
             var steps = 100
             var handle 
             var drawHandle
@@ -44,7 +44,7 @@
                 var canvas = document.createElement("canvas")
                 var ctx = canvas.getContext("2d")
                 canvas.width = 600
-                canvas.height = 600
+                canvas.height = 300
                 modelsDiv.appendChild(canvas)
 
 
@@ -69,8 +69,8 @@
                     photons.push({x: 0, y: 0, xx: 0, yy: 0,
                         angle: i,
                         clock: 0,
-                        dx: x / hyp / dv, 
-                        dy: y / hyp / dv,
+                        dx: x / hyp, 
+                        dy: y / hyp,
                         dv    
                     })
 
@@ -92,42 +92,46 @@
                     ctx.fillRect(observerPoint[0], observerPoint[1], 2, 2)
 
                     ctx.fillStyle = "yellow"
-                    var i = 0
                     for (var photon of photons) {
 
                         ctx.fillRect(photon.x * res, photon.y * res, 2, 2)
 
-                        if (photon.place) {
-                            if (photon.place && i === 0) {
-                                ctx.fillText(photon.flipX, 150, 80)
-                            }
+                    }
 
-                            ctx.strokeStyle = i === 1 ? "green" : "yellow"
-                            ctx.lineWidth = i === 1 ? 4 : 1
-                    
-                            ctx.globalAlpha = i === 1 ? 1 : Math.max(0, 0.5 - i/50)
-                            ctx.beginPath()
-                            ctx.moveTo(0, 0)
-                            ctx.lineTo(photon.flipX * res, boundary * res)
-                            ctx.lineTo(photon.x* res, photon.y * res)
-                            ctx.stroke()
+                    var i = 0
+                    for (photon of out) {
 
-                            i++
-                            
+                        if (i === 0) {
+                            ctx.fillText(photon.flipX, 150, 80)
                         }
 
+                        ctx.strokeStyle = i === 0 ? "green" : "yellow"
+                        ctx.lineWidth = i === 0 ? 4 : 1
+                
+                        ctx.globalAlpha = i === 0 ? 1 : Math.max(0, 0.5 - i/50)
+                        ctx.beginPath()
+                        ctx.moveTo(0, 0)
+                        ctx.lineTo(photon.flipX * res, boundary * res)
+                        ctx.lineTo(photon.x* res, photon.y * res)
+                        ctx.stroke()
+
+                        i++
+                        
                         ctx.globalAlpha = 1
                     }
 
                 }
+                var out = []
                 var fastestTime
                 var t = 0
                 var next = () => {
+                    if (finished === pcount - 1) return
                     for (var photon of photons) {
+                        if (photon.place) continue
 
                         //var h = photon.flipped ? 0 : H 
-                        photon.x += photon.dx 
-                        photon.y += photon.dy  //* (photon.flipped ? -1 : 1)
+                        photon.x += photon.dx  / photon.dv
+                        photon.y += photon.dy  / photon.dv
                         photon.xx += photon.dx  
                         photon.yy += photon.dy  //* (photon.flipped ? -1 : 1)
 
@@ -151,15 +155,24 @@
                         if (photon.flipped && !photon.place && photon.x >= observerPoint[0] && photon.y <= observerPoint[1]) {
                             photon.place = ++finished
 
+                            photon.total = Math.sqrt(Math.pow(photon.flipX, 2) + Math.pow(boundary, 2)) * dv + 
+                                            Math.sqrt(Math.pow(observerPoint[0] - photon.flipX, 2) + Math.pow(observerPoint[1] - boundary, 2))
+                            
+                            out.push(photon)
+
                             if (!fastestTime || fastestTime > photon.clock) {
-                                photons.sort((a,b) => a.clock-b.clock)
-                            //if (photon.place < 10) {
+
                                 fastestTime = photon.clock
                                 console.log(photon.place, t, photon.flipX, photon.angle, photon.clock)
                             }
 
                         }
 
+                    }
+                    out.sort((a,b) => a.clock-b.clock)
+                        
+                    if (finished === pcount - 1) {
+                        console.log(photons)
                     }
                     t++
                 }

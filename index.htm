@@ -95,6 +95,7 @@
 
         <p>
         Hubble's constant usually has units of km/s/Mpc, which works out to units of inverse time. Those units no longer work for v=c/(1+HD). This requires new units that are of inverse distance. 
+        Using the form v=c/(1+D/H) inverts the inverse distance to just plain distance, and ends up being much more intuitive.
         </p>
 
         <p>
@@ -103,58 +104,55 @@
 
         <ul>
         <li> hypothesis 1: v = c - HD</li>
-        <li> hypothesis 2: v = c / (1 + HD)</li>
-        <li> hypothesis 3: v = c / (1 + HD)<sup>2</sup></li>
-        <li> hypothesis 4: v = c / (1 + (HD)<sup>2</sup>)</li>
+        <li> hypothesis 2: v = c / (1 + D/H)</li>
+        <li> hypothesis 3: v = c / (1 + D/H)<sup>2</sup></li>
+        <li> hypothesis 4: v = c / (1 + (D/H)<sup>2</sup>)</li>
         </ul>
 
         <p>
-        When graphed, the time delays and redshifts in all four are, as expected, different from each other. 
+        When graphed, the time delays and redshifts in all four are, of course, different from each other. 
         </p>
 
         <p class="pimg">
-            <img width="400" src="img/timedelays4.png">
+            <img width="540" src="img/timedelays4.png">
             <br>
-            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=0.08 Gly<sup>-1</sup> (magenta),<br>
-            Hypothesis 3, H=0.04 Gly<sup>-1</sup> (red), Hypothesis 4, H=0.26 Gly<sup>-1</sup> (orange)
+            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
+            Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
         </p>
 
 
         <p>
-        The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=0.04 Gly<sup>-1</sup>. 
+        The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=25 Gly. 
         </p>
 
-        <p class="pimg"><img src="img/supernovae4.png">
+        <p class="pimg"><img width="540" src="img/supernovae4.png">
             <br>
-            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=0.08 Gly<sup>-1</sup> (magenta),<br>
-            Hypothesis 3, H=0.04 Gly<sup>-1</sup> (red), Hypothesis 4, H=0.26 Gly<sup>-1</sup> (orange)
+            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
+            Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
 
         </p>
         <p>
-        This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + HD)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
+        This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + D/H)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
         </p>
 
         <p>
         Although the inverse square variation looked promising for a moment, it appears to be a dead end. That is, unless hypothesis 3 is taken seriously 
-        the conflicts with established physics can be resolved.
+        and the conflicts with established physics can be resolved.
         </p>
-
-    
 
         <hr>
 
-        <h3>New Physics for Photons</h3>
+        <h3>Photon Velocity</h3>
 
         <p>The redshifts in this hypothesis are not caused by the expansion of space, or other interactions as in tired light theories (discussed in a later section).
             The redshifts are interpreted as their own phenomenon that is as fundamental to nature as inertia. 
             Light from distant galaxies is observed to be redshifted because light redshifts with distance. 
         </p>
 
-        
         <p>The decelerating photon hypothesis is that cosmological redshifts indicate new physics for a photon:</p>
 
         <ol>
-            <li>A photon loses frequency as it travels cosmological distances, but with no change to wavelength, resulting in a loss of speed, according to v=c/(1+HD)<sup>2</sup></li>
+            <li>A photon loses frequency as it travels cosmological distances, but with no change to wavelength, resulting in a loss of speed, according to v=c/(1+D/H)<sup>2</sup></li>
             <li>The energy of a photon absorbed by matter is emitted as a new photon with D=0, and therefore v=c and an elongated wavelength.</li>
         </ol>
 
@@ -167,7 +165,6 @@
         <p>In this interpretation of the redshifts, the frequency decreases while the photon is in flight, and the wavelength increases at the beginning of a new photon's 
             journey. This is different from the expanding theory where frequency and wavelength change together without affecting the photon's velocity.</p>
 
-        </p>
 
         <p>This poses a number of conflicts with existing physics. These are discussed in a later section.</p>
 
@@ -536,7 +533,7 @@
             <p>The second postulate of special relativity is that the speed of light in a vacuum is always c, to infinity.</p>
             
             <p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, v=c-HD in model 2,
-                and v=c/(1+HD)<sup>2</sup> in model 4. However, in the domain where cosmological redshifts aren't observed, 
+                and v=c/(1+D/H)<sup>2</sup> in model 4. However, in the domain where cosmological redshifts aren't observed, 
                 HD=0, so v=c in both models at non-cosmological distances.
             </p>
 
@@ -620,6 +617,62 @@
             A decelerating photon, if it redshifts in a quantum event, would cause quantized redshifts. And if that might differ slightly 
             for different wavelengths, those features could easily be accommodated too.
         </p>-->
+
+        <hr>
+
+        <h3>A New Redshift-Distance Relation</h3>
+
+        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, becaue it fits the acceleration 
+            of the redshifts, it can be used as an accurate predictor of z and distance given one or the other. The hypothesis is:
+        </p> 
+
+        <blockquote>
+            v = c / (1 + HD)<sup>2</sup>
+        </blockquote>
+
+        <p>
+        When used to calculate redshifts, the standard pattern arises that at z=1, v=0.5c, and at z=2, v=0.333c, and so on, such that:
+        </p>
+
+        <blockquote>
+            v = c / (1 + z)
+        </blockquote>
+
+        <p>
+        Therefore:
+        </p>
+
+        <blockquote>
+            c / (1 + z) = c / (1 + HD)<sup>2</sup>
+            <br><br>
+            1 + z = (1 + HD)<sup>2</sup>
+            <br><br>
+            sqrt(1 + z) = 1 + HD
+        </blockquote>
+
+        <p>
+        Solving for D we get:
+        </p>
+
+        <blockquote>
+            D = (sqrt(1 + Z) - 1) / H
+        </blockquote>
+
+        <p>
+        And solving for z we get:
+        </p>
+
+        <blockquote>
+            1 + z = 1 + 2HD + HD<sup>2</sup>
+            <br><br>
+            z = HD<sup>2</sup> + 2HD
+        </blockquote>
+
+        <p>
+        These formulas predict the observed z and D of a galaxy in an expanding universe that is accelerating, without a cosmological constant or dark energy.
+        </p>
+
+
 
 
         <hr>
