@@ -12,6 +12,10 @@
         <button id="run-button">Run</button>
         <br>
         <div id="models"></div>
+
+        <p>
+            <a href="../index.htm">What is this about?</a>
+        </p>
         <script>
 
             var modelsDiv = document.getElementById("models")
@@ -53,20 +57,13 @@
                                     document.getElementById("o-y").value * 1]
 
                 var photons = []
-                /*for (var i = 0; i < 90; i += 0.5) {
-                    photons.push({clock: 0, x: 0, y: 0, xx: 0, yy: 0,
-                        angle: i,
-                        dx: Math.sin(i * Math.PI / 180) / dv, 
-                        dy: Math.cos(i * Math.PI / 180) / dv})
-                }
-                console.log(photons)*/
                 var pcount = 81
                 for (var i  = 0; i < pcount; i++) {
                     let x = i * (canvas.width / (pcount - 1))
                     let y = boundary * res
                     let hyp = Math.sqrt(x*x + y*y)
                     console.log(x, y)
-                    photons.push({x: 0, y: 0, xx: 0, yy: 0,
+                    photons.push({x: 0, y: 0, 
                         angle: i,
                         clock: 0,
                         dx: x / hyp, 
@@ -129,27 +126,22 @@
                     for (var photon of photons) {
                         if (photon.place) continue
 
-                        //var h = photon.flipped ? 0 : H 
                         photon.x += photon.dx  / photon.dv
                         photon.y += photon.dy  / photon.dv
-                        photon.xx += photon.dx  
-                        photon.yy += photon.dy  //* (photon.flipped ? -1 : 1)
-
+                        
                         photon.clock += 1/photon.dv
                         
                         if (!photon.flipped && photon.y > boundary) {
                             photon.dv = 1
                             photon.flipped = true
                             photon.flipX = photon.x
-                            photon.xx = 0
-                            photon.yy = 0
-
+                            
                             var ndx = observerPoint[0] - photon.x
                             var ndy = observerPoint[1] - photon.y
 
                             var hyp = Math.sqrt(ndx*ndx + ndy*ndy)
-                            photon.dx = ndx / hyp // res //* 0.5
-                            photon.dy = ndy / hyp // res//* 0.5
+                            photon.dx = ndx / hyp 
+                            photon.dy = ndy / hyp 
                         }
 
                         if (photon.flipped && !photon.place && photon.x >= observerPoint[0] && photon.y <= observerPoint[1]) {

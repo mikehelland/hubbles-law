@@ -84,9 +84,10 @@
         The code for calculating the time delays and redshifts is here: <a href="modeling_expansion.htm">Modeling Expansion</a>.
         </p>
 
+        <hr>
         <h3>The Expansion Rate of the Universe</h3>
         <p>
-        Recently, the question of exactly how fast space is expanding has received a lot of attention. The current expansion rate seems to be faster than it was in the past.
+        Recently, the question of "how fast is space expanding, exactly?" has become something of a mystery.<sup>[1][2][3][4]</sup> The current expansion rate seems to be faster than it was in the past.
         </p>
 
         <p>
@@ -109,10 +110,6 @@
         <li> hypothesis 4: v = c / (1 + (D/H)<sup>2</sup>)</li>
         </ul>
 
-        <p>
-        When graphed, the time delays and redshifts in all four are, of course, different from each other. 
-        </p>
-
         <p class="pimg">
             <img width="540" src="img/timedelays4.png">
             <br>
@@ -120,6 +117,7 @@
             Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
         </p>
 
+        <p>Try it: use your own values for H on the <a href="test.htm">testing page</a>.</p>
 
         <p>
         The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=25 Gly. 
@@ -131,6 +129,9 @@
             Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
 
         </p>
+
+        <p>Try it: the <a href="other/supernovae.htm">supernovae testing page</a>.</p>
+
         <p>
         This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + D/H)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
         </p>
@@ -221,7 +222,7 @@
             the photon appears to decelerate according to the observers in the model.
         </p>
 
-        <p>Lastly, when the photon hits the mirror, it will be emitted as a new photon with D=0, causing dt=1, causing the v=c, and creating an elongated wavelength.
+        <p>When the photon hits the mirror, it will be emitted as a new photon with D=0, causing dt=1, causing the v=c, and creating an elongated wavelength.
         </p>
 
         <p>Now when we run the problem demonstration of Fermat's least time principle, rather than choose the photon that arrived first according to the master clock,
@@ -229,7 +230,7 @@
         </p>
 
         
-        <p>See: <a href="other/reflection3.htm">Reflection in classical physics</a></p>
+        <p>Try it: <a href="other/reflection3.htm">Reflection in classical physics</a></p>
 
         <p>When run, photons reflect at the same angle as photons moving at c in a vacuum, no longer demonstrating a problem with the hypothesis.
             This works because the least time principle always favored the photons that hit the mirror first when a speed increase was involved. If a photon was 
@@ -245,7 +246,7 @@
 
         <p>Accounting for the difference in dt before and after the reflection, the problem demonstration again shows there is no problem at all. </p>
 
-        <p>See: <a href="other/reflection_nm.htm">Reflection in quantum electrodynamics</a></p>
+        <p>Try it: <a href="other/reflection_nm.htm">Reflection in quantum electrodynamics</a></p>
 
         <p class="pimg"><img src="img/qed.gif"></p>
 
@@ -253,12 +254,41 @@
             before settling on the exact same phases we would expect for a photon moving at c.
         </p>
         
+        <p>This shows the hypothesis that time slowing down for a photon over cosmological distances is compatible with classical and quantum theories of light.</p>
+        
+        <hr>
+        <h3>The Geometry of Spacetime</h3>
+        
+        <p>In a relativistic universe, every observer has their own clock, and so does every object. The photon has a clock in relativity, but it always reads 0.
+            The photon is said not to experience time. In that case it would be tempting to reverse the situation from the previous solution. Instead of the photon's 
+            clock gradually slowing down, a relativistic photon's clock begins standing still, and gradually gets faster.
+        </p>
+
+        <p>But the speed of light in a relativistic universe is hardcoded into the geometry of spacetime. A massless particle cannot just slow down in a vacuum; 
+            it must follow a light-like path, the null geodesic. 
+            A photon that experiences time would veer off of the null geodesic with a time-like trajectory. This can be demonstrated by looking at the lightcones 
+            made by such a photon.
+        </p>
+
+        <p class="pimg"><img src="img/lightcones.png" width="500">
+            <br>
+            Blue: basic spacetime, Green: expanding universe and v=c-HD, Red: v=c/(1+D/H)<sup>2</sup>
+        </p>
+        
+        <p>In a basic spacetime, all the photon geodesics will be parallel or perpendicular, shown left in the image below. What's proposed here is that every point in spacetime 
+            is the beginning of a new geodesic whose trajectory depends on the distance from the starting point. As a consequence, the geometry of spacetime 
+            would change to something more like the image on the right.
+        </p>
+
+        <p class="pimg"><img src="img/geometry_compare.png" >
+        
+        <p>
+            If the geometry is spacetime is changed in this way, the observed accelerating redshifts are produced. 
+        </p>
         
 
         <hr>
-        <h3>Problems and Responses</h3>
-
-        <p>The hypothesis in relation to standard cosmology:</p>
+        <h3>Observational Cosmology</h3>
 
         <details>
             <summary>This is the Tired Light Theory, which is discredited</summary>
@@ -425,9 +455,7 @@
                     </blockquote>
                 </li>
                 
-                    
-            </ul>
-        
+            
             <p>In a universe that expands, there is a race against the clock for the universe to take shape, and lately the clock has been winning.
                 A universe that doesn't expand, on the other hand, has no discernible age or hurried time schedules for galaxy formation and evolution
                 to squeeze into. 
@@ -516,84 +544,7 @@
         
         </ul>
         
-        <p>The hypothesis in relation to fundamental physics:
-        </p>
-
-        <details>
-            <summary>Special Relativity</summary>
-
-            <p>The second postulate of special relativity is that the speed of light in a vacuum is always c, to infinity.</p>
-            
-            <p>The decelerating photon hypothesis directly contradicts that by saying the velocity of a photon is determined by its distance, v=c-HD in model 2,
-                and v=c/(1+D/H)<sup>2</sup> in model 4. However, in the domain where cosmological redshifts aren't observed, 
-                HD=0, so v=c in both models at non-cosmological distances.
-            </p>
-
-            <p>If the speed of a photon is constant to all observable distances, the proposed tests of the hypothesis would establish that.</p>
-
-        </details>
-        <details>
-            <summary>General Relativity</summary>
-            <p>Recall the graph of the time delays from the introduction. If that graph were to include a second photon headed in the opposite direction,
-                it would produce a reflected image, like this:</p>
-            
-            <p class="pimg"><img src="img/lightcones.png" width="500">
-                <br>Lightcones in a simple universe (blue), models 1 & 2 (green), model 4 (red)
-            </p>
-            
-            <p>The straight blue lines make the traditional light cone of special relativity.
-                The green lines represent both a simple expanding universe (v=H<sub>0</sub>D) and the linear decelerating photon hypothesis (v=c-HD). 
-                The red lines are the inverse square decelerating photon hypothesis, model 4 (v=c/(1+HD)<sup>2</sup>).</p> 
-            
-            <p>To accommodate the observed redshifts, the light cone in relativity must be curved in a way similar to  
-                the decelerating photon hypothesis.
-            </p>
-            
-            <p>But there is a very big difference between the two. In general relativity, space expands the null geodesic for all photons. 
-                All photons stick to the same geodesic at the same speed.
-            </p>
-            
-            <p class="pimg"><img src="img/lightcone_gr.png" width="400"></p>
-            
-            <p>In the decelerating photon hypothesis, each photon begins on the null geodesic, but then diverges according to v=c-HD along its own individual path. 
-                The length of each path has a maximum range of c/H, Hubble's length.
-                Put another way, Hubble's law would be removed as the scale factor and reapplied in the geodesic equation.
-                The <a href="https://youtu.be/-UPSiKugRW0?t=881">velocity vector for a photon</a> 
-                should have a distance of HD instead of 0, 
-                where D is the sum of the absolute value of its changes in the space direction.
-            </p>
-            
-            <p class="pimg"><img src="img/geodesics.png"></p>
-            
-            <p>These extra individual paths that diverge from the common path can be seen as time dilations localized to an individual photon.</p> 
-            
-            <p class="pimg"><img src="img/lightcone_q.png" width="400"></p>
-            
-            <p>This actually allows for different Hubble volumes to communicate between relays. 
-                Information can be sent from one galaxy to a distant one within range. That signal can be received and retransmitted with
-                fresh photons, eventually leaving the original broadcaster's Hubble volume.
-            </p>
-            
-            <p>Given an indefinitely old universe, the ability to communicate between Hubble volumes avoids any issues posed by
-                <a href="https://en.wikipedia.org/wiki/Horizon_problem">the horizon problem</a>, which says different parts of the sky
-                should not be the same temperature because they are causally separated by the Hubble limit of their respective Hubble volumes
-                and too little time since the big bang.
-            
-        </details>
-        <details>
-            <summary>Quantum Mechanics</summary>
-            <p>There is nothing in quantum mechanics that resembles anything discussed in this paper. 
-                No known interaction will cause the photon to redshift in the manner needed by the decelerating photon hypothesis.
-                So the following Feynman diagram is proposed:</p>
-            
-            <p class="pimg"><img src="img/feynman.png" width="400"></p>
-            
-            <p>Here is a photon cruising along, and then it discards some energy, and also decelerates.</p>
-            
-            <p>As mentioned in the section on the CMB, this action could be thought of as transferring energy from the photon to the "background" field.</p>
-            
-        </details>
-
+        
         <!--
         <h3>Advantages</h3>
 
