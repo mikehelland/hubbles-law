@@ -69,7 +69,7 @@
         To demonstrate this, here's a model of targets placed in space 100 million light years apart. A photon is emitted, and in the static universe (blue) the photon reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
         </p>
 
-        <p class="pimg"><img src="img/vcHD.gif"></p>
+        <p class="pimg"><img src="img/graph_time_expanding.png" width="400"><img src="img/graph_time_vcHD.png" width="400"></p>
 
 
         <p>
@@ -78,7 +78,10 @@
 
         <p>
         In a simple expanding universe, everything moves away from the observer at v=HD. In this mock-expansion model, the photon's velocity is v=c-HD. This just moves HD from one velocity to another. These models also produce the exact same redshifts as each other, for the same value of H.
+        When the photon's speed deceases, I can use the wavelength and the new speed to calculate a new frequency (frequency = velocity / wavelength). And with a new frequency, and I calculate the redshifts, and see they match.
         </p>
+
+        <p class="pimg"><img src="img/graph_z_expanding.png" width="400"><img src="img/graph_z_vcHD.png" width="400"></p>
 
         <p>
         The code for calculating the time delays and redshifts is here: <a href="modeling_expansion.htm">Modeling Expansion</a>.
@@ -110,27 +113,20 @@
         <li> hypothesis 4: v = c / (1 + (D/H)<sup>2</sup>)</li>
         </ul>
 
-        <p class="pimg">
-            <img width="540" src="img/timedelays4.png">
-            <br>
-            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
-            Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
-        </p>
-
-        <p>Try it: use your own values for H on the <a href="test.htm">testing page</a>.</p>
 
         <p>
-        The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=25 Gly. 
+            The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=25 Gly. 
         </p>
 
-        <p class="pimg"><img width="540" src="img/supernovae4.png">
+
+        <p class="pimg">
+            <img width="400" src="img/timedelays4.png"><img width="400" src="img/supernovae4.png">
             <br>
             Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
             Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
-
         </p>
 
-        <p>Try it: the <a href="other/supernovae.htm">supernovae testing page</a>.</p>
+        <p>Try it: use your own values for H on the <a href="test.htm">testing page</a> and the <a href="other/supernovae.htm">supernovae testing page</a>.</p>
 
         <p>
         This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + D/H)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
@@ -565,12 +561,12 @@
 
         <h3>A New Redshift-Distance Relation</h3>
 
-        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, becaue it fits the acceleration 
+        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, because it fits the acceleration 
             of the redshifts, it can be used as an accurate predictor of z and distance given one or the other. The hypothesis is:
         </p> 
 
         <blockquote>
-            v = c / (1 + HD)<sup>2</sup>
+            <img src="img/rd-1.png" >
         </blockquote>
 
         <p>
@@ -578,7 +574,7 @@
         </p>
 
         <blockquote>
-            v = c / (1 + z)
+            <img src="img/rd-2.png" >
         </blockquote>
 
         <p>
@@ -586,11 +582,11 @@
         </p>
 
         <blockquote>
-            c / (1 + z) = c / (1 + HD)<sup>2</sup>
+            <img src="img/rd-3.png" >
             <br><br>
-            1 + z = (1 + HD)<sup>2</sup>
+            <img src="img/rd-4.png" >
             <br><br>
-            sqrt(1 + z) = 1 + HD
+            <img src="img/rd-5.png" >
         </blockquote>
 
         <p>
@@ -598,7 +594,7 @@
         </p>
 
         <blockquote>
-            D = (sqrt(1 + Z) - 1) / H
+            <img src="img/rd-6.png" >
         </blockquote>
 
         <p>
@@ -606,9 +602,9 @@
         </p>
 
         <blockquote>
-            1 + z = 1 + 2HD + HD<sup>2</sup>
+            <img src="img/rd-7.png" >
             <br><br>
-            z = HD<sup>2</sup> + 2HD
+            <img src="img/rd-8.png" >
         </blockquote>
 
         <p>
@@ -805,7 +801,7 @@
     </li>
 
     
-    <!-- too big -->
+    <!-- too big 
 
     <li>
         Daniel Pomarède et al 2020 ApJ 897 133 
@@ -825,7 +821,7 @@
     </li>
     <li>
         Horvath, Istvan; Bagoly, Zsolt; Hakkila, Jon; Tóth, L. Viktor (2014). "Anomalies in the GRB spatial distribution". <i>Proceedings of Science</i>: 78. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1507.05528">1507.05528</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014styd.confE..78H">2014styd.confE..78H</a>.
-    </li>
+    </li>-->
 
     <li>
         Jones, David, "Crisis in Cosmology: Measuring The Local Value of the Hubble Constant"  
