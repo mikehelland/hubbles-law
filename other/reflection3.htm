@@ -57,7 +57,7 @@
                                     document.getElementById("o-y").value * 1]
 
                 var photons = []
-                var pcount = 81
+                var pcount = 11
                 for (var i  = 0; i < pcount; i++) {
                     let x = i * (canvas.width / (pcount - 1))
                     let y = boundary * res
@@ -68,7 +68,8 @@
                         clock: 0,
                         dx: x / hyp, 
                         dy: y / hyp,
-                        dv    
+                        dv,
+                        capX: x
                     })
 
                 }
@@ -88,12 +89,6 @@
 
                     ctx.fillRect(observerPoint[0], observerPoint[1], 2, 2)
 
-                    ctx.fillStyle = "yellow"
-                    for (var photon of photons) {
-
-                        ctx.fillRect(photon.x * res, photon.y * res, 2, 2)
-
-                    }
 
                     var i = 0
                     for (photon of out) {
@@ -116,6 +111,15 @@
                         
                         ctx.globalAlpha = 1
                     }
+
+                    ctx.fillStyle = "yellow"
+                    for (var photon of photons) {
+
+                        ctx.fillRect(photon.x * res, photon.y * res, 2, 2)
+
+                        ctx.fillText(photon.clock, photon.capX, canvas.height - 5)
+                    }
+
 
                 }
                 var out = []
