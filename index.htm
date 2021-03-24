@@ -47,12 +47,11 @@
         <div class="maintext">
 
 
-        <h1>Hubble's Law as an Inverse Square Law</h1>
-        <h2>A Testable Cosmology with Practical Applications</h2>
-        
+        <h2>A Redshift-Distance Relation for Modern Data</h2>
+
         <p>A change to Hubble's law provides a new cosmology that fits the observed acceleration
-            of redshifts using distance, the speed of light, and a static 
-            Hubble constant with zero other parameters.<!-- The CMB is proposed to be not of cosmological origin,
+            of redshifts using distance, the speed of light, and one static 
+            constant with zero other parameters.<!-- The CMB is proposed to be not of cosmological origin,
             but a consequence of the conservation of energy and thermodynamics applied to the redshifted energy of photons. -->
             Testing the hypothesis is presently feasible and would yield working practical technology 
             if confirmed.</p>
@@ -69,7 +68,9 @@
         To demonstrate this, here's a model of targets placed in space 100 million light years apart. A photon is emitted, and in the static universe (blue) the photon reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
         </p>
 
-        <p class="pimg"><img src="img/graph_time_expanding.png" width="400"><img src="img/graph_time_vcHD.png" width="400"></p>
+        <p class="pimg"><img src="img/graph_time_expanding.png" width="300"><img src="img/graph_time_vcHD.png" width="300">
+            <br>expanding space (left), decelerating photon (right)
+        </p>
 
 
         <p>
@@ -81,7 +82,9 @@
         When the photon's speed deceases, I can use the wavelength and the new speed to calculate a new frequency (frequency = velocity / wavelength). And with a new frequency, and I calculate the redshifts, and see they match.
         </p>
 
-        <p class="pimg"><img src="img/graph_z_expanding.png" width="400"><img src="img/graph_z_vcHD.png" width="400"></p>
+        <p class="pimg"><img src="img/graph_z_expanding.png" width="300"><img src="img/graph_z_vcHD.png" width="300">
+            <br>expanding space (left), decelerating photon (right)
+        </p>
 
         <p>
         The code for calculating the time delays and redshifts is here: <a href="modeling_expansion.htm">Modeling Expansion</a>.
@@ -94,12 +97,17 @@
         </p>
 
         <p>
-        With that in mind, I considered the mock-expansion idea and different ways to change it. A photon in the mock expansion model begins with a velocity of c that decreases by HD as it travels. Something similar happens if, rather than subtract HD from c, you divide c by 1 + HD. At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
+        I decided to investigate this by changing the mock-expansion model in different ways and seeing the affect to the time delays produced. 
+        A photon in the mock-expansion model begins with a velocity of c and subtracts HD as it travels. 
+        If rather than subtract HD from c, you divide c by 1 + HD, you get a similar but not equal result. 
+        At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
         </p>
 
         <p>
-        Hubble's constant usually has units of km/s/Mpc, which works out to units of inverse time. Those units no longer work for v=c/(1+HD). This requires new units that are of inverse distance. 
-        Using the form v=c/(1+D/H) inverts the inverse distance to just plain distance, and ends up being much more intuitive.
+        Hubble's constant, H<sub>0</sub> has units of km/s/Mpc. Those units no longer work for v=c/(1+HD). So H will refer to a different constant 
+        than the traditional Hubble's constant, H<sub>0</sub>, and it will have different units.
+        One more change is to put the equation into the form v=c/(1+D/H). Having D/H puts H in units of distance, rather than inverse distance, which ends up being much more intuitive to work with.
+
         </p>
 
         <p>
@@ -181,20 +189,27 @@
         </p>
 
         <p>To demonstrate this, I built two models of light reflecting off a mirror. The first using Fermat's least time principle. The second 
-            using Feynman path integrals. These demonstrated the problem. 
+            using Feynman path integrals. These demonstrated the problem. The hypothesis cannot be as simple as "cosmologically redshifted photons are moving slower."
         </p> 
 
         <hr>
 
-        <h3>Photons and Reflection</h3>
+        <h3>Photons and Time</h3>
 
         <p>
-            For the purpose of solving the reflection problem, imagine a non-relativistic space. In this space there are observers who experience time according to one master clock.
-            In this space there are also photons, and each photon has its own clock. Similar to relativity, but not quite. Every photon's clock begins synced with the master 
-            clock, but falls off with distance, at a rate of 1/(1 + D/H)<sup>2</sup> which is equal to 1/(1 + z). This is derived in a later section.
+            For the purpose of solving the reflection problem, imagine a non-relativistic space with observers who experience time according to one master clock.
+            In this space there are also photons, and each photon has its own clock, but not like in relativity. 
+            Every photon's clock begins synchronized with the master 
+            clock, but falls off with distance, at a rate of 1/(1 + D/H)<sup>2</sup>. The photon will move at c according to this clock. 
         </p>
 
-        <p>Previously, the code for the model of the decelerating photon looked like this:</p>
+        <p>The hypothesis is no longer that cosmologically redshifted light is simply moving slow, but cosmologically redshifted photons expereince time at a different rate 
+            than typical photons.
+        </p>
+
+        <img src="img/dt1.png">
+
+        <p>To demonstrate, the code for the model of the decelerating photon looked like this:</p>
         
         <pre>    photon.dx = c / Math.pow(1 + photon.x / H, 2)</pre>
 
@@ -208,7 +223,11 @@
     
     // add that time slice to the photon's clock
     photon.clock += dt
+        </pre>
 
+        <p>The photon then advances at c based on how much time has elapsed on its clock:</p>
+        
+        <pre>
     // move the photon at the speed of light for the time slice
     photon.dx = c * dt
         </pre>
@@ -224,9 +243,10 @@
         <p>Now when we run the problem demonstration of Fermat's least time principle, rather than choose the photon that arrived first according to the master clock,
             we choose the photon whose clock has the lowest reading. 
         </p>
-
         
         <p>Try it: <a href="other/reflection3.htm">Reflection in classical physics</a></p>
+
+        <p class="pimg"><img src="img/fltp.gif"></p>
 
         <p>When run, photons reflect at the same angle as photons moving at c in a vacuum, no longer demonstrating a problem with the hypothesis.
             This works because the least time principle always favored the photons that hit the mirror first when a speed increase was involved. If a photon was 
