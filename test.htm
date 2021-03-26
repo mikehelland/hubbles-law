@@ -182,7 +182,7 @@ var zs = [
   ]
 
     var outputDiv = document.getElementById("output")
-    var trunc = n => Math.trunc(n * 1000) / 1000
+    var trunc = n => Math.trunc(n * 10000) / 10000
     var output = (model, photon) => {
         outputDiv.innerHTML += (model.label || model.name) + ", " + 
                                 "t=" + model.t.toString().padEnd(8) + " d=" + 
@@ -581,7 +581,7 @@ var zs = [
         color: "white", 
         H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+        photon: {x: 0, dx: c, f_start: 6e5},
         next: function () {
             this.photon.dx = c + this.photon.x * this.H / 1000
             this.photon.x += this.photon.dx
@@ -594,7 +594,25 @@ var zs = [
             }
         }
     })
-
+    setupModel({
+        name: "v<sub>target</sub> = H &times; proper, v<sub>light</sub> = c + H &times; x",
+        label: "expand2",
+        color: "red", 
+        H: 0.0756,
+        unitH: "ly/y/Mly",
+        photon: {x: 0, dx: c, f: 6e5, w: 299792458/6e5, f_start: 6e5},
+        next: function () {
+            this.photon.dx = c + this.photon.x * this.H / 1000
+            this.photon.x += this.photon.dx
+            var w = this.photon.dx * this.photon.w //(this.photon.dx * 299792458 / this.photon.f_start) 
+            this.photon.f = 299792458 / w
+    
+            //this.photon.x += c + this.photon.x * this.H / 1000
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].x += this.targets[i].x * this.H / 1000
+            }
+        }
+    })
     setupModel({
         div: document.getElementById("redshift1"),
         name: "v<sub>light</sub> = c - H &times; D",
@@ -602,7 +620,7 @@ var zs = [
         color: "green", 
         H: 0.0756,
         unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+        photon: {x: 0, dx: c, f: 6e5, w: 299792458/6e5, f_start: 6e5},
         //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.photon.x
@@ -783,19 +801,38 @@ var zs = [
         div: document.getElementById("redshift2"),
         name: "photontime",
         color: "white", 
-        H: 0.04,
+        H: 0.0756,
         unitH: "Gly<sup>-1</sup>",
         photon: {x: 0, dx: c, f: 6e5, w: 500.68, f_start: 6e5, clock: 0},
         next: function () {
-            this.photon.dt = 1 / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+            //this.photon.dt = 1 / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+            this.photon.dt = 1 - this.H / 1000 * this.photon.x
             this.photon.clock += 0
             this.photon.dx = c * this.photon.dt
             this.photon.x += this.photon.dx
-            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-
+            this.photon.f = this.photon.f_start * this.photon.dt //(this.photon.dx * 299792458 / this.photon.w) 
+            //
         }
     })
 
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "photontime+",
+        color: "pink", 
+        H: 0.0756,
+        unitH: "Gly<sup>-1</sup>",
+        photon: {x: 0, dx: c, f: 6e5, w: 299792458/6e5, f_start: 6e5, clock: 0},
+        next: function () {
+            //this.photon.dt = 1 / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
+            this.photon.dt = 1 + this.H / 1000 * this.photon.x
+            this.photon.clock += 0
+            this.photon.dx = c * this.photon.dt
+            var w = this.photon.w * this.photon.dx
+            this.photon.x += this.photon.dx
+            this.photon.f = 299792458 / w 
+            //this.t = this.t - 1 + this.photon.dt
+        }
+    })
     /*setupModel({
         div: document.getElementById("redshift2"),
         name: "f = f' / (1 + H &times; D)<sup>2</sup>",

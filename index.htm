@@ -39,7 +39,10 @@
                 cursor: pointer;
             }
 
+            td {padding: 10px;}
+
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
     </head>
 
     <body>
@@ -47,79 +50,240 @@
         <div class="maintext">
 
 
-        <h2>A Redshift-Distance Relation for Modern Data</h2>
+        <h2>Expanding Time Cosmology</h2>
 
-        <p>A variation of Hubble's law provides a new cosmology that fits the observed acceleration
-            of redshifts using distance, the speed of light, and one static 
-            constant with zero other parameters.<!-- The CMB is proposed to be not of cosmological origin,
-            but a consequence of the conservation of energy and thermodynamics applied to the redshifted energy of photons. -->
+        <p>
+            A model of expanding time in a stationary universe is shown to match the travel times and redshifts 
+            produced by a model of expanding space.
+            This model can be easily adapted to match the observed acceleration of redshifts with zero additional parameters.
+            This results in a new redshift-distance relation with a constant that has units that differ from Hubble's constant, H<sub>0</sub>.
             Testing the hypothesis is presently feasible and would yield working practical technology 
             if confirmed.</p>
 
-            <hr>
+            <h3>Introduction</h3>
 
-        <h3>Background</h3>
+            <p>Current measurements of the expansion rate of the universe don't agree[1][2][3][4], and hundreds of solutions have been proposed[5]. 
+                The hypothesis proposed here is that space does not expand between galaxies, but time does.
+                The idea is first introduced in a non-relativistic universe that expands linearly.
+                Second, the hypothesis is shown to lend itself to non-linear variations, one of which matches the observations of an accelerating universe.
+                Third, a discussion of the hypothesis in a relativistic universe.</p>
 
-        <p>
-        Many years ago I found a simple way to mimic the expansion of space in a physics model. It's based on the fact that as space expands, the travel time to a distant galaxy increases. One consequence of the expansion of space is, loosely speaking, that time expands too: increasing distances means increasing durations. 
-        </p>
+        <h3>Linearly Expanding Space</h3>
 
-        <p>
-        To demonstrate this, here's a model of targets placed in space 100 million light years apart. A photon is emitted, and in the static universe (blue) the photon reaches a new target every 100 million years, while in an expanding universe (white), the photon is lagging behind. 
-        </p>
-
-        <p class="pimg"><img src="img/graph_time_expanding.png" width="300"><img src="img/graph_time_vcHD.png" width="300">
-            <br>expanding space (left), decelerating photon (right)
-        </p>
-
+        <p>To understand the expanding time hypothesis, let's first make a basic model of expanding space.</p> 
 
         <p>
-        The trick is, rather than place everything in the physics model in motion away from everything else, these time delays could be exactly reproduced by just slowing down the photon (green).
+            Due to the expansion of space, it will take a photon longer than 100 million years (My) to reach a galaxy that is presently 100 million light years (Mly) away.
+            The increase in travel time is accompanied with a decrease in energy called cosmological redshift.
+            To compute the time delays and redshifts, a computer model is used that places a series of targets 100 Mly apart. 
+            A photon is emitted when the model starts, and the time is logged when the photon reaches a target. Everything in the model is moving away 
+            from the photon's source according to Hubble's law, v=H<sub>0</sub>D. This stretches the wavelength of the photon, allowing us to calculate the redshift (z)
+            using (wavelength_observed - wavelength_original) / wavelength_original.
+        </p>
+        
+        <p>The timestep for the program is 1 My, and the speed of light is 1 Mly/My.
+            The value used here for H<sub>0</sub> (variable "H0" in the code) is 74 km/s/Mpc, the often cited SH0ES team measurement. 
+            This is first converted to km/s/Mly, or 22.69 km/s/Mly. This is then converted to Mly/My/Mly so 
+            it fits with the units of time and the natural units of the speed of light used, which is 
+            0.0000756 Mly/My/Mly. 
+        </p>
+
+        <details>
+            <summary>Show Source Code (Javascript)</summary>
+        <pre><code>
+    c = 1                 // Mly / My
+    H0 = 0.0000756        // Mly / My / Mly
+    photon = {
+        x: 0,             // distance traveled in Mly
+        wavelength: 500   // original wavelength in nm
+    }
+
+    // create targets at distance 100 Mly apart
+    nextTarget = 0
+    targets = []
+    for (var i = 100; i &lt;= 10000; i+=100) 
+        targets.push({x: i, start: i})
+    
+    // time starts at zero
+    t = 0
+    while (targets[nextTarget]) {
+
+        // increment time by 1 My
+        t++               
+
+        // move the photon forward at c + H0 * D
+        dx = c + photon.x * H0  
+        photon.x += dx
+
+        // the expansion of space stretches the wavelength
+        wavelength = photon.wavelength * dx
+        
+        // calculate z using the current and original wavelength
+        z = (wavelength - photon.wavelength) / photon.wavelength
+    
+        // move the targets 
+        for (target of targets) 
+            target.x += target.x * H0
+
+        // if the photon has reached a target
+        if (targets[nextTarget].x &lt;= photon.x) {
+            
+            //output the time, the distance, and the z
+            console.log(t, targets[nextTarget].start, z)
+            nextTarget++        
+        }
+    }</code></pre>
+        </details>
+        
+        <p>
+
+            The time it takes to reach a target in expanding space is shown in white in Figure 1. The blue line 
+            shows the time to the target without the expansion of space.
+            The redshifts are shown in Figure 2.
+        </p>
+
+        <p class="pimg"><img src="img/graph_time_expanding.png" width="300"><img src="img/graph_z_expanding.png" width="300">
+            <br>Figure 1. (Left) Time delays in an expanding universe (white) compared to a static universe (blue) 
+            <br>
+            Figure 2. (Right) Redshifts in an expanding universe
+        </p>
+
+        <h3>Linearly Expanding Time</h3>
+
+        <p>
+            Now let's compare that to a model with the same time delays, but where the distance between galaxies does not increase.
+            In such a model, the photon's experience of time will deviate from the master clock of the non-relativistic model. 
+            In a relativistic universe, the photon does not experience time, which will be discussed in a later section. For now, we will consider the photon to have a clock 
+            that begins synchronized with the model's master clock and gradually falls behind by some constant. 
+            For this to work, the constant involved cannot have the same units as Hubble's constant, H<sub>0</sub>. To show that this is not the traditional Hubble's constant,
+            H<sub>0</sub>, the subscript 0 is dropped and the constant is referred to only as H. H will have the units of years per million light years.
+        </p>
+
+        <p>In this model, the photon experiences a time interval of &#916;t' that is a function of its distance D:
+        </p>
+
+        <blockquote>
+        <img src="img/eq-dt=dt-HD.png">
+        </blockquote>
+
+        <p>Here &#916;t represents the time interval that passes on the master clock, and H=0.0000756 My/Mly. When H is multiplied by D in Mly, the Mly cancel out,
+            For D=1 Mly, HD=0.0000756 My, which is subtracted from the model's timestep, &#916;t, of 1 My, resulting in &#916;t'.</p>
+            
+        <p>The photon then advances at c for a time of &#916;t':</p>
+
+        <blockquote>
+        <img src="img/eq-dx=cdt.png">
+        </blockquote>
+
+        <p>The photon will still move at c, according to the time that it thinks has passed. But the photon is actually moving at less than c compared to the time 
+            that passes on the master clock.
+            The photon will also oscillate at its original frequency compared to the time it thinks has passed. For an original frequency &nu; and original wavelength 
+            &lambda;, the new frequency &nu;' is: 
+        </p>
+
+        <blockquote>
+        <img src="img/eq-nu.png">
+        </blockquote>
+
+        <p>To the photon, it is oscillating at its original frequency and traveling at c. But to the master clock, which hasn't slowed down,
+            the photon will be oscillating at a lower frequency and traveling at less than c. Comparing the original frequency and the observed frequency,
+            gives us the redshift (z).
+        </p> 
+
+        <details>
+            <summary>Show Source Code (Javascript)</summary>
+        <pre><code>
+    c = 1                 // Mly / My
+    H = 0.0000756         // My / Mly
+    photon = {
+        x: 0,             // distance traveled in Mly
+        frequency: 6e5    // original frequency in hz
+    }
+
+    // create targets at distance 100 Mly apart
+    nextTarget = 0
+    targets = []
+    for (var i = 100; i &lt;= 10000; i+=100) 
+        targets.push({x: i, start: i})
+
+    // time starts at zero
+    t = 0
+    while (targets[nextTarget]) {
+
+        // increment the master clock by 1 My
+        t++
+
+        // find the time interval experienced by the photon for this distance
+        dt = 1 - photon.x * H
+
+        // move the photon forward at c for the time interval
+        dx = c * dt  
+        photon.x += dx
+
+        // calculate the photons frequency over this interval
+        frequency = photon.frequency * dt
+        
+        // calculate z using the current and original frequency
+        z = (photon.frequency - frequency) / frequency
+        
+        // if the photon has reached a target
+        if (targets[nextTarget].x &lt;= photon.x) {
+            
+            //output the time, the distance, and the z
+            console.log(t, photon.x, z)
+            nextTarget++        
+        }
+    }
+</code></pre>
+        </details>
+
+        <p>Using the same value for H as we did for H0 in the previous code (but using different units) produces the same
+            time delays and redshifts as the model of expanding space, as shown in Figures 3. and 4.
+        </p>
+            
+
+        <p class="pimg"><img src="img/graph_time_vcHD.png" width="300"><img src="img/graph_z_vcHD.png" width="300">
+            <br>Figure 3. (Left) Time delays in the expanding time hypothesis (green) compared to a static universe (blue) 
+            <br>
+            Figure 4. (Right) Redshifts in the expanding time hypothesis
         </p>
 
         <p>
-        In a simple expanding universe, everything moves away from the observer at v=H<sub>0</sub>D. In this mock-expansion model, the photon's velocity is v=c-HD. This just moves HD from one velocity to another. 
-        When the photon's speed deceases, I can use the wavelength and the new speed to calculate a new frequency (frequency = velocity / wavelength). And with a new frequency, and I calculate the redshifts, and see they match.
-        </p>
 
-        <p class="pimg"><img src="img/graph_z_expanding.png" width="300"><img src="img/graph_z_vcHD.png" width="300">
-            <br>expanding space (left), decelerating photon (right)
+        <h3>Accelerating Redshifts</h3>
+        
+        <p>
+        Modern measurements of redshifts and distances differ from the predictions of the basic expanding models in the previous section.
+        The current expansion rate seems to be faster than it was in the past.
         </p>
 
         <p>
-        The code for calculating the time delays and redshifts is here: <a href="modeling_expansion.htm">Modeling Expansion</a>.
-        </p>
-
-        <hr>
-        <h3>The Expansion Rate of the Universe</h3>
-        <p>
-        Recently, the question of "how fast is space expanding, exactly?" has become something of a mystery.<sup>[1][2][3][4]</sup> The current expansion rate seems to be faster than it was in the past.
+        The expanding time model in the previous section was meant to identically mimic Hubble's law.
+        If Hubble's law needs extra parameters, such as dark energy, to fit the modern observational data,
+        then identically mimicking Hubble's law is no longer necessary. 
         </p>
 
         <p>
-        I decided to investigate this by changing the mock-expansion model in different ways and seeing the affect to the time delays produced. 
-        A photon in the mock-expansion model begins with a velocity of c and subtracts HD as it travels. 
-        If rather than subtract HD from c, you divide c by 1 + HD, you get a similar but not equal result. 
-        At first, when D=0, v=c/(1+0), which is v=c. As HD gets bigger, v gets smaller.
+            A photon in the linearly expanding time model experiences a time interval of &#916;t - HD.
+            Since the expanding time model is no longer restricted by a linear Hubble's law, 
+            other forms can be explored. For example, we can divide &#916;t by 1 + HD, rather than subtract, and get the same basic effect as D increases. 
         </p>
 
         <p>
-        Hubble's constant, H<sub>0</sub> has units of km/s/Mpc. Those units no longer work for v=c/(1+HD). So H will refer to a different constant 
-        than the traditional Hubble's constant, H<sub>0</sub>, and it will have different units.
-        One more change is to put the equation into the form v=c/(1+D/H). Having D/H puts H in units of distance, rather than inverse distance, which ends up being much more intuitive to work with.
-
+        In the form of 1 + HD, the constant H must have the units of inverse distance. To make this more intuitive, we're going to break with the tradition 
+        of multiplying distance by a constant, and instead divide distance by a constant, giving us 1 + D/H and giving the constant H units of distance.
         </p>
 
         <p>
         By putting variations on a theme, I devised similar but different mathematical models to compare:
         </p>
 
-        <ul>
-        <li> hypothesis 1: v = c - HD</li>
-        <li> hypothesis 2: v = c / (1 + D/H)</li>
-        <li> hypothesis 3: v = c / (1 + D/H)<sup>2</sup></li>
-        <li> hypothesis 4: v = c / (1 + (D/H)<sup>2</sup>)</li>
-        </ul>
+        <table>
+        <tr><td> hypothesis 1: </td> <td><img src="img/eq-dt=dt-HD.png" alt="dt' = dt - HD"></td></tr>
+        <tr><td> hypothesis 2: </td> <td><img src="img/eq-dt-inverse.png" alt="dt' = dt / (1 + D/H)"></td></tr>
+        <tr><td> hypothesis 3: </td> <td><img src="img/eq-dt-inverse_square.png" alt="dt' = dt / (1 + D/H)^2"></td></tr>
+        <tr><td> hypothesis 4: </td> <td><img src="img/eq-dt-inverse_square2.png" alt="dt' = dt / (1 + (D/H)^2)"></td></tr>
+        </table>
 
 
         <p>
@@ -130,165 +294,78 @@
         <p class="pimg">
             <img width="400" src="img/timedelays4.png"><img width="400" src="img/supernovae4.png">
             <br>
-            Hypothesis 1, H=74 km/s/Mpc (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
+            Hypothesis 1, H=75.6 y/Mly (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
             Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
         </p>
 
         <p>Try it: use your own values for H on the <a href="test.htm">testing page</a> and the <a href="other/supernovae.htm">supernovae testing page</a>.</p>
 
-        <p>
-        This mock-expansion idea, though, violates a fair amount of the established laws of physics. The question then became, how could this inverse square version of mock-expansion be converted into an actual expansion model? The answer to this question is that objects in the universe are moving away at velocity v = c - c / (1 + D/H)<sup>2</sup>. Such a universe, however, cannot exist. If the expansion of space is not linear, then different observers will determine the same part of space to be expanding at different rates.
-        </p>
+        <h3>A New Redshift-Distance Relation</h3>
 
-        <p>
-        Although the inverse square variation looked promising for a moment, it appears to be a dead end. That is, unless hypothesis 3 is taken seriously 
-        and the conflicts with established physics can be resolved.
-        </p>
-
-        <hr>
-
-        <h3>Photon Velocity</h3>
-
-        <p>The redshifts in this hypothesis are not caused by the expansion of space, or other interactions as in tired light theories (discussed in a later section).
-            The redshifts are interpreted as their own phenomenon that is as fundamental to nature as inertia. 
-            Light from distant galaxies is observed to be redshifted because light redshifts with distance. 
-        </p>
-
-        <p>The decelerating photon hypothesis is that cosmological redshifts indicate new physics for a photon:</p>
-
-        <ol>
-            <li>A photon loses frequency as it travels cosmological distances, but with no change to wavelength, resulting in a loss of speed, according to v=c/(1+D/H)<sup>2</sup></li>
-            <li>The energy of a photon absorbed by matter is emitted as a new photon with D=0, and therefore v=c and an elongated wavelength.</li>
-        </ol>
-
-        <!--<p>Taken on their own, each phenomenon would constitute a violation of the conservation of momentum. First losing momentum when the photon redshifts.
-            Second, gaining momentum when the photon is absorbed and re-emitted. Together, however, the momentum lost during redshifting is recovered when 
-            the photon is absorbed and re-emitted to begin a new journey. 
-        </p>
-        -->
-        
-        <p>In this interpretation of the redshifts, the frequency decreases while the photon is in flight, and the wavelength increases at the beginning of a new photon's 
-            journey. This is different from the expanding theory where frequency and wavelength change together without affecting the photon's velocity.</p>
-
-
-        <p>This poses a number of conflicts with existing physics. One of the most illustrative issues involves the Hubble Space Telescope (HST) and Snell's law. </p>
-
-        <p>
-            The hypothesis says that the photon travels at less than c, and then after interacting with matter,
-            new photons that travel at c are emitted. If decelerated photons reach a mirror and change speed, 
-            the photon's motion can be compared to that of light changing mediums.
-        </p>
-
-        <p>This would result in a change to the angle at which decelerated light reflected off a mirror, which would 
-            be relevant in the case of the HST observing highly redshifted galaxies. 
-        </p>
-
-        <p>One would expect then, that if redshifted photons are traveling at less than c, the HST would not be able to resolve 
-            them at the expected angles with any clarity. Since the HST does resolve such galaxies, light must be reflecting normally,
-            which means the photons have to be moving at c, invalidating the hypothesis.
-        </p>
-
-        <p>To demonstrate this, I built two models of light reflecting off a mirror. The first using Fermat's least time principle. The second 
-            using Feynman path integrals. These demonstrated the problem. The hypothesis cannot be as simple as "cosmologically redshifted photons are moving slower."
+        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, because it fits the acceleration 
+            of the redshifts, it can be used as an accurate predictor of z and distance given one or the other. The hypothesis is:
         </p> 
 
-        <hr>
-
-        <h3>Redshift and Time</h3>
+        <blockquote>
+            <img src="img/eq-dt-inverse_square.png" alt="dt' = dt / (1 + D/H)^2">
+        </blockquote>
 
         <p>
-            For the purpose of solving the reflection problem, imagine a non-relativistic space with observers who experience time according to one master clock.
-            In this space there are also photons, and each photon has its own clock, but not like in relativity. 
-            Every photon's clock begins synchronized with the master 
-            clock, but falls off with distance, at a rate of 1/(1 + D/H)<sup>2</sup>. The photon will move at c according to this clock. 
+        When used to calculate redshifts, the standard pattern arises that at z=1, &#916;t'=0.5&#916;t, and at z=2, &#916;t'=0.333&#916;t, and so on, such that:
         </p>
 
-        <p>The hypothesis is no longer that cosmologically redshifted light is simply moving slow, but cosmologically redshifted photons expereince time at a different rate 
-            than typical photons.
-        </p>
+        <blockquote>
+            <img src="img/rd-2.png" >
+        </blockquote>
 
-        <img src="img/dt1.png">
-
-        <p>To demonstrate, the code for the model of the decelerating photon looked like this:</p>
-        
-        <pre>    photon.dx = c / Math.pow(1 + photon.x / H, 2)</pre>
-
-        <p>The hypothesis was directly changing the velocity based on distance. To solve our problems, we'll approach this slightly differently. The photon needs a clock 
-            that starts at zero, and this is what the hypothesis directly changes, like so:
-        </p>
-
-        <pre>    
-    // find out the time slice for a photon at this distance
-    dt = 1 / Math.pow(1 + photon.x / H, 2)
-    
-    // add that time slice to the photon's clock
-    photon.clock += dt
-        </pre>
-
-        <p>The photon then advances at c based on how much time has elapsed on its clock:</p>
-        
-        <pre>
-    // move the photon at the speed of light for the time slice
-    photon.dx = c * dt
-        </pre>
-        
         <p>
-            The photon will actually always be traveling at c according to its own clock. But since that clock gradually runs slower than the master clock, 
-            the photon appears to decelerate according to the observers in the model.
+        Therefore:
         </p>
 
-        <p>When the photon hits the mirror, it will be emitted as a new photon with D=0, causing dt=1, causing the v=c, and creating an elongated wavelength.
+        <blockquote>
+            <img src="img/rd-3.png" >
+            <br><br>
+            <img src="img/rd-4.png" >
+            <br><br>
+            <img src="img/rd-5.png" >
+        </blockquote>
+
+        <p>
+        Solving for D we get:
         </p>
 
-        <p>Now when we run the problem demonstration of Fermat's least time principle, rather than choose the photon that arrived first according to the master clock,
-            we choose the photon whose clock has the lowest reading. 
-        </p>
-        
-        <p>Try it: <a href="other/reflection3.htm">Reflection in classical physics</a></p>
+        <blockquote>
+            <img src="img/rd-6.png" >
+        </blockquote>
 
-        <p class="pimg"><img src="img/fltp.gif"></p>
-
-        <p>When run, photons reflect at the same angle as photons moving at c in a vacuum, no longer demonstrating a problem with the hypothesis.
-            This works because the least time principle always favored the photons that hit the mirror first when a speed increase was involved. If a photon was 
-            the first to reflect and gain a higher speed, it had a considerable advantage over the other photons traveling at the slower speed. In the updated 
-            demonstration, the time is measured by each photon's clock, which changes speed when the photon hits the mirror. For the photon that hits the mirror first,
-            the speed boost no longer provides an advantage, because the photon's clock speed will have increased too, canceling out any advantage being first to the 
-            region once held.
+        <p>
+        And solving for z we get:
         </p>
 
-        <p>A similar resolution can be added to Feynman's path integral in quantum electrodynamics. Each photon has a clock, which provides the time slice to be used.
-            Photons that are redshifted have slow clocks dt&lt;1, when they are reflected as fresh photons, their clock speed returns to dt=1.
-        </p>
+        <blockquote>
+            <img src="img/rd-7.png" >
+            <br><br>
+            <img src="img/rd-8.png" >
+        </blockquote>
 
-        <p>Accounting for the difference in dt before and after the reflection, the problem demonstration again shows there is no problem at all. </p>
-
-        <p>Try it: <a href="other/reflection_nm.htm">Reflection in quantum electrodynamics</a></p>
-
-        <p class="pimg"><img src="img/qed.gif"></p>
-
-        <p>As you can see, the combination of increasing the wavelength and dt produces an interesting wave effect in the dials of the bottom simulation, 
-            before settling on the exact same phases we would expect for a photon moving at c.
+        <p>
+        These formulas predict the observed z and D of a galaxy in an expanding universe that is accelerating, without a cosmological constant or dark energy.
         </p>
         
-        <p>This shows the hypothesis that time slowing down for a photon over cosmological distances is compatible with classical and quantum theories of light.</p>
+        <h3>Expanding Time in Relativity</h3>
         
-        <hr>
-        <h3>The Geometry of Spacetime</h3>
-        
-        <p>In a relativistic universe, every observer has their own clock, and so does every object. The photon has a clock in relativity, but it always reads zero.
-            The photon is said not to experience time. In that case it would be tempting to reverse the situation from the previous solution. Instead of the photon's 
-            clock gradually slowing down, a relativistic photon's clock begins standing still, and gradually gets faster.
+        <p>In a relativistic universe, every observer has their own clock, and so does every object. 
+            The photon, however, is said not to experience time. It must follow a light-like path, the null geodesic. 
         </p>
 
-        <p>But the speed of light in a relativistic universe is hardcoded into the geometry of spacetime. A massless particle cannot just slow down in a vacuum; 
-            it must follow a light-like path, the null geodesic. 
-            A photon that experiences time would veer off of the null geodesic with a time-like trajectory. This can be demonstrated by looking at the lightcones 
-            made by such a photon.
+        <p>
+            In the expanding time hypothesis, either cosmologically redshifted photons veer off the null geodesic in a time-like direction, or the geometry of spacetime 
+            changes at cosmological scales without changing in size. 
         </p>
 
         <p class="pimg"><img src="img/lightcones.png" width="500">
             <br>
-            Blue: basic spacetime, Green: expanding universe and v=c-HD, Red: v=c/(1+D/H)<sup>2</sup>
+            Blue: basic spacetime, Green: hypothesis 1, Red: hypothesis 3
         </p>
         
         <p>In a basic spacetime, all the photon geodesics will be parallel or perpendicular, shown left in the image below. What's proposed here is that every point in spacetime 
@@ -299,37 +376,14 @@
         <p class="pimg"><img src="img/geometry_compare.png" >
         
         <p>
-            If the geometry of spacetime is changed in this way, the observed accelerating redshifts are produced. 
+            A photon begins on a null geodesic, traveling at c, with its clock standing still. As it travels cosmological distances,
+            its clock moves, and it experiences time, very slowly, when compared to observer clocks.  
         </p>
         
 
         <hr>
         <h3>Observational Cosmology</h3>
 
-        <details>
-            <summary>This is the Tired Light Theory, which is discredited</summary>
-
-
-            <p>The expanding model has been challenged by hundreds of non-expanding theories, and all of them have failed.
-                These theories propose different ways light can interact with matter or other forces to reduce the light's energy, and they are known
-                as <a href="https://en.wikipedia.org/wiki/Tired_light">tired light</a> theories.
-            </p>
-            
-            <p>Light loses energy in the tired light theories, but it never loses speed as the theories are consistent with special relativity. 
-                Because tired light moves at c, there are no time delays in a photon's journey
-                like there are in the expanding model or the decelerating photon hypothesis. 
-                Tired light photons match the arrival time of the simple static model (blue in the gif), while 
-                the decelerating photon hypothesis (green) has time delays that match the expanding model (white).
-            </p>
-    
-            <p>In this hypothesis, one could say light <i>does</i> get "tired",  
-                but it does so in a way that is conceptually and mathematically unique to the established 
-                tired light theories.</p>
-
-            
-
-        </details>
-        
         <a name="cmb"></a>
         <details id="a_cmb">
 
@@ -577,60 +631,7 @@
             for different wavelengths, those features could easily be accommodated too.
         </p>-->
 
-        <hr>
-
-        <h3>A New Redshift-Distance Relation</h3>
-
-        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, because it fits the acceleration 
-            of the redshifts, it can be used as an accurate predictor of z and distance given one or the other. The hypothesis is:
-        </p> 
-
-        <blockquote>
-            <img src="img/rd-1.png" >
-        </blockquote>
-
-        <p>
-        When used to calculate redshifts, the standard pattern arises that at z=1, v=0.5c, and at z=2, v=0.333c, and so on, such that:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-2.png" >
-        </blockquote>
-
-        <p>
-        Therefore:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-3.png" >
-            <br><br>
-            <img src="img/rd-4.png" >
-            <br><br>
-            <img src="img/rd-5.png" >
-        </blockquote>
-
-        <p>
-        Solving for D we get:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-6.png" >
-        </blockquote>
-
-        <p>
-        And solving for z we get:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-7.png" >
-            <br><br>
-            <img src="img/rd-8.png" >
-        </blockquote>
-
-        <p>
-        These formulas predict the observed z and D of a galaxy in an expanding universe that is accelerating, without a cosmological constant or dark energy.
-        </p>
-
+        
 
         <hr>
         <h3>Tests and Applications</h3>
@@ -641,7 +642,7 @@
         </p> 
 
         <p>
-            If ancient photons have indeed decelerated, a simple test could be devised using existing technology.
+            If ancient photons are experiencing time differently, and appear to have decelerated in our frame of reference, a simple test could be devised using existing technology.
         </p>
 
         <p>
@@ -883,5 +884,9 @@
                 document.getElementById("a_cmb").open = true
             }
         </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
     </body>
 </html>
