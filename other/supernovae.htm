@@ -174,6 +174,32 @@ var black = true
     var drawnSN = false
 
     var snData = []
+    var zs = [
+    { z: 1, t: 7400, d: 10400 },
+    { z: 2, t: 9880, d: 16400 },
+    { z: 3, t: 11000, d: 20100 },
+    { z: 4, t: 11600, d: 22800 },
+    { z: 5, t: 11900, d: 24700 },
+    { z: 6, t: 12200, d: 26200 },
+    { z: 7, t: 12300, d: 27500 },
+    { z: 8, t: 12400, d: 28500 },
+    { z: 9, t: 12500, d: 29400 },
+    { z: 10, t: 12600, d: 30100 },
+    { z: 11, t: 12700, d: 30700 },
+    { z: 12, t: 12700, d: 31300 },
+    { z: 13, t: 12700, d: 31800 },
+    { z: 14, t: 12800, d: 32300 },
+    { z: 15, t: 12800, d: 32700 },
+    { z: 16, t: 12800, d: 33100 },
+    { z: 17, t: 12800, d: 33400 },
+    { z: 18, t: 12900, d: 33700 },
+    { z: 19, t: 12900, d: 34000 },
+    { z: 20, t: 12900, d: 34300 },
+    { z: 21, t: 12900, d: 34600 },
+    { z: 22, t: 12900, d: 34800 },
+    { z: 23, t: 12900, d: 35000 },
+    { z: 24, t: 12900, d: 35200 },
+    { z: 25, t: 12900, d: 35400 },]
 
     function drawSN() {
         ctxB.lineWidth = 1
@@ -182,6 +208,11 @@ var black = true
 
         ctxB.strokeStyle = !black ? "black" : "white"
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+
+        ctxB.fillStyle = !black ? "black" : "white"
+        for (dgi = 0; dgi < zs.length; dgi++) {        
+            ctxB.fillRect(-2 + offset + zs[dgi].z * 10000 * zoomG, -2 + -offset + graph.height - zs[dgi].d * zoomGY, 4, 4)
+        }
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
@@ -252,7 +283,7 @@ var black = true
             ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
         }
         
-        for (dgi = 0; dgi < 110; dgi+=2) {
+        for (dgi = 0; dgi < 110; dgi+=5) {
             ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
         }
         
