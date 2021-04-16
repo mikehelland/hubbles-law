@@ -97,9 +97,10 @@
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
     <hr>
-    Starting frequency=<input id="start-freq">
+    Starting frequency=<input id="start-freq"> wavelength=<input id="start-wavelength">
     <br>
     Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
+    wavelength=<input id="find-w">
     
     <pre id="output"></pre>
 </div>
@@ -147,6 +148,7 @@ var black = true
     var models = []
 
     var startFreqInput = document.getElementById("start-freq")
+    var startWavelengthInput = document.getElementById("start-wavelength")
     
     
     // the models advance by 1 million years each step
@@ -350,9 +352,16 @@ var black = true
     
         model.ran = false
         model.photon.x = 0
-        model.photon.f_start = startFreqInput.value || model.photon.f_start || 6e5 
-        model.photon.f = model.photon.f_start
-        model.photon.w = 299792458 / model.photon.f
+        
+        if (startWavelengthInput.value) {
+            model.photon.w_start = startWavelengthInput.value * 1
+            model.photon.f_start =  299792458 / model.photon.w_start
+        }
+        else {
+            model.photon.f_start = startFreqInput.value || 6e5 
+            model.photon.w_start = 299792458 / model.photon.f_start
+        }
+        
         model.photon.dx = c
         model.nextTarget = 0
         model.targets = []
@@ -396,6 +405,7 @@ var black = true
         var findD = document.getElementById("find-d").value
         var findZ = document.getElementById("find-z").value
         var findV = document.getElementById("find-v").value
+        var findW = document.getElementById("find-w").value
         var findTarget = document.getElementById("find-target").value
                     
         var x, x2, dx, dx2
@@ -440,6 +450,10 @@ var black = true
                         output(model, model.photon)
                         console.log(model.targets[model.nextTarget-1].dx)
                         findV = 0
+                    }
+                    if (findW && model.photon.w >= findW) {
+                        output(model, model.photon)
+                        findW = 0
                     }
                 
             }
@@ -515,7 +529,8 @@ var black = true
         next: function () {
             this.photon.dx = c - this.H / 1000 * this.photon.x
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w_start) 
+            this.photon.w = 299792458 / this.photon.f
         }
     })
 
@@ -595,7 +610,8 @@ var black = true
         next: function () {
             this.photon.dx = c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            this.photon.f = (this.photon.dx * 299792458 / this.photon.w_start) 
+            this.photon.w = 299792458 / this.photon.f
         }
     })
     setupModel({

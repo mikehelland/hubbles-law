@@ -722,13 +722,26 @@ var black = true
         })
         setupModel({
             div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + (H &times; t)<sup>2</sup>)",
+            name: "v<sub>light</sub> = c / (1 + H &times; t)",
             color: "yellow", 
             H: 0.0826,
             unitH: "Gly<sup>-1</sup>",
             photon: {x: 0, dx: c},
             next: function () {
                 this.photon.dx = c / (1 + Math.pow(this.H / 1000 * this.t, 2))
+                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            }
+        })
+        setupModel({
+            div: document.getElementById("redshift2"),
+            name: "v<sub>light</sub> = c / (1 + H &times; t)<sup>2</sup>",
+            color: "pink", 
+            H: 0.0826,
+            unitH: "Gly<sup>-1</sup>",
+            photon: {x: 0, dx: c},
+            next: function () {
+                this.photon.dx = c /  Math.pow(1 + this.H / 1000 * this.t, 2)
                 this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
             }
@@ -760,77 +773,6 @@ var black = true
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
             }
         })
-        details.appendChild(document.createElement("hr"))
-        
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "f = f' - H &times; D",
-            color: "brown", 
-            H: 40000,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            next: function () {
-                this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
-                this.photon.x += this.photon.f * this.photon.w / 300000000
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "f = f' - H &times; D",
-            color: "lightblue", 
-            H: 32200,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 499654, w: 600, f_start: 499654},
-            //photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-            next: function () {
-                this.photon.f = this.photon.f_start - this.H / 1000 * this.photon.x 
-                this.photon.x += this.photon.f * this.photon.w / 300000000
-            }
-        })
-        
-        // these frequency based models are identical to their velocity counterparts
-        
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "f = f' / (1 + H &times; D)",
-            color: "pink", 
-            H: 0.35,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.68, f_start: 6e5},
-            next: function () {
-                this.photon.f = this.photon.f_start / (1 + this.H / 1000 * this.photon.x)
-                this.photon.x += (this.photon.f) * this.photon.w / 300000000
-
-                //save's a step
-                //this.photon.x += (this.photon.f_start / (1 + this.H / 1000 * this.photon.x)) * this.photon.w / 300000000
-            }
-        })
-
-        
-        /*setupModel({
-            div: document.getElementById("redshift2"),
-            name: "f = f' / (1 + H &times; D)<sup>2</sup>",
-            color: "aqua", 
-            H: 0.15,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-            next: function () {
-                this.photon.x += (this.photon.f / Math.pow(1 + this.H / 1000 * this.photon.x, 2)) * this.photon.w / 300000000
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "f = f' / (1 + (H &times; D)<sup>2</sup>)",
-            color: "lightblue", 
-            H: 0.25,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.68},
-            next: function () {
-                this.photon.x += (this.photon.f / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))) * this.photon.w / 300000000
-            }
-        })*/
     }
 
     setInterval(() => {

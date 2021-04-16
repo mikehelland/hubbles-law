@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="slide">
+
+
+            <div id="runner1">
+                Runner 1
+                <br>
+            </div>
+
+            <div id="runner2">
+                Runner 2
+                <br>
+            </div>
+
+            <div id="runner3">
+                Runner 3
+                <br>
+            </div>
+
+            Redshifts
+            <br>
+            <canvas width="1200" height="350" id="graph"></canvas>
+
+        </div>
+
+
+        <script>
+            var runner1div = document.getElementById("runner1")
+            var runner2div = document.getElementById("runner2")
+            var runner3div = document.getElementById("runner3")
+            var graph = document.getElementById("graph")
+            var gctx = graph.getContext("2d")
+
+            const H = 0.0000756
+            const c = 1
+
+            function setup(params) {
+                var canvas = document.createElement("canvas")
+                var timer = document.createElement("canvas")
+                params.div.appendChild(timer)
+                params.div.appendChild(canvas)
+                
+                canvas.width = 1200
+                timer.width = 80
+                var ctx = canvas.getContext("2d")
+                var tctx = timer.getContext("2d")
+                var race = {
+                    t: 0,
+                    dx: c,
+                    x: 0,
+                    leftFoot: true,
+                    steps: [{leftFoot: true, t: 0, z: 0, x: 0}],
+                    targets: [],
+                    nextTarget: 0
+                }
+
+                for (var i = 0; i < 4200; i+=100) {
+                    race.targets.push({start: i, x: i})
+                }
+
+                var step
+                var target
+                var zoomX = 0.2
+                var zoomY = 400
+
+                var wavelength = 50
+                var nextFlip = wavelength
+                var lastLeft = 0
+
+                race.draw = () => {
+                    canvas.width = canvas.width
+                    ctx.globalAlpha = 0.5
+                    ctx.fillStyle = "white"
+                    for (target of race.targets) {
+                        ctx.fillRect(target.x * zoomX, 0, 1, canvas.height)
+                    }
+                    ctx.globalAlpha = 1
+                    ctx.fillStyle = params.color
+                    gctx.fillStyle = params.color
+                    ctx.beginPath()
+                    for (step of race.steps) {
+                        ctx.fillRect(step.x * zoomX, step.leftFoot ? 40 : 90, 10, 10)
+                        gctx.fillRect(80 + step.t * zoomX, -20 + graph.height - step.z * zoomY, 5, 5) 
+                    }
+
+                    timer.width = timer.width
+                    tctx.strokeStyle = "white"
+                    tctx.beginPath()
+                    tctx.moveTo(timer.width / 2, timer.height / 2)
+                    tctx.lineTo(timer.width / 2 + Math.sin(race.t/100) * 20, timer.height / 2 + Math.cos(race.t/100) * -20)
+                    tctx.stroke()
+
+                    tctx.beginPath()
+                    tctx.arc(timer.width / 2, timer.height / 2, 22, 0, 2*Math.PI)
+                    tctx.stroke()
+                }
+
+                race.next = function () {
+                    if (!race.targets[race.nextTarget]) return
+
+                    race.t++
+
+                    this.x += this.dx
+                    params.next(race)
+
+                    if (params.flipByTime ? this.t >= nextFlip : this.x >= nextFlip) {
+                        this.leftFoot = !this.leftFoot
+                        let step = {leftFoot: this.leftFoot, t: this.t, x: this.x}
+                        
+                        if (params.flipByTime) {
+                            let lastStep = this.steps[this.steps.length - 1]
+                            step.z = ((this.x - lastStep.x) - wavelength) / wavelength 
+                        }
+                        else {
+                            let lastStep = this.steps[this.steps.length - 1]
+                            var f = 1 / (this.t - lastStep.t)
+                            step.f = f
+                            step.z = (1/wavelength - f) / f 
+                        
+                        }
+                        nextFlip += wavelength
+                        
+                        this.steps.push(step)
+                    }
+                    
+                    
+                    if (race.targets[race.nextTarget].x < race.x) {
+                        race.targets[race.nextTarget].hit = race.t
+                        race.nextTarget++
+                    }
+                }
+
+                return race
+            }
+
+            var runner2 = setup({color: "blue", div: runner2div, flipByTime: true, next: race => {
+                for (race.target of race.targets) {
+                    if (!race.target.hit) {
+                        race.target.x += H * race.target.x
+                    }
+                }
+                race.dx = c + H * race.x
+            }
+            })
+            var runner3 = setup({color: "red", div: runner3div, next: race => {
+                race.t-- //undo the default time increment 
+                race.t += 1 / ( 1 - H * race.x)
+            }})
+            var runner1 = setup({color: "green", div: runner1div, next: race => {
+                race.dx = c - H * race.x
+            }})
+            
+            function go() {
+
+                setInterval(() => {
+                    for (ii = 0; ii < 5; ii++) {
+                
+                        runner1.next()
+                        runner2.next()
+                        runner3.next()
+                    }
+                }, 1)
+
+            }
+
+            var ii
+            var animateHandle = setInterval(() => {
+
+                graph.width = graph.width
+                gctx.fillStyle = "white"
+                gctx.strokeStyle = "white"
+                gctx.fillText("time", graph.width - 100, graph.height )
+                gctx.fillText("z", 70, 15 )
+                gctx.beginPath()
+                gctx.moveTo(80, 0)
+                gctx.lineTo(80, graph.height - 20)
+                gctx.lineTo(graph.width, graph.height - 20)
+                gctx.stroke()
+
+                runner1.draw()
+                runner2.draw()
+                runner3.draw()
+            
+            }, 1000/60)
+
+            setTimeout(go, 1000)
+
+        </script>
+
+    </body>
+</html>
