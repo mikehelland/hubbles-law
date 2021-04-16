@@ -14,17 +14,17 @@
 
 
             <div id="runner1">
-                Runner 1
+                Runner 1: Slows down. v=c-H<sub>0</sub>D
                 <br>
             </div>
 
             <div id="runner2">
-                Runner 2
+                Runner 2: Sabotaged track, finish line moves away at v=H<sub>0</sub>D
                 <br>
             </div>
 
             <div id="runner3">
-                Runner 3
+                Runner 3: Sabotaged clock, hands move c / (c - H<sub>0</sub>D) times faster
                 <br>
             </div>
 
@@ -44,6 +44,23 @@
 
             const H = 0.0000756
             const c = 1
+
+            var runner1 = setup({color: "green", div: runner1div, next: race => {
+                race.dx = c - H * race.x
+            }})
+            var runner2 = setup({color: "blue", div: runner2div, flipByTime: true, next: race => {
+                for (race.target of race.targets) {
+                    if (!race.target.hit) {
+                        race.target.x += H * race.target.x
+                    }
+                }
+                race.dx = c + H * race.x
+            }
+            })
+            var runner3 = setup({color: "red", div: runner3div, next: race => {
+                race.t-- //undo the default time increment 
+                race.t += 1 / ( 1 - H * race.x)
+            }})
 
             function setup(params) {
                 var canvas = document.createElement("canvas")
@@ -143,26 +160,10 @@
 
                 return race
             }
-
-            var runner2 = setup({color: "blue", div: runner2div, flipByTime: true, next: race => {
-                for (race.target of race.targets) {
-                    if (!race.target.hit) {
-                        race.target.x += H * race.target.x
-                    }
-                }
-                race.dx = c + H * race.x
-            }
-            })
-            var runner3 = setup({color: "red", div: runner3div, next: race => {
-                race.t-- //undo the default time increment 
-                race.t += 1 / ( 1 - H * race.x)
-            }})
-            var runner1 = setup({color: "green", div: runner1div, next: race => {
-                race.dx = c - H * race.x
-            }})
             
             function go() {
 
+                var ii
                 setInterval(() => {
                     for (ii = 0; ii < 5; ii++) {
                 
@@ -174,7 +175,6 @@
 
             }
 
-            var ii
             var animateHandle = setInterval(() => {
 
                 graph.width = graph.width
