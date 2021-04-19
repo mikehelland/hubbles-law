@@ -5,45 +5,165 @@
             body {
                 background-color: black;
                 color: white;
+                font-size: 2em;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            div {
+                margin:18px;
+            }
+            #graph {}
+            .red {color:yellow;}
+            #slide2, #slide3, #slide4, #slide-round2, #slide-de {display:none;}
+            #runner1,#runner2,#runner3 {opacity: 0;}
+
+            h1 {text-align: center;}
+            i {color:#AAAAAA;}
+
+            table {
+                
+                margin:auto;
+            }
+            td {
+                padding:20px 80px;
+            }
+            .td-fade-in, .td-fade-in-2 {
+                opacity: 0;
             }
         </style>
     </head>
     <body>
 
-        <div class="slide">
+        <div id="slide1" class="slide">
 
+            <h1>The Hubble Dash</h1>
+
+            <p style="text-align: center;">Three runners. Each begins at speed <i>c</i>.</p>
 
             <div id="runner1">
-                Runner 1: Slows down, v=c-H<sub>0</sub>D
+                Runner 1: <span class="red">Slows down</span>, <i>v = c - H<sub>0</sub>D</i>
                 <br>
             </div>
 
             <div id="runner2">
-                Runner 2: Sabotaged track, finish line moves away at v=H<sub>0</sub>D
+                Runner 2: <span class="red">Sabotaged track</span>, finish line moves away at <i>v = H<sub>0</sub>D</i>
                 <br>
             </div>
 
             <div id="runner3">
-                Runner 3: Sabotaged clock, hands move c / (c - H<sub>0</sub>D) times faster
+                Runner 3: <span class="red">Sabotaged clock</span>, hands move <i>c / (c - H<sub>0</sub>D)</i> times faster
                 <br>
             </div>
 
-            Redshifts
-            <br>
-            <canvas width="1200" height="350" id="graph"></canvas>
+            <div id="its-a-tie"></div>
 
         </div>
 
+        <div id="slide2">
+            Redshifts<br><br>
+            <canvas width="1735" height="500" id="graph"></canvas>
+        </div>
+        <div id="slide3" style="text-align: center;">
+            <br>
+            Use frequency and wavelength to calculate redshifts<br><br>
+            <img width="300" src="../../img/zformulab.png">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <img width="300" src="../../img/zformula2b.png">
+        </div>
+        
+        <div id="slide-de">
+            <table>
+                <tr>
+                    <td>
+                        Runner 2: <span class="red">Expanding Space</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <i>v = H<sub>0</sub>D</i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i>Changing expansion rate?</i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i>Dark Energy?</i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div id="slide-round2">
+            <table>
+                <tr>
+                    <td>
+                        Runner 1: <span class="red">Slows down</span>
+                    </td>
+                    <td class="td-fade-in">
+                        Runner 1.b: <span class="red">Slows down</span>  
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <i>v = c - H<sub>0</sub>D</i>
+                    </td>
+                    <td  class="td-fade-in" style="text-align: center;">
+                        <i>v = c / (1 + D/L)<sup class="td-fade-in-2">2</sup></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Runner 3: <span class="red">Clock speed</span>
+                    </td>
+                    <td class="td-fade-in">
+                        Runner 3.b: <span class="red">Clock speed</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">
+                        <i>c / (c - H<sub>0</sub>D)</i>
+                    </td>
+                    <td class="td-fade-in" style="text-align: center;">
+                        <i>(1 + D/L)<sup class="td-fade-in-2">2</sup></i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div id="slide4">
+            
+            <div id="runner4">
+                Runner 1.b: <span class="red">Slows down</span>, <i>v = c / (1 + D/L)<sup>2</sup></i>
+                <br>
+            </div>
+
+            <div id="runner5">
+                Runner 3.b: <span class="red">Sabotaged clock</span>, hands move <i>(1 + D/L)<sup>2</sup></i> times faster
+                <br>
+            </div>
+
+        </div>
 
         <script>
             var runner1div = document.getElementById("runner1")
             var runner2div = document.getElementById("runner2")
             var runner3div = document.getElementById("runner3")
+            var runner4div = document.getElementById("runner4")
+            var runner5div = document.getElementById("runner5")
             var graph = document.getElementById("graph")
             var gctx = graph.getContext("2d")
 
-            const H = 0.0000756
+            var H = 0.0000756
             const c = 1
+
+            var zoomX = 0.12
+            var zoomY = 400
+            var offsetX = 80
+            var offsetY = 20
+
+            var phase2t = 0
 
             var runner1 = setup({color: "green", div: runner1div, next: race => {
                 race.dx = c - H * race.x
@@ -61,6 +181,8 @@
                 race.t-- //undo the default time increment 
                 race.t += 1 / ( 1 - H * race.x)
             }})
+            var runner4
+            var runner5
 
             function setup(params) {
                 var canvas = document.createElement("canvas")
@@ -68,7 +190,7 @@
                 params.div.appendChild(timer)
                 params.div.appendChild(canvas)
                 
-                canvas.width = 1200
+                canvas.width = 1735
                 timer.width = 80
                 var ctx = canvas.getContext("2d")
                 var tctx = timer.getContext("2d")
@@ -79,25 +201,26 @@
                     leftFoot: true,
                     steps: [{leftFoot: true, t: 0, z: 0, x: 0}],
                     targets: [],
-                    nextTarget: 0
+                    nextTarget: 0,
+                    ctx, canvas,
+                    color: params.color
                 }
 
-                for (var i = 0; i < 4200; i+=100) {
+                for (var i = 0; i < (params.targets || 7000); i+=100) {
                     race.targets.push({start: i, x: i})
                 }
 
                 var step
                 var target
-                var zoomX = 0.2
-                var zoomY = 400
 
                 var wavelength = 50
                 var nextFlip = wavelength
                 var lastLeft = 0
+                var lastZ = 0
 
                 race.draw = () => {
                     canvas.width = canvas.width
-                    ctx.globalAlpha = 0.5
+                    ctx.globalAlpha = 0.5 - (phase2t * 0.5)
                     ctx.fillStyle = "white"
                     for (target of race.targets) {
                         ctx.fillRect(target.x * zoomX, 0, 1, canvas.height)
@@ -107,11 +230,13 @@
                     gctx.fillStyle = params.color
                     ctx.beginPath()
                     for (step of race.steps) {
-                        ctx.fillRect(step.x * zoomX, step.leftFoot ? 40 : 90, 10, 10)
-                        gctx.fillRect(80 + step.t * zoomX, -20 + graph.height - step.z * zoomY, 5, 5) 
+                        ctx.fillRect((step.x + (phase2t * (step.t - step.x))) * zoomX, step.leftFoot ? 40 : 90, 10, 10)
                     }
 
                     timer.width = timer.width
+                    if (race.done) {
+                        tctx.lineWidth = 3
+                    }
                     tctx.strokeStyle = "white"
                     tctx.beginPath()
                     tctx.moveTo(timer.width / 2, timer.height / 2)
@@ -123,8 +248,8 @@
                     tctx.stroke()
                 }
 
-                race.next = function () {
-                    if (!race.targets[race.nextTarget]) return
+                race.next = function (drawG) {
+                    if (this.done) return 
 
                     race.t++
 
@@ -146,41 +271,152 @@
                             step.z = (1/wavelength - f) / f 
                         
                         }
+                        lastZ = step.z
                         nextFlip += wavelength
                         
+                        if (drawG) {
+                            gctx.fillStyle = params.color
+                            gctx.fillRect(offsetX + step.x * zxG,  graph.height - offsetY - step.z * zyG, 3, 3) 
+                        }
                         this.steps.push(step)
                     }
                     
                     
                     if (race.targets[race.nextTarget].x < race.x) {
                         race.targets[race.nextTarget].hit = race.t
+                        race.targets[race.nextTarget].z = lastZ
                         race.nextTarget++
+
+                        if (!race.targets[race.nextTarget]) {
+                            this.done = true
+                        }
                     }
                 }
 
                 return race
             }
             
-            function go() {
-
+            function go(n) {
+                n = n || 1
                 var ii
-                setInterval(() => {
-                    for (ii = 0; ii < 5; ii++) {
-                
-                        runner1.next()
-                        runner2.next()
-                        runner3.next()
+                var handle = setInterval(() => {
+                    for (ii = 0; ii < 5 * n; ii++) {
+
+                        if (n === 2) {
+                            runner4.next(true)
+                            runner5.next(true)
+
+
+                        }
+                        else {
+
+                            if (runner1.done && runner2.done && runner3.done) {
+                                clearInterval(handle)
+                                document.getElementById("its-a-tie").innerHTML = "It's a tie!"
+                                return
+                            }
+
+                            runner1.next()
+                            runner2.next()
+                            runner3.next()
+                        }
+                        
                     }
                 }, 1)
-
+                return handle
             }
 
             var animateHandle = setInterval(() => {
+                
+                runner1.draw()
+                runner2.draw()
+                runner3.draw()
+            
+                if (runner1.done && runner2.done && runner3.done) {
+                    clearInterval(animateHandle)
+                    return
+                }
 
+            }, 1000/60)
+
+            var snData
+            
+            function phase2() {
+
+                runner2.ctx.strokeStyle = runner2.color
+                runner2.ctx.lineWidth = 3
+                runner2.ctx.beginPath()
+                runner2.ctx.moveTo(0, 40)
+                for (step of runner2.steps) {
+                    runner2.ctx.lineTo(step.x * zoomX, step.leftFoot ? 50 : 90)
+                }
+                runner2.ctx.stroke()
+
+                //phase2t = 1//Date.now()
+
+            }
+
+            function phase2b() {
+                var ttHandle = setInterval(() => {
+
+                    phase2t += 0.05
+                    phase2t = Math.min(1, phase2t)
+
+                    runner1.draw()
+                    //runner2.draw()
+                    runner3.draw()
+
+                    if (phase2t >= 1) {
+                        clearInterval(ttHandle)
+
+                        runner1.ctx.strokeStyle = runner1.color
+                        runner1.ctx.lineWidth = 3
+                        runner1.ctx.beginPath()
+                        runner1.ctx.moveTo(0, 40)
+                        for (step of runner1.steps) {
+                            runner1.ctx.lineTo(step.t * zoomX, step.leftFoot ? 50 : 90)
+                        }
+                        runner1.ctx.stroke()
+
+                        runner3.ctx.strokeStyle = runner3.color
+                        runner3.ctx.lineWidth = 3
+                        runner3.ctx.beginPath()
+                        runner3.ctx.moveTo(0, 40)
+                        for (step of runner3.steps) {
+                            runner3.ctx.lineTo(step.t * zoomX, step.leftFoot ? 50 : 90)
+                        }
+                        runner3.ctx.stroke()
+
+                    }
+                }, 1000/60)
+
+            }
+
+            fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
+                snData = data
+            }
+            )
+
+            function phase3() {
+                document.getElementById("slide1").style.display = "none"
+                fadeIn(document.getElementById("slide2"), "block")
+                fadeIn(document.getElementById("slide3"), "block")
+                
+
+                drawGraph()
+                
+            }
+
+            
+            var zxG = 1
+            var zyG = 4000
+
+
+            var drawGraph = (drawSN) => {
                 graph.width = graph.width
                 gctx.fillStyle = "white"
                 gctx.strokeStyle = "white"
-                gctx.fillText("time", graph.width - 100, graph.height )
+                gctx.fillText("distance", graph.width - 100, graph.height )
                 gctx.fillText("z", 70, 15 )
                 gctx.beginPath()
                 gctx.moveTo(80, 0)
@@ -188,13 +424,165 @@
                 gctx.lineTo(graph.width, graph.height - 20)
                 gctx.stroke()
 
-                runner1.draw()
-                runner2.draw()
-                runner3.draw()
-            
-            }, 1000/60)
+                for (var iz = 0; iz < 3; iz+=0.1) {
+                    gctx.fillText(Math.round(iz * 10)/10, 65, graph.height - offsetY - iz * zyG)
+                }
 
-            setTimeout(go, 1000)
+                var step
+                gctx.fillStyle = runner3.color
+                for (step of runner3.targets) {
+                    gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
+                }
+                gctx.fillStyle = runner1.color
+                for (step of runner1.targets) {
+                    gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
+                }
+                gctx.fillStyle = runner2.color
+                for (step of runner2.targets) {
+                    gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
+                }
+                
+                if (drawSN) {
+                    gctx.fillStyle = "yellow"
+                    for (var sn of snData) {
+                        if (sn.z < drawSN) { 
+                            gctx.fillRect(offsetX + sn.d * zxG, graph.height - offsetY - sn.z * zyG, 2, 2)
+                        }
+                    }
+                }
+            }
+
+            var slide3 = document.getElementById("slide3")
+            var slide4 = document.getElementById("slide4")
+            function phase8() {
+                slide3.style.display = "none"
+                slide4.style.display = "block"
+                H = 0.000038
+                runner4 = setup({color: "orange", div: runner4div, targets:11000, next: race => {
+                    race.dx = c / Math.pow(1 + H * race.x, 2)
+                }})
+                runner5 = setup({color: "magenta", div: runner5div, targets:11000, next: race => {
+                    race.t-- //undo the default time increment 
+                    race.t += Math.pow(1 + H * race.x, 2)
+                }})
+
+                phase2t = 0
+                var animateHandle = setInterval(() => {
+                
+                    runner4.draw(true)
+                    runner5.draw(true)
+                
+                    if (runner4.done && runner5.done) {
+                        clearInterval(animateHandle)
+                        return
+                    }
+
+                }, 1000/60)
+
+                
+            }
+
+
+            var phase = -3
+            document.body.onkeypress = e => {
+                if (e.key.toLowerCase() === "s") return 
+                phase++
+
+                if (phase === -2) {
+                    fadeIn(runner1div)
+                }
+                else if (phase === -1) {
+                    fadeIn(runner2div)
+                }
+                else if (phase === 0) {
+                    fadeIn(runner3div)
+                }
+                else if (phase === 1) {
+                    go()
+                }
+                else if (phase === 2) {
+                    phase2()
+                }
+                else if (phase === 3) {
+                    phase2b()
+                }
+                else if (phase === 4) {
+                    phase3()
+                }
+                else if (phase === 5) {
+                    let sni = 0
+                    var snHandle = setInterval(() => {
+                        sni += 0.02
+                        drawGraph(sni)
+
+                        if (sni >= 2) {
+                            clearInterval(snHandle)
+                        }
+
+                    }, 50)
+                    let div = document.createElement("div")
+                    div.innerHTML = "With z-distance data from the Supernovae Cosmology Project <br>http://supernova.lbl.gov/"
+                    slide3.appendChild(div)
+                }
+                else if (phase === 6) {
+                    var zoomOutHandle = setInterval(() => {
+
+                        zyG = zyG - 25
+                        zxG = zxG - 0.006
+                        drawGraph(2)
+
+                        if (zyG < 400) {
+                            clearInterval(zoomOutHandle)
+                        }
+
+                    }, 1000/60)
+                }
+                else if (phase === 7) {
+                    slide3.innerHTML = "<br>The accelerating redshifts."
+                }
+                else if (phase === 8) {
+                    slide3.style.display = "none"
+                    document.getElementById("slide-de").style.display = "block"
+                }
+                else if (phase === 9) {
+                    document.getElementById("slide-de").style.display = "none"
+                    document.getElementById("slide-round2").style.display = "block"
+                }
+                else if (phase === 10) {
+                    let fadeIns = document.getElementById("slide-round2").getElementsByClassName("td-fade-in")
+                    for (let i = 0; i < fadeIns.length; i++) {
+                        fadeIn(fadeIns[i])
+                    }
+                }
+                else if (phase === 11) {
+                    let fadeIns = document.getElementById("slide-round2").getElementsByClassName("td-fade-in-2")
+                    for (let i = 0; i < fadeIns.length; i++) {
+                        fadeIn(fadeIns[i])
+                    }
+                }
+                else if (phase === 12) {
+                    document.getElementById("slide-round2").style.display = "none"
+                    phase8()
+                }
+                else if (phase === 13) {
+                    go(2)
+                }
+            }
+
+            function fadeIn(div, show) {
+                var n = 0
+                var handle = setInterval(() => {
+                    n += 60/1000
+                    div.style.opacity = Math.min(1, n)
+                    if (show) {
+                        div.style.display = show
+                        show = undefined
+                    }
+                    if (n >= 1) {
+                        clearInterval(handle)
+                    }
+                }, 1000/60)
+            }
 
         </script>
 
