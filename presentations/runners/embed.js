@@ -17,6 +17,9 @@ var offsetY = 20
 
 var phase2t = 0
 
+
+// the runners 1, 2, and 3 are defined here
+
 var runner1 = setup({color: "green", div: runner1div, next: race => {
     race.dx = c - H * race.x
 }})
@@ -34,6 +37,8 @@ var runner3 = setup({color: "red", div: runner3div, next: race => {
     race.t += 1 / ( 1 - H * race.x)
 }})
 
+
+// here's the variation
 
 var runner11 = setup({color: "blue", div: runner11div, flipByTime: true, next: race => {
     for (race.target of race.targets) {
@@ -122,7 +127,7 @@ function setup(params) {
         tctx.stroke()
     }
 
-    race.next = function (drawG) {
+    race.next = function () {
         if (this.done) return 
 
         race.t++
@@ -148,10 +153,6 @@ function setup(params) {
             lastZ = step.z
             nextFlip += wavelength
             
-            if (drawG) {
-                gctx.fillStyle = params.color
-                gctx.fillRect(offsetX + step.x * zxG,  graph.height - offsetY - step.z * zyG, 3, 3) 
-            }
             this.steps.push(step)
         }
         
@@ -170,189 +171,52 @@ function setup(params) {
     return race
 }
 
-function go(n) {
-    n = n || 1
+
+runner1.draw()
+runner2.draw()
+runner3.draw()
+
+runner11.draw()
+runner21.draw()
+runner31.draw()
+
+
+document.getElementById("start-race-button").onclick = e => {
+    var animateHandle = setInterval(() => {
+    
+        runner1.draw()
+        runner2.draw()
+        runner3.draw()
+
+        if (runner1.done && runner2.done && runner3.done) {
+            clearInterval(handle)
+            clearInterval(animateHandle)
+            return
+        }
+
+    }, 1000/60)    
+    
     var ii
     var handle = setInterval(() => {
         for (ii = 0; ii < 5; ii++) {
 
-            if (n === 2) {
-                runner11.next()//true)
-                runner21.next()//true)
-                runner31.next()//true)
-
-
-            }
-            else {
-
-                if (runner1.done && runner2.done && runner3.done) {
-                    clearInterval(handle)
-                    return
-                }
-
-                runner1.next()
-                runner2.next()
-                runner3.next()
-            }
-            
+            runner1.next()
+            runner2.next()
+            runner3.next()            
         }
     }, 1)
-    return handle
 }
 
-var animateHandle = setInterval(() => {
-    
-    runner1.draw()
-    runner2.draw()
-    runner3.draw()
-
-    runner11.draw()
-    runner21.draw()
-    runner31.draw()
-
-    if (runner1.done && runner2.done && runner3.done) {
-        clearInterval(animateHandle)
-        return
-    }
-
-}, 1000/60)
-
-var snData
-
-function phase2() {
-
-    runner2.ctx.strokeStyle = runner2.color
-    runner2.ctx.lineWidth = 3
-    runner2.ctx.beginPath()
-    runner2.ctx.moveTo(0, 40)
-    for (step of runner2.steps) {
-        runner2.ctx.lineTo(step.x * zoomX, step.leftFoot ? 50 : 90)
-    }
-    runner2.ctx.stroke()
-
-    //phase2t = 1//Date.now()
-
-}
-
-function phase2b() {
-    var ttHandle = setInterval(() => {
-
-        phase2t += 0.05
-        phase2t = Math.min(1, phase2t)
-
-        runner1.draw()
-        //runner2.draw()
-        runner3.draw()
-
-        if (phase2t >= 1) {
-            clearInterval(ttHandle)
-
-            runner1.ctx.strokeStyle = runner1.color
-            runner1.ctx.lineWidth = 3
-            runner1.ctx.beginPath()
-            runner1.ctx.moveTo(0, 40)
-            for (step of runner1.steps) {
-                runner1.ctx.lineTo(step.t * zoomX, step.leftFoot ? 50 : 90)
-            }
-            runner1.ctx.stroke()
-
-            runner3.ctx.strokeStyle = runner3.color
-            runner3.ctx.lineWidth = 3
-            runner3.ctx.beginPath()
-            runner3.ctx.moveTo(0, 40)
-            for (step of runner3.steps) {
-                runner3.ctx.lineTo(step.t * zoomX, step.leftFoot ? 50 : 90)
-            }
-            runner3.ctx.stroke()
-
-        }
-    }, 1000/60)
-
-}
-
-fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
-    snData = data
-}
-)
-
-function phase3() {
-    document.getElementById("slide1").style.display = "none"
-    fadeIn(document.getElementById("slide2"), "block")
-    fadeIn(document.getElementById("slide3"), "block")
-    
-
-    drawGraph()
-    
-}
-
-
-var zxG = 1
-var zyG = 4000
-
-
-var drawGraph = (drawSN) => {
-    graph.width = graph.width
-    gctx.fillStyle = "white"
-    gctx.strokeStyle = "white"
-    gctx.fillText("distance", graph.width - 100, graph.height )
-    gctx.fillText("z", 70, 15 )
-    gctx.beginPath()
-    gctx.moveTo(80, 0)
-    gctx.lineTo(80, graph.height - 20)
-    gctx.lineTo(graph.width, graph.height - 20)
-    gctx.stroke()
-
-    for (var iz = 0; iz < 3; iz+=0.1) {
-        gctx.fillText(Math.round(iz * 10)/10, 65, graph.height - offsetY - iz * zyG)
-    }
-
-    var step
-    gctx.fillStyle = runner3.color
-    for (step of runner3.targets) {
-        gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
-    }
-    gctx.fillStyle = runner1.color
-    for (step of runner1.targets) {
-        gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
-    }
-    gctx.fillStyle = runner2.color
-    for (step of runner2.targets) {
-        gctx.fillRect(offsetX + step.start * zxG,  graph.height - offsetY - step.z * zyG, 5, 5) 
-    }
-    
-    if (drawSN) {
-        gctx.fillStyle = "yellow"
-        for (var sn of snData) {
-            if (sn.z < drawSN) { 
-                gctx.fillRect(offsetX + sn.d * zxG, graph.height - offsetY - sn.z * zyG, 2, 2)
-            }
-        }
-    }
-}
-
-var slide3 = document.getElementById("slide3")
-var slide4 = document.getElementById("slide4")
-function phase8() {
-    slide3.style.display = "none"
-    slide4.style.display = "block"
-    H = 0.000038
-
-    phase2t = 0
-
-    
-}
-
-document.getElementById("start-race-button").onclick = e => go()
 
 document.getElementById("start-race-2-button").onclick = e => {
 
     var animateHandle = setInterval(() => {
     
-        runner11.draw(true)
         runner21.draw(true)
         runner31.draw(true)
     
-        if (runner11.done && runner21.done && runner31.done) {
+        if (runner21.done && runner31.done) {
+            clearInterval(handle)
             clearInterval(animateHandle)
             return
         }
@@ -360,7 +224,16 @@ document.getElementById("start-race-2-button").onclick = e => {
     }, 1000/60)
 
 
-    go(2)
+    var ii
+    var handle = setInterval(() => {
+        for (ii = 0; ii < 5; ii++) {
+            
+            runner21.next()
+            runner31.next()
+            
+        }
+    }, 1)
+    
 }
 
 
