@@ -50,272 +50,212 @@
         <div class="maintext">
 
 
-        <h2>Cosmological Redshift and Time Dilation</h2>
+        <h2>The Redshift-Distance Relation</h2>
+
+        <h3>Introduction</h3>
 
         <p>
-            A model of time dilating photons in static space is shown to match the travel times and redshifts 
-            produced by a model of expanding space.
-            This model can be easily adapted to match the observed acceleration of redshifts with zero additional parameters.
-            This results in a new redshift-distance relation with a constant that has units that differ from Hubble's constant.
-            Testing the hypothesis is presently feasible and would yield working practical technology 
-            if confirmed.</p>
+            The discovery of a relationship between a galaxy's distance and its <a href="redshift.htm">redshift</a> established that the universe is expanding.
+            And as the distance to farther and farther objects could be measured, their redshifts were less than expected, 
+            which means in the past, the universe wasn't expanding as fast as it is now.
+        </p>
 
-            <h3>Introduction</h3>
+        <p>Currently, there is no single equation to relate distance and redshift that fits the entire range of data.
+            The following equation is proposed as a new redshift-distance relation, which works for measured values and makes predictions 
+            to be compared against future measurements.
+        </p>
 
-            <p>Current measurements of the expansion rate of the universe don't agree[1][2][3][4], and hundreds of solutions have been proposed[5]. 
-                The hypothesis proposed here is that space does not expand between galaxies, but time does.
-                The idea is first introduced in a non-relativistic universe with a linear expansion rate.
-                Second, the hypothesis is shown to lend itself to variations, one of which matches the observations of an accelerating universe.
-                Third, a discussion of the hypothesis in a relativistic universe.</p>
-
-        <h3>Expanding Space</h3>
-
-        <p>To understand the hypothesis, let's first make a basic model of expanding space.</p> 
+            <p class="pimg"><img src="img/redshift-distance-relation.png"></p>
 
         <p>
-            Due to the expansion of space, it will take a photon longer than 100 million years (My) to reach a galaxy that is presently 100 million light years (Mly) away.
-            The increase in travel time is accompanied with a decrease in energy called cosmological redshift.
-            To compute the time delays and redshifts, a computer model is used that places a series of targets 100 Mly apart. 
-            A photon is emitted when the model starts, and the time is logged when the photon reaches a target. Everything in the model is moving away 
-            from the photon's source according to Hubble's law, v=H<sub>0</sub>D. This stretches the wavelength of the photon, allowing us to calculate the redshift (z)
-            using (wavelength_observed - wavelength_original) / wavelength_original.
-        </p>
-        
-        <p>The timestep for the program is 1 My, and the speed of light is 1 Mly/My.
-            The value used here for H<sub>0</sub> (variable "H0" in the code) is 74 km/s/Mpc, the often cited SH0ES team measurement. 
-            This is first converted to km/s/Mly, or 22.69 km/s/Mly. This is then converted to Mly/My/Mly so 
-            it fits with the units of time and the natural units of the speed of light used, which is 
-            0.0000756 Mly/My/Mly. 
+            From this equation, redshift (<i>z</i>) can be found from distance (<i>D</i>) and vice versa, using a constant (<i>L</i>), 
+            which is a length of about 26.5 billion light years.
         </p>
 
-        <details>
-            <summary>Show Source Code (Javascript)</summary>
-        <pre><code>
-    c = 1                 // Mly / My
-    H0 = 0.0000756        // Mly / My / Mly
-    photon = {
-        x: 0,             // distance traveled in Mly
-        wavelength: 500   // original wavelength in nm
-    }
+        <h3>Methodology</h3>
 
-    // create targets at distance 100 Mly apart
-    nextTarget = 0
-    targets = []
-    for (var i = 100; i &lt;= 10000; i+=100) 
-        targets.push({x: i, start: i})
-    
-    // time starts at zero
-    t = 0
-    while (targets[nextTarget]) {
+        <p>
+            To help reason about the expansion of space, consider a runner on a track. If the runner maintains a constant speed,
+            the length of each step taken by the runner, and the time between each step, should remain constant throughout the race. 
+        </p>
 
-        // increment time by 1 My
-        t++               
+        <p>
+            Now consider a race between three such runners beginning at the same speed, each facing a disadvantage.</p>
+        </p>
 
-        // move the photon forward at c + H0 * D
-        dx = c + photon.x * H0  
-        photon.x += dx
+        <ul>
+            <li>Runner 1: Dynamic Track, everything moves away at <i>H<sub>0</sub>D</i></li>
+            <li>Runner 2: Dynamic Clock, clock speed is <i>c/(c-H<sub>0</sub>D)</i></li>
+            <li>Runner 3: Dynamic Runner, runs at <i>c-H<sub>0</sub>D</i></li>
+        </ul>
 
-        // the expansion of space stretches the wavelength
-        wavelength = photon.wavelength * dx
-        
-        // calculate z using the current and original wavelength
-        z = (wavelength - photon.wavelength) / photon.wavelength
-    
-        // move the targets 
-        for (target of targets) 
-            target.x += target.x * H0
-
-        // if the photon has reached a target
-        if (targets[nextTarget].x &lt;= photon.x) {
-            
-            //output the time, the distance, and the z
-            console.log(t, targets[nextTarget].start, z)
-            nextTarget++        
-        }
-    }</code></pre>
-        </details>
-        
         <p>
 
-            The time it takes to reach a target in expanding space is shown in white in Figure 1. The blue line 
-            shows the time to the target without the expansion of space.
-            The redshifts are shown in Figure 2.
+        </p>
+            The three runners should always tie, assuming <i>H<sub>0</sub>D</i> is equal for all, which you will recognize from Hubble's law, <i>v=H<sub>0</sub>D</i>.
         </p>
 
-        <p class="pimg"><img src="img/graph_time_expanding.png" width="300"><img src="img/graph_z_expanding.png" width="300">
-            <br>Figure 1. (Left) Time delays in an expanding universe (white) compared to a static universe (blue) 
+        <p>
+        <button id="start-race-button">Go!</button>
+        </p>
+
+        <div id="runner2">
+            Runner 1: <span class="red">Dynamic Track</span>
             <br>
-            Figure 2. (Right) Redshifts in an expanding universe
-        </p>
+        </div>
 
-        <h3>Expanding Time</h3>
-
-        <p>
-            Now let's compare that to a model with the same time delays, but where the distance between galaxies does not increase.
-            In such a model, the photon's experience of time will deviate from the master clock of the non-relativistic model. 
-            (In a relativistic universe, the photon does not experience time, which will be discussed in a later section.) For now, we will consider the photon to have a clock 
-            that begins synchronized with the model's master clock and gradually falls behind by some constant. 
-            For this to work, the constant involved cannot have the same units as Hubble's constant, H<sub>0</sub>. To show that this is not the traditional Hubble's constant,
-            H<sub>0</sub>, the subscript 0 is dropped and the constant is referred to only as H. Here H will have the units of years per million light years.
-        </p>
-
-        <p>In this model, the photon experiences a time interval of &#916;t' that is a function of its distance D:
-        </p>
-
-        <blockquote>
-        <img src="img/eq-dt=dt-HD.png">
-        </blockquote>
-
-        <p>Here &#916;t represents the time interval that passes on the master clock, and H=0.0000756 My/Mly. When H is multiplied by D in Mly, the Mly cancel out.
-            For D=1 Mly, HD=0.0000756 My, which is subtracted from the model's timestep, &#916;t, of 1 My, resulting in &#916;t'.</p>
-            
-        <p>The photon then advances at c for a time of &#916;t':</p>
-
-        <blockquote>
-        <img src="img/eq-dx=cdt.png">
-        </blockquote>
-
-        <p>The photon will still move at c, according to the time that it thinks has passed. But the photon is actually moving at less than c compared to the time 
-            that passes on the master clock.
-            The photon will also oscillate at its original frequency compared to the time it thinks has passed. For an original frequency &nu; and original wavelength 
-            &lambda;, the new frequency &nu;' is: 
-        </p>
-
-        <blockquote>
-        <img src="img/eq-nu.png">
-        </blockquote>
-
-        <p>To the photon, it is oscillating at its original frequency and traveling at c. But to the master clock, which hasn't slowed down,
-            the photon will be oscillating at a lower frequency and traveling at less than c. Comparing the original frequency and the observed frequency,
-            gives us the redshift (z).
-        </p> 
-
-        <details>
-            <summary>Show Source Code (Javascript)</summary>
-        <pre><code>
-    c = 1                 // Mly / My
-    H = 0.0000756         // My / Mly
-    photon = {
-        x: 0,             // distance traveled in Mly
-        frequency: 6e5    // original frequency in hz
-    }
-
-    // create targets at distance 100 Mly apart
-    nextTarget = 0
-    targets = []
-    for (var i = 100; i &lt;= 10000; i+=100) 
-        targets.push({x: i, start: i})
-
-    // time starts at zero
-    t = 0
-    while (targets[nextTarget]) {
-
-        // increment the master clock by 1 My
-        t++
-
-        // find the time interval experienced by the photon for this distance
-        dt = 1 - photon.x * H
-
-        // move the photon forward at c for the time interval
-        dx = c * dt  
-        photon.x += dx
-
-        // calculate the photons frequency over this interval
-        frequency = photon.frequency * dt
-        
-        // calculate z using the current and original frequency
-        z = (photon.frequency - frequency) / frequency
-        
-        // if the photon has reached a target
-        if (targets[nextTarget].x &lt;= photon.x) {
-            
-            //output the time, the distance, and the z
-            console.log(t, photon.x, z)
-            nextTarget++        
-        }
-    }
-</code></pre>
-        </details>
-
-        <p>Using the same value for H as we did for H0 in the previous code (but using different units) produces the same
-            time delays and redshifts as the model of expanding space, as shown in Figures 3. and 4.
-        </p>
-            
-
-        <p class="pimg"><img src="img/graph_time_vcHD.png" width="300"><img src="img/graph_z_vcHD.png" width="300">
-            <br>Figure 3. (Left) Time delays in the expanding time hypothesis (green) compared to a static universe (blue) 
+        <div id="runner3">
+            Runner 2: <span class="red">Dynamic Clock</span>
             <br>
-            Figure 4. (Right) Redshifts in the expanding time hypothesis
-        </p>
+        </div>
+
+        <div id="runner1">
+            Runner 3: <span class="red">Dynamic Runner</span>
+            <br>
+        </div>
 
         <p>
-
-        <h3>Accelerating Redshifts</h3>
-        
-        <p>
-        Modern measurements of redshifts and distances differ from the predictions of the basic expanding models in the previous section.
-        The current expansion rate seems to be faster than it was in the past.
+            Runner 1 on the expanding track will find that the distance between their steps increases. Runners 2 and 3 will find that the time in between their steps increases.
+            Using that data, a <i>z</i> can be calculated for each runner:
         </p>
 
-        <p>
-        The expanding time model in the previous section was meant to identically mimic Hubble's law.
-        If Hubble's law needs extra parameters, such as dark energy, to fit the modern observational data,
-        then identically mimicking Hubble's law is no longer necessary. 
-        </p>
-
-        <p>
-            A photon in the linearly expanding time model experiences a time interval of &#916;t - HD.
-            Since the expanding time model is no longer restricted by a linear Hubble's law, 
-            other forms can be explored. For example, we can divide &#916;t by 1 + HD, rather than subtract, and get the same basic effect as D increases. 
-        </p>
-
-        <p>
-        In the form of 1 + HD, the constant H must have the units of inverse distance. To make this more intuitive, we're going to break with the tradition 
-        of multiplying distance by a constant, and instead divide distance by a constant, giving us 1 + D/H and giving the constant H units of distance.
-        </p>
-
-        <p>
-        By putting variations on a theme, I devised similar but different mathematical models to compare:
-        </p>
-
-        <table>
-        <tr><td> hypothesis 1: </td> <td><img src="img/eq-dt=dt-HD.png" alt="dt' = dt - HD"></td></tr>
-        <tr><td> hypothesis 2: </td> <td><img src="img/eq-dt-inverse.png" alt="dt' = dt / (1 + D/H)"></td></tr>
-        <tr><td> hypothesis 3: </td> <td><img src="img/eq-dt-inverse_square.png" alt="dt' = dt / (1 + D/H)^2"></td></tr>
-        <tr><td> hypothesis 4: </td> <td><img src="img/eq-dt-inverse_square2.png" alt="dt' = dt / (1 + (D/H)^2)"></td></tr>
+        <table style="margin:auto; text-align: center; font-style: italic;" >
+            <tr>
+                <td>Redshift based on step length</td>
+                <td>Redshift based on step frequency</td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="img/zformula2.png">
+                </td>
+                <td>
+                    <img src="img/zformula.png">
+                </td>
+            </tr>
         </table>
 
-
         <p>
-            The next step was to compare these hypotheses against the observational data. For that I used the <a href="http://supernova.lbl.gov/Union/figures/SCPUnion2.1_mu_vs_z.txt">Supernovae Cosmology Project's data</a>. I converted the distance modulus to co-moving distance, and ran models for the hypotheses and showed the results against the observational data. The code for this is at the bottom of this document. The inverse square variation, hypothesis 3, is a very good fit of the data, for H=25 Gly. 
+            When the calculated redshifts are compared to the co-moving distance (the distance where the point on the track with that redshift was at the beginning of the race)
+            then we can see that each runner produces the same redshifts. We can then compare those redshifts and distances (green line) to actual data from the universe (yellow dots).
         </p>
 
+        <p class="pimg"><img src="img/supernovae-basic.png"></p>
 
-        <p class="pimg">
-            <img width="400" src="img/timedelays4.png"><img width="400" src="img/supernovae4.png">
+        <p>
+            The runners' redshifts increase too quickly with distance to match the observational data.
+            Runner 3, for example, loses the appropriate amount of 
+            speed to match the data early on in the race, but loses too much speed as the race goes on. 
+            The clock rate of Runner 2, is also increasing too rapidly. To address this, new versions of these runners are made like so:
+        </p>
+
+        
+        <table style="margin:auto; text-align: center; font-style: italic;" >
+            <tr>
+                <td>Runner 2.1's clock rate</td>
+                <td>Runner 3.1's speed</td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="img/runner2.1.png">
+                </td>
+                <td>
+                    <img src="img/runner3.1.png">
+                </td>
+            </tr>
+        </table>
+        
+
+        <p>The new versions of our runners, Runner 2.1 and Runner 3.1, still finish in a tie.</p> 
+        
+        <p>
+            <button id="start-race-2-button">Go!</button>
+        </p>
+    
+        <div id="runner11" style="display: none;">
+            Runner 1.1: <span class="red">Dynamic Track</span>
             <br>
-            Hypothesis 1, H=75.6 y/Mly (green), Hypothesis 2, H=12.5 Gly (magenta),<br>
-            Hypothesis 3, H=25 Gly (red), Hypothesis 4, H=3.8 Gly (orange)
+        </div>
+
+        <div id="runner21">
+            Runner 2.1: <span class="red">Dynamic Clock</span>
+            <br>
+        </div>
+
+        <div id="runner31">
+            Runner 3.1: <span class="red">Dynamic Runner</span>
+            <br>
+        </div>
+
+        <p>The redshifts produced by these runners (shown below in purple) don't diverge from the data like the previous group (shown in green).
         </p>
 
-        <p>Try it: use your own values for H on the <a href="test.htm">testing page</a> and the <a href="other/supernovae.htm">supernovae testing page</a>.</p>
-
-        <h3>A New Redshift-Distance Relation</h3>
-
-        <p>Whether or not the interpretation of redshifts proposed here is considered possible or necessary, because it fits the acceleration 
-            of the redshifts, it can be used as an accurate predictor of z and distance given one or the other. The hypothesis is:
-        </p> 
-
-        <blockquote>
-            <img src="img/eq-dt-inverse_square.png" alt="dt' = dt / (1 + D/H)^2">
-        </blockquote>
+        <p class="pimg"><img src="img/supernovae-2.png"></p>
 
         <p>
-        When used to calculate redshifts, the standard pattern arises that at z=1, &#916;t'=0.5&#916;t, and at z=2, &#916;t'=0.333&#916;t, and so on, such that:
+            The term <i>H<sub>0</sub>/c</i> has units of Mpc<sup>-1</sup>.  If we invert it to <i>c/H<sub>0</sub></i>, 
+            the result is a length, which we can call <i>L</i>, so <i>L = c/H<sub>0</sub></i>.
+        </p>
+
+        <p>
+            This allows us to simplify our equations. The speed of Runner 3.1 is:
+        </p>
+
+        <table style="margin:auto; text-align: center; font-style: italic;" >
+            <tr>
+                <td>Runner 2.1's clock rate</td>
+                <td>Runner 3.1's speed</td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="img/runner2.11.png">
+                </td>
+                <td>
+                    <img src="img/runner3.11.png">
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            The redshifts produced by these runners is a better fit for the data, but it's still not quite right.
+            Out of curiosity, I decided to square the <i>1+D/L</i> terms, and produced two new runners.
+        </p>
+
+        <table style="margin:auto; text-align: center; font-style: italic;" >
+            <tr>
+                <td>Runner 2.2's clock rate</td>
+                <td>Runner 3.2's speed</td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="img/runner2.2.png">
+                </td>
+                <td>
+                    <img src="img/runner3.2.png">
+                </td>
+            </tr>
+        </table>
+
+        <p>Treating <i>L</i> as a free parameter, through trial and error I found (a bit surprisingly) that <i>L=2c/H<sub>0</sub></i>,
+            is a good fit for the data, shown below by the white line. 
+            Also shown for comparison are data points for the LambdaCDM model, 
+            from <a href="https://www.wolframalpha.com/input/?i=galaxy+with+redshift+z%3D+1+hubble+parameter+%3D+74">Wolfram Alpha</a>.
+        </p>
+
+
+        <p class="pimg"><img src="img/supernovae-all.png"></p>
+
+        <p>
+        In the redshifts produced by Runner 3, when z=1, 2, 3, and so on, the runner's velocity is v=0.5c, 0.333c, 0.25, and so on, such that:
         </p>
 
         <blockquote>
             <img src="img/rd-2.png" >
+        </blockquote>
+
+        And:
+        
+        <blockquote>
+            <img src="img/runner3.2.png">
         </blockquote>
 
         <p>
@@ -327,64 +267,232 @@
             <br><br>
             <img src="img/rd-4.png" >
             <br><br>
-            <img src="img/rd-5.png" >
+            <img src="img/redshift-distance-relation.png" >
         </blockquote>
 
         <p>
-        Solving for D we get:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-6.png" >
-        </blockquote>
-
-        <p>
-        And solving for z we get:
-        </p>
-
-        <blockquote>
-            <img src="img/rd-7.png" >
-            <br><br>
-            <img src="img/rd-8.png" >
-        </blockquote>
-
-        <p>
-        These formulas predict the observed z and D of a galaxy in an expanding universe that is accelerating.
+            Despite being derived from a non-expanding model, this equation predicts the observed 
+            <i>z</i> and <i>D</i> of a galaxy in an expanding universe that is accelerating. It is consistent with LambdaCDM where we have observational data, and 
+            predicts different redshifts where we don't yet have data, which can be compared with future observations.
         </p>
         
-        <h3>The Geometry of Spacetime</h3>
+        <h3>Discussion</h3>
         
-        <p>In a relativistic universe, every observer has their own clock, and so does every object. 
-            The photon, however, is said not to experience time. It must follow a light-like path, the null geodesic. 
+        <p>
+            Runner 3 is meant to be a helpful tool in thinking about what's going in a dynamic space (or time) without actually having a dynamic space (or time).
+            A decreasing speed isn't viable as a physical theory because a photon, which the runner represents, cannot slow down. 
         </p>
 
         <p>
-            In this hypothesis, either cosmologically redshifted photons veer off the null geodesic in a time-like direction, or the geometry of spacetime 
-            changes at cosmological scales without changing in size. 
-        </p>
+            Runner 2, though, doesn't slow down, avoiding many conflicts with the laws of physics. However, because the redshifts of Runner 2 are caused by a dynamic of time, 
+            rather than of space, the size of the universe doesn't change over time, which is in conflict with the big bang theory. 
+        </p> 
 
-        <p class="pimg"><img src="img/lightcones.png" width="500">
-            <br>
-            Blue: basic spacetime, Green: hypothesis 1, Red: hypothesis 3
-        </p>
-        
-        <p>In a basic spacetime, all the photon geodesics will be parallel or perpendicular, shown left in the image below. What's proposed here is that every point in spacetime 
-            is the beginning of a new geodesic whose trajectory depends on the distance from the starting point. As a consequence, the geometry of spacetime 
-            would change to something more like the image on the right.
-        </p>
-
-        <p class="pimg"><img src="img/geometry_compare.png" >
-        
         <p>
-            A photon begins on a null geodesic, traveling at c, with its clock standing still. As it travels cosmological distances,
-            its clock moves, and it experiences time, very slowly, when compared to observer clocks.  
+            For most cosmologists, the debate on interpreting the redshifts as the expansion of the universe is long settled. It can almost be directly observed that time began around 14 billion years ago.
+            When we look into space and thus back in time, we can see that the most distant galaxies are small and disordered, unlike the galaxies nearby.   
         </p>
+
+        <p>
+            In the last ten years however, we have observed massive, dusty galaxies with ordered features and shut down star formation
+            at all distances, well before they are predicted to have appeared<sup>[1][2][3][4][5][6][7][8][9]</sup>.
+        </p>
+
+        <details>
+
+            <summary>Mature galaxies in the "early" universe</summary>
+
+            <p>The distant universe isn't meeting our expectations
+                for when galaxies become massive, dusty, spiraled, barred, disced, bulged, and have shut down star formation:</p>
+        
+        
+            <ul>
+                <li>
+                    <a href="https://science.sciencemag.org/content/371/6530/674">A massive stellar bulge in a regularly rotating galaxy 
+                        1.2 billion years after the Big Bang</a><sup>[1]</sup>
+        
+                    <blockquote>
+                        Lelli et al. (1) report a galaxy that had evolved features (both a disk and a bulge) when only 1.2 billion years had elapsed since the Big Bang 
+                        (∼12.5 billion years ago) (see the figure). This finding suggests that the processes that generate the key features of a mature galaxy arose more rapidly than 
+                        has been thought.
+                    </blockquote>
+                    
+                </li>
+                <li>
+                    <a href="https://www.nature.com/articles/s41586-020-2276-y">A cold, massive, rotating disk galaxy 1.5 billion years after the Big Bang
+                    </a><sup>[2]</sup>
+                
+                    <blockquote>
+                        The existence of such a massive, rotationally supported, cold disk galaxy when the Universe was only 1.5 billion years old favours formation through either cold-mode accretion or mergers, although its large rotational velocity and large content of cold gas remain challenging to reproduce with most numerical simulations.
+                    </blockquote>
+                </li>
+                
+                <li>
+                
+                    <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[3]</sup>
+        
+                    <blockquote>
+                        Interferometric imaging at a spatial resolution of about 60 pc reveals
+                a ratio of rotational-to-random motions of V/σ = 9.7 ± 0.4, which is at least four times larger
+                than expected from any galaxy evolution model at this epoch, but similar to the ratios of
+                spiral galaxies in the local Universe.</blockquote>
+                
+                
+                </li>
+                
+                <li>
+                    <a href="https://www.nature.com/articles/s41586-019-1452-4">A dominant population of optically invisible massive galaxies in the early Universe</a>
+                    <sup>[4]</sup>
+                    <blockquote>
+                        Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href=https://www.sciencedaily.com/releases/2015/11/151118070758.htm>Earliest giant galaxies: The birth of monsters</a>
+                    <sup>[5]</sup>
+                    <blockquote>
+                        "To complicate things further, if massive galaxies are unexpectedly dustier in the early Universe than astronomers predict then even UltraVISTA wouldn't be able to detect them. If this is indeed the case, the currently-held picture of how galaxies formed in the early Universe may also require a complete overhaul."
+                    </blockquote>
+                </li>
+                
+                
+                <li>
+                    <a href="https://www.nature.com/articles/nature14164">A dusty, normal galaxy in the epoch of reionization</a>
+                    <sup>[6]</sup>
+        
+                    <blockquote>
+                        The galaxy
+                        is highly evolved: it has a large stellar mass, and is heavily enriched in dust, with a dust-to-gas ratio close to that of the Milky
+                        Way. Dusty, evolved galaxies are thus present among the fainter
+                        star-forming population at z > 7, in spite of the very short time
+                        since they first appeared.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly">Some galaxies in the early universe grew up quickly</a>
+                    <sup>[7]</sup>
+                    <blockquote>Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="http://www.sciencedaily.com/releases/2014/10/141030101241.htm">
+                        Galaxy Zoo: CANDELS Barred Disks and Bar Fractions
+                    </a>
+                    <sup>[8]</sup>
+                    <blockquote>
+                        The newly classified galaxies are striking in that they look a lot like those in today's universe, with disks, bars and spiral arms. But theorists predict that these should have taken another 2 billion years to begin to form, so things seem to have been settling down a lot earlier than expected.
+                    </blockquote>
+                </li>
+                
+                <li>
+                    <a href="https://www.nasa.gov/jpl/spitzer/splash-project-dives-deep-for-galaxies">Spitzer Splash Project Dives Deep for Galaxies</a>
+                    <sup>[9]</sup>
+                    <blockquote>
+                        "The findings cast doubt on current models of galaxy formation, which struggle to explain how these remote and young galaxies grew so big so fast."
+                    </blockquote>
+                </li>
+                
+            
+            <p>In a universe that expands, there is a race against the clock for the universe to take shape, and lately the clock has been winning.
+                A universe that doesn't expand, on the other hand, has no discernible age or hurried time schedules for galaxy formation and evolution
+                to squeeze into. 
+            </p>
         
 
-        <hr>
-        <h3>Observational Cosmology</h3>
+        </details>
+        <p>
+            Is the expansion of the universe a fact? This was debated in the 1930's and very violently interrupted by World War II. This is an unconventional argument to make,
+            but science does not operate in a vacuum. And while the war made science a priority, and produced many giant leaps forward, the science of galactic 
+            nebulae was not one of those priorities.
+        </p>
 
-        <a name="cmb"></a>
+        <p>
+            To illustrate how drastic an interruption this was, in December of 1941, Edwin Hubble, the man credited for discovering the expanding universe, 
+            <a href="img/paper1941.png">announced
+            that he had refuted the expanding universe theory</a>. Soon, he would no longer be looking through telescopes, but instead 
+            <a href="https://www.encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/hubble-edwin-1889-1953">working in a windtunnel on 
+            ballistics research</a> for the war effort.
+        </p>
+
+        <p>
+            In the 1950's, a new generation came back to the telescopes, armed with two expanding universe theories: the big bang theory, where the universe was smaller in the past,
+            and the steady-state theory, where space expands, producing matter as it does, keeping the density of the universe the same. 
+        </p>
+
+        <p>
+            In the 1960's the discovery of the cosmic microwave background (CMB) led to the acceptance of the big bang theory over the steady state theory.
+            It looked like this:
+        </p>
+
+        <p class="pimg"><img width="400" src="img/expansion_classic.jpg"><br>Big Bang 1.0</p>
+
+        <p>By the 1970's, it was apparent this theory had some problems 
+            (<a href="https://en.wikipedia.org/wiki/Horizon_problem">Horizon Problem</a>,
+            <a href="https://en.wikipedia.org/wiki/Flatness_problem">Flatness Problem</a>, 
+            <a href="https://en.wikipedia.org/wiki/Big_Bang#Magnetic_monopoles">Magnetic Monopole Problem</a>)
+            which were solved by a period of super-expansion right after the big bang.
+            This period is called cosmic inflation, and it looks like this:
+        </p>
+
+        <p class="pimg"><img width="400" src="img/cosmicinflation.jpg"><br>Big Bang 2.0</p>
+
+        <p>By the 1990's, as mentioned before, the measurements of distances and redshifts showed that the expansion of the universe must be accelerating:
+        </p>
+
+        <p class="pimg"><img width="400" src="img/acceleration.jpg"><br>Big Bang 3.0</p>
+
+
+        <p>
+            Today, Big Bang 3.0, also known as LambdaCDM, is famously in conflict with independent measurements.<sup>[10][11][12][13][14]</sup>
+            A Big Bang 4.0 might be on the way.
+        </p>
+
+        <p>
+            Over the decades, some have criticized the big bang theory for the continual need for major, ad hoc changes to fit observations.
+        </p>
+
+        <details>
+            <summary> Modern Cosmology: Science or Folktale?</summary>
+                <blockquote>
+                    <i>In its original form, an expanding Einstein model had an attractive, economic elegance. Alas, it has since run into serious difficulties, 
+                    which have been cured only by sticking on some ugly bandages: inflation to cover horizon and flatness problems; 
+                    overwhelming amounts of dark matter to provide internal structure; and dark energy, whatever that might be, to explain the seemingly recent acceleration. 
+                    A skeptic is entitled to feel that a negative significance, after so much time, effort and trimming, 
+                    is nothing more than one would expect of a folktale constantly re-edited to fit inconvenient new observations.
+                    </i>
+                    <br>
+                    <a href="https://www.americanscientist.org/article/modern-cosmology-science-or-folktale">Modern Cosmology: Science or Folktale?</a> (2007)
+                </blockquote>
+    
+                <p>More:</p>
+                <ul>
+                    <li>1995: <a href="https://www.nature.com/articles/377099a0">Nature: Big Bang not yet dead but in decline</a></li>
+                    <li>2002: <a href="http://web.archive.org/web/20160421052311/http://metaresearch.org/cosmology/BB-top-30.asp">Top 30 Problems of the Big Bang</a></li>
+                    <li>2004: <a href="http://cosmology.info/media/open-letter-on-cosmology.html">Open Letter on Cosmology / Cosmology Statement</a></li>
+                    <li>2019: <a href="https://blogs.scientificamerican.com/observations/cosmology-has-some-big-problems/">Cosmology Has Some Big Problems</a></li>
+                    <li>More <a href="http://cosmology.info/resources/index.html">here.</a></li>
+                </ul>
+            
+        </details>    
+        <p>
+            But viable alternatives to the expanding universe theory face considerable obstacles, such as explaining the CMB.
+            If the energy of the CMB is not from the beginning of the universe, what is it from? Is it even related to the redshifts? 
+            Without a valid explanation for the CMB, a theory of redshifts, no matter how good it is, is not good enough
+            to topple the expanding universe theory.
+        </p>
+            
+
+
+        <h3>Conclusion</h3>
+        
+        <p>Some readers may not find discussing alternative interpretations to the redshifts as an effective use of their time. To such readers, who wish to use 
+            their time most effectively, having a simple, empirically faithful redshift-distance relation may help.
+
+            
+        <!--<a name="cmb"></a>
         <details id="a_cmb">
 
             <summary>The CMB indicates a hot past</summary>
@@ -416,8 +524,7 @@
                 <a href="https://en.wikipedia.org/wiki/Cosmic_microwave_background#Timeline_of_prediction,_discovery_and_interpretation">
                     well before the CMB was discovered</a>.</p>
         
-            <!--<p class="pimg"><img src="img/cmb_predictions.png"></p>-->
-        
+            
             <p>The CMB was discovered in 1964 at 3 K, which has been refined to around 2.7 K.
         
             <p>In the expanding model, the similarity between the predicted effective temperature of our galaxy and the temperature
@@ -428,111 +535,7 @@
             </p>
         
         </details>
-        <details>
-
-            <summary>The farthest galaxies are younger than nearby galaxies, indicating a beginning of time</summary>
-
-            <p>A universe that begins with a big bang should contain younger and younger galaxies as we look back in space and time.
-                As we've been getting a better look at the universe, we are finding that the distant universe isn't meeting our expectations
-                for when galaxies become massive, dusty, spiraled, barred, disced, bulged, and have shut down star formation:</p>
         
-        
-            <ul>
-                <li>
-                    <a href="https://science.sciencemag.org/content/371/6530/674">A massive stellar bulge in a regularly rotating galaxy 1.2 billion years after the Big Bang</a><sup>[7]</sup>
-        
-                    <blockquote>
-                        Lelli et al. (1) report a galaxy that had evolved features (both a disk and a bulge) when only 1.2 billion years had elapsed since the Big Bang 
-                        (∼12.5 billion years ago) (see the figure). This finding suggests that the processes that generate the key features of a mature galaxy arose more rapidly than 
-                        has been thought.
-                    </blockquote>
-                    
-                </li>
-                <li>
-                    <a href="https://www.nature.com/articles/s41586-020-2276-y">A cold, massive, rotating disk galaxy 1.5 billion years after the Big Bang
-                    </a><sup>[8]</sup>
-                
-                    <blockquote>
-                        The existence of such a massive, rotationally supported, cold disk galaxy when the Universe was only 1.5 billion years old favours formation through either cold-mode accretion or mergers, although its large rotational velocity and large content of cold gas remain challenging to reproduce with most numerical simulations.
-                    </blockquote>
-                </li>
-                
-                <li>
-                
-                    <a href="https://www.nature.com/articles/s41586-020-2572-6">A dynamically cold disk galaxy in the early Universe</a><sup>[9]</sup>
-        
-                    <blockquote>
-                        Interferometric imaging at a spatial resolution of about 60 pc reveals
-                a ratio of rotational-to-random motions of V/σ = 9.7 ± 0.4, which is at least four times larger
-                than expected from any galaxy evolution model at this epoch, but similar to the ratios of
-                spiral galaxies in the local Universe.</blockquote>
-                
-                
-                </li>
-                
-                <li>
-                    <a href="https://www.nature.com/articles/s41586-019-1452-4">A dominant population of optically invisible massive galaxies in the early Universe</a>
-                    <sup>[10]</sup>
-                    <blockquote>
-                        Such a high abundance of massive and dusty galaxies in the early Universe challenges our understanding of massive-galaxy formation.
-                    </blockquote>
-                </li>
-                
-                <li>
-                    <a href=https://www.sciencedaily.com/releases/2015/11/151118070758.htm>Earliest giant galaxies: The birth of monsters</a>
-                    <sup>[11]</sup>
-                    <blockquote>
-                        "To complicate things further, if massive galaxies are unexpectedly dustier in the early Universe than astronomers predict then even UltraVISTA wouldn't be able to detect them. If this is indeed the case, the currently-held picture of how galaxies formed in the early Universe may also require a complete overhaul."
-                    </blockquote>
-                </li>
-                
-                
-                <li>
-                    <a href="https://www.nature.com/articles/nature14164">A dusty, normal galaxy in the epoch of reionization</a>
-                    <sup>[12]</sup>
-        
-                    <blockquote>
-                        The galaxy
-                        is highly evolved: it has a large stellar mass, and is heavily enriched in dust, with a dust-to-gas ratio close to that of the Milky
-                        Way. Dusty, evolved galaxies are thus present among the fainter
-                        star-forming population at z > 7, in spite of the very short time
-                        since they first appeared.
-                    </blockquote>
-                </li>
-                
-                <li>
-                    <a href="https://carnegiescience.edu/news/some-galaxies-early-universe-grew-quickly">Some galaxies in the early universe grew up quickly</a>
-                    <sup>[13]</sup>
-                    <blockquote>Fifteen mature galaxies were found at a record-breaking average distance of 12 billion light years, when the universe was just 1.6 billion years old. Their existence at such an early time raises new questions about what forced them to grow up so quickly
-                    </blockquote>
-                </li>
-                
-                <li>
-                    <a href="http://www.sciencedaily.com/releases/2014/10/141030101241.htm">
-                        Galaxy Zoo: CANDELS Barred Disks and Bar Fractions
-                    </a>
-                    <sup>[14]</sup>
-                    <blockquote>
-                        The newly classified galaxies are striking in that they look a lot like those in today's universe, with disks, bars and spiral arms. But theorists predict that these should have taken another 2 billion years to begin to form, so things seem to have been settling down a lot earlier than expected.
-                    </blockquote>
-                </li>
-                
-                <li>
-                    <a href="https://www.nasa.gov/jpl/spitzer/splash-project-dives-deep-for-galaxies">Spitzer Splash Project Dives Deep for Galaxies</a>
-                    <sup>[15]</sup>
-                    <blockquote>
-                        "The findings cast doubt on current models of galaxy formation, which struggle to explain how these remote and young galaxies grew so big so fast."
-                    </blockquote>
-                </li>
-                
-            
-            <p>In a universe that expands, there is a race against the clock for the universe to take shape, and lately the clock has been winning.
-                A universe that doesn't expand, on the other hand, has no discernible age or hurried time schedules for galaxy formation and evolution
-                to squeeze into. 
-            </p>
-        
-
-        </details>
         <details>
 
             <summary>The Tolman surface brightness test indicates an expanding universe</summary>
@@ -549,8 +552,7 @@
 
             <script src="freqtest.js"></script>
 
-            <!--<p>You can see this in action on the <a href="freqtest.htm">Photon Arrival Rate page</a></p>-->
-
+            
             <p>An expanding universe predicts an extra factor of dimming, due to the photons arriving at a lower rate due to the galaxy's motion away from us.
                 Based on observations, it predicts one factor too many<sup>[25]</sup>:
             </p>
@@ -613,174 +615,19 @@
         </details>
         
         </ul>
-        
-        
-        <!--
-        <h3>Advantages</h3>
-
-        <p>In addition to a simple alternative to dark energy, the hypothesis offers several other advantages. 
-            Observations have shown that redshifts might be quantized.
-            And the expansion of the universe may differ for light of different wavelengths. If redshifts are caused by space expanding, 
-            these would be downright impossible. 
-        </p>
-
-        
-        
-        <p>
-            A decelerating photon, if it redshifts in a quantum event, would cause quantized redshifts. And if that might differ slightly 
-            for different wavelengths, those features could easily be accommodated too.
-        </p>-->
-
-        
-
-        <hr>
-        <h3>Tests and Applications</h3>
-
-        <p>It is important to keep in mind that interacting with a cosmologically redshifted photon will, according to the hypothesis, reset it's D to zero, causing it to 
-            behave as a normal photon. With that in mind, several good tests for this hypothesis can be made where the redshifted light is 
-            not disturbed until the end of the experiment.
-        </p> 
-
-        <p>
-            If ancient photons are experiencing time differently, and appear to have decelerated in our frame of reference, a simple test could be devised using existing technology.
-        </p>
-
-        <p>
-            Launch a probe that scans for supernovae, and send it out past Mars. When it detects a supernova in the opposite direction of Earth, 
-            send a signal back to us with its location.
-        </p>
-
-        <p>If all the photons involved are moving at c, the signal from the probe should reach Earth at the same time as the supernova.
-        </p>
-
-        <p>If the decelerating photon hypothesis is correct, the signal from the probe to Earth should travel at c and reach
-            us sooner than the slow light from the distant supernova.
-        </p>
-
-        <p>If confirmed, such a test would provide a working technology for astronomers to apply immediately to get advanced warnings
-            on Earth about events such as supernovae.
-        </p>
-
-        <p>Furthermore, using the distant probe we can calculate the speed of the supernova's light, being able to produce a distance measurement 
-            free from the influence of peculiar velocity. 
-        </p>
-
-        <p>More Tests:</p>
-
-        <details>
-            <summary>Shutter Test</summary>
-
-            <p>Consider a long tube in space with a telescope at one end and an open shutter at the other. 
-                The telescope has a nearby galaxy and a highly redshifted galaxy in its sight. </p>
-            
-            <p class="pimg">
-                <img src="img/experiment1.png">
-            </p>
-            
-            <p>What happens when the shutter is closed?</p>
-            
-            <p><b>Prediction:</b> Because the red light is moving slower than the yellow light, first the nearby galaxy will disappear from view, then the distant one.</p>
-            
-        </details>
-
-        <details>
-            <summary>Extra doppler shifts from high z galaxies</summary> 
-            
-            <p>Because photons from high z galaxies should be moving slower than c, their relative velocity to Earth should be detectable
-                by the Hubble Space Telescope as Doppler effects. </p>
-                
-                <p><b>Prediction:</b> Observing a high z galaxy on Earth's horizon, when Earth is on opposite sides of the sun,
-                should produce more redshift when the Earth is moving away from the distant galaxy than when the Earth is moving toward the galaxy, to a degree
-                more exaggerated than for nearby galaxies.
-            </p>
-            
-            <p class="pimg">
-                <img src="img/dopplertest.png">
-            </p>
-        </details>
-
-        <hr>
-        <h3>Conclusion</h3>
-
-
-    <p>The decelerating photon hypothesis changes the physics of light at cosmological distances to accommodate the redshifts.
-        On the other hand, the expanding interpretation of redshifts has led to a change in just about everything in the universe except for light.
-    </p>
-        
-    <p>When interpreting the redshifts as Doppler effects in the early 20th century, astronomers did so because it  
-        was known and familiar and didn't require new laws of physics.</p>
-    
-    <blockquote>
-        We may state with some confidence that red-shifts are the familiar velocity-shifts, or else they represent some unrecognized principle  of nature. 
-        We cannot assume that our knowledge of physical principles is yet complete; nevertheless, we should not replace a known, familiar principle by an 
-        ad hoc explanation unless we are forced to that step by  actual observations. 
-        - 
-        <span style="font-style: normal !important">Edwin Hubble</span>
-
-    </blockquote>
-
-    <p>The observed acceleration of the redshifts has forced us to that step.</p>
+    -->
 
     <p>
-        If dark energy is in the consideration as a possible fundamental ingredient of nature, 
-        then the observed phenomenon of cosmological redshift, the actual observations that lead to dark energy, should be considered as well.</p>
-
-<hr>
-
-<h3>Peer-Review</h3>
-
-<ul>
-<li>Leave a review by creating a <a href="https://github.com/mikehelland/hubbles-law/issues">GitHub Issue</a></li>
-<li>Email me <a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a></li>
-</ul>
-<hr>
-
-<h3>See Also </h3>
-<ul>
-    <li><a href="test.htm">The Testing Page</a> - try your own hypotheses and values, more models and options</li>
-    <li><a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code for testing page on GitHub</a></li>
-    <li><a href="redshift.htm">Understanding Cosmological Redshift</a></li>
-    <li><a href="bigbang.htm">History and context of the Big Bang</a></li>
-</ul>
-
-<hr>
-<h3>Acknowledgements</h3>
-
-<p>Robert Marshall for suggesting the supernova warning test.</p>
-
-
-<hr>
+    <a href="mailto:mike@mikehelland.com">mike@mikehelland.com</a>
+    </p>
 
 <a name="sources"></a>
-<h2>Sources</h2>
+<h3>Sources</h3>
 
 
 <ol>
-    <li>
-        A. G. Riess et al. "Large Magellanic Cloud Cepheid Standards Provide a 1% Foundation for the Determination of the Hubble Constant and Stronger Evidence for Physics Beyond LambdaCDM"
-        <a href="https://arxiv.org/abs/1903.07603">arXiv:1903.07603</a>, (2019).
-    </li>
-    <li>
-        N. Aghanim et al., <i>“Planck 2018 results. VI. Cosmological parameters</i>, (2018)
-    </li>
-    <li>
-        A. G. Riess et al., "Cosmic Distances Calibrated to 1% Precision with Gaia EDR3 Parallaxes and Hubble Space Telescope Photometry of 75 Milky Way Cepheids Confirm Tension with LambdaCDM"
-        <a href="https://arxiv.org/abs/2012.08534">arXiv:2012.08534 [astro-ph.CO]</a> <i>ApJ.</i>, 116, 1009 (2020).
-    </li>
-
-    <li>
-        Blakeslee, J.P. et al,. "The Hubble Constant from Infrared Surface Brightness Fluctuation Distances" 
-        <a href="https://arxiv.org/abs/2101.02221">arXiv:2101.02221</a> (2021)
-    </li>
-    <li>
-        Cruz, M.; Martinez-Gonzalez, E.; Vielva, P.; Cayon, L. (2005). "Detection of a non-Gaussian Spot in WMAP". <i>Monthly Notices of the Royal Astronomical Society</i>. <b>356</b> (1): 29–40. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/astro-ph/0405341">astro-ph/0405341</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2005MNRAS.356...29C">2005MNRAS.356...29C</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1111%2Fj.1365-2966.2004.08419.x">10.1111/j.1365-2966.2004.08419.x</a>.
-    </li>
-    <li>
-        Ade, P. A. R.;  et al. (Planck Collaboration) (2013). "Planck 2013 results. XXIII. Isotropy and statistics of the CMB". <i>Astronomy &amp; Astrophysics</i>. <b>571</b>: A23. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1303.5083">1303.5083</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014A&amp;A...571A..23P">2014A&amp;A...571A..23P</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1051%2F0004-6361%2F201321534">10.1051/0004-6361/201321534</a>.
-    </li>
-
-
-<!-- mature galaxies in a young universe -->
+    
+    <!-- mature galaxies in a young universe -->
 
     <li>
         Lelli, F., et al.,
@@ -822,6 +669,47 @@
     </li>
 
     
+    
+    
+    
+    <!--Hubble tension-->
+    <li>
+        A. G. Riess et al. "Large Magellanic Cloud Cepheid Standards Provide a 1% Foundation for the Determination of the Hubble Constant and Stronger Evidence for Physics Beyond LambdaCDM"
+        <a href="https://arxiv.org/abs/1903.07603">arXiv:1903.07603</a>, (2019).
+    </li>
+    <li>
+        N. Aghanim et al., <i>“Planck 2018 results. VI. Cosmological parameters</i>, (2018)
+    </li>
+    <li>
+        A. G. Riess et al., "Cosmic Distances Calibrated to 1% Precision with Gaia EDR3 Parallaxes and Hubble Space Telescope Photometry of 75 Milky Way Cepheids Confirm Tension with LambdaCDM"
+        <a href="https://arxiv.org/abs/2012.08534">arXiv:2012.08534 [astro-ph.CO]</a> <i>ApJ.</i>, 116, 1009 (2020).
+    </li>
+
+    <li>
+        Blakeslee, J.P. et al,. "The Hubble Constant from Infrared Surface Brightness Fluctuation Distances" 
+        <a href="https://arxiv.org/abs/2101.02221">arXiv:2101.02221</a> (2021)
+    </li>
+    
+    <li>
+        Jones, David, "Crisis in Cosmology: Measuring The Local Value of the Hubble Constant"  
+        APS April Meeting 2018 63,4 <a href="http://meetings.aps.org/Meeting/APR18/Session/H07.1">APR18-2018-000816</a> (2018)
+    </li>
+
+    
+    
+    <!--CMB
+    <li>
+        Cruz, M.; Martinez-Gonzalez, E.; Vielva, P.; Cayon, L. (2005). "Detection of a non-Gaussian Spot in WMAP". <i>Monthly Notices of the Royal Astronomical Society</i>. <b>356</b> (1): 29–40. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/astro-ph/0405341">astro-ph/0405341</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2005MNRAS.356...29C">2005MNRAS.356...29C</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1111%2Fj.1365-2966.2004.08419.x">10.1111/j.1365-2966.2004.08419.x</a>.
+    </li>
+    <li>
+        Ade, P. A. R.;  et al. (Planck Collaboration) (2013). "Planck 2013 results. XXIII. Isotropy and statistics of the CMB". <i>Astronomy &amp; Astrophysics</i>. <b>571</b>: A23. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1303.5083">1303.5083</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014A&amp;A...571A..23P">2014A&amp;A...571A..23P</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1051%2F0004-6361%2F201321534">10.1051/0004-6361/201321534</a>.
+    </li>
+    -->
+
+
+
+    
+    
     <!-- too big 
 
     <li>
@@ -844,16 +732,12 @@
         Horvath, Istvan; Bagoly, Zsolt; Hakkila, Jon; Tóth, L. Viktor (2014). "Anomalies in the GRB spatial distribution". <i>Proceedings of Science</i>: 78. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="cs1-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="//arxiv.org/abs/1507.05528">1507.05528</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014styd.confE..78H">2014styd.confE..78H</a>.
     </li>-->
 
-    <li>
-        Jones, David, "Crisis in Cosmology: Measuring The Local Value of the Hubble Constant"  
-        APS April Meeting 2018 63,4 <a href="http://meetings.aps.org/Meeting/APR18/Session/H07.1">APR18-2018-000816</a> (2018)
-    </li>
-
+    
+    <!-- unused
     <li>
         H.J. Reboul, <i><a href="https://ui.adsabs.harvard.edu/abs/1981A%26AS...45..129R/abstract">Astron. Astrophys. Supp. Ser.</a></i> 45, 129--144 (1981).
     </li>
     
-
 
     <li>
         Assis, A. K. T.; Neves, M. C. D., Astrophysics and Space Science, Volume 227, Issue 1-2, pp. 13-24 (1995)
@@ -865,15 +749,16 @@
 
     <li>Jensen, J. W., "Supernovae Light Curves: An Argument for a New Distance Modulus" <a href="https://arxiv.org/abs/astro-ph/0404207">arXiv:astro-ph/0404207</a> (2004)
 
-    <!-- vsl
+    -- vsl
     <li>
         J. Magueijo, <i>Reports on Progress in Physics</i>, Vol. 66, Iss. 11, 2025-2068 (2003).
     </li>
-    -->
-
+    
     <li>
         E. Hubble, in <i><a href="https://ned.ipac.caltech.edu/level5/Sept04/Hubble/paper.pdf">The Observational Approach to Cosmology</a></i>, p22, (1937)
     </li>
+    -->
+
 </ol>
 
      
@@ -888,5 +773,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
 
+        <script src="presentations/runners/embed.js"></script>
     </body>
 </html>

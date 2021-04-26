@@ -11,16 +11,16 @@
             
             }
             #graphs {
-                height:600px;
-                width: 600px;
+                height:400px;
+                width: 700px;
                 position:relative;
             }
             #graphs canvas {
                 position:absolute;
                 top: 0;
                 left: 0;
-                height:600px;
-                width: 600px;
+                height:400px;
+                width: 700px;
             }
             .model-label {
                 margin: 4px 0;
@@ -80,6 +80,7 @@
     X-axis: 
     <select id="graph-x-axis">
         <option>z redshift</option>
+        <option>co-moving distance (Gly)</option>
     </select>
     <br>    
     Y-axis: 
@@ -87,20 +88,25 @@
         <option>distance of target (billion light years)</option>
         <option>time to target (billions of years)</option>
         <option>start distance to target (billions of years)</option>
+        <option>z redshift</option>
         
     </select>
     <br>
     <div id="graphs">
-    <canvas id="background" height="600" width="600"></canvas>
-    <canvas id="graph" height="600" width="600"></canvas>
+    <canvas id="background" height="400" width="700"></canvas>
+    <canvas id="graph" height="400" width="700"></canvas>
     </div>
     <br>
     Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
-
-    <hr>
+    <br>
+    Width: <input type="number" id="graph-width" value="600" >
+    Height: <input type="number" id="graph-height" value="600" >
+    <br>
     Starting frequency=<input id="start-freq">
     <br>
+    Show CDM: <input type="checkbox" id="graph-cdm">
+    <hr>
     Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
     
     <pre id="output"></pre>
@@ -172,6 +178,7 @@ var black = true
     var zoomz = 10000
 
     var drawnSN = false
+    var drawCDM = document.getElementById("graph-cdm")
 
     var snData = []
     var zs = [
@@ -210,14 +217,21 @@ var black = true
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
 
         ctxB.fillStyle = !black ? "black" : "white"
-        for (dgi = 0; dgi < zs.length; dgi++) {        
-            ctxB.fillRect(-2 + offset + zs[dgi].z * 10000 * zoomG, -2 + -offset + graph.height - zs[dgi].d * zoomGY, 4, 4)
+        if (drawCDM.checked) {
+            for (dgi = 0; dgi < zs.length; dgi++) {        
+                if (yAxis.selectedIndex === 3) {
+                    ctxB.fillRect(-2 + offset + zs[dgi].d * zoomG, -2 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 4, 4)
+                }
+                else {
+                    ctxB.fillRect(-2 + offset + zs[dgi].z * 10000 * zoomG, -2 + -offset + graph.height - zs[dgi].d * zoomGY, 4, 4)
+                }
+            }
         }
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
-            if (yAxis.selectedIndex === 1) {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.t * zoomGY, 2, 2)
+            if (yAxis.selectedIndex === 3) {
+                ctxB.fillRect(offset + sn.d * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
             }
             else {
                 ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
@@ -227,8 +241,8 @@ var black = true
         ctxB.font = "14px sans-serif"
 
         ctxB.fillStyle = "yellow"
-        ctxB.fillRect(offset + 36, offset + 36, 2, 2)
-        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 40, offset + 38)
+        ctxB.fillRect(offset + 16, offset + 33, 2, 2)
+        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 20, offset + 38)
 /*
         
         ctxB.fillStyle = "green"
@@ -279,13 +293,25 @@ var black = true
         
         var dgi
         ctxB.font = "10px sans-serif"
-        for (dgi = 0; dgi < 80; dgi+=5) {
-            ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+        if (xAxis.selectedIndex === 0) {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            }
+            
+            for (dgi = 0; dgi < 110; dgi+=5) {
+                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
+            }
+        }
+        else {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxB.fillText(dgi, -offset + dgi * 1000 * zoomG + 4, graph.height - 5)    
+            }
+            
+            for (dgi = 0; dgi < 110; dgi+=5) {
+                ctxB.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+            }
         }
         
-        for (dgi = 0; dgi < 110; dgi+=5) {
-            ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-        }
         
     }
     fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
@@ -306,18 +332,25 @@ var black = true
             for (dgt of dgm.targets) {
                 if (dgt.hit) {
 
-                    drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
+                    if (xAxis.selectedIndex === 0) {
+                        drawx = dgt.z * 10000
+                    }
+                    else {
+                        drawx = dgt.start
+                    }
+
                     
                     if (yAxis.selectedIndex === 1) {
                         drawy = dgt.hit
                     }
                     else if (yAxis.selectedIndex === 0) {
-                        // show the difference in time with a static model
                         drawy = dgt.hitX
                     }
                     else if (yAxis.selectedIndex === 2) {
-                        // show the difference in time with a static model
                         drawy = dgt.start
+                    }
+                    else if (yAxis.selectedIndex === 3) {
+                        drawy = dgt.z * 10000
                     }
                     ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
 
@@ -583,18 +616,19 @@ var black = true
             name: "v<sub>target</sub> = c/(1+HD)<sup>2</sup>",
             label: "expand",
             color: "blue", 
-            H: 0.04,
+            H: 0.0756,
             unitH: "ly/y/Mly",
             photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
             next: function () {
-                this.photon.dx = c * Math.pow(1 + this.H/1000 * this.photon.x, 2)
+                //this.photon.dx = c * Math.pow(1 + this.H/1000 * this.photon.x, 2)
+                this.photon.dx = c + (c - c/Math.pow(1 + this.H/1000 * this.photon.x, 1))
                 this.photon.x += this.photon.dx
                 this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
                 this.photon.f = 299792458 / this.photon.w
         
                 //this.photon.x += c + this.photon.x * this.H / 1000
                 for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].x +=  c/Math.pow(1 + this.H/1000 * this.targets[i].x, 2)
+                    this.targets[i].x +=   (c - c/Math.pow(1 + this.H/1000 * this.targets[i].x, 1))
                 }
             }
         })
