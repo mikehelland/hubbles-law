@@ -612,26 +612,6 @@ var black = true
             }
         })
 
-        setupModel({
-            name: "v<sub>target</sub> = c/(1+HD)<sup>2</sup>",
-            label: "expand",
-            color: "blue", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            next: function () {
-                //this.photon.dx = c * Math.pow(1 + this.H/1000 * this.photon.x, 2)
-                this.photon.dx = c + (c - c/Math.pow(1 + this.H/1000 * this.photon.x, 1))
-                this.photon.x += this.photon.dx
-                this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
-                this.photon.f = 299792458 / this.photon.w
-        
-                //this.photon.x += c + this.photon.x * this.H / 1000
-                for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].x +=   (c - c/Math.pow(1 + this.H/1000 * this.targets[i].x, 1))
-                }
-            }
-        })
 
         setupModel({
             div: document.getElementById("redshift1"),
@@ -646,42 +626,6 @@ var black = true
                 this.photon.dx = c - this.H / 1000 * this.photon.x
                 this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-        details.appendChild(document.createElement("hr"))
-
-        setupModel({
-            name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c",
-            expanding: true,
-            color: "#888888", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            photon: {x: 0},
-            next: function () {
-                this.photon.x += c
-                for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].x += this.targets[i].start * this.H / 1000
-                }
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("expandingSlow"),
-            name: "v<sub>target</sub> = H &times; start, v<sub>light</sub> = c + H &times; x",
-            color: "purple", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            photon: {x: 0},
-            next: function () {
-                this.photon.dx = c + this.photon.x * this.H / 1000
-                this.photon.x += this.photon.dx
-                this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
-                this.photon.f = 299792458 / this.photon.w
-
-                for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].x += this.targets[i].start * this.H / 1000
-                }
             }
         })
 
