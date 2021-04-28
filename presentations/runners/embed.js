@@ -2,7 +2,6 @@ var c = 1
 var H = 0.0000756 // 74 (km/s)/Mpc converted to (ly/y)/Mly
 
 var zoomX = 0.12
-var phase2t = 0
 
 // the runners 1, 2, and 3 are defined here
 
@@ -78,8 +77,8 @@ function setup(params) {
 
         race.t++
 
-        this.x += this.dx
         params.next(race)
+        this.x += this.dx
 
         // ready to step down? then calculate a z
         if (params.flipByTime ? this.t >= nextFlip : this.x >= nextFlip) {
@@ -155,7 +154,6 @@ runner1.draw()
 runner2.draw()
 runner3.draw()
 
-//runner11.draw()
 runner21.draw()
 runner31.draw()
 
@@ -191,7 +189,6 @@ document.getElementById("start-race-2-button").onclick = e => {
 
     var animateHandle = setInterval(() => {
     
-        //runner11.draw(true)
         runner21.draw(true)
         runner31.draw(true)
     
@@ -208,7 +205,6 @@ document.getElementById("start-race-2-button").onclick = e => {
     var handle = setInterval(() => {
         for (ii = 0; ii < 5; ii++) {
             
-            //runner11.next()
             runner21.next()
             runner31.next()
             
