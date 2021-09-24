@@ -751,6 +751,59 @@ var black = true
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
             }
         })
+
+
+        const c0 = 299792458
+        // episolon naught is 8.8541878128e-12 in m
+        // convert 
+        const e0 = 8.8541878128e-12
+        const e0n = e0 * c0 //0.0026543905761357367
+
+        // 1.25663706212e-6 H/m
+        const mu0 = 1.25663706212e-6
+        const mu0n = mu0 * c0 //376.7343091821102
+
+        1 / Math.sqrt(e0n * mu0n)
+
+        setupModel({
+            div: document.getElementById("redshift1"),
+            name: "v<sub>light</sub> = 1 / sqrt((e0+HT) * mu0)",
+            label: "e0mu0",
+            color: "white", 
+            H: 0.14,
+            unitH: "ly/y/Mly",
+            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
+            next: function () {
+                this.photon.dx = 1 / Math.sqrt(
+                    (e0 + this.H/1e14 * this.t) * 
+                    mu0) / c0 
+
+                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            }
+        })
+
+        setupModel({
+            div: document.getElementById("redshift1"),
+            name: "v<sub>light</sub> = 1 / sqrt((e0+HX) * mu0)",
+            label: "e0mu0",
+            color: "red", 
+            H: 0.14,
+            unitH: "ly/y/Mly",
+            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
+            next: function () {
+                this.photon.dx = 1 / Math.sqrt(
+                    (e0 + this.H/1e14 * this.photon.x) * 
+                    mu0) / c0 
+
+                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            }
+        })
+
+
     }
 
     setInterval(() => {

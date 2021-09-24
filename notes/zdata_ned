@@ -1,0 +1,9 @@
+lines.forEach(line => {
+   cols = line.replace(/["]+/g, '').split(",")
+   d = parseFloat(cols[6])
+   z = parseFloat(cols[10])
+   if (d && z)
+   data.push({d, z})
+})
+
+//https://ned.ipac.caltech.edu/Archive/Distances/NED30.5.1-D-17.1.2-20200415.csv

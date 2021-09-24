@@ -1,3 +1,10 @@
+https://arxiv.org/abs/2102.05957
+https://arxiv.org/abs/2005.09661
+https://arxiv.org/abs/2009.01251
+https://arxiv.org/abs/1503.00002
+https://arxiv.org/abs/1312.4952
+https://arxiv.org/abs/1409.1214
+
 New TODO add to paper:
 
 PerspectiveAstronomy
