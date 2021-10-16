@@ -181,6 +181,7 @@ var black = true
     var drawCDM = document.getElementById("graph-cdm")
 
     var snData = []
+    var zData = []
     var zs = [
     { z: 1, t: 7400, d: 10400 },
     { z: 2, t: 9880, d: 16400 },
@@ -230,6 +231,16 @@ var black = true
 
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
+            if (yAxis.selectedIndex === 3) {
+                ctxB.fillRect(offset + sn.d * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
+            }
+            else {
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
+            }
+        }
+
+        ctxB.fillStyle = "orange"
+        for (var sn of zData) {
             if (yAxis.selectedIndex === 3) {
                 ctxB.fillRect(offset + sn.d * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
             }
@@ -316,10 +327,15 @@ var black = true
     }
     fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
         snData = data
-        setupModels()
-        drawSN()
-    }
-    )
+
+        fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
+            zData = data
+        
+            setupModels()
+            drawSN()
+        })
+    })
+
     var drawx, drawy, dgt, dgm, dgi
     function drawGraph() {
         
