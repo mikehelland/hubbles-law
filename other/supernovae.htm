@@ -229,6 +229,20 @@ var black = true
             }
         }
 
+        // note, this file has d in Mpc, so convert it
+        // it's also huge and messy and unnecessary
+        /*var mpcToMly = 3.261563
+        ctxB.fillStyle = "orange"
+        for (var sn of zData) {
+            if (yAxis.selectedIndex === 3) {
+                ctxB.fillRect(offset + sn.d * mpcToMly * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
+            }
+            else {
+                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * mpcToMly * zoomGY, 2, 2)
+            }
+        }*/
+
+
         ctxB.fillStyle = "yellow"
         for (var sn of snData) {
             if (yAxis.selectedIndex === 3) {
@@ -239,15 +253,6 @@ var black = true
             }
         }
 
-        ctxB.fillStyle = "orange"
-        for (var sn of zData) {
-            if (yAxis.selectedIndex === 3) {
-                ctxB.fillRect(offset + sn.d * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
-            }
-            else {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
-            }
-        }
 
         ctxB.font = "14px sans-serif"
 
@@ -328,12 +333,12 @@ var black = true
     fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
         snData = data
 
-        fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
-            zData = data
+        //fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
+        //    zData = data
         
             setupModels()
             drawSN()
-        })
+        //})
     })
 
     var drawx, drawy, dgt, dgm, dgi
