@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            img {max-width: 90%;}
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            .text {
+                background-color: white;
+                max-width: 900px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin:auto;
+            }
+
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+            pre {
+                font-weight: bold;
+                font-size: 120%;
+            }
+
+            table {border: 1px solid #808080;}
+            td {padding: 4px;}
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class="text">
+
+<h1 id="a-novel-redshift-distance-relationship">A Novel Redshift-Distance Relationship</h1>
+<h2 id="background">Background</h2>
+<p>Light is made of particles called photons, and photons have a wavelength, and that wavelength determines what color the photon is.</p>
+<p>Red light has a higher wavelength than blue light. If a photon&#39;s wavelength were to increase for some reason, that is called redshift. And if the wavelength decreases, it is called blueshift. Whether the colors are red or blue before or after the shift, or whether they are in the visible range of light at all, doesn&#39;t matter. Just whether the wavelength increases (redshift) or decreases (blueshift).</p>
+<p>As the universe expands, the wavelength of photons gets stretched, causing redshift.</p>
+<h2 id="redshift-and-wavelength">Redshift and wavelength</h2>
+<p>Based on the original wavelength (<code>w_emit</code>) of the photon, and wavelength it was observed to have after traveling through the expanding universe (<code>w_obs</code>), the amount of redshift (<code>z</code>) can be described as:</p>
+<pre><code><span class="hljs-number">1</span> + z = w_obs / w_emit
+
+w_obs = w_emit(<span class="hljs-name">z</span> + <span class="hljs-number">1</span>)
+</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the wavelength observed (shown on the y-axis) of a photon emitted with a wavelength of 1 nm.</p>
+<p><img src="z-wavelength.png" alt="z-wavelength"></p>
+<p>The red and blue shading indicates where values of <code>z</code> are redshifted or blueshifted. When <code>z &gt; 0</code>, that&#39;s redshift. Notice that when <code>z = -1</code>, the wavelength becomes zero. So the range of blueshift is finite and actually very small, <code>-1 &lt; z &lt; 0</code>.</p>
+<h2 id="redshift-and-frequency">Redshift and frequency</h2>
+<p>A photon also has a frequency, which is related to wavelength by the speed of light (<code>c</code>):</p>
+<pre><code><span class="hljs-attr">c</span> = wavelength * frequency
+</code></pre><p>There are also formulas for <code>z</code> using frequency:</p>
+<pre><code><span class="hljs-number">1</span> + z = f_emit / f_obs
+
+f_obs = f_emit / (<span class="hljs-number">1</span> + z)
+</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 Thz.</p>
+<p><img src="z-frequency.png" alt="z-frequency"></p>
+<p>The first thing you notice is that increasing redshift has the opposite effect on frequency as it does on wavelength. A higher <code>z</code> means a lower observed frequency.</p>
+<p>The other thing to notice is that the frequency approaches zero as redshift approaches infinity, and that the frequency approaches infinity as redshift approaches <code>z = -1</code>. </p>
+<p>In the case of both wavelength and frequency, the blueshift region is small, <code>-1 &lt; z &lt; 0</code>, and the redshift region is infinite, <code>z &gt; 0</code>.</p>
+<h2 id="redshift-and-energy">Redshift and energy</h2>
+<p>A photon also has energy, and that too is affected by redshifting. The energy of a photon and its frequency are directly related by Planck&#39;s constant (<code>h</code>):</p>
+<pre><code><span class="hljs-attr">E</span> = h f
+</code></pre><p>That being the case, the formulas for redshift using energy are similar to those for redshift using frequency:</p>
+<pre><code><span class="hljs-number">1</span> + z = E_emit / E_obs
+
+E_obs = E_emit / (<span class="hljs-number">1</span> + z)
+</code></pre><p>And the graph looks the same as it does for frequency. The more redshift, the less energy.</p>
+<p>Redshift <code>z</code> goes in the direction of wavelength (more redshift, higher wavelength), but in the opposite direction of energy and frequency (more redshift, less energy and frequency).</p>
+<h2 id="blueshift">Blueshift</h2>
+<p>That redshift is going &quot;with&quot; wavelength, or &quot;against&quot; energy and frequency shouldn&#39;t make a difference. That can be investigated by inverting the redshift <code>z</code> formulas into blueshift <code>b</code> formulas:</p>
+<pre><code><span class="hljs-symbol">1 </span>+ b = w_emit / w_obs
+<span class="hljs-symbol">1 </span>+ b = f_obs / f_emit
+<span class="hljs-symbol">1 </span>+ b = E_obs / E_emit
+</code></pre><p>Or:</p>
+<pre><code><span class="hljs-attr">w_obs</span> = w_emit / (b + <span class="hljs-number">1</span>)
+<span class="hljs-attr">f_obs</span> = f_emit(b + <span class="hljs-number">1</span>)
+<span class="hljs-attr">E_obs</span> = E_emit(b + <span class="hljs-number">1</span>) 
+</code></pre><p>Now let&#39;s compare the blueshift <code>b</code> to the observed wavelength:</p>
+<p><img src="b-wavelength.png" alt="b-wavelength"></p>
+<p>And observed frequency:</p>
+<p><img src="b-frequency.png" alt="b-frequency"></p>
+<p>We see now the situation has reversed. Not only does energy and frequency rise when blueshift increases, but all the redshifting happens when <code>-1 &lt; b &lt; 0</code>.</p>
+<p>All of <code>z &gt; 0</code> now fits into <code>-1 &lt; b &lt; 0</code>.</p>
+<p>Does that affect anything?</p>
+<h2 id="distance">Distance</h2>
+<p>The z-distance relation is:</p>
+<pre><code><span class="hljs-attribute">d</span> = zc / H<sub>0</sub>
+z &lt;&lt; <span class="hljs-number">1</span>
+</code></pre><p>This is only considered valid for very small values of <code>z</code>. At <code>z = 10</code>, the distance would be 140 billion light years. And since <code>z</code> can go up to infinity, the sky is the limit.</p>
+<p>How about when redshifts are represented as negative blueshifts (<code>-b</code>) instead of <code>z</code>? Perhaps:</p>
+<pre><code><span class="hljs-attr">d</span> = -bc / H<sub>0</sub>
+</code></pre><p>Since <code>b</code> has to be greater than -1, the largest distance this relationship can produce is <code>d = c / H<sub>0</sub></code>, or Hubble&#39;s length. </p>
+<p>To compare <code>z</code> and <code>-b</code>, assume a photon is emitted at 1 MeV. When the photon is observed at the following values, we can see a big difference.</p>
+<table>
+<thead>
+<tr>
+<th>Observed (MeV):</th>
+<th>Redshift z</th>
+<th>Blueshift b</th>
+<th>Distance(z)</th>
+<th>Distance(-b)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0 Bly</td>
+<td>0 Bly</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>1</td>
+<td>-0.5</td>
+<td>14 Bly</td>
+<td>7.0 Bly</td>
+</tr>
+<tr>
+<td>0.33</td>
+<td>2</td>
+<td>-0.66</td>
+<td>28 Bly</td>
+<td>9.3 Bly</td>
+</tr>
+<tr>
+<td>0.25</td>
+<td>3</td>
+<td>-0.75</td>
+<td>42 Bly</td>
+<td>10.5 Bly</td>
+</tr>
+<tr>
+<td>0.2</td>
+<td>4</td>
+<td>-0.8</td>
+<td>56 Bly</td>
+<td>11.2 Bly</td>
+</tr>
+</tbody>
+</table>
+<p>We know from the redshift equations that <code>1 / (1 + z)</code> will give you the percentage of a frequency or energy that will be observed. To get the blueshift <code>b</code>, from that percentage you just subtract 1, so:</p>
+<pre><code>b = <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>
+</code></pre><p>Therefore, we could say:</p>
+<pre><code>d = -(<span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>) c / H<sub>0</sub>
+</code></pre><p>Let&#39;s compare the original z-distance relationship with this new one.</p>
+<p><img src="z-distance-compare.png" alt="z-distance-compare"></p>
+<p>The new z-distance relationship seems to be closely mimicking the lookback times from the current standard cosmological model, LCDM. LCDM has more parameters, and so leads to a wider variety of predictions. Let&#39;s compare two of those sets of parameters with the new z-distance relationship. Consider the distance <code>d</code> to be divided by <code>c</code> the speed of light, converting 1 billion light years (Gly) into 1 billion years (Gyr): </p>
+<p><img src="z-distance_LCDM.png" alt="z-distance_LCDM"></p>
+<p><img src="z-distance-equation.png" alt="z-distance-equation"></p>
