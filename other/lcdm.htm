@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+
+    <script>
+        fetch("https://mikehelland.github.io/hubbles-law/other/cosmo_data.json").then(res => res.json()).then(data => {
+
+            data.forEach(test => {
+
+                var div = document.createElement("div")
+                //div.style.display = "inline-block"
+                div.innerHTML = `ΩM= ${test.params.omega_M_0}, ΩLambda= ${test.params.omega_lambda_0}, error= ${test.error/20} <br>`
+
+                var canvas = document.createElement("canvas")
+                
+                canvas.width = 1000
+                canvas.height = 600
+
+                div.appendChild(canvas)
+
+                document.body.appendChild(div)
+
+                drawCanvas(test, canvas)
+
+
+            })
+        })
+
+
+        function drawCanvas(test, canvas) {
+            var ctx = canvas.getContext("2d")
+            var h = canvas.height
+            var w = canvas.width
+
+            ctx.strokeStyle = "#808080"
+            ctx.moveTo(0, h/2)
+            ctx.lineTo(w, h/2)
+            ctx.stroke()
+
+            ctx.strokeStyle = "black"
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            test.data.forEach(dp => {
+                ctx.lineTo(w * dp.z / 20, h - h * dp.lookback / 15)
+            })
+            ctx.stroke()
+
+            ctx.strokeStyle = "red"
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            test.data.forEach(dp => {
+                ctx.lineTo(w * dp.z / 20, h - h * dp.zd / 15)
+            })
+            ctx.stroke()
+
+            ctx.strokeStyle = "blue"
+            ctx.beginPath()
+            ctx.moveTo(0, h/2)
+
+            test.data.forEach(dp => {
+                ctx.lineTo(w * dp.z / 20, h * dp.error / 2)
+            })
+            ctx.stroke()
+
+        }
+
+    </script>
