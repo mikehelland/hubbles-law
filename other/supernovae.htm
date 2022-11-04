@@ -81,13 +81,13 @@
     <select id="graph-x-axis">
         <option>z redshift</option>
         <option>co-moving distance (Gly)</option>
+        <option>luminosity distance (Gly)</option>
     </select>
     <br>    
     Y-axis: 
     <select id="graph-y-axis">
-        <option>distance of target (billion light years)</option>
-        <option>time to target (billions of years)</option>
-        <option>start distance to target (billions of years)</option>
+        <option>co-moving distance (Gly)</option>
+        <option>luminosity distance (Gly)</option>
         <option>z redshift</option>
         
     </select>
@@ -220,7 +220,7 @@ var black = true
         ctxB.fillStyle = !black ? "black" : "white"
         if (drawCDM.checked) {
             for (dgi = 0; dgi < zs.length; dgi++) {        
-                if (yAxis.selectedIndex === 3) {
+                if (yAxis.selectedIndex === 2) {
                     ctxB.fillRect(-2 + offset + zs[dgi].d * zoomG, -2 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 4, 4)
                 }
                 else {
@@ -232,7 +232,7 @@ var black = true
         // note, this file has d in Mpc, so convert it
         // it's also huge and messy and unnecessary
         /*var mpcToMly = 3.261563
-        ctxB.fillStyle = "orange"
+        ctxB.fillStyle = "red"
         for (var sn of zData) {
             if (yAxis.selectedIndex === 3) {
                 ctxB.fillRect(offset + sn.d * mpcToMly * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
@@ -244,13 +244,30 @@ var black = true
 
 
         ctxB.fillStyle = "yellow"
+        var x, y
         for (var sn of snData) {
-            if (yAxis.selectedIndex === 3) {
-                ctxB.fillRect(offset + sn.d * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
+            //sn.d = sn.ld
+            if (yAxis.selectedIndex === 2) {
+                y = sn.z * 10000
+            }
+            else if (yAxis.selectedIndex === 1) {
+                y = sn.ld
             }
             else {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * zoomGY, 2, 2)
+                y = sn.d
             }
+
+            if (xAxis.selectedIndex === 0) {
+                x = sn.z * 10000
+            }
+            else if (xAxis.selectedIndex === 2) {
+                x = sn.ld
+            }
+            else {
+                x = sn.d
+            }
+
+            ctxB.fillRect(offset + x * zoomG, graph.height - offset - y * zoomGY, 2, 2)
         }
 
 
@@ -330,7 +347,7 @@ var black = true
         
         
     }
-    fetch("https://mikehelland.github.io/hubbles-law/data/supernovaeT.json").then(res=>res.json()).then(data=> {
+    fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
         snData = data
 
         //fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
@@ -362,15 +379,12 @@ var black = true
 
                     
                     if (yAxis.selectedIndex === 1) {
-                        drawy = dgt.hit
+                        drawy = dgt.hitX
                     }
                     else if (yAxis.selectedIndex === 0) {
                         drawy = dgt.hitX
                     }
                     else if (yAxis.selectedIndex === 2) {
-                        drawy = dgt.start
-                    }
-                    else if (yAxis.selectedIndex === 3) {
                         drawy = dgt.z * 10000
                     }
                     ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
@@ -810,7 +824,7 @@ var black = true
             name: "v<sub>light</sub> = 1 / sqrt((e0+HX) * mu0)",
             label: "e0mu0",
             color: "red", 
-            H: 0.14,
+            H: 0.13,
             unitH: "ly/y/Mly",
             photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
             //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
@@ -818,6 +832,25 @@ var black = true
                 this.photon.dx = 1 / Math.sqrt(
                     (e0 + this.H/1e14 * this.photon.x) * 
                     mu0) / c0 
+
+                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
+                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
+            }
+        })
+
+        setupModel({
+            div: document.getElementById("redshift1"),
+            name: "v<sub>light</sub> = 1 / sqrt(e0+HX * mu0+HX)",
+            label: "e0mu0",
+            color: "white", 
+            H: 0.183,
+            unitH: "ly/y/Mly",
+            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
+            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
+            next: function () {
+                this.photon.dx = 1 / Math.sqrt(
+                    e0 * 
+                    (mu0 + this.H/1e9 * this.photon.x)) / c0 
 
                 this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
                 this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 

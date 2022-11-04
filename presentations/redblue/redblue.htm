@@ -2,7 +2,7 @@
 <html>
     <head>
         <style>
-            img {max-width: 90%;}
+            img {max-width: 60%;}
             body {
                 background-color: #CCCCCC;
                 color:black;
@@ -35,7 +35,7 @@
 
         <div class="text">
 
-<h1 id="a-novel-redshift-distance-relationship">A Novel Redshift-Distance Relationship</h1>
+<h1 id="an-alternative-quantification-of-redshifts">An Alternative Quantification of Redshifts</h1>
 <h2 id="background">Background</h2>
 <p>Light is made of particles called photons, and photons have a wavelength, and that wavelength determines what color the photon is.</p>
 <p>Red light has a higher wavelength than blue light. If a photon&#39;s wavelength were to increase for some reason, that is called redshift. And if the wavelength decreases, it is called blueshift. Whether the colors are red or blue before or after the shift, or whether they are in the visible range of light at all, doesn&#39;t matter. Just whether the wavelength increases (redshift) or decreases (blueshift).</p>
@@ -55,7 +55,7 @@ w_obs = w_emit(<span class="hljs-name">z</span> + <span class="hljs-number">1</s
 <pre><code><span class="hljs-number">1</span> + z = f_emit / f_obs
 
 f_obs = f_emit / (<span class="hljs-number">1</span> + z)
-</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 Thz.</p>
+</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 THz.</p>
 <p><img src="z-frequency.png" alt="z-frequency"></p>
 <p>The first thing you notice is that increasing redshift has the opposite effect on frequency as it does on wavelength. A higher <code>z</code> means a lower observed frequency.</p>
 <p>The other thing to notice is that the frequency approaches zero as redshift approaches infinity, and that the frequency approaches infinity as redshift approaches <code>z = -1</code>. </p>
@@ -87,12 +87,12 @@ E_obs = E_emit / (<span class="hljs-number">1</span> + z)
 <p>Does that affect anything?</p>
 <h2 id="distance">Distance</h2>
 <p>The z-distance relation is:</p>
-<pre><code><span class="hljs-attribute">d</span> = zc / H<sub>0</sub>
+<pre><code><span class="hljs-attribute">d</span> = zc / H_0
 z &lt;&lt; <span class="hljs-number">1</span>
 </code></pre><p>This is only considered valid for very small values of <code>z</code>. At <code>z = 10</code>, the distance would be 140 billion light years. And since <code>z</code> can go up to infinity, the sky is the limit.</p>
 <p>How about when redshifts are represented as negative blueshifts (<code>-b</code>) instead of <code>z</code>? Perhaps:</p>
-<pre><code><span class="hljs-attr">d</span> = -bc / H<sub>0</sub>
-</code></pre><p>Since <code>b</code> has to be greater than -1, the largest distance this relationship can produce is <code>d = c / H<sub>0</sub></code>, or Hubble&#39;s length. </p>
+<pre><code><span class="hljs-attr">d</span> = -bc / H_0
+</code></pre><p>Due to the <code>-b</code> in the equation, the distance will only be positive when <code>b &lt; 0</code>. But <code>b</code> also cannot be less than or equal to -1. So <code>d &lt; -(-1)c / H_0</code>, which means <code>c / H_0</code>, or Hubble&#39;s length, is the limit of distance by this relationship. </p>
 <p>To compare <code>z</code> and <code>-b</code>, assume a photon is emitted at 1 MeV. When the photon is observed at the following values, we can see a big difference.</p>
 <table>
 <thead>
@@ -145,9 +145,13 @@ z &lt;&lt; <span class="hljs-number">1</span>
 <p>We know from the redshift equations that <code>1 / (1 + z)</code> will give you the percentage of a frequency or energy that will be observed. To get the blueshift <code>b</code>, from that percentage you just subtract 1, so:</p>
 <pre><code>b = <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>
 </code></pre><p>Therefore, we could say:</p>
-<pre><code>d = -(<span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>) c / H<sub>0</sub>
+<pre><code>d = -(<span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>) c / H_0
 </code></pre><p>Let&#39;s compare the original z-distance relationship with this new one.</p>
 <p><img src="z-distance-compare.png" alt="z-distance-compare"></p>
 <p>The new z-distance relationship seems to be closely mimicking the lookback times from the current standard cosmological model, LCDM. LCDM has more parameters, and so leads to a wider variety of predictions. Let&#39;s compare two of those sets of parameters with the new z-distance relationship. Consider the distance <code>d</code> to be divided by <code>c</code> the speed of light, converting 1 billion light years (Gly) into 1 billion years (Gyr): </p>
 <p><img src="z-distance_LCDM.png" alt="z-distance_LCDM"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>How redshift is quantified seems like an arbitrary and innocent choice. And it seems intuitive to think that <code>z = -1 * b</code>. But upon closer investigation, neither is true.</p>
+<p>The convention of discussing light in wavelengths rather than frequency or energy is very understandable. Astronomy of course pre-dates quantum mechanics and <code>E = h f</code>. Saying blue light is around 450 nanometers is more intuitive than speaking of its equivalent in terahertz or electron volts. And quantifiying redshifts as a positive number that increases the wavelength follows logically from that. After all, it is the observation of redshifts, not blueshifts, that inspired modern cosmology.</p>
+<p>But the conventional quantification of redshift as <code>z</code> leads to a distance relationship that is only valid at very low values of <code>z</code>. Alternatively, quantifying redshifts as <code>b</code> (where <code>-1 &lt; b &lt; 0</code>) leads to a distance relationship that closely matches observations and contemporary cosmological models.</p>
 <p><img src="z-distance-equation.png" alt="z-distance-equation"></p>

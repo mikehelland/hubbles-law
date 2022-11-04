@@ -1,4 +1,4 @@
-# A Novel Redshift-Distance Relationship
+# An Alternative Quantification of Redshifts
 
 ## Background
 
@@ -34,7 +34,7 @@ There are also formulas for `z` using frequency:
 
     f_obs = f_emit / (1 + z)
 
-This shows the effect of redshift `z` (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 Thz.
+This shows the effect of redshift `z` (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 THz.
 
 ![z-frequency](z-frequency.png)
 
@@ -101,7 +101,7 @@ How about when redshifts are represented as negative blueshifts (`-b`) instead o
 
     d = -bc / H_0
 
-Since `b` has to be greater than -1, the largest distance this relationship can produce is `d = c / H_0`, or Hubble's length. 
+Due to the `-b` in the equation, the distance will only be positive when `b < 0`. But `b` also cannot be less than or equal to -1. So `d < -(-1)c / H_0`, which means `c / H_0`, or Hubble's length, is the limit of distance by this relationship. 
 
 To compare `z` and `-b`, assume a photon is emitted at 1 MeV. When the photon is observed at the following values, we can see a big difference.
 
@@ -128,5 +128,14 @@ Let's compare the original z-distance relationship with this new one.
 The new z-distance relationship seems to be closely mimicking the lookback times from the current standard cosmological model, LCDM. LCDM has more parameters, and so leads to a wider variety of predictions. Let's compare two of those sets of parameters with the new z-distance relationship. Consider the distance `d` to be divided by `c` the speed of light, converting 1 billion light years (Gly) into 1 billion years (Gyr): 
 
 ![z-distance_LCDM](z-distance_LCDM.png)
+
+## Conclusion
+
+How redshift is quantified seems like an arbitrary choice. And it seems intuitive to think that `z = -1 * b`. But upon closer investigation, neither is true.
+
+The convention of discussing light's wavelength rather than its frequency or energy is very understandable. Saying blue light is around 450 nanometers is more intuitive than speaking of its equivalent in terahertz or electron volts. And quantifying redshifts as a positive number that increases the wavelength follows logically from that. After all, it is the observation of redshifts, not blueshifts, that inspired modern cosmology.
+
+But the conventional quantification of redshift as `z` leads to a distance relationship that is only valid at very low values of `z`. Alternatively, quantifying redshifts as `b` (where `-1 < b < 0`) leads to a distance relationship that closely matches observations and contemporary cosmological models.
+
 
 ![z-distance-equation](z-distance-equation.png)

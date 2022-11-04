@@ -20,3 +20,17 @@ Google Convert tips
 (km/sec / Mpc) to (km/sec / Million light years)
 
 (km/sec) to (lightyears/year)
+
+
+
+speed of light graphs
+
+https://www.desmos.com/calculator/xaqcosma8l
+
+
+electron rest mass
+Eo =0.511MeV.
+
+
+z and b equations
+https://www.desmos.com/calculator/glfgmlayky

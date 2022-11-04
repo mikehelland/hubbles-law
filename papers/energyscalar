@@ -1,0 +1,145 @@
+An Argument for an Energy Scalar as an Alternative to Redshift
+
+A discussion of redshift, blueshift, energy scaling, and their implications on distance relationships.
+
+1. Redshift
+
+A photon can be described by its wavelength (w), frequency (f), or energy (E), which are all closely related:
+
+c = wf
+E = hf
+E = hc/w
+
+Where c is the speed of light and h is Planck's constant.
+
+When a photon redshifts, the wavelength, frequency, and energy change. Redshift (z) tells us how these values change from when the photon was emitted (emit) to when it was observed (obs).
+
+1 + z = w_obs / w_emit
+1 + z = f_emit / f_obs
+1 + z = E_emit / E_obs
+
+Or:
+
+w_obs = w_emit(z + 1)
+f_obs = f_emit / (z + 1)
+E_obs = E_emit / (z + 1) 
+
+As the redshift increases the wavelength observed increases while the frequency and energy observed decrease. An increase in redshift (z) is a decrease in energy (E).
+
+If redshift were to be negative (z<0) that would indicate a blueshift. It seems intuitive to think that blueshift would be redshift times negative one (-1):
+
+blueshift = z * -1
+
+But that is not true. While z may increase to infinity, causing the wavelength to increase to infinity and the frequency and energy to approach zero (0), z may only decrease to negative one (-1) before the wavelength becomes zero (0) and the frequency and energy observed become a divide by zero (0) error.
+
+To illustrate further, when a photon's redshift is z=1, its observed wavelength is 1+z times its emitted wavelength, 1+1=2, so it's double. However, when its redshift is z=-0.5, it's observed wavelength is 1 + -0.5, or 1/2 its emitted wavelength.   
+
+A value of 0<z<infinity covers the entire range of redshift, while -1<z<0 covers the entire range of blueshift.
+
+2. Blueshift
+
+Because the redshift (z) and the energy (E) of a photon are inversely related, then blueshift and energy (E) should be directly related. Inverting the formulas of redshift (z) to blueshift (b) gives:
+
+1 + b = w_emit / w_obs
+1 + b = f_obs / f_emit
+1 + b = E_obs / E_emit
+
+Or:
+
+w_obs = w_emit / (b + 1)
+f_obs = f_emit(b + 1)
+E_obs = E_emit(b + 1) 
+ 
+With these equations, the situation is different. As blueshift (b) increases, so do frequency (f) and energy (E).
+
+When b=-1, then the frequency and energy are zero (0), and the wavelength is a divide by zero error. Since a photon with a frequency or energy of zero cannot be observed, then b must always be greater than zero (0), and no such error would occur. 
+
+Quantified this way, we find that a value of -1<b<0 covers the range of redshift, and 0<b<infinity covers the range of blueshift.
+
+3. Energy Scalar
+
+In redshift and blueshift equations, there is always a plus one (eg, 1 + z). Quantifying our observations as an energy scalar. which I'll call "Q" arbitrarily, is an alternative in which the plus one can be left out. 
+
+Q = w_emit / w_obs
+Q = f_obs / f_emit
+Q = E_obs / E_emit
+
+Or:
+
+w_obs = w_emit/Q
+f_obs = f_emit(Q)
+E_obs = E_emit(Q)
+
+Due to the absence of a plus one, that means when a photon is observed with the same wavelength, frequency, and energy that it had when emitted, then Q=1. In contrast, that would be quantified as z=0 and b=0.
+
+The energy scalar (Q) of a photon is then 0<Q<1 when redshifted, and 1<Q<infinity when blueshifted. 
+
+As the photon's Q approaches zero (0), so does its energy (and frequency) while its wavelength approaches infinity.
+
+4. Distance Relationships
+
+To determine a distance (D) by redshift (z), the formula is:
+
+D = cz/H_0
+
+Where c is the speed of light and H_0 is Hubble's constant. But this only works for very small values of z (z<<1). Because redshift can grow to infinity, when z=1 the distance is one Hubble's length (c/H_0), and when z=10 the distance is ten Hubble's lengths.
+
+To determine a distance (D) by blueshift (b), the formula is:
+
+D = -bc/H_0
+
+The blueshift formula acts differently than the redshift formula. While the maximum redshift when quantified as z is infinite, the maximum redshift when quantified as b is -1. So when b=-0.5, the distance is half a Hubble's length. When b=-1, the distance is one full Hubble's length, and that is the maximum distance allowed by this relationship.
+
+The redshift formula and the blueshift formula are equal where the redshifts are very small, but they quickly diverge with the redshift formula climbing without bounds and the blueshift formula approaching Hubble's length.
+
+To determine a distance (D) by energy scalar (Q), the formula is:
+
+D = (1 - Q)c/H_0
+
+Here the need for 1 - Q is necessary, because at D=0, there is no redshift or blueshift so Q=1. As the energy scalar approaches 0, D approaches one Hubble's length.
+
+5. Conclusion
+
+Quantifying cosmological redshifts in the traditional manner leads to a distance relationship that is only valid at very small values, and predicts far too large of distances with even moderate redshifts (z=1).
+
+But quantifying them instead as negative blueshifts (or an energy scalar) yields a different distance relationship, on account of the range of negative blueshifts being 0 to -1, and the range of redshifts being 0 to infinity. The distances predicted by this formula never exceed one Hubble's Length.
+
+The energy scalar quantification gives the same distance predictions as the blueshift quantification, and may cause less confusion due to it being color agnostic. 
+
+
+
+
+--------
+
+
+A photon is emitted at 1 MeV and observed at 0.5 MeV.
+
+Redshift z:
+
+1 + z = E_emit / E_obs
+1 + z = 1 / 0.5
+1 + z = 2
+z = 1
+
+Redshift-distance:
+
+D = zc/H_0
+D = (1)c/H_0
+
+Now let's do it for the blueshift formula:
+
+1 + b = E_obs / E_emit
+
+1 + b = 0.5 / 1
+
+1 + b = 0.5
+
+b = -0.5
+
+Blueshift-distance formula:
+
+D=-bc/H_0
+
+D = -(-0.5)/c_H_0
+
+They predict different distances. The redshift formulas predict infinite distances. Negative blueshift predicts finite distances.
