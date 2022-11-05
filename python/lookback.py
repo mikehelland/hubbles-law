@@ -27,17 +27,10 @@ for l0 in numpy.arange(0.68, 0.71, 0.005):
         ztest = -1 * (1.0/(1+z) - 1) * 14
         eq = ztest / Vc
         
-        data.append({"z": z, "lookback": Vc, "zd": ztest, "error": eq})
-
-        error = error + eq
-        header["error"] = error
-        #print eq
+        #data.append({"z": z, "lookback": Vc, "zd": ztest, "error": eq})
+        data.append({"z": z, "lookback": Vc})
     
     full.append(header)
-
-    print error / 20
-
-#print full
 
 with open("other/cosmo_data.json", "w") as fp:
     json.dump(full, fp)

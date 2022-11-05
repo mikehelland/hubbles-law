@@ -137,5 +137,6 @@ The convention of discussing light's wavelength rather than its frequency or ene
 
 But the conventional quantification of redshift as `z` leads to a distance relationship that is only valid at very low values of `z`. Alternatively, quantifying redshifts as `b` (where `-1 < b < 0`) leads to a distance relationship that closely matches observations and contemporary cosmological models.
 
+mike@mikehelland.com
 
 ![z-distance-equation](z-distance-equation.png)
