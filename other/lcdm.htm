@@ -11,18 +11,18 @@
     hypothesis (black): H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0h">
     <br>
     &Lambda;CDM (<span style="color:red;">red</span>): H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
-    &Omega;<sub>M</sub>: <input type="number" value="0.0" step="0.05" id="Omega_M">
-    &Omega;<sub>&Lambda;</sub>: <input type="number" value="0.0" step="0.05" id="Omega_L">
+    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.0" step="0.05" id="Omega_M">
+    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.0" step="0.05" id="Omega_L">
     </form>
 
     <br>
-    <canvas id="canvas" width="1000" height="600">
+    <canvas id="canvas" width="1000" height="600"></canvas>
 
-        <p>The hypothesis being tested is:</p>
+    <p>The hypothesis being tested is:</p>
 
-        <img src="../presentations/redblue/z-distance-equation.png">
+    <img src="../presentations/redblue/z-distance-equation.png">
 
-        <p><a href="../presentations/redblue.htm">Read more</a></p>
+    <p><a href="../presentations/redblue/redblue.htm">Read more</a></p>
 
 
     <script>
@@ -57,11 +57,24 @@
             canvas.width = w
 
             ctx.fillStyle = "black"
-            for (var i = 0; i <= maxZ; i=i+2) {
+            ctx.font = "16px sans-serif"
+            for (var i = 0; i <= maxZ; i=i+1) {
                 ctx.fillText(i, i / maxZ * w, h)
             }
             ctx.fillText("z", w - 10, h)
 
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, i / maxZ * w, h)
+            }
+            for (var i = 0; i <= 15; i=i+1) {
+                ctx.fillText(i, 0, h - h * i / 15)
+            }
+            ctx.fillText("distance (lookback time x c)", 28, 18)
+            ctx.fillText("billion light years", 28, 38)
+
+            ctx.lineWidth = 2
             ctx.strokeStyle = "#808080"
             ctx.moveTo(0, h/2)
             ctx.lineTo(w, h/2)
