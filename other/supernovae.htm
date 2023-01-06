@@ -105,7 +105,11 @@
     <br>
     Starting frequency=<input id="start-freq">
     <br>
+    Light Extinction=<input id="extinction" type="number" value="0.0" step="0.01" min="0.0">
+    <br>
     Show CDM: <input type="checkbox" id="graph-cdm">
+    <br>
+    d-z H<sub>0</sub>: <input type="number" id="graph-hypothesis">
     <hr>
     Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
     
@@ -157,6 +161,26 @@ var black = true
     var models = []
 
     var startFreqInput = document.getElementById("start-freq")
+    var extinctionInput = document.getElementById("extinction")
+    extinctionInput.onchange = e => {
+        for (var i=0; i<snData.length; i++) {
+                // distance modulus to parsec luminosity distance
+                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinctionInput.value)) 
+
+                // convert to comoving distance
+                //d = ld / (1+z)
+                var d = ld / (1+(1*snData[i].z))
+
+                // parsec to light years
+                d = d * 3.261564
+                ld = ld * 3.261564
+
+                // ly to Mly
+                snData[i].d = d / 1000000
+                snData[i].ld = ld / 1000000
+        }
+        drawSN()
+    }
     
     
     // the models advance by 1 million years each step
@@ -167,6 +191,9 @@ var black = true
     // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
 
     var c = 1
+    const pc2ly = 3.261564
+    const c0 = 299792.458
+        
 
     var zoom = 0.035
     var zoom_gx = 0.95
@@ -179,6 +206,7 @@ var black = true
 
     var drawnSN = false
     var drawCDM = document.getElementById("graph-cdm")
+    var drawHypothesis = document.getElementById("graph-hypothesis")
 
     var snData = []
     var zData = []
@@ -227,6 +255,19 @@ var black = true
                     ctxB.fillRect(-2 + offset + zs[dgi].z * 10000 * zoomG, -2 + -offset + graph.height - zs[dgi].d * zoomGY, 4, 4)
                 }
             }
+        }
+
+        if (drawHypothesis.value > 0) {
+            ctxB.strokeStyle = "red"
+            ctxB.beginPath()
+            ctxB.moveTo(offset, graph.height - offset)
+
+            for (let ii = 0; ii<=20; ii+=0.1) {
+                d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
+                ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                            -2 + -offset + graph.height - d * zoomGY)
+            }
+            ctxB.stroke()
         }
 
         // note, this file has d in Mpc, so convert it

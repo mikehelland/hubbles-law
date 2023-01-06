@@ -1,0 +1,42 @@
+
+
+photon1 leaves point A toward point G. Check its z and energy every 2.33 Gyr.
+
+A 	z=0	    12 ev	0 Gyr	
+B 	z=0.2	10		2.33 
+C 	z=0.5	8		4.66 
+D 	z=1		6		7 
+E 	z=2		4		9.33 
+F 	z=5		2		11.66 
+G 	z=∞		0       14 
+
+|-----|-----|-----|-----|-----|-----|
+A     B     C     D     E     F     G
+|----------------14 Gyr-------------|
+
+
+As it passes point D, photon2 leaves point D with 6 eV:
+
+A 	x	
+B 	x
+C 	x
+D 	z=0		6		0 
+E 	z=0.5	4		4.66 
+F 	z=2		2		9.33 
+G 	z=∞		0       14 
+
+It only takes photon1 7 billion years to get from D to G.
+
+It takes photon2 14 billion years to get do the same thing.
+
+That is not correct. This is correct:
+
+A 	x
+B 	x
+C 	x
+D 	z=0		6		0 
+E 	z=0.2	5		2.33 
+F 	z=0.5	4		4.66 
+G 	z=1		3       7 
+
+Now photon1 and photon2 arrive together at point G.
