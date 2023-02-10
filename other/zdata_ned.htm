@@ -1,0 +1,302 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #right-side {
+                left: 730px;
+                top: 20px;
+                position: absolute;
+            
+            }
+            #graphs {
+                height:400px;
+                width: 700px;
+                position:relative;
+            }
+            #graphs canvas {
+                position:absolute;
+                top: 0;
+                left: 0;
+                height:400px;
+                width: 700px;
+            }
+        </style>
+    </head>
+<body>
+
+<h3>NED data </h3>
+
+    X-axis: 
+    <select id="graph-x-axis">
+        <option>z redshift</option>
+        <option>-b negative blueshift</option>
+    </select>
+    <br>    
+    Y-axis: 
+    <select id="graph-y-axis">
+        <option>co-moving distance (Gly)</option>
+        <option>luminosity distance (Gly)</option>
+    </select>
+    <br>
+    
+    <div id="graphs">
+    <canvas id="background" height="400" width="700"></canvas>
+    <canvas id="graph" height="400" width="700"></canvas>
+    </div>
+    <br>
+    Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
+    Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
+    <br>
+    Width: <input type="number" id="graph-width" value="600" >
+    Height: <input type="number" id="graph-height" value="600" >
+    <br>
+    Show NED <input type="checkbox" id="show-ned" checked="true">
+    <br>
+    Light Extinction=<input id="extinction" type="number" value="0.0" step="0.01" min="0.0">
+    
+
+    <pre id="output"></pre>
+</div>
+
+<div id="right-side">
+<p>Click a model to play or reset it.</p>
+
+<div id="details"></div>
+
+<script>
+var black = true
+
+    var outputDiv = document.getElementById("output")
+
+    var background = document.getElementById("background")
+    var graph = document.getElementById("graph")
+    var ctxB = background.getContext("2d")
+    var ctxG = graph.getContext("2d")
+
+    var showNedInput = document.getElementById("show-ned")
+
+    
+    var c = 1
+    const pc2ly = 3.261564
+    const c0 = 299792.458
+        
+
+    var zoom = 0.035
+    var zoom_gx = 0.95
+    var zoom_gy = 0.48
+    var zoomG = zoom * zoom_gx
+    var zoomGY = zoom * zoom_gy
+    var offset = 20
+    
+    var zoomz = 10000
+
+    var snData = []
+    var zData = []
+    var zs = [
+    { z: 1, t: 7400, d: 10400 },
+    { z: 2, t: 9880, d: 16400 },
+    { z: 3, t: 11000, d: 20100 },
+    { z: 4, t: 11600, d: 22800 },
+    { z: 5, t: 11900, d: 24700 },
+    { z: 6, t: 12200, d: 26200 },
+    { z: 7, t: 12300, d: 27500 },
+    { z: 8, t: 12400, d: 28500 },
+    { z: 9, t: 12500, d: 29400 },
+    { z: 10, t: 12600, d: 30100 },
+    { z: 11, t: 12700, d: 30700 },
+    { z: 12, t: 12700, d: 31300 },
+    { z: 13, t: 12700, d: 31800 },
+    { z: 14, t: 12800, d: 32300 },
+    { z: 15, t: 12800, d: 32700 },
+    { z: 16, t: 12800, d: 33100 },
+    { z: 17, t: 12800, d: 33400 },
+    { z: 18, t: 12900, d: 33700 },
+    { z: 19, t: 12900, d: 34000 },
+    { z: 20, t: 12900, d: 34300 },
+    { z: 21, t: 12900, d: 34600 },
+    { z: 22, t: 12900, d: 34800 },
+    { z: 23, t: 12900, d: 35000 },
+    { z: 24, t: 12900, d: 35200 },
+    { z: 25, t: 12900, d: 35400 },]
+
+    function drawSN() {
+        ctxB.lineWidth = 1
+        ctxB.fillStyle = black ? "black" : "white"
+        ctxB.fillRect(0, 0, graph.width, graph.height)
+
+        ctxB.strokeStyle = !black ? "black" : "white"
+        ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+
+        ctxB.fillStyle = !black ? "black" : "white"
+        
+        /*if (drawHypothesis.value > 0) {
+            ctxB.strokeStyle = "red"
+            ctxB.beginPath()
+            ctxB.moveTo(offset, graph.height - offset)
+
+            for (let ii = 0; ii<=20; ii+=0.1) {
+                d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
+                ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                            -2 + -offset + graph.height - d * zoomGY)
+            }
+            ctxB.stroke()
+        }*/
+
+        var x, y
+        
+        // note, this file has d in Mpc, so convert it
+        // it's also huge and messy and unnecessary
+        var mpcToMly = 3.261563
+        ctxB.fillStyle = "darkred"
+        if (showNedInput.checked) {
+            for (var sn of zData) {
+                
+                if (xAxis.selectedIndex === 0) {
+                    x = sn.z * 10000
+                }
+                else if (xAxis.selectedIndex === 1) {
+                    x = -(1 / (1 + sn.z) - 1) * 10000
+                }
+                
+                if (yAxis.selectedIndex === 3) {
+                    ctxB.fillRect(offset + sn.d * mpcToMly * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
+                }
+                else {
+                    ctxB.fillRect(offset + x * zoomG, graph.height - offset - sn.d * mpcToMly * zoomGY, 2, 2)
+                }
+            }
+        }
+
+        var y2 = 0
+        for (var sn of snData) {
+            //sn.d = sn.ld
+            if (yAxis.selectedIndex === 2) {
+                y = sn.z * 10000
+            }
+            else if (yAxis.selectedIndex === 1) {
+                y = sn.ld
+            }
+            else {
+                y = sn.d
+                y2 = sn.d / (1 + sn.z)
+            }
+
+            if (xAxis.selectedIndex === 0) {
+                x = sn.z * 10000
+            }
+            else if (xAxis.selectedIndex === 1) {
+                x = -(1 / (1 + sn.z) - 1) * 10000
+            }
+            else {
+                x = sn.d
+            }
+
+            ctxB.fillStyle = "yellow"
+            ctxB.fillRect(offset + x * zoomG, graph.height - offset - y * zoomGY, 2, 2)
+            if (y2) {
+                ctxB.fillStyle = "orange"
+                ctxB.fillRect(offset + x * zoomG, graph.height - offset - y2 * zoomGY, 2, 2)
+            }
+        }
+
+        ctxB.strokeStyle = "blue"
+        ctxB.beginPath()
+        ctxB.moveTo(offset, graph.height - offset)
+        ctxB.lineTo(offset + 10000 * zoomG, graph.height - offset - -1 * (1 / (1 + 99999) - 1) * 13600 * zoomGY)
+        ctxB.stroke()
+
+        ctxB.font = "14px sans-serif"
+
+        /*ctxB.fillStyle = "red"
+        ctxB.fillRect(offset + 16, offset + 33, 2, 2)
+        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 20, offset + 38)*/
+
+        ctxB.fillStyle = !black ? "black" : "white"
+        ctxB.textAlign = "right"
+        ctxB.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxB.textAlign = "left"
+        ctxB.fillText(yAxis.value, offset + 5, offset)
+        
+        
+        var dgi
+        ctxB.font = "10px sans-serif"
+        //if (xAxis.selectedIndex === 0) {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            }
+            
+            for (dgi = 0; dgi < 110; dgi+=5) {
+                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
+            }
+        /*}
+        else {
+            for (dgi = 0; dgi < 80; dgi+=5) {
+                ctxB.fillText(dgi, -offset + dgi * 1000 * zoomG + 4, graph.height - 5)    
+            }
+            
+            for (dgi = 0; dgi < 110; dgi+=5) {
+                ctxB.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+            }
+        }*/
+        
+        
+    }
+    fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
+        snData = data
+
+        fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
+            zData = data
+        
+            //setupModels()
+            drawSN()
+        })
+    })
+
+    
+    
+    
+var zxInput = document.getElementById("graph-zoom-x")
+zxInput.onchange = e => {
+    zoomG = zoom * zoom_gx * e.target.value
+    drawSN()
+}
+var zyInput = document.getElementById("graph-zoom-y")
+zyInput.onchange = e => {
+    zoomGY = zoom * zoom_gy * e.target.value
+    drawSN()
+}
+
+zoomG = zoom * zoom_gx * zxInput.value
+zoomGY = zoom * zoom_gy * zyInput.value
+
+var yAxis = document.getElementById("graph-y-axis")
+var xAxis = document.getElementById("graph-x-axis")
+yAxis.onchange = e => drawSN()
+xAxis.onchange = e => drawSN()
+showNedInput.onchange = e => drawSN()
+
+    var extinctionInput = document.getElementById("extinction")
+    extinctionInput.onchange = e => {
+        for (var i=0; i<snData.length; i++) {
+                // distance modulus to parsec luminosity distance
+                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinctionInput.value)) 
+
+                // convert to comoving distance
+                //d = ld / (1+z)
+                var d = ld / (1+(1*snData[i].z))
+
+                // parsec to light years
+                d = d * 3.261564
+                ld = ld * 3.261564
+
+                // ly to Mly
+                snData[i].d = d / 1000000
+                snData[i].ld = ld / 1000000
+        }
+        drawSN()
+    }
+    
+</script>
+
