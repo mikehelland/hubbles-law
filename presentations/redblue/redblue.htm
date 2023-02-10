@@ -1,158 +1,387 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            img {max-width: 60%;}
-            body {
-                background-color: #CCCCCC;
-                color:black;
-            }
-            .text {
-                background-color: white;
-                max-width: 900px;
-                font-family: Arial, Helvetica, sans-serif;
-                padding: 15px;
-                margin:auto;
-            }
+<head>
+<style>
 
-            li code, p code {
-                background-color: #EEEEEE;
-                padding:2px;
-                font-weight: bold;
-            }
-            pre {
-                font-weight: bold;
-                font-size: 120%;
-            }
+    body {
+        /*text-align: center;
+        color:white;
+        background-color: black;*/
+        max-width: 850px;
+        margin:auto;
+        background-color: #CCCCCC;
+    }
 
-            table {border: 1px solid #808080;}
-            td {padding: 4px;}
 
-        </style>
-    </head>
+    table {
+        /*margin:auto;*/
+    }
 
-    <body>
+    .slide {
+        background-color: #f8f8f8;
+        border: 1px solid #888888;
+        padding:0.9em;
+    }
 
-        <div class="text">
+    .uarr {
+        color:green;
+        font-size: 200%;
+    }
 
-<h1 id="an-alternative-quantification-of-redshifts">An Alternative Quantification of Redshifts</h1>
-<h2 id="background">Background</h2>
-<p>Light is made of particles called photons, and photons have a wavelength, and that wavelength determines what color the photon is.</p>
-<p>Red light has a higher wavelength than blue light. If a photon&#39;s wavelength were to increase for some reason, that is called redshift. And if the wavelength decreases, it is called blueshift. Whether the colors are red or blue before or after the shift, or whether they are in the visible range of light at all, doesn&#39;t matter. Just whether the wavelength increases (redshift) or decreases (blueshift).</p>
-<p>As the universe expands, the wavelength of photons gets stretched, causing redshift.</p>
-<h2 id="redshift-and-wavelength">Redshift and wavelength</h2>
-<p>Based on the original wavelength (<code>w<sub>emit</sub></code>) of the photon, and wavelength it was observed to have after traveling through the expanding universe (<code>w<sub>obs</sub></code>), the amount of redshift (<code>z</code>) can be described as:</p>
-<pre><code><span class="hljs-number">1</span> + z = w<sub>obs</sub> / w<sub>emit</sub>
+    .darr {
+        color:yellow;
+        font-size: 200%;
+    }
 
-w<sub>obs</sub> = w<sub>emit</sub>(<span class="hljs-name">z</span> + <span class="hljs-number">1</span>)
-</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the wavelength observed (shown on the y-axis) of a photon emitted with a wavelength of 1 nm.</p>
-<p><img src="z-wavelength.png" alt="z-wavelength"></p>
-<p>The red and blue shading indicates where values of <code>z</code> are redshifted or blueshifted. When <code>z &gt; 0</code>, that&#39;s redshift. Notice that when <code>z = -1</code>, the wavelength becomes zero. So the range of blueshift is finite and actually very small, <code>-1 &lt; z &lt; 0</code>.</p>
-<h2 id="redshift-and-frequency">Redshift and frequency</h2>
-<p>A photon also has a frequency, which is related to wavelength by the speed of light (<code>c</code>):</p>
-<pre><code><span class="hljs-attr">c</span> = wavelength * frequency
-</code></pre><p>There are also formulas for <code>z</code> using frequency:</p>
-<pre><code><span class="hljs-number">1</span> + z = f<sub>emit</sub> / f<sub>obs</sub>
+    .red {
+        color:red;
+    }
 
-f<sub>obs</sub> = f<sub>emit</sub> / (<span class="hljs-number">1</span> + z)
-</code></pre><p>This shows the effect of redshift <code>z</code> (shown on the x-axis) on the frequency observed (y-axis) of a photon emitted with a frequency of 1 THz.</p>
-<p><img src="z-frequency.png" alt="z-frequency"></p>
-<p>The first thing you notice is that increasing redshift has the opposite effect on frequency as it does on wavelength. A higher <code>z</code> means a lower observed frequency.</p>
-<p>The other thing to notice is that the frequency approaches zero as redshift approaches infinity, and that the frequency approaches infinity as redshift approaches <code>z = -1</code>. </p>
-<p>In the case of both wavelength and frequency, the blueshift region is small, <code>-1 &lt; z &lt; 0</code>, and the redshift region is infinite, <code>z &gt; 0</code>.</p>
-<h2 id="redshift-and-energy">Redshift and energy</h2>
-<p>A photon also has energy, and that too is affected by redshifting. The energy of a photon and its frequency are directly related by Planck&#39;s constant (<code>h</code>):</p>
-<pre><code><span class="hljs-attr">E</span> = h f
-</code></pre><p>That being the case, the formulas for redshift using energy are similar to those for redshift using frequency:</p>
-<pre><code><span class="hljs-number">1</span> + z = E<sub>emit</sub> / E<sub>obs</sub>
+    .blue {
+        color:blue;
+    }
 
-E<sub>obs</sub> = E<sub>emit</sub> / (<span class="hljs-number">1</span> + z)
-</code></pre><p>And the graph looks the same as it does for frequency. The more redshift, the less energy.</p>
-<p>Redshift <code>z</code> goes in the direction of wavelength (more redshift, higher wavelength), but in the opposite direction of energy and frequency (more redshift, less energy and frequency).</p>
-<h2 id="blueshift">Blueshift</h2>
-<p>That redshift is going &quot;with&quot; wavelength, or &quot;against&quot; energy and frequency shouldn&#39;t make a difference. That can be investigated by inverting the redshift <code>z</code> formulas into blueshift <code>b</code> formulas:</p>
-<pre><code><span class="hljs-symbol">1 </span>+ b = w<sub>emit</sub> / w<sub>obs</sub>
-<span class="hljs-symbol">1 </span>+ b = f<sub>obs</sub> / f<sub>emit</sub>
-<span class="hljs-symbol">1 </span>+ b = E<sub>obs</sub> / E<sub>emit</sub>
-</code></pre><p>Or:</p>
-<pre><code><span class="hljs-attr">w<sub>obs</sub></span> = w<sub>emit</sub> / (b + <span class="hljs-number">1</span>)
-<span class="hljs-attr">f<sub>obs</sub></span> = f<sub>emit</sub>(b + <span class="hljs-number">1</span>)
-<span class="hljs-attr">E<sub>obs</sub></span> = E<sub>emit</sub>(b + <span class="hljs-number">1</span>) 
-</code></pre><p>Now let&#39;s compare the blueshift <code>b</code> to the observed wavelength:</p>
-<p><img src="b-wavelength.png" alt="b-wavelength"></p>
-<p>And observed frequency:</p>
-<p><img src="b-frequency.png" alt="b-frequency"></p>
-<p>We see now the situation has reversed. Not only does energy and frequency rise when blueshift increases, but all the redshifting happens when <code>-1 &lt; b &lt; 0</code>.</p>
-<p>All of <code>z &gt; 0</code> now fits into <code>-1 &lt; b &lt; 0</code>.</p>
-<p>Does that affect anything?</p>
-<h2 id="distance">Distance</h2>
-<p>The z-distance relation is:</p>
-<pre><code><span class="hljs-attribute">d</span> = zc / H<sub>0</sub>
-z &lt;&lt; <span class="hljs-number">1</span>
-</code></pre><p>This is only considered valid for very small values of <code>z</code>. At <code>z = 10</code>, the distance would be 140 billion light years. And since <code>z</code> can go up to infinity, the sky is the limit.</p>
-<p>How about when redshifts are represented as negative blueshifts (<code>-b</code>) instead of <code>z</code>? Perhaps:</p>
-<pre><code><span class="hljs-attr">d</span> = -bc / H<sub>0</sub>
-</code></pre><p>Due to the <code>-b</code> in the equation, the distance will only be positive when <code>b &lt; 0</code>. But <code>b</code> also cannot be less than or equal to -1. So <code>d &lt; -(-1)c / H<sub>0</sub></code>, which means <code>c / H<sub>0</sub></code>, or Hubble&#39;s length, is the limit of distance by this relationship. </p>
-<p>To compare <code>z</code> and <code>-b</code>, assume a photon is emitted at 1 MeV. When the photon is observed at the following values, we can see a big difference.</p>
+    ul {
+    }
+
+    #lookback-equation1 {
+        position: absolute;
+        top: 10em;
+        left:12em;
+    }
+
+    #lookback-equation2 {
+        position: absolute;
+        top: 22em;
+        right:5em;
+    }
+
+    #summary-table td {
+        padding:0.5em;
+    }
+
+    .label {
+        font-size: 85%;
+        font-style: italic;
+        color: #888888;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Redshift vs Negative Blueshift</h2>
+
+<div class="slide">
+
+<p>Redshift is represented by the letter <i>z</i>, and can be quantified by wavelength, frequency, or energy:</p>
+
 <table>
-<thead>
-<tr>
-<th>Observed (MeV):</th>
-<th>Redshift z</th>
-<th>Blueshift b</th>
-<th>Distance(z)</th>
-<th>Distance(-b)</th>
+<tr class="fi">
+
+    <td>
+    \[  1 + z = \frac{wavelength_{obsv }}{wavelength_{emit}}
+  
+    \]
+    </td>
+
+    <td>
+        <img width="400px" src="z-wavelength.png">
+    </td>
+  
 </tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0 Bly</td>
-<td>0 Bly</td>
+
+
+<tr class="fi">
+
+    <td>
+        \[  1 + z = \frac{frequency_{emit}}{frequency_{obsv }}
+  
+        \]
+      
+        <br><br><br>
+      
+        \[  1 + z = \frac{Energy_{emit}}{Energy_{obsv }}
+        
+        \]
+    </td>
+
+    <td>
+        <img width="400px" src="z-frequency.png">
+    </td>
+  
 </tr>
-<tr>
-<td>0.5</td>
-<td>1</td>
-<td>-0.5</td>
-<td>14 Bly</td>
-<td>7.0 Bly</td>
-</tr>
-<tr>
-<td>0.33</td>
-<td>2</td>
-<td>-0.66</td>
-<td>28 Bly</td>
-<td>9.3 Bly</td>
-</tr>
-<tr>
-<td>0.25</td>
-<td>3</td>
-<td>-0.75</td>
-<td>42 Bly</td>
-<td>10.5 Bly</td>
-</tr>
-<tr>
-<td>0.2</td>
-<td>4</td>
-<td>-0.8</td>
-<td>56 Bly</td>
-<td>11.2 Bly</td>
-</tr>
-</tbody>
+
 </table>
-<p>We know from the redshift equations that <code>1 / (1 + z)</code> will give you the percentage of a frequency or energy that will be observed. To get the blueshift <code>b</code>, from that percentage you just subtract 1, so:</p>
-<pre><code>b = <span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>
-</code></pre><p>Therefore, we could say:</p>
-<pre><code>d = -(<span class="hljs-number">1</span> / (<span class="hljs-number">1</span> + z) - <span class="hljs-number">1</span>) c / H<sub>0</sub>
-</code></pre><p>Let&#39;s compare the original z-distance relationship with this new one.</p>
-<p><img src="z-distance-compare.png" alt="z-distance-compare"></p>
-<p>The new z-distance relationship seems to be closely mimicking the lookback times from the current standard cosmological model, LCDM. LCDM has more parameters, and so leads to a wider variety of predictions. Let&#39;s compare two of those sets of parameters with the new z-distance relationship. Consider the distance <code>d</code> to be divided by <code>c</code> the speed of light, converting 1 billion light years (Gly) into 1 billion years (Gyr): </p>
-<p><img src="z-distance_LCDM.png" alt="z-distance_LCDM"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>How redshift is quantified seems like an arbitrary choice. And it seems intuitive to think that <code>z = -1 * b</code>. But upon closer investigation, neither is true.</p>
-<p>The convention of discussing light&#39;s wavelength rather than its frequency or energy is very understandable. Saying blue light is around 450 nanometers is more intuitive than speaking of its equivalent in terahertz or electron volts. And quantifying redshifts as a positive number that increases the wavelength follows logically from that. After all, it is the observation of redshifts, not blueshifts, that inspired modern cosmology.</p>
-<p>But the conventional quantification of redshift as <code>z</code> leads to a distance relationship that is only valid at very low values of <code>z</code>. Alternatively, quantifying redshifts as <code>b</code> (where <code>-1 &lt; b &lt; 0</code>) leads to a distance relationship that closely matches observations and contemporary cosmological models.</p>
-<p>mike@mikehelland.com</p>
-<p><img src="z-distance-equation.png" alt="z-distance-equation"></p>
+
+<p class="fi"><i>z</i><span class="uarr">&uarr;</span>&nbsp;&nbsp;&nbsp;
+    wavelength<span class="uarr">&uarr;</span>&nbsp;&nbsp;&nbsp;
+    frequency<span class="darr">&darr;</span>&nbsp;&nbsp;&nbsp;
+    Energy<span class="darr">&darr;</span></p>
+
+<p class="fi"><i>z > 0</i> is <span class="red">redshift</span>. <i>z < 0</i> is <span class="blue">blueshift</span>.</p>
+
+</div>
+
+
+<div class="slide">
+
+<p>Inverting the equations quantifies blueshift, represented by the letter <i>b</i>:</p>
+
+    <table>
+        <tr><td>\[  1 + b = \frac{1}{1 + z}
+          
+            \]
+            
+        </td></tr>            
+        <tr class="fi">
+        
+            <td>
+            \[  1 + b = \frac{wavelength_{emit}}{wavelength_{obsv }}
+          
+            \]
+            </td>
+        
+            <td>
+                <img width="400px" src="b-wavelength.png">
+            </td>
+          
+        </tr>
+        
+        
+        <tr class="fi">
+        
+            <td>
+                \[  1 + b = \frac{frequency_{obsv }}{frequency_{emit}}
+          
+                \]
+              
+                <br><br><br>
+              
+                \[  1 + b = \frac{Energy_{obsv }}{Energy_{emit}}
+                
+                \]
+            </td>
+        
+            <td>
+                <img width="400px" src="b-frequency.png">
+            </td>
+          
+        </tr>
+        
+        </table>
+        
+        <p class="fi"><i>b</i><span class="uarr">&uarr;</span> &nbsp;&nbsp;&nbsp;
+            wavelength<span class="darr">&darr;</span> &nbsp;&nbsp;&nbsp;
+            frequency<span class="uarr">&uarr;</span> &nbsp;&nbsp;&nbsp;
+            Energy<span class="uarr">&uarr;</span></p>
+        
+        <p class="fi"><i>b > 0</i> is <span class="blue">blueshift</span>. <i>b < 0</i> is <span class="red">redshift</span>. </p>
+        
+</div>
+
+
+
+<div class="slide">
+
+<p>The range of redshifts can be either infinite (as <i>z</i>) or finite (as <i>-b</i>):</p>
+
+<br>
+<table>
+    
+    <tr>
+    
+        <td class="fi">
+            <div><i>z > 0 </i><div>
+   
+            <div><img width="300px" src="z-wavelength.png"></div>
+   
+            <div><img width="300px" src="z-frequency.png"></div>
+        </td>
+    
+        <td>&nbsp;&nbsp;&nbsp;</td>
+
+        <td class="fi">
+            <div><i>-1 < b < 0</i><div>
+    
+            <div><img width="300px" src="b-wavelength.png"></div>
+    
+            <div><img width="300px" src="b-frequency.png"></div>
+        </td>
+      
+    </tr>
+    
+    </table>
+
+    <br>
+<p class="fi">This is useful.</p>
+
+</div>
+
+<div class="slide">
+
+    The <span class="red">redshift-distance</span> relationship (for <i>z ≪ 1</i>) is:
+    
+    <span >\[  d = z \frac{c}{H_{0}} \] </span>
+    
+    <span class="fi">So the <span class="blue">blueshift-distance</span> relationship can be:
+    \[  d = -b \frac{c}{H_{0}} \]</span>
+    
+    Since:
+
+    <span class="fi">\[  1 + b = \frac{1}{1 + z} \]</span>
+    
+    <span class="fi">\[  b = \frac{1}{1 + z} - 1 \]</span>
+    
+    <span class="fi">\[  b = \frac{1}{1 + z} - \frac{1 + z}{1 + z} \]</span>
+    
+    <span class="fi">\[  b = \frac{1 - (1 + z)}{1 + z}  \]</span>
+    
+    <span class="fi">\[  b = \frac{-z}{1 + z}  \]</span>
+    
+            <span class="fi">Therefore:
+                
+                \[  d = -b \frac{c}{H_{0}} \]</span>
+            
+            <div class="fi">Becomes:
+            
+            <div style="border:1px solid black;">\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</div>
+            </div>
+
+    
+</div>
+    
+
+    
+
+<div class="slide">
+
+<p>Compare the two distance equations:</p>
+
+<img width="500px" src="z-distance-compare.png">
+
+<p class="fi">The <span class="red">redshift-distance</span> equation climbs to infinity, 
+    while the <span class="blue">blueshift-distance</span> equation converges to c/H<sub>0</sub>.</p>
+
+</div>
+
+
+
+<div class="slide">
+
+<p>Compare the blueshift-distance relationship to the concordance model of cosmology, &lambda;CDM.</p>
+
+<ul style="text-align:left;">
+    <li>Ω<sub>&lambda;</sub>=0.68</li>
+    <li>Ω<sub>M</sub>=0.32</li>
+</ul>
+
+<img width="500px" src="lcdm3268noE.png">
+
+
+<p class="fi">The two lines are in the same ballpark.</p>
+
+</div>
+
+
+
+<div class="slide">
+
+<p>Adjusting the parameters for &lambda;CDM removing:</p> 
+    <ul style="text-align:left;">
+    <li>Dark Energy (Ω<sub>&lambda;</sub>=0)</li>
+    <li>The effects of gravity on redshifts (Ω<sub>M</sub>=0)</li>
+    </ul>
+
+<img width="500px" src="lcdm00noE.png">
+
+<p class="fi">The two lines are a perfect match.</p>
+</div>
+
+
+
+<div class="slide">
+
+<table>
+    <tr>
+        <td><p>\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</p></td>
+        <td><p> &nbsp;is mathematically equivalent to an "empty" FLRW model:</p>
+        </td>
+    </tr>
+</table>
+
+        <img src="../../img/lookbackintegral3.png">
+        <br><br>
+        <div class="blue">https://arxiv.org/abs/1804.10047</div>
+
+        <p>
+            <img width="600px" src="z-distance_ref.png">
+        <div class="blue">https://arxiv.org/abs/astro-ph/9306002  </div></p>
+</div>
+
+
+
+<div class="slide" style=" text-align: center;">
+
+<p>Summary</p>
+
+<table id="summary-table" style="margin:auto;">
+    <tr>
+        <td></td>
+        <td><i><span class="red">z</span></i></td>
+        <td><i><span class="blue">b</span></i></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        
+    </tr>
+
+    <tr class="fi">
+        <td><span class="label">proportional to</span></td>
+        <td>wavelength</td>
+        <td>frequency, Energy</td>
+    </tr>
+    
+    <tr class="fi">
+        <td><span class="label">redshift range</span></td>
+        <td>infinite</td>
+        <td>finite</td>
+    </tr>
+    
+    <tr class="fi">
+        <td><span class="label">distance law</span></td>
+        <td><i>z ≪ 1</i></td>
+        <td>?</td>
+    </tr>
+    
+    <tr class="fi">
+        <td><span class="label">&Lambda;CDM</span></td>
+        <td>No</td>
+        <td>approx.</td>
+    </tr>
+    
+    <tr class="fi">
+        <td><span class="label">FLRW</span></td>
+        <td>No</td>
+        <td>"Empty"</td>
+    </tr>
+</table>
+
+<!--<br>
+<div class="fi">
+    <table style="font-size:80%;"><tr>
+        <td>Follow Up: How does &nbsp;&nbsp;</td>
+        <td>\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</td>
+        <td>&nbsp;&nbsp;compare to observational data?</td>
+        </tr>
+    </table>
+</div>
+-->
+
+</div>
+
+<p>email: mike@mikehelland.com</p>
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+
+
+
+</script>
