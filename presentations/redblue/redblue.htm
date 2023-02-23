@@ -58,6 +58,9 @@
         font-style: italic;
         color: #888888;
     }
+
+    .eq {position: relative;}
+    .eqno {position:absolute; top:10px; right:20px;}
 </style>
 </head>
 
@@ -67,15 +70,18 @@
 
 
 <div class="slide">
-
+    <h3>1. Inverting Redshift</h3>
     <p>
 Redshift (<i>z</i>) can be quantified by comparing the observed energy (<i>E<sub>obs</sub></i>) of a photon to its original energy (<i>E<sub>emit</sub></i>):
     </p>
 
+    <div class="eq">
+        <div class="eqno">(1)</div>
 \begin{equation}
 1+z = \frac{E_{emit}}{E_{obs}}
 \label{eq:z}
 \end{equation}
+    </div>
 
 <p>
 If the photon is observed to have less energy than when it was emitted (<i>E<sub>obs</sub> < E<sub>emit</sub></i>), then <i>z > 0</i> and the photon is redshifted. 
@@ -87,20 +93,19 @@ If the photon is observed to have less energy than when it was emitted (<i>E<sub
 As an alternative, consider what happens when equation (1) is inverted and set equal to <i>1 + b</i>:
 </p>
 
+<div class="eq">
+    <div class="eqno">(2)</div>
 \begin{equation}
 1+b = \frac{1}{1+z} = \frac{E_{obs}}{E_{emit}}
 \label{eq:inverted}
 \end{equation}
+</div>
 
 <p>
 When <i>b > 0</i>, that means the photon has gained energy, which is blueshift. When <i>b < 0</i>, the photon has less energy than when it was emitted, 
     so the photon is redshifted. Since the photon's energy 
     will never be negative or zero, <i>b</i> is always greater than <i>-1</i>. Quantified this way, the range of redshifts is finite (<i>-1 < b < 0</i>).
 </p>
-
-</div>
-
-<div class="slide">
 
 <p>The range of redshifts can be either infinite (as <i>z</i>) or finite (as <i>-b</i>):</p>
 
@@ -128,15 +133,16 @@ When <i>b > 0</i>, that means the photon has gained energy, which is blueshift. 
     </table>
 
     <br>
-</div>
 
-<div class="slide">
-
+    <h3>2. Distance</h3>
     The traditional redshift-distance relationship is:
 
+    <div class="eq">
+        <div class="eqno">(3)</div>
 \begin{equation}
 d = z \frac{c}{H_{0}}
 \end{equation}
+    </div>
 
 <p>
     Where <i>d</i> is distance, <i>c</i> is the speed of light, and <i>H<sub>0</sub></i> is Hubble's constant. 
@@ -146,23 +152,28 @@ This equation is an approximation that is only valid for very small redshifts (<
 <p>
 Substituting <i>z</i> with the alternative quantification, <i>-b</i>:
 </p>
-
+    <div class="eq">
+        <div class="eqno">(4)</div>
 \begin{equation}
 d = -b \frac{c}{H_{0}}
 \label{eq:db}
 \end{equation}
-
+    </div>
 <p>Solving equation (2) for <i>b</i> and simplifying:</p>
 
+<div class="eq">
+    <div class="eqno">(5)</div>
 \begin{equation}
 b = - \frac{z}{1+z}
 \label{eq:bz}
 \end{equation}
+</div>
 
 <p>Substituting (5) into (4) gives the alternative redshift-distance relationship:</p>
 
-<div style="border:1px solid black;">
-\begin{equation}
+<div class="eq" style="border:1px solid black;">
+        <div class="eqno">(6)</div>
+    \begin{equation}
 d = \frac{z}{1+z} \frac{c}{H_{0}}
 \label{eq:altd}
 \end{equation}
@@ -176,24 +187,24 @@ as <i>-b</i> (i.e. <i>z / (1 + z)</i>).
 
 <div class="img">
 <img width="600px" src="z-distance-compare.png">
+<br>
+<i>Figure 1. The traditional and alternative redshift-distance relationships.</i>
 </div>
-</div>
-    
 
-    
-
-<div class="slide">
-
+<h3>3. Lookback Time</h3>
 <p>
     Dividing both sides of equation (6) by the speed of light, <i>c</i>, gives the alternative redshift-time equation:
 </p>
 
+<div class="eq">
+    <div class="eqno">(7)</div>
 \begin{equation}
 t = \frac{z}{1+z} \frac{1}{H_{0}}
 \end{equation}
-
+</div>
 <p>
-    This equation is also the solution to the lookback time integral for what's known as an "empty" Friedmann-Lemaître-Robertson-Walker (FLRW) model.<sup>[1]</sup> 
+    This equation is also the solution to the lookback time integral for what's known as an "empty" 
+    Friedmann-Lemaître-Robertson-Walker (FLRW) model.<sup><a href="#cite1">[1]</a></sup> 
 </p>
 <p>
     In Fig. 2, the alternative redshift-time equation is compared to the lookback times of three FLRW models: 
@@ -203,16 +214,16 @@ t = \frac{z}{1+z} \frac{1}{H_{0}}
 
 <div class="img">
 <img width="600px" src="../../img/red_blue_lcdm.png">
+<br>
+<i>Figure 2. The redshift-time relationships compared to FLRW lookback times.</i>
 </div>
 <p>
     The empty model and the concordance model have similar predictions while the matter-only model predicts a far younger universe. 
     The lookback times predicted by the empty FLRW model are identical to the times given by the alternative redshift-time equation.
 </p>
-</div>
 
-
-<div class="slide">
-    <p>
+<h3>4. Conclusion</h3>
+<p>
     When quantified as <i>z</i> the range of redshifts is infinite. 
     When quantified as <i>-b</i>, however, the range is finite. The traditional and alternative quantifications of redshift lead to two distance relationships. 
     The traditional relationship is linear, and only a valid approximation for very small values of <i>z</i>. 
@@ -222,6 +233,10 @@ t = \frac{z}{1+z} \frac{1}{H_{0}}
 While the choice between quantifications of redshifts initially seems arbitrary and inconsequential, 
 upon further investigation, the inverted, alternative quantification is a more accurate representation of the universe.
     </p>
+
+    <h3>References</h3>
+    <a name="cite1">[1]</a> K. Krisciunas, "Look Back Time, the Age of the Universe, and the Case for a Positive Cosmological Constant", 
+<i>J.Roy.Astron.Soc.Canada</i>, 669 (1993) <a target="_blank" href="https://arxiv.org/abs/astro-ph/9306002">arXiv:astro-ph/9306002</a>
 </div>
 
 <p>email: mike@mikehelland.com</p>
