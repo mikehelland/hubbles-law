@@ -4,7 +4,7 @@
 <style>
 
     body {
-        /*text-align: center;
+        /*
         color:white;
         background-color: black;*/
         max-width: 850px;
@@ -12,6 +12,7 @@
         background-color: #CCCCCC;
     }
 
+    .img {text-align: center;}
     .slide {
         background-color: #f8f8f8;
         border: 1px solid #888888;
@@ -62,132 +63,55 @@
 
 <body>
 
-<h2>Redshift vs Negative Blueshift</h2>
-
-<div class="slide">
-
-<p>Redshift is represented by the letter <i>z</i>, and can be quantified by wavelength, frequency, or energy:</p>
-
-<table>
-<tr class="fi">
-
-    <td>
-    \[  1 + z = \frac{wavelength_{obsv }}{wavelength_{emit}}
-  
-    \]
-    </td>
-
-    <td>
-        <img width="400px" src="z-wavelength.png">
-    </td>
-  
-</tr>
-
-
-<tr class="fi">
-
-    <td>
-        \[  1 + z = \frac{frequency_{emit}}{frequency_{obsv }}
-  
-        \]
-      
-        <br><br><br>
-      
-        \[  1 + z = \frac{Energy_{emit}}{Energy_{obsv }}
-        
-        \]
-    </td>
-
-    <td>
-        <img width="400px" src="z-frequency.png">
-    </td>
-  
-</tr>
-
-</table>
-
-<p class="fi"><i>z</i><span class="uarr">&uarr;</span>&nbsp;&nbsp;&nbsp;
-    wavelength<span class="uarr">&uarr;</span>&nbsp;&nbsp;&nbsp;
-    frequency<span class="darr">&darr;</span>&nbsp;&nbsp;&nbsp;
-    Energy<span class="darr">&darr;</span></p>
-
-<p class="fi"><i>z > 0</i> is <span class="red">redshift</span>. <i>z < 0</i> is <span class="blue">blueshift</span>.</p>
-
-</div>
+<h2>An alternative quantification of redshift</h2>
 
 
 <div class="slide">
 
-<p>Inverting the equations quantifies blueshift, represented by the letter <i>b</i>:</p>
+    <p>
+Redshift (<i>z</i>) can be quantified by comparing the observed energy (<i>E<sub>obs</sub></i>) of a photon to its original energy (<i>E<sub>emit</sub></i>):
+    </p>
 
-    <table>
-        <tr><td>\[  1 + b = \frac{1}{1 + z}
-          
-            \]
-            
-        </td></tr>            
-        <tr class="fi">
-        
-            <td>
-            \[  1 + b = \frac{wavelength_{emit}}{wavelength_{obsv }}
-          
-            \]
-            </td>
-        
-            <td>
-                <img width="400px" src="b-wavelength.png">
-            </td>
-          
-        </tr>
-        
-        
-        <tr class="fi">
-        
-            <td>
-                \[  1 + b = \frac{frequency_{obsv }}{frequency_{emit}}
-          
-                \]
-              
-                <br><br><br>
-              
-                \[  1 + b = \frac{Energy_{obsv }}{Energy_{emit}}
-                
-                \]
-            </td>
-        
-            <td>
-                <img width="400px" src="b-frequency.png">
-            </td>
-          
-        </tr>
-        
-        </table>
-        
-        <p class="fi"><i>b</i><span class="uarr">&uarr;</span> &nbsp;&nbsp;&nbsp;
-            wavelength<span class="darr">&darr;</span> &nbsp;&nbsp;&nbsp;
-            frequency<span class="uarr">&uarr;</span> &nbsp;&nbsp;&nbsp;
-            Energy<span class="uarr">&uarr;</span></p>
-        
-        <p class="fi"><i>b > 0</i> is <span class="blue">blueshift</span>. <i>b < 0</i> is <span class="red">redshift</span>. </p>
-        
+\begin{equation}
+1+z = \frac{E_{emit}}{E_{obs}}
+\label{eq:z}
+\end{equation}
+
+<p>
+If the photon is observed to have less energy than when it was emitted (<i>E<sub>obs</sub> < E<sub>emit</sub></i>), then <i>z > 0</i> and the photon is redshifted. 
+    When the photon gains energy (<i>E<sub>obs</sub> > E<sub>emit</sub></i>), then <i>z < 0</i> and the photon is blueshifted. Since the photon will always have a positive energy, 
+        <i>E<sub>emit</sub> / E<sub>obs</sub></i> is always greater than zero, so <i>z</i> is always greater than <i>-1</i>. Thus, the range of redshifts is infinite (<i>z > 0</i>), and 
+        the range of blueshifts is finite (<i>-1 < z < 0</i>).
+</p>
+<p>
+As an alternative, consider what happens when equation (1) is inverted and set equal to <i>1 + b</i>:
+</p>
+
+\begin{equation}
+1+b = \frac{1}{1+z} = \frac{E_{obs}}{E_{emit}}
+\label{eq:inverted}
+\end{equation}
+
+<p>
+When <i>b > 0</i>, that means the photon has gained energy, which is blueshift. When <i>b < 0</i>, the photon has less energy than when it was emitted, 
+    so the photon is redshifted. Since the photon's energy 
+    will never be negative or zero, <i>b</i> is always greater than <i>-1</i>. Quantified this way, the range of redshifts is finite (<i>-1 < b < 0</i>).
+</p>
+
 </div>
-
-
 
 <div class="slide">
 
 <p>The range of redshifts can be either infinite (as <i>z</i>) or finite (as <i>-b</i>):</p>
 
 <br>
-<table>
+<table style="text-align: center; margin: auto;">
     
     <tr>
     
         <td class="fi">
             <div><i>z > 0 </i><div>
-   
-            <div><img width="300px" src="z-wavelength.png"></div>
-   
+      
             <div><img width="300px" src="z-frequency.png"></div>
         </td>
     
@@ -195,9 +119,7 @@
 
         <td class="fi">
             <div><i>-1 < b < 0</i><div>
-    
-            <div><img width="300px" src="b-wavelength.png"></div>
-    
+     
             <div><img width="300px" src="b-frequency.png"></div>
         </td>
       
@@ -206,41 +128,55 @@
     </table>
 
     <br>
-<p class="fi">This is useful.</p>
-
 </div>
 
 <div class="slide">
 
-    The <span class="red">redshift-distance</span> relationship (for <i>z ≪ 1</i>) is:
-    
-    <span >\[  d = z \frac{c}{H_{0}} \] </span>
-    
-    <span class="fi">So the <span class="blue">blueshift-distance</span> relationship can be:
-    \[  d = -b \frac{c}{H_{0}} \]</span>
-    
-    Since:
+    The traditional redshift-distance relationship is:
 
-    <span class="fi">\[  1 + b = \frac{1}{1 + z} \]</span>
-    
-    <span class="fi">\[  b = \frac{1}{1 + z} - 1 \]</span>
-    
-    <span class="fi">\[  b = \frac{1}{1 + z} - \frac{1 + z}{1 + z} \]</span>
-    
-    <span class="fi">\[  b = \frac{1 - (1 + z)}{1 + z}  \]</span>
-    
-    <span class="fi">\[  b = \frac{-z}{1 + z}  \]</span>
-    
-            <span class="fi">Therefore:
-                
-                \[  d = -b \frac{c}{H_{0}} \]</span>
-            
-            <div class="fi">Becomes:
-            
-            <div style="border:1px solid black;">\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</div>
-            </div>
+\begin{equation}
+d = z \frac{c}{H_{0}}
+\end{equation}
 
+<p>
+    Where <i>d</i> is distance, <i>c</i> is the speed of light, and <i>H<sub>0</sub></i> is Hubble's constant. 
+This equation is an approximation that is only valid for very small redshifts (<i>z ≪ 1</i>). 
+</p>
+
+<p>
+Substituting <i>z</i> with the alternative quantification, <i>-b</i>:
+</p>
+
+\begin{equation}
+d = -b \frac{c}{H_{0}}
+\label{eq:db}
+\end{equation}
+
+<p>Solving equation (2) for <i>b</i> and simplifying:</p>
+
+\begin{equation}
+b = - \frac{z}{1+z}
+\label{eq:bz}
+\end{equation}
+
+<p>Substituting (5) into (4) gives the alternative redshift-distance relationship:</p>
+
+<div style="border:1px solid black;">
+\begin{equation}
+d = \frac{z}{1+z} \frac{c}{H_{0}}
+\label{eq:altd}
+\end{equation}
+</div>
     
+<p>
+Comparing the two distance relationships (Fig. 1) shows that the distance predicted by the traditional equation climbs to infinity while the 
+alternative equation converges on <i>c / H<sub>0</sub></i>. This is due to the range of redshifts being infinite as <i>z</i> and finite 
+as <i>-b</i> (i.e. <i>z / (1 + z)</i>).
+</p>
+
+<div class="img">
+<img width="600px" src="z-distance-compare.png">
+</div>
 </div>
     
 
@@ -248,129 +184,49 @@
 
 <div class="slide">
 
-<p>Compare the two distance equations:</p>
+<p>
+    Dividing both sides of equation (6) by the speed of light, <i>c</i>, gives the alternative redshift-time equation:
+</p>
 
-<img width="500px" src="z-distance-compare.png">
+\begin{equation}
+t = \frac{z}{1+z} \frac{1}{H_{0}}
+\end{equation}
 
-<p class="fi">The <span class="red">redshift-distance</span> equation climbs to infinity, 
-    while the <span class="blue">blueshift-distance</span> equation converges to c/H<sub>0</sub>.</p>
+<p>
+    This equation is also the solution to the lookback time integral for what's known as an "empty" Friedmann-Lemaître-Robertson-Walker (FLRW) model.<sup>[1]</sup> 
+</p>
+<p>
+    In Fig. 2, the alternative redshift-time equation is compared to the lookback times of three FLRW models: 
+    an empty model (<i>Ω<sub>M</sub>=0, Ω<sub>&lambda;</sub>=0</i>), a matter-only model (<i>Ω<sub>M</sub>=1, Ω<sub>&lambda;</sub>=0</i>), 
+    and the concordance model, (<i>Ω<sub>M</sub>=0.32, Ω<sub>&lambda;</sub>=0.68</i>). 
+</p>
 
+<div class="img">
+<img width="600px" src="../../img/red_blue_lcdm.png">
 </div>
-
+<p>
+    The empty model and the concordance model have similar predictions while the matter-only model predicts a far younger universe. 
+    The lookback times predicted by the empty FLRW model are identical to the times given by the alternative redshift-time equation.
+</p>
+</div>
 
 
 <div class="slide">
-
-<p>Compare the blueshift-distance relationship to the concordance model of cosmology, &lambda;CDM.</p>
-
-<ul style="text-align:left;">
-    <li>Ω<sub>&lambda;</sub>=0.68</li>
-    <li>Ω<sub>M</sub>=0.32</li>
-</ul>
-
-<img width="500px" src="lcdm3268noE.png">
-
-
-<p class="fi">The two lines are in the same ballpark.</p>
-
-</div>
-
-
-
-<div class="slide">
-
-<p>Adjusting the parameters for &lambda;CDM removing:</p> 
-    <ul style="text-align:left;">
-    <li>Dark Energy (Ω<sub>&lambda;</sub>=0)</li>
-    <li>The effects of gravity on redshifts (Ω<sub>M</sub>=0)</li>
-    </ul>
-
-<img width="500px" src="lcdm00noE.png">
-
-<p class="fi">The two lines are a perfect match.</p>
-</div>
-
-
-
-<div class="slide">
-
-<table>
-    <tr>
-        <td><p>\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</p></td>
-        <td><p> &nbsp;is mathematically equivalent to an "empty" FLRW model:</p>
-        </td>
-    </tr>
-</table>
-
-        <img src="../../img/lookbackintegral3.png">
-        <br><br>
-        <div class="blue">https://arxiv.org/abs/1804.10047</div>
-
-        <p>
-            <img width="600px" src="z-distance_ref.png">
-        <div class="blue">https://arxiv.org/abs/astro-ph/9306002  </div></p>
-</div>
-
-
-
-<div class="slide" style=" text-align: center;">
-
-<p>Summary</p>
-
-<table id="summary-table" style="margin:auto;">
-    <tr>
-        <td></td>
-        <td><i><span class="red">z</span></i></td>
-        <td><i><span class="blue">b</span></i></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        
-    </tr>
-
-    <tr class="fi">
-        <td><span class="label">proportional to</span></td>
-        <td>wavelength</td>
-        <td>frequency, Energy</td>
-    </tr>
-    
-    <tr class="fi">
-        <td><span class="label">redshift range</span></td>
-        <td>infinite</td>
-        <td>finite</td>
-    </tr>
-    
-    <tr class="fi">
-        <td><span class="label">distance law</span></td>
-        <td><i>z ≪ 1</i></td>
-        <td>?</td>
-    </tr>
-    
-    <tr class="fi">
-        <td><span class="label">&Lambda;CDM</span></td>
-        <td>No</td>
-        <td>approx.</td>
-    </tr>
-    
-    <tr class="fi">
-        <td><span class="label">FLRW</span></td>
-        <td>No</td>
-        <td>"Empty"</td>
-    </tr>
-</table>
-
-<!--<br>
-<div class="fi">
-    <table style="font-size:80%;"><tr>
-        <td>Follow Up: How does &nbsp;&nbsp;</td>
-        <td>\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</td>
-        <td>&nbsp;&nbsp;compare to observational data?</td>
-        </tr>
-    </table>
-</div>
--->
-
+    <p>
+    When quantified as <i>z</i> the range of redshifts is infinite. 
+    When quantified as <i>-b</i>, however, the range is finite. The traditional and alternative quantifications of redshift lead to two distance relationships. 
+    The traditional relationship is linear, and only a valid approximation for very small values of <i>z</i>. 
+    The alternative relationship is identical to an empty FLRW model, and a reasonable approximation to the concordance model.
+    </p>
+    <p>
+While the choice between quantifications of redshifts initially seems arbitrary and inconsequential, 
+upon further investigation, the inverted, alternative quantification is a more accurate representation of the universe.
+    </p>
 </div>
 
 <p>email: mike@mikehelland.com</p>
+
+<p><a href="../../index.htm">Go back to main page</a></p>
 
 <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
 
