@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    canvas {border-bottom: 1px solid black; border-left: 1px solid black; }
+    #c-holder {
+        padding: 4px;
+    }    
+    #legend-text {
+        position:absolute;
+        top:302px;
+        left:760px;
+    }
+    #legend-text2 {
+        position:absolute;
+        top:430px;
+        left:760px;
+        font-size: 120%;
+        line-height: 250%;
+    }
+
+    sub {font-size: 80%};
+
+    .MathJax_Display {text-align: left !important;}
+</style>
+</head>
+<body>
+
+    <div id="legend-text">
+        
+        <div>\[  t = \frac{z}{H_{0}} \]</div>
+
+        <div>\[  t = \frac{z}{1 + z} \frac{1}{H_{0}} \]</div>
+    </div>
+
+    <div id="legend-text2">
+    
+        &Omega;<sub>M</sub>=0.32, &Omega;<sub>&Lambda;</sub>=0.68
+        <br>
+        &Omega;<sub>M</sub>=0, &Omega;<sub>&Lambda;</sub>=0
+        <br>
+        &Omega;<sub>M</sub>=1, &Omega;<sub>&Lambda;</sub>=0
+    </div>
+    
+    <div id="c-holder">
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    </div>
+
+    <p>JavaScript Cosmology Calculator by <a href="http://www.bo.astro.it/~cappi/cosmotools" target="_blank">Alberto Cappi</a>
+
+    <script>
+        var data
+        const c = 299792.458
+        const pc2ly = 3.261564
+        const H0 = 73
+        const H0h = H0
+        
+        var maxZ = 10
+        var data = []
+        for (var i = 0; i <= maxZ; i=i+0.1) {
+            data.push({z: i})
+        }
+
+
+        drawCanvas()
+
+        function drawCanvas() {
+            console.log("drawing")
+            
+            var ctx = canvas.getContext("2d")
+            var h = canvas.height
+            var w = canvas.width
+            canvas.width = w
+
+            
+            var im = 0
+            const drawLCDM = (dash, lineWidth) => {
+
+                ctx.beginPath()
+                ctx.lineWidth = lineWidth
+                ctx.strokeStyle = "black"
+                ctx.setLineDash(dash)
+                ctx.moveTo(0, h)
+
+                data.forEach(dp => {
+                    dp.lookback = zToD(dp.z)
+                    ctx.lineTo(w * dp.z / maxZ, h - h * lookback / 15)
+                })
+                //ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+                drawLegend()
+
+            }
+
+            var drawLegend = () => {
+                ctx.beginPath()
+                ctx.moveTo(w*0.60, h*0.55 + im * 56)
+                ctx.lineTo(w*0.70, h*0.55 + im * 56)
+                ctx.stroke()
+                im++
+            }
+
+            ctx.globalAlpha = 1
+            ctx.lineWidth = 2
+
+            ctx.strokeStyle = "red"
+            ctx.setLineDash([])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            var ztest
+            data.forEach(dp => {
+                ztest = dp.z * c / H0h * pc2ly / 1000
+                ctx.lineTo(w * dp.z / maxZ, h - h * ztest / 15)
+                dp.error = ztest / dp.lookback
+            })
+            ctx.stroke()
+
+            drawLegend()
+
+            ctx.strokeStyle = "blue"
+            ctx.setLineDash([])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            var ztest
+            data.forEach(dp => {
+                ztest = -(1 / (1 + dp.z) - 1) * c / H0h * pc2ly / 1000
+                ctx.lineTo(w * dp.z / maxZ, h - h * ztest / 15)
+                dp.error = ztest / dp.lookback
+            })
+            ctx.stroke()
+
+            drawLegend()
+
+            Omega_M = 0.32 
+            Omega_L = 0.68
+            drawLCDM([3, 3], 4)
+            
+            Omega_M = 0 
+            Omega_L = 0
+            drawLCDM([5, 15], 4)
+            
+            Omega_M = 1 
+            Omega_L = 0
+            drawLCDM([], 2)
+         
+            
+            ctx.fillStyle = "#404040"
+            ctx.font = "18px sans-serif"
+        
+            ctx.fillText("z", w - 10, h - 2)
+
+            //ctx.fillStyle = "black"
+            //ctx.font = "16px sans-serif"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, i / maxZ * w, h - 2)
+            }
+            for (var i = 1; i <= 15; i=i+1) {
+                ctx.fillText(i, 2, h - h * i / 15)
+            }
+            ctx.fillText("lookback time", 28, 18)
+            ctx.fillText("billion years", 28, 40)
+
+        }
+
+        
+    // from http://www.bo.astro.it/~cappi/cosmotools
+
+    /* Written by Alberto Cappi (2000); updated November 2005.
+    / E-mail: alberto.cappi@oabo.inat.it
+    / Cosmological formulae
+     */
+
+    // -------------------------------------------- 
+
+    function fun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function simpson(x0, x2) {
+        h = (x2 - x0) / 2.
+        x1 = x0 + h
+        igr = h * (fun(x0, Omega_M, Omega_L, Omega_k) + 4. * fun(x1, Omega_M, Omega_L, Omega_k) + fun(x2, Omega_M, Omega_L, Omega_k)) / 3.
+        return igr
+    };
+
+    function sumint(z1) {
+        integrale = 0, zone = 1, deltaz = 0.001
+        while (zone <= (z1 - deltaz)) {
+            zini = zone
+            zfin = zone + deltaz
+            integrale += simpson(zini, zfin);
+            zone += deltaz
+        }
+        return integrale
+    };
+
+    // -------------------------------------------- 
+
+
+    function lookfun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = v1 * Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function timeint(z1start, z1end) {
+        s = 0, a = z1start, b = z1end
+        s = 0.5 * (b - a) * (lookfun(a, Omega_M, Omega_L, Omega_k) + lookfun(b, Omega_M, Omega_L, Omega_k))
+        n = 2
+        while (n <= 11) {
+            n2 = n - 2
+            it = Math.pow(2, n2)
+            tnm = it
+            del = (b - a) / tnm
+            x = a + 0.5 * del
+            sum = 0.
+            j = 1
+            while (j <= it) {
+                sum = sum + lookfun(x, Omega_M, Omega_L, Omega_k)
+                x = x + del
+                j += 1
+            }
+            s = 0.5 * (s + (b - a) * sum / tnm)
+            n += 1
+        }
+        return s
+    };
+
+    // --------------------------------------------
+
+    function sinh(x) {
+        s = (Math.exp(x) - Math.exp(-x)) / 2.
+        return s
+    };
+
+    function zToD(z) {
+        // From redshift to distance
+
+        z1 = 1. + z;
+        h = H0 / 100.;
+        Tnorm = 9.77810945 / h;
+        cvel = 299792.458
+        ch0 = cvel / H0;
+        pig = 3.1415926536;
+        rad = pig / 180.;
+        q0 = Omega_M / 2. - Omega_L;
+        Omega_k = 1. - Omega_M - Omega_L;
+
+        age = (timeint(1., 50.)) * Tnorm;
+
+        if (Omega_L > 0. && Omega_k == 0.) {
+            DC = ch0 * sumint(z1);
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k < 0.) {
+            curv = Math.sqrt(-Omega_k)
+            r = sumint(z1);
+            DC = ch0 * Math.sin(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k > 0.) {
+            curv = Math.sqrt(Omega_k)
+            r = sumint(z1);
+            DC = ch0 * sinh(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L == 0. && q0 > 0) {
+            q0sq = q0 * q0
+            a = 1. - q0 + q0 * z + (q0 - 1.) * (Math.sqrt(2. * q0 * z + 1.))
+            DL = ch0 * a / q0sq
+            DC = DL / z1
+        }
+        if (Omega_L == 0. && q0 == 0) {
+            DL = ch0 * z * (1. + z / 2.)
+            DC = DL / z1
+        }
+        // Lookback time
+        lookback = timeint(1., z1) * Tnorm
+        // Angular distance
+        DA = DL / (z1 * z1)
+        // Lunghezza in primi corrispondente a 1 Mpc.
+        angle = (60. / rad) * z1 * z1 / DL;
+        // Length in Mpc corresponding to 1 degree on the sky
+        R = rad * DL / (z1 * z1);
+
+        // Display result in the form.
+        /*
+        form.q0.value = q0.toFixed(2);
+        form.Omega_k.value = Omega_k.toFixed(2);
+        form.dlum.value = DL.toFixed(1);
+        form.dcom.value = DC.toFixed(1);
+        form.dang.value = DA.toFixed(1);
+        form.lsep.value = R.toFixed(1);
+        form.asep.value = angle.toFixed(1);
+        form.look.value = lookback.toFixed(1);
+        form.age.value = age.toFixed(1);
+        */
+       return lookback
+    }
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
