@@ -1,3 +1,10 @@
+
+From H_0
+1/(73.5/3.08e19)/60/60/24/365 
+
+c=299792
+
+
 Age of the universe, according to the measurements at the time:
 
 1929 - 2 billion years

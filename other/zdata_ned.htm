@@ -201,10 +201,25 @@ var black = true
             }
         }
 
+        ctxB.strokeStyle = "red"
+        ctxB.beginPath()
+        ctxB.moveTo(offset, graph.height - offset)
+        for (let ii = 0; ii<=20; ii+=0.1) {
+            d = ii * 13600
+            ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                        -2 + -offset + graph.height - d * zoomGY)
+        }
+        ctxB.stroke()
+
         ctxB.strokeStyle = "blue"
         ctxB.beginPath()
         ctxB.moveTo(offset, graph.height - offset)
-        ctxB.lineTo(offset + 10000 * zoomG, graph.height - offset - -1 * (1 / (1 + 99999) - 1) * 13600 * zoomGY)
+
+        for (let ii = 0; ii<=20; ii+=0.1) {
+            d = ii/(1+ii) * 13600
+            ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                        -2 + -offset + graph.height - d * zoomGY)
+        }
         ctxB.stroke()
 
         ctxB.font = "14px sans-serif"

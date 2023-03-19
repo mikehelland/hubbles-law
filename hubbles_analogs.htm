@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/hubbleslaws_graph.png"/>
+        <meta property="og:description" content="A demonstration of Hubble's tension and its resolution."/>
+        <meta property="og:title" content="Fixing Hubble's Law"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/styles/default.min.css">
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            #right {
+                position:fixed;
+                left:750px;
+                top:10px;    
+            }
+            
+            #graph {
+                height:600px;
+                width: 600px;
+            }
+
+            .maintext {
+                background-color: white;
+                max-width: 700px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li {
+                line-height: 1.5em;
+            }
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            #y-axis {
+                display: none;
+            }
+
+            .model {
+                min-height: 74px;
+            }
+
+            pre code {
+                display:block;
+                padding:0.5em;
+                background: #f0f0f0;
+            }
+
+            blockquote {
+                font-style: italic;
+            }
+
+            table {
+                margin:auto;
+                border-collapse: collapse;
+                border-bottom: 2px solid #808080;
+                border-top: 2px solid #808080;
+            }
+            thead {
+                border-bottom: 1px solid #808080;
+            }
+            td {
+                padding: 10px;
+            }
+        </style>
+
+    </head>
+<body>
+
+<!-- HELLO!!! Source code for the models at the bottom -->
+
+<div class="maintext">
+
+    
+
+<div class="model" id="staticModel"></div>
+
+<p>In an expanding universe, objects move away from each other at <code>v = HD</code> as per Hubble's Law, and thus the targets take longer and longer to reach.
+
+<div class="model" id="expandingFast"></div>
+
+<p>The same delays can be produced if the photon simply lost speed <code>HD</code>, as per Hubble's Law:</p>
+
+<div class="model" id="redshift1"></div>
+
+<button id="set-y-axis">Z</button>
+
+</div>
+
+<div id="right">
+    <canvas id="graph" height="600" width="600"></canvas>
+    <br>
+    <div id="y-axis">
+        Y-axis: <select id="graph-y-axis">
+            <option>time to target (billions of years)</option>
+            <option>z redshift</option>
+        </select>
+    </div>
+</div>
+
+<script>
+
+    var graph = document.getElementById("graph")
+    var ctxG = graph.getContext("2d")
+    var models = []
+    
+    var yAxis = document.getElementById("graph-y-axis")
+    yAxis.selectedIndex = 0
+    document.getElementById("set-y-axis").onclick = e => {
+        yAxis.selectedIndex = 1
+        document.getElementById("y-axis").style.display = "block"
+    }
+    
+    // the models advance by 1 million years each step
+    // the units for distance are in Mly (million light years)
+
+    // the speed of light is 1 million lightyears per 1 million years
+    // Hubble's Constant is in units of Mly^-1 
+
+    var c = 1
+
+    var zoom = 0.036
+    var zoomG = zoom * 0.15
+    var zoomGY = zoom * 0.35
+    var offset = 20
+   
+    var dts
+    var dt
+
+    var dgi
+    function drawGraph() {
+        
+        ctxG.lineWidth = 1
+
+        ctxG.fillStyle = "black"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.fillStyle = "white"
+
+        ctxG.strokeStyle = "white" 
+        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        
+        ctxG.strokeStyle = "yellow"
+        ctxG.beginPath()
+        ctxG.moveTo(offset, graph.height - offset)
+
+        dt = 0
+        dts = []
+        for (let ii = 0; ii<=20; ii+=0.1) {
+            d = ii/(1+ii) * 13200
+            dts.push({z: ii, dt: dt})
+            dt += 1 - 0.000076 * d
+            ctxG.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                        -2 + -offset + graph.height - d * zoomGY)
+        }
+        ctxG.stroke()
+
+        ctxG.beginPath()
+        ctxG.moveTo(offset, graph.height - offset)
+
+        for (let ii = 0; ii<=20; ii+=0.1) {
+            d = ii * 13200
+            ctxG.lineTo(-2 + offset + ii * 10000 * zoomG, 
+                        -2 + -offset + graph.height - d * zoomGY)
+        }
+        ctxG.stroke()
+
+        ctxG.beginPath()
+        ctxG.moveTo(offset, graph.height - offset)
+        //for (let ii = 0; ii<=20; ii+=0.1) {
+        dts.forEach(dd => {
+
+            ctxG.lineTo(-2 + offset + dd.z * 10000 * zoomG, 
+                        -2 + -offset + graph.height - dd.dt * 1320 * zoomGY)
+        })
+        ctxG.stroke()
+        
+        for (var m = 0; m < models.length; m++) {
+            
+            ctxG.lineWidth = 4    
+            ctxG.strokeStyle = models[m].color
+            if (m == 0) {
+                ctxG.setLineDash([15, 15, 0])
+            }
+            else {
+                ctxG.setLineDash([0, 15, 15])
+            }
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+
+            for (var i = 0; i < models[m].targets.length; i++) {
+            
+            //draw initial distance, time * c distance, and encounter distance
+
+                if (models[m].targets[i].hit) {
+                    ctxG.lineTo(
+                        offset + models[m].targets[i].z * 10000 * zoomG, 
+                        -offset + graph.height - models[m].targets[i].start * zoomGY)
+                }
+            }
+            ctxG.stroke()
+            
+            ctxG.strokeStyle = models[m].color
+            if (m == 0) {
+                ctxG.setLineDash([0, 5, 5])
+            }
+            else {
+                ctxG.setLineDash([5, 5, 0])
+            }
+            
+            ctxG.beginPath()
+            ctxG.moveTo(offset, graph.height - offset)
+
+            for (var i = 0; i < models[m].targets.length; i++) {
+            
+            //draw initial distance, time * c distance, and encounter distance
+
+                if (models[m].targets[i].hit) {
+                    ctxG.lineTo(
+                        offset + models[m].targets[i].z * 10000 * zoomG, 
+                        -offset + graph.height - models[m].targets[i].hit * zoomGY)
+                }
+            }
+            ctxG.stroke()
+
+
+            if (m == 0) {
+                ctxG.lineWidth = 1
+                ctxG.setLineDash([])
+                ctxG.beginPath()
+                ctxG.moveTo(offset, graph.height - offset)
+
+                for (var i = 0; i < models[m].targets.length; i++) {
+                
+                //draw initial distance, time * c distance, and encounter distance
+
+                    if (models[m].targets[i].hit) {
+                        ctxG.lineTo(
+                            offset + models[m].targets[i].z * 10000 * zoomG, 
+                            -offset + graph.height - models[m].targets[i].hitx * zoomGY)
+                    }
+                }
+                ctxG.stroke()
+            }
+        }
+        ctxG.setLineDash([])
+        ctxG.fillText("Billion light years", offset + 5, offset)
+        ctxG.fillText("z", graph.width - 20, graph.height - 30)
+        
+        
+        for (dgi = 0; dgi < 22; dgi+=1) {
+            ctxG.fillText(dgi, offset + dgi * 10000 * zoomG, graph.height - 5)    
+        }
+        for (dgi = 0; dgi < 60; dgi+=5) {
+            ctxG.fillText(dgi, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+        }
+    }
+
+    function setupModel(model) {
+        
+        var playButton = document.createElement("button")
+        playButton.innerHTML = "Click HERE to run"
+        playButton.onclick = () => {
+            if (playButton.innerHTML === "Reset") {
+                playButton.innerHTML = "Click HERE to run"
+                resetModel(model)
+                draw(model.ctx, model)
+            }
+            else {
+                runModel(model)
+                playButton.innerHTML = "Reset"
+            }
+        }
+
+        model.canvas = document.createElement("canvas")
+
+        model.div.appendChild(playButton)
+        model.div.appendChild(model.canvas)
+
+        model.ctx = model.canvas.getContext("2d")
+        model.nextTarget = 0
+
+        model.canvas.width = 700
+        model.canvas.height = 40
+        
+        // make a target every 200 million light years 
+        model.targets = []
+        for (var i = 200; i <= 26800; i+=200) {
+            model.targets.push({label: i/1000, start: i, x: i})
+        }
+
+        model.ctx.font = "8px sans-serif"
+
+        draw(model.ctx, model)
+
+        models.push(model)
+    }
+
+    function draw(ctx, exp) {
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        for (var i = 0; i < exp.targets.length; i++) {
+            if (exp.targets[i].hit) {
+                ctx.strokeStyle = exp.color
+                ctx.lineWidth = 3
+            }
+            else {
+                ctx.strokeStyle = "white"
+                ctx.lineWidth = 2
+            }
+            ctx.beginPath()
+            ctx.moveTo(exp.targets[i].x * (exp.zoom || zoom), 0)
+            ctx.lineTo(exp.targets[i].x * (exp.zoom || zoom), ctx.canvas.height)
+            
+            ctx.stroke()
+        }
+
+        ctx.fillStyle = "yellow"
+        ctx.fillRect(exp.photon.x * (exp.zoom || zoom) - 2, ctx.canvas.height / 2, 5, 5)
+    }
+
+    function resetModel(model) {
+        model.running = false
+        model.photon.x = 0
+        model.photon.dx = c
+        model.nextTarget = 0
+        model.targets.forEach(target => {
+            target.x = target.start
+            target.hit = 0
+        })
+    
+        model.t = 0
+    }
+
+    function runModel(model) {
+        
+        resetModel(model)
+
+        model.running = true
+
+        var i, v, z
+        var batch = 30
+        var handle = setInterval(function () {
+            for (i = 0; i < batch; i++) {
+                if (model.running && model.targets[model.nextTarget]) {// && model.t < 80000) {
+                    model.t++
+                    model.next()
+
+                    if (model.targets[model.nextTarget].x <= model.photon.x) {
+                        model.targets[model.nextTarget].hit = model.t
+                        model.targets[model.nextTarget].hitx = model.targets[model.nextTarget].x
+
+                        if (model.photon.f_init) {
+                            z = (model.photon.f_init - model.photon.f) / model.photon.f
+                        }
+                        else if (model.targets[model.nextTarget].dx) {
+                            v = 1 - model.targets[model.nextTarget].dx 
+                            z = (1 - v) / v
+                        }
+                        else {
+                            v = model.photon.dx
+                            z = (1 - v) / v
+                        }
+                        model.targets[model.nextTarget].z = z || 0
+                        model.nextTarget++
+                        model.lastTarget = model.t
+                    }
+                }
+                else {
+                    clearInterval(handle)
+                    model.running = false
+                }
+            }
+        }, 0)
+    }
+
+
+    var expandingModel = {
+        div: document.getElementById("expandingFast"),
+        name: "Expanding Fast",
+        color: "green", 
+        H: 0.000076,
+        photon: {x: 0, f_init: 6e5, w: 499.65},
+        //zoom: 0.03,
+        next: function () {
+            this.photon.dx = c + this.photon.x * this.H
+            this.photon.x += this.photon.dx
+            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_init) 
+            this.photon.f = 299792458 / this.photon.w
+            
+            for (var i = 0; i < this.targets.length; i++) {
+                this.targets[i].dx = this.targets[i].x * this.H
+                this.targets[i].x += this.targets[i].dx
+            }
+        }
+    }
+    setupModel(expandingModel)
+    
+    setupModel({
+        div: document.getElementById("redshift1"),
+        name: "Redshift by distance",
+        color: "white", 
+        H: 0.000076,
+        photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
+        next: function () {
+            //this.photon.x += c - this.H * this.photon.x
+            this.photon.v = c - this.H * this.photon.x
+            this.photon.x += this.photon.v
+            this.photon.f = this.photon.v * 299792458 / this.photon.w
+        }
+    })
+
+    setInterval(() => {
+        for (var m = 0; m < models.length; m++) {
+            if (models[m].running) {
+                draw(models[m].ctx, models[m]) 
+            }
+        }
+
+        drawGraph()
+    }, 1000 / 60)
+
+    
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="freqtest.js"></script>
+
+<script>
+(function () {
+    var cites = document.getElementsByTagName("sup")
+    for (var i = 0; i < cites.length; i++) {
+
+        if (!cites[i].innerHTML.startsWith("[")) {
+            continue
+        }
+
+        var citeHTML = cites[i].innerHTML
+        cites[i].innerHTML = "<a href='#sources'>" + citeHTML + "</a>"
+
+    }
+})()
+
+</script>

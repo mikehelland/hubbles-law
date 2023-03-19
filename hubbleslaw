@@ -1,0 +1,65 @@
+An alternative to Hubble's law
+
+
+Introduction
+
+In an expanding universe, each tick of a distant clock will occur at a farther distance than the previous tick. This results in time dilation which has been observed in the light curves of type SN1a supernovae. The rate a distant clock ticks is 1 / (1 + z).
+
+As an alternative, this paper proposes the postulate that distant clocks in static space tick at a rate of 1 / (1 + z). If distant clocks simply run slower, then time is dilated. The difference in clock rates between a photon's source and its observer also result in a reduction of frequency, which are observed as redshifts.
+
+1 + z = c / (c - Hd) 
+
+
+ and it examines the cosmological phenomena that can be explained by this postulate alone.
+
+
+Models
+
+Consider two models, each with a photon at a starting point and target in space. Each photon faces a particular challenge. The first photon is traveling toward a target that is moving away from it. The second photon does not maintain its top speed and decelerates. The third photon's time to the target is measured by a clock that speeds up with distance. They are described by these equations:
+
+model 1: v = Hd
+model 2: v_photon = c - Hd
+model 3: t = c / (c - Hd)
+
+The first model is Hubble's law, where v is the recessional velocity of a target at distance d, and H is Hubble's constant. The second and third models are variations of the first. 
+
+A simple computer program (Listing 1) demonstrates that all three models predict the same travel time for a target at any distance d, as shown in Fig. 1.
+
+Figure 1. The three models d vs t
+
+
+Redshift
+
+The computer program in Listing 1. also computes the photon's redshift at each distance. For model 1, that's done by elongating the photon's wavelength. To account for the effect of Hubble flow in the model, the photon's velocity (v_photon) is: 
+
+v_photon = c + Hd
+
+Using this velocity a new wavelength (w_obs) can be calculated, given its original wavelength (w_emit):
+
+w_obs = w_emit * (c + Hd) / c
+
+With w_obs and w_emit, a redshift (z) can be calculated.
+
+1 + z = w_obs / w_emit
+
+In model 2, v_photon = c - Hd. It's z can be calculated by finding a new frequency (f_obs) based on its original frequency (f_emit). 
+
+f_obs = f_emit * (c - Hd) / c 
+
+In model 3, the clock rate depends on the distance of the photon has traveled:
+
+t = c / (c - Hd)
+
+Since frequency is 1 / t:
+
+f_obs = f_emit * (c - Hd) / c
+
+The results are that all three models predict the same redshift z for the same distance d.
+
+Figure 2. d vs z
+
+
+
+
+
+
