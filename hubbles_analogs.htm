@@ -84,7 +84,6 @@
 
     
 
-<div class="model" id="staticModel"></div>
 
 <p>In an expanding universe, objects move away from each other at <code>v = HD</code> as per Hubble's Law, and thus the targets take longer and longer to reach.
 
@@ -93,6 +92,9 @@
 <p>The same delays can be produced if the photon simply lost speed <code>HD</code>, as per Hubble's Law:</p>
 
 <div class="model" id="redshift1"></div>
+
+<div class="model" id="redshift2"></div>
+
 
 <button id="set-y-axis">Z</button>
 
@@ -140,6 +142,8 @@
 
     var dgi
     function drawGraph() {
+
+        graph.width = graph.width
         
         ctxG.lineWidth = 1
 
@@ -151,9 +155,11 @@
         ctxG.strokeStyle = "white" 
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
-        ctxG.strokeStyle = "yellow"
+        ctxG.lineWidth = 6
+        ctxG.strokeStyle = "white"
         ctxG.beginPath()
         ctxG.moveTo(offset, graph.height - offset)
+        ctxG.globalAlpha = 0.2
 
         dt = 0
         dts = []
@@ -161,8 +167,8 @@
             d = ii/(1+ii) * 13200
             dts.push({z: ii, dt: dt})
             dt += 1 - 0.000076 * d
-            ctxG.lineTo(-2 + offset + ii * 10000 * zoomG, 
-                        -2 + -offset + graph.height - d * zoomGY)
+            ctxG.lineTo(offset + ii * 10000 * zoomG, 
+                        -offset + graph.height - d * zoomGY)
         }
         ctxG.stroke()
 
@@ -185,6 +191,8 @@
                         -2 + -offset + graph.height - dd.dt * 1320 * zoomGY)
         })
         ctxG.stroke()
+
+        ctxG.globalAlpha = 1
         
         for (var m = 0; m < models.length; m++) {
             
@@ -193,9 +201,13 @@
             if (m == 0) {
                 ctxG.setLineDash([15, 15, 0])
             }
-            else {
+            else if (m == 1) {
                 ctxG.setLineDash([0, 15, 15])
             }
+            else {
+                ctxG.setLineDash([15, 0, 15])
+            }
+
             ctxG.beginPath()
             ctxG.moveTo(offset, graph.height - offset)
 
@@ -215,8 +227,11 @@
             if (m == 0) {
                 ctxG.setLineDash([0, 5, 5])
             }
-            else {
+            else if (m == 1) {
                 ctxG.setLineDash([5, 5, 0])
+            }
+            else {
+                ctxG.setLineDash([5, 0, 5])
             }
             
             ctxG.beginPath()
@@ -391,7 +406,7 @@
     var expandingModel = {
         div: document.getElementById("expandingFast"),
         name: "Expanding Fast",
-        color: "green", 
+        color: "yellow", 
         H: 0.000076,
         photon: {x: 0, f_init: 6e5, w: 499.65},
         //zoom: 0.03,
@@ -420,6 +435,24 @@
             this.photon.v = c - this.H * this.photon.x
             this.photon.x += this.photon.v
             this.photon.f = this.photon.v * 299792458 / this.photon.w
+        }
+    })
+
+    setupModel({
+        div: document.getElementById("redshift2"),
+        name: "Redshift by distance",
+        color: "blue", 
+        H: 0.000076,
+        photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
+        next: function () {
+            var t = c / (c - this.H * this.photon.x)
+            if (t <= 0) return 
+
+            this.t-- //undo the default time increment 
+            this.t += t
+            
+            this.photon.x += this.photon.dx
+            this.photon.f = this.photon.f_init / t
         }
     })
 
