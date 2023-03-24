@@ -72,14 +72,14 @@
     <br>
     X-axis: 
     <select id="graph-x-axis">
-        <option>starting distance to target (billion light years)</option>
+        <option>distance (billion light years)</option>
         <option>time to target (billions of years)</option>
         <option>z redshift</option>
     </select>
     <br>    
     Y-axis: 
     <select id="graph-y-axis">
-        <option>time to target (billions of years)</option>
+        <option>time (billions of years)</option>
         <option>time difference from static (billions of years)</option>
         <option>delayed time / static time - 1</option>
         <option>(1 - static time / delayed time)</option>
@@ -167,18 +167,27 @@ var zs = [
         ctxG.strokeStyle = !black ? "black" : "white"
         ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
         
-        ctxG.strokeStyle = "#808080"
-        for (var y = 0; y < 100000; y+=5000) {
-            ctxG.beginPath()
-            ctxG.moveTo(offset, graph.height - offset - (y) * zoomGY)
-            ctxG.lineTo(graph.width, graph.height - offset - (y) * zoomGY)
-            //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
-            ctxG.stroke()
-        }
+        ctxG.strokeStyle = "#444444"
+        ctxG.fillStyle = "white"
+        var lastY = 0
+        var stepY = 200
+        models[0].targets.forEach(target => {
+            if (target.start % 1000 == 0) {
+                ctxG.beginPath()
+                ctxG.moveTo(offset, graph.height - offset - (target.hit) * zoomGY)
+                ctxG.lineTo(graph.width, graph.height - offset - (target.hit) * zoomGY)
+                //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
+                ctxG.stroke()
+            }
 
+            if (target.start % 1000 == 0) {
+                ctxG.fillText(target.start / 1000, 4, -offset + graph.height - target.hit * zoomGY + 4)    
+            }
+        })
+        
         for (dgn = -1; dgn <= 1; dgn+=2) {
             
-            for (var x = 0; x < 100000; x+=5000) {
+            for (var x = 0; x < 100000; x+=1000) {
                 ctxG.beginPath()
                 ctxG.moveTo(offsetX + x * zoomG * dgn, 0)
                 ctxG.lineTo(offsetX + x * zoomG * dgn, graph.height - offset)
@@ -258,7 +267,7 @@ var zs = [
         ctxG.fillText(yAxis.value, offset + 5, offset)
         
         ctxG.font = "10px sans-serif"
-        if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
+        /*if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
             for (dgi = 0; dgi < 100; dgi+=5) {
                 ctxG.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
             }
@@ -267,7 +276,7 @@ var zs = [
             for (dgi = 0; dgi < 1000; dgi+=10) {
                 ctxG.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
             }
-        }
+        }*/
 
         if (xAxis.selectedIndex < 2) {
             for (dgi = -50; dgi < 50; dgi+=10) {
@@ -337,7 +346,7 @@ var zs = [
         
         // make a target every 200 million light years until 20 billion
         model.targets = []
-        for (var i = 200; i <= 120000; i+=200) {
+        for (var i = 200; i <= 13300; i+=200) {
             model.targets.push({label: i/1000, start: i, x: i})
         }
 
@@ -484,7 +493,7 @@ var zs = [
         }, 0)
     }
 
-    setupModel({
+    /*setupModel({
         div: document.getElementById("staticModel"),
         name: "Static",
         color: "blue", 
@@ -492,7 +501,7 @@ var zs = [
         next: function () {
             this.photon.x += c
         }
-    })
+    })*/
 
     setupModel({
         div: document.getElementById("redshift1"),
@@ -509,7 +518,7 @@ var zs = [
         }
     })
 
-    setupModel({
+    /*setupModel({
         div: document.getElementById("redshift1"),
         name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
         color: "red", 
@@ -522,7 +531,7 @@ var zs = [
             this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
             this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
         }
-    })
+    })*/
 
 
     setInterval(() => {
