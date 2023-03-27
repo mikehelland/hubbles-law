@@ -115,7 +115,7 @@
                 ctx.moveTo(0, h)
 
                 data.forEach(dp => {
-                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DL / (1+dp.z) / zoomY)
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC / (1 + dp.z) / zoomY)
                 })
                 ctx.globalAlpha = 0.4
                 ctx.stroke()
@@ -142,6 +142,8 @@
             ctx.moveTo(0, h)
 
             var ztest
+            var dltt = 0
+                
             data.forEach(dp => {
                 ztest = dp.z * c / H0h * pc2ly / 1000
                 ctx.lineTo(w * dp.z / maxZ, h - h * ztest / zoomY)
@@ -159,19 +161,32 @@
             var ztest
             data.forEach(dp => {
                 ztest = -(1 / (1 + dp.z) - 1) * c / H0h * pc2ly / 1000
+                dp.demit = ztest
                 ctx.lineTo(w * dp.z / maxZ, h - h * ztest / zoomY)
                 dp.error = ztest / dp.lookback
+                dp.dltt = dltt
+                dltt += 1 - 0.0756 * ztest 
             })
             ctx.stroke()
 
             drawLegend()
+
+            ctx.strokeStyle = "green"
+            ctx.setLineDash([])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+            
+            data.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.dltt / zoomY)
+            })
+            ctx.stroke()
 
             Omega_M = 0.32 
             Omega_L = 0.68
             //drawLCDM([3, 3], 4)
             
             Omega_M = 0 
-            Omega_L = 0
+            Omega_L = 1
             drawLCDM([5, 15], 4)
             
             Omega_M = 1 
@@ -189,7 +204,7 @@
             for (var i = 0; i <= maxZ; i=i+1) {
                 ctx.fillText(i, i / maxZ * w, h - 2)
             }
-            for (var i = 1; i <= 15; i=i+1) {
+            for (var i = 1; i <= 55; i=i+1) {
                 ctx.fillText(i, 2, h - h * i / zoomY)
             }
             ctx.fillText("lookback time", 28, 18)
