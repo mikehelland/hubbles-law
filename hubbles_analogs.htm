@@ -166,7 +166,7 @@
         for (let ii = 0; ii<=20; ii+=0.1) {
             d = ii/(1+ii) * 13200
             dts.push({z: ii, dt: dt})
-            dt += 1 - 0.000076 * d
+            dt += 1 - 0.0000756 * d
             ctxG.lineTo(offset + ii * 10000 * zoomG, 
                         -offset + graph.height - d * zoomGY)
         }
@@ -188,7 +188,7 @@
         dts.forEach(dd => {
 
             ctxG.lineTo(-2 + offset + dd.z * 10000 * zoomG, 
-                        -2 + -offset + graph.height - dd.dt * 1320 * zoomGY)
+                        -2 + -offset + graph.height - dd.dt * 132 * zoomGY)
         })
         ctxG.stroke()
 
@@ -407,7 +407,7 @@
         div: document.getElementById("expandingFast"),
         name: "Expanding Fast",
         color: "yellow", 
-        H: 0.000076,
+        H: 0.0000756,
         photon: {x: 0, f_init: 6e5, w: 499.65},
         //zoom: 0.03,
         next: function () {
@@ -428,7 +428,7 @@
         div: document.getElementById("redshift1"),
         name: "Redshift by distance",
         color: "white", 
-        H: 0.000076,
+        H: 0.0000756,
         photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
         next: function () {
             //this.photon.x += c - this.H * this.photon.x
@@ -442,7 +442,7 @@
         div: document.getElementById("redshift2"),
         name: "Redshift by distance",
         color: "blue", 
-        H: 0.000076,
+        H: 0.0000756,
         photon: {x: 0, dx: c, f_init: 6e5, w: 499.65},
         next: function () {
             var t = c / (c - this.H * this.photon.x)

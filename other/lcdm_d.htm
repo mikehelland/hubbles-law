@@ -8,12 +8,12 @@
     }    
     #legend-text {
         position:absolute;
-        top:302px;
-        left:760px;
+        top:022px;
+        left:660px;
     }
     #legend-text2 {
         position:absolute;
-        top:430px;
+        top:130px;
         left:760px;
         font-size: 120%;
         line-height: 250%;
@@ -28,18 +28,25 @@
 
     <div id="legend-text">
         
-        <div>\[  t = \frac{z}{H_{0}} \]</div>
+        <!--<div>\[  d = z\frac{c}{H_{0}} \]</div>
 
-        <div>\[  t = \frac{z}{1 + z} \frac{1}{H_{0}} \]</div>
+        <div>\[  d = \frac{z}{1 + z} \frac{c}{H_{0}} \]</div>
+
+        <div>\[  d = \frac{c}{H_{0}} \int_{0}^{z}\frac{1}{1 + z'}dz'  \]</div>
+        -->
+        FLRW &Omega;<sub>&Lambda;</sub>=1, &Omega;<sub>M</sub>=0
+        <br>
+        <br>
+        d<sub>obs</sub> (co-moving)
+        <br>
+        d<sub>ltt</sub> (light travel time)
+        <br>
+        d<sub>emit</sub>
     </div>
 
     <div id="legend-text2">
     
-        &Omega;<sub>M</sub>=0.32, &Omega;<sub>&Lambda;</sub>=0.68
-        <br>
-        &Omega;<sub>M</sub>=0, &Omega;<sub>&Lambda;</sub>=0
-        <br>
-        &Omega;<sub>M</sub>=1, &Omega;<sub>&Lambda;</sub>=0
+        
     </div>
     
     <div id="c-holder">
@@ -52,19 +59,30 @@
         var data
         const c = 299792.458
         const pc2ly = 3.261564
-        const H0 = 73
+        const H0 = 74
         const H0h = H0
         
-        var maxZ = 50
+        var maxZ = 10
         var data = []
-        for (var i = 0; i <= maxZ; i=i+0.1) {
+        for (var i = 0; i <= maxZ; i=i+0.01) {
             data.push({z: i})
         }
 
         var zoomY = 50
 
+		var t = 0
+		var dz = []
+		for (let d = 0; d<=13000; d+=10) {
+		   t += 1/(1 - 0.0000756 * d) 
+		   z = (0.0000756 * d) / (1 - 0.0000756 * d)
+		   
+		   dz.push({z: z, d, t: t})
+		}
+
+
         drawCanvas()
 
+		
         function drawCanvas() {
             console.log("drawing")
             
@@ -85,10 +103,24 @@
                     dp.DC = ds.DC / 1000 * pc2ly
                 })
 
+
                 ctx.beginPath()
                 ctx.lineWidth = lineWidth
                 ctx.strokeStyle = "black"
-                ctx.setLineDash(dash)
+                ctx.setLineDash([]) //[10, 20])
+                ctx.moveTo(0, h)
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC  / zoomY)
+                })
+                //ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+                drawLegend(true)
+
+                ctx.beginPath()
+                ctx.lineWidth = lineWidth
+                ctx.strokeStyle = "black"
+                ctx.setLineDash([20, 10])
                 ctx.moveTo(0, h)
 
                 data.forEach(dp => {
@@ -97,52 +129,45 @@
                 //ctx.globalAlpha = 0.4
                 ctx.stroke()
 
-                ctx.beginPath()
-                ctx.lineWidth = lineWidth
-                ctx.strokeStyle = "yellow"
-                ctx.setLineDash(dash)
-                ctx.moveTo(0, h)
-                data.forEach(dp => {
-                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC  / zoomY)
-                })
-                //ctx.globalAlpha = 0.4
-                ctx.stroke()
+                drawLegend(true)
 
                 ctx.beginPath()
                 ctx.lineWidth = lineWidth
                 ctx.strokeStyle = "black"
-                ctx.setLineDash(dash)
+                ctx.setLineDash([5, 10])
                 ctx.moveTo(0, h)
 
                 data.forEach(dp => {
                     ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC / (1 + dp.z) / zoomY)
                 })
-                ctx.globalAlpha = 0.4
+                //ctx.globalAlpha = 0.4
                 ctx.stroke()
                 
 
-                drawLegend()
+                drawLegend(true)
 
             }
 
-            var drawLegend = () => {
+            var ltop = 60
+            var drawLegend = (close) => {
                 ctx.beginPath()
-                ctx.moveTo(w*0.60, h*0.55 + im * 56)
-                ctx.lineTo(w*0.70, h*0.55 + im * 56)
+                ctx.moveTo(w*0.50, ltop)
+                ctx.lineTo(w*0.60, ltop)
                 ctx.stroke()
+                ltop += close ? 20 : 62
                 im++
             }
 
             ctx.globalAlpha = 1
             ctx.lineWidth = 2
-
+			var ztest
+            
+            /*
             ctx.strokeStyle = "red"
             ctx.setLineDash([])
             ctx.beginPath()
             ctx.moveTo(0, h)
 
-            var ztest
-            var dltt = 0
                 
             data.forEach(dp => {
                 ztest = dp.z * c / H0h * pc2ly / 1000
@@ -158,6 +183,8 @@
             ctx.beginPath()
             ctx.moveTo(0, h)
 
+			var dltt = 0
+            
             var ztest
             data.forEach(dp => {
                 ztest = -(1 / (1 + dp.z) - 1) * c / H0h * pc2ly / 1000
@@ -177,9 +204,22 @@
             ctx.moveTo(0, h)
             
             data.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.dltt / zoomY)
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.dltt * 0.132 / zoomY)
             })
             ctx.stroke()
+
+            drawLegend()
+            */
+
+			/*ctx.strokeStyle = "orange"
+            ctx.setLineDash([20,20])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+            
+            dz.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.t/100 / zoomY)
+            })
+            ctx.stroke()*/
 
             Omega_M = 0.32 
             Omega_L = 0.68
@@ -189,7 +229,7 @@
             Omega_L = 1
             drawLCDM([5, 15], 4)
             
-            Omega_M = 1 
+            Omega_M = 0 
             Omega_L = 0
             //drawLCDM([], 2)
          
@@ -199,16 +239,17 @@
         
             ctx.fillText("z", w - 10, h - 2)
 
-            //ctx.fillStyle = "black"
+            ctx.globalAlpha = 1
+            ctx.fillStyle = "black"
             //ctx.font = "16px sans-serif"
             for (var i = 0; i <= maxZ; i=i+1) {
                 ctx.fillText(i, i / maxZ * w, h - 2)
             }
-            for (var i = 1; i <= 55; i=i+1) {
+            for (var i = 0; i <= 55; i=i+5) {
                 ctx.fillText(i, 2, h - h * i / zoomY)
             }
-            ctx.fillText("lookback time", 28, 18)
-            ctx.fillText("billion years", 28, 40)
+            ctx.fillText("distance", 28, 18)
+            ctx.fillText("billion light years", 28, 40)
 
         }
 
