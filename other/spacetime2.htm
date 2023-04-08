@@ -218,7 +218,10 @@ var zs = [
             }
         }
 
-        /*ctxG.strokeStyle = "red"
+
+        ctxG.lineWidth = 2
+
+        ctxG.strokeStyle = "red"
         ctxG.beginPath()
         ctxG.moveTo(offsetX, graph.height - offset)
         
@@ -226,8 +229,15 @@ var zs = [
             ctxG.lineTo(offsetX + dp.d * zoomG, graph.height - offset - dp.t*10 * zoomGY)
         })
         ctxG.stroke()
-        */
         
+        ctxG.beginPath()
+        ctxG.moveTo(offsetX, graph.height - 20 - offset)
+        
+        dz.forEach(dp => {
+            ctxG.lineTo(offsetX + dp.d * zoomG, graph.height - offset - 20 - dp.t*10 * zoomGY)
+        })
+        ctxG.stroke()
+
         ctxG.lineWidth = 2
         for (dgn = -1; dgn <= 1; dgn+=2) {
         //for (dgn = 1; dgn < 2; dgn+=2) {
@@ -239,7 +249,7 @@ var zs = [
                     if (dgt.hit) {
 
                         if (xAxis.selectedIndex === 0) {
-                            drawx = dgt.start //* 1/(1+dgt.z) //dgt.start
+                            drawx = dgt.start / (1+z)
                         }
                         else if (xAxis.selectedIndex === 1) {
                             drawx = dgt.hit
