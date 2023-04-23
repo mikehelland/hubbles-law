@@ -86,7 +86,7 @@
     <br>    
     Y-axis: 
     <select id="graph-y-axis">
-        <option>co-moving distance (Gly)</option>
+        <option>distance (Gly)</option>
         <option>luminosity distance (Gly)</option>
         <option>z redshift</option>
         
@@ -264,8 +264,9 @@ var black = true
 
             for (let ii = 0; ii<=20; ii+=0.1) {
                 d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
+                t = c0 / drawHypothesis.value * pc2ly * Math.log(1+ii)
                 ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
-                            -2 + -offset + graph.height - d * zoomGY)
+                            -2 + -offset + graph.height - t * zoomGY)
             }
             ctxB.stroke()
         }
