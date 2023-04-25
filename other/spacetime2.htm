@@ -11,7 +11,7 @@
             
             }
             #graph {
-                height:300px;
+                height:400px;
                 width: 800px;
             }
             .model-label {
@@ -57,49 +57,12 @@
         </style>
     </head>
 <body>
-
-<h3>Hubble's Law Testing Page </h3>
-
-<p>
-    Read more about the models being tested <a href="index.htm">on the home page.</a> 
-</p>
-<div id="details"></div>
-
-
-<div id="graph-side">
-    <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
-    <br>
-    <br>
-    X-axis: 
-    <select id="graph-x-axis">
-        <option>distance (billion light years)</option>
-        <option>time to target (billions of years)</option>
-        <option>z redshift</option>
-    </select>
-    <br>    
-    Y-axis: 
-    <select id="graph-y-axis">
-        <option>time (billions of years)</option>
-        <option>time difference from static (billions of years)</option>
-        <option>delayed time / static time - 1</option>
-        <option>(1 - static time / delayed time)</option>
-        <option>(1 - v)</option>
-        <option>z redshift</option>
-        <option>starting distance to target (billion light years)</option>
-        
-    </select>
-    <br>
-    <canvas id="graph" height="300" width="800"></canvas>
+<br>
+    <canvas id="graph" height="400" width="800"></canvas>
     <br>
     Zoom X: <input type="number" id="graph-zoom-x" value="1.0" step="0.01" min="0.01">
     Zoom Y: <input type="number" id="graph-zoom-y" value="1.0" step="0.01" min="0.01">
 
-    <hr>
-    Starting frequency=<input id="start-freq">
-    <br>
-    Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
-    
-    <pre id="output"></pre>
 </div>
 
 <div id="right-side">
@@ -109,49 +72,21 @@ var black = true
 var zs = [
     ]
 
-    var outputDiv = document.getElementById("output")
-    var trunc = n => Math.trunc(n * 1000) / 1000
-    var output = (model, photon) => {
-        outputDiv.innerHTML += model.name + ", " + 
-                                "t=" + model.t.toString().padEnd(8) + " d=" + 
-                                trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
-                                trunc(photon.dx) + ", f=" + trunc(photon.f) + 
-                                ", w=" + trunc(299792458/photon.f) + "\n"
-    }
     
-    var zoutput = document.getElementById("zoutput")
-    for (var zz of zs) {
-        zoutput.innerHTML += zz.z.toString().padEnd(12) +
-                            (zz.t).toString().padEnd(14) + 
-                            (zz.d).toString().padEnd(14) + 
-                             "\n" 
-    }
-
-    var details = document.getElementById("details")
-
     var graph = document.getElementById("graph")
     var ctxG = graph.getContext("2d")
     var models = []
 
-    var startFreqInput = document.getElementById("start-freq")
     
-    
-    // the models advance by 1 million years each step
-    // the units for distance are in Mly (million light years)
-
-    // the speed of light is 1 million lightyears per million years
-    
-    // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
-
     var c = 1
 
-    var zoom = 0.035
+    var zoom = 0.055
     var zoom_gx = 0.95 * 0.3
     var zoom_gy = 0.95 * 0.3
     var zoomG = zoom * zoom_gx
     var zoomGY = zoom * zoom_gy
     var offset = 20
-    var offsetX = 400
+    var offsetX = 20//400
 
     var dgn
     
@@ -176,137 +111,90 @@ var zs = [
         ctxG.fillRect(0, 0, graph.width, graph.height)
 
         ctxG.strokeStyle = !black ? "black" : "white"
-        ctxG.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+        ctxG.strokeRect(offset, offset, graph.width, graph.height)
         
         ctxG.strokeStyle = "#444444"
         ctxG.fillStyle = "white"
         var lastY = 0
         var stepY = 200
-        /*models[0].targets.forEach(target => {
-            if (target.start % 1000 == 0) {
-                ctxG.beginPath()
-                ctxG.moveTo(offset, graph.height - offset - (target.hit) * zoomGY)
-                ctxG.lineTo(graph.width, graph.height - offset - (target.hit) * zoomGY)
-                //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
-                ctxG.stroke()
-            }
-
-            if (target.start % 1000 == 0) {
-                ctxG.fillText(target.start / 1000, 4, -offset + graph.height - target.hit * zoomGY + 4)    
-            }
-        })*/
+        
         
         for (var y = 0; y < 100000; y+=1000) {
             ctxG.beginPath()
-            ctxG.moveTo(offset, graph.height - offset - y * zoomGY)
-            ctxG.lineTo(graph.width, graph.height - offset - y * zoomGY)
+            ctxG.moveTo(offset, offset + y * zoomGY)
+            ctxG.lineTo(graph.width, offset + y * zoomGY)
             ctxG.stroke()
 
             if (y % 5000 == 0)
-                ctxG.fillText(y / 1000, 4, -offset + graph.height - y * zoomGY + 4)    
+                ctxG.fillText(y / 1000, 4, offset + y * zoomGY + 4)    
             
         }
 
-        for (dgn = -1; dgn <= 1; dgn+=2) {
+        var dgn = 1
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
             
             for (var x = 0; x < 100000; x+=1000) {
                 ctxG.beginPath()
-                ctxG.moveTo(offsetX + x * zoomG * dgn, 0)
-                ctxG.lineTo(offsetX + x * zoomG * dgn, graph.height - offset)
+                ctxG.moveTo(offsetX + x * zoomG * dgn, offset)
+                ctxG.lineTo(offsetX + x * zoomG * dgn, graph.height)
                 //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
                 ctxG.stroke()
             }
-        }
+        //}
 
 
         ctxG.lineWidth = 2
+
+        ctxG.strokeStyle = "blue"
+        
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            ctxG.beginPath()
+            ctxG.moveTo(offsetX, offset)
+            ctxG.lineTo(offsetX + dgn * 50e8 * zoomG, offset + 50e8 * zoomGY)
+            ctxG.stroke()
+        //}
 
         ctxG.strokeStyle = "red"
-        ctxG.beginPath()
-        ctxG.moveTo(offsetX, graph.height - offset)
         
-        dz.forEach(dp => {
-            ctxG.lineTo(offsetX + dp.d * zoomG, graph.height - offset - dp.t*10 * zoomGY)
-        })
-        ctxG.stroke()
-        
-        ctxG.beginPath()
-        ctxG.moveTo(offsetX, graph.height - 20 - offset)
-        
-        dz.forEach(dp => {
-            ctxG.lineTo(offsetX + dp.d * zoomG, graph.height - offset - 20 - dp.t*10 * zoomGY)
-        })
-        ctxG.stroke()
-
-        ctxG.lineWidth = 2
-        for (dgn = -1; dgn <= 1; dgn+=2) {
-        //for (dgn = 1; dgn < 2; dgn+=2) {
-            for (dgm of models) {
-                ctxG.strokeStyle = dgm.color
-                ctxG.beginPath()
-                ctxG.moveTo(offsetX, graph.height - offset)
-                for (dgt of dgm.targets) {
-                    if (dgt.hit) {
-
-                        if (xAxis.selectedIndex === 0) {
-                            drawx = dgt.start / (1+z)
-                        }
-                        else if (xAxis.selectedIndex === 1) {
-                            drawx = dgt.hit
-                        }
-                        else if (xAxis.selectedIndex === 2) {
-                            drawx = (dgt.z * 10000) || ((1 - dgt.dx) / dgt.dx) * 10000
-                        }
-
-                        if (yAxis.selectedIndex === 0) {
-                            drawy = dgt.hit
-                        }
-                        else if (yAxis.selectedIndex === 1) {
-                            // show the difference in time with a static model
-                            drawy = dgt.hit - dgt.start
-                        }
-                        else if (yAxis.selectedIndex === 2) {
-                            // show the ratio with a static model
-                            drawy = (dgt.hit / dgt.start - 1) * 10000
-                        }
-                        else if (yAxis.selectedIndex === 3) {
-                            // show the inverse ratio with a static model
-                            drawy = (1 - dgt.start / dgt.hit) * 10000
-
-                        }
-                        else if (yAxis.selectedIndex === 4) {
-                            // v_light or v_target
-                            drawy = dgt.dx * 10000
-
-                        }
-                        else if (yAxis.selectedIndex === 5) {
-                            // z = (freq_emit - freq_observes) / freq_observer
-                            drawy = (dgt.z * 10000) //|| ((1 - dgt.dx) / dgt.dx) * 10000
-
-                        }
-                        else if (yAxis.selectedIndex === 6) {
-                            drawy = dgt.start
-
-                        }
-
-                        ctxG.lineTo(offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY)
-
-                    }
-                }
-
-                ctxG.stroke()
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            ctxG.beginPath()
+            ctxG.moveTo(offsetX, offset)
             
-            }
-            
+            dz.forEach(dp => {
+                ctxG.lineTo(offsetX + dgn * dp.d * zoomG, offset + dp.t*10 * zoomGY)
+            })
+            ctxG.stroke()
+        //}
+
+        ctxG.fillStyle = "white"
+        for (var ii = 0; ii < 25000; ii+=1000) {
+            ctxG.fillRect(offsetX + ii * zoomG - 1, offset + ii * zoomGY - 1, 2, 2)        
         }
+
+        ctxG.fillStyle = "yellow"
+        ctxG.strokeStyle = "yellow"
+        ctxG.lineWidth = 1
+        
+        dz.forEach(dp => {
+            if (dp.d % 1000 == 0) {
+                ctxG.fillRect(offsetX + dp.d * zoomG - 1, offset + dp.t*10 * zoomGY - 1, 2, 2)
+                console.log(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+
+                ctxG.beginPath()
+                ctxG.moveTo(offsetX + dp.d * zoomG, offset + dp.d * zoomGY)
+                ctxG.lineTo(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+                ctxG.stroke()
+            }
+        })
+        
 
         ctxG.font = "14px sans-serif"
         
         ctxG.fillStyle = !black ? "black" : "white"
         ctxG.textAlign = "right"
-        ctxG.fillText(xAxis.value, graph.width - 4, graph.height - 30)
+        ctxG.fillText("Distance", graph.width - 4,  36)
         ctxG.textAlign = "left"
-        ctxG.fillText(yAxis.value, offset + 5, offset)
+        ctxG.fillText("Time", offset + 5, graph.height - 10)
         
         ctxG.font = "10px sans-serif"
         /*if (yAxis.selectedIndex < 2 || yAxis.selectedIndex === 6) {
@@ -320,311 +208,26 @@ var zs = [
             }
         }*/
 
-        if (xAxis.selectedIndex < 2) {
-            for (dgi = -50; dgi < 50; dgi+=10) {
-                ctxG.fillText(dgi, offsetX + dgi * 1000 * zoomG - 3, graph.height - 5)    
-            }
+        for (dgi = -50; dgi < 50; dgi+=2) {
+            ctxG.fillText(dgi, offsetX + dgi * 1000 * zoomG - 3, offset)    
         }
-        else {
-            for (dgi = 0; dgi < 110; dgi+=10) {
-                ctxG.fillText(dgi / 10, offsetX + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-            }
-        }
+        
     }
 
-    function setupModel(model) {
-
-        var header = document.createElement("div")
-        header.className = "model-header"
-
-
-        label = document.createElement("div")
-        label.innerHTML = model.name
-        label.className = "model-label"
-        header.appendChild(label)
-
-        if (model.H) {
-            var label = document.createElement("div")
-            label.innerHTML = "H = "
-            label.className = "input-label"
-                    
-            var input = document.createElement("input")
-            input.type = "number"
-            input.value = model.H
-            input.step = 0.0001
-            
-            input.onchange = e => model.H = parseFloat(input.value)
-
-            var spacer = document.createElement("div")
-            spacer.innerHTML = "&nbsp;"//model.unitH
-            spacer.className = "header-spacer"
-
-            header.appendChild(spacer)
-            header.appendChild(label)
-            header.appendChild(input)
-
-        }
-            
-        
-        details.appendChild(header)
-        
-        model.canvas = document.createElement("canvas")
-        model.canvas.onclick = () => {
-            if (model.running || model.ran) {
-                resetModel(model)
-            }
-            else {
-                runModel(model)
-            }
-        }
-        details.appendChild(model.canvas)
-        details.appendChild(document.createElement("br"))
-
-        model.ctx = model.canvas.getContext("2d")
-        model.nextTarget = 0
-
-        model.canvas.width = 700
-        model.canvas.height = 30
-        
-        // make a target every 200 million light years until 20 billion
-        model.targets = []
-        for (var i = 200; i <= 13300; i+=200) {
-            model.targets.push({label: i/1000, start: i, x: i})
-        }
-
-        model.ctx.lineWidth = 1
-        draw(model.ctx, model)
-
-        models.push(model)
-    }
-
-    function stopModel(model) {
-        clearInterval(model.handle)
-
-        model.running = false
-        model.ran = true
-    }
-
-    function resetModel(model) {
-        
-        stopModel(model)
     
-        model.ran = false
-        model.photon.x = 0
-        model.photon.f_start = startFreqInput.value || model.photon.f_start || 6e5 
-        model.photon.f = model.photon.f_start
-        model.photon.w = 299792458 / model.photon.f
-        model.photon.dx = c
-        model.nextTarget = 0
-        model.targets.forEach(target => {
-            target.x = target.start
-            target.hit = 0
-        })
-    
-        model.t = 0
-
-        draw(model.ctx, model)
-    }
-
-    function draw(ctx, exp) {
-
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-        for (var i = 0; i < exp.targets.length; i++) {
-            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
-            ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * zoom, 0)
-            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
-            //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
-
-            if (exp.targets[i].hit) {
-                //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-                //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-            }
-
-            ctx.stroke()
-        }
-
-        ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
-    }
-
-    function runModel(model) {
-        
-        resetModel(model)
-        
-        model.running = true
-
-        var findT = document.getElementById("find-t").value
-        var findD = document.getElementById("find-d").value
-        var findZ = document.getElementById("find-z").value
-        var findV = document.getElementById("find-v").value
-        var findTarget = document.getElementById("find-target").value
-                    
-        var x, x2, dx, dx2
-        var i
-        var batch = 100
-        model.handle = setInterval(function () {
-            for (i = 0; i < batch; i++) {
-                if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
-                    model.t++
-                    x = model.photon.x
-                    x2 = model.targets[model.nextTarget].x
-                    
-                    model.next()
-
-                    dx = model.photon.x - x
-                    dx2 = model.targets[model.nextTarget].x - x2
-
-                    var z = (model.photon.f_start - model.photon.f) / model.photon.f
-                    if (model.expanding) {
-                        //dx2 = dx2 - (dx - 1)
-                        z = Math.sqrt((1 + dx2) / (1 - dx2)) - 1
-                    }
-                    model.photon.z = z
-                    
-                    if (findT && fintdT === "all") {
-                        output(model, model.photon)
-                    }
-                    else if (findT && model.t >= findT) {
-                        output(model, model.photon)
-                        findT = 0
-                    }
-                    if (findZ && z >= findZ) {
-                        output(model, model.photon)
-                        findZ = 0
-                    }
-                    if (findD && findD === "all") {
-                        output(model, model.photon)
-                    }
-                    else if (findD && model.photon.x >= findD) {
-                        output(model, model.photon)
-                        findD = 0
-                    }
-                    if (findV && model.photon.dx >= findV) {
-                        output(model, model.photon)
-                        findV = 0
-                    }
-                    if (model.targets[model.nextTarget].x <= model.photon.x) {
-                        
-                        if (findTarget && findTarget === "all") {
-                            output(model, model.photon)
-                        }
-                        else if (findTarget && model.targets[model.nextTarget].start >= findTarget) {
-                            output(model, model.photon)
-                            findTarget = 0
-                        }
-
-                        model.targets[model.nextTarget].hitx = model.photon.x
-                        model.targets[model.nextTarget].hit = model.t
-
-                        model.targets[model.nextTarget].z = z
-                        model.targets[model.nextTarget].dx = model.expanding ? 
-                            (model.targets[model.nextTarget].x - x2) :
-                            (1 - (model.photon.x - x))
-                        
-                        model.nextTarget++
-                    }
-                }
-                else {
-                    clearInterval(model.handle)
-                    model.running = false
-                    model.ran = true
-                }
-            }
-        }, 0)
-    }
-
-    /*setupModel({
-        div: document.getElementById("staticModel"),
-        name: "Static",
-        color: "blue", 
-        photon: {x: 0},
-        next: function () {
-            this.photon.x += c
-        }
-    })*/
-
-    var expandingModel = {
-        div: document.getElementById("expandingFast"),
-        name: "Expanding Fast",
-        color: "yellow", 
-        H: 0.0000756,
-        photon: {x: 0, f_init: 6e5, w: 499.65},
-        //zoom: 0.03,
-        next: function () {
-            this.photon.dx = c + this.photon.x * this.H
-            this.photon.x += this.photon.dx
-            this.photon.w = (this.photon.dx * 299792458 / this.photon.f_init) 
-            this.photon.f = 299792458 / this.photon.w
-            
-            for (var i = 0; i < this.targets.length; i++) {
-                this.targets[i].dx = this.targets[i].x * this.H
-                this.targets[i].x += this.targets[i].dx
-            }
-        }
-    }
-    setupModel(expandingModel)
-    
-
-    /*setupModel({
-        div: document.getElementById("redshift1"),
-        name: "v<sub>light</sub> = c - H &times; D",
-        color: "green", 
-        H: 0.0756,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-        next: function () {
-            this.photon.dx = c - this.H / 1000 * this.photon.x
-            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-        }
-    })*/
-
-    /*setupModel({
-        div: document.getElementById("redshift1"),
-        name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
-        color: "red", 
-        H: 0.0756,
-        unitH: "ly/y/Mly",
-        photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-        //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-        next: function () {
-            this.photon.dx = c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
-            this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-            this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-        }
-    })*/
-
 
     setInterval(() => {
-        for (var m = 0; m < models.length; m++) {
-            if (models[m].running) {
-                draw(models[m].ctx, models[m]) 
-            }
-        }
-
-        drawGraph()
+    
+        //drawGraph()
     }, 1000 / 60)
 
-document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
-document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
-
+    drawGraph()
 document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
 document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
 
 var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
 
-setTimeout(() => {
-    //models.forEach(model => runModel(model))
-}, 500)
-
-setTimeout(() => {
-    //models.forEach(model => stopModel(model))
-}, 10000)
 
 </script>
 

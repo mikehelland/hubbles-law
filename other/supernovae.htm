@@ -62,6 +62,12 @@
             td, th {
                 padding:4px 20px;
             }
+
+            #hypothesiseq {
+                position: absolute;
+                left: 420px;
+                top: 460px;
+            }
         </style>
     </head>
 <body>
@@ -139,8 +145,16 @@
     <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
 </notes>
 </div>
+</div>
+
+
+<div id="hypothesiseq">\[  d = \frac{c}{H_{0}} log(1 + z)  \]</div>
+
+
 <script>
-var black = true
+
+
+var black = false
 
     var outputDiv = document.getElementById("output")
     var trunc = n => Math.trunc(n * 1000) / 1000
@@ -258,15 +272,15 @@ var black = true
         }
 
         if (drawHypothesis.value > 0) {
-            ctxB.strokeStyle = "red"
+            ctxB.strokeStyle = black ? "red" : "black"
             ctxB.beginPath()
             ctxB.moveTo(offset, graph.height - offset)
 
             for (let ii = 0; ii<=20; ii+=0.1) {
                 d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
                 t = c0 / drawHypothesis.value * pc2ly * Math.log(1+ii)
-                ctxB.lineTo(-2 + offset + ii * 10000 * zoomG, 
-                            -2 + -offset + graph.height - t * zoomGY)
+                ctxB.lineTo( offset + ii * 10000 * zoomG, 
+                            -offset + graph.height - t * zoomGY)
             }
             ctxB.stroke()
         }
@@ -285,7 +299,7 @@ var black = true
         }*/
 
 
-        ctxB.fillStyle = "yellow"
+        ctxB.fillStyle = black ? "yellow" : "red"
         var x, y
         for (var sn of snData) {
             //sn.d = sn.ld
@@ -309,15 +323,16 @@ var black = true
                 x = sn.d
             }
 
-            ctxB.fillRect(offset + x * zoomG, graph.height - offset - y * zoomGY, 2, 2)
+            ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 2, 2)
         }
 
 
         ctxB.font = "14px sans-serif"
 
-        ctxB.fillStyle = "yellow"
+        //ctxB.fillStyle = "yellow"
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)
         ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 20, offset + 38)
+        ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
 /*
         
         ctxB.fillStyle = "green"
@@ -941,3 +956,4 @@ setTimeout(() => {
     
 </script>
 
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
