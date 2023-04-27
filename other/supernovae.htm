@@ -177,6 +177,11 @@ var black = false
     var startFreqInput = document.getElementById("start-freq")
     var extinctionInput = document.getElementById("extinction")
     extinctionInput.onchange = e => {
+        calculateDistances()
+        drawSN()
+    }
+
+    var calculateDistances = function () {
         for (var i=0; i<snData.length; i++) {
                 // distance modulus to parsec luminosity distance
                 var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinctionInput.value)) 
@@ -193,7 +198,7 @@ var black = false
                 snData[i].d = d / 1000000
                 snData[i].ld = ld / 1000000
         }
-        drawSN()
+        
     }
     
     
@@ -329,9 +334,9 @@ var black = false
 
         ctxB.font = "14px sans-serif"
 
-        //ctxB.fillStyle = "yellow"
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)
-        ctxB.fillText("Supernovae Cosmology Project Data", offset + 5 + 20, offset + 38)
+        ctxB.fillStyle = "black"
+        ctxB.fillText("Pantheon+SH0ES", offset + 5 + 20, offset + 38)
         ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
 /*
         
@@ -404,8 +409,18 @@ var black = false
         
         
     }
-    fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
-        snData = data
+    fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
+        //console.log(text)
+
+        var lines = text.split("\n")
+        for (var i = 1; i < lines.length; i++) {
+            var line = lines[i].split(",")
+            snData.push({"dm": line[2], "z": line[0]})
+        }
+        calculateDistances()
+    
+    //fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
+        //snData = data
 
         //fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
         //    zData = data
