@@ -115,7 +115,13 @@
     <br>
     Show CDM: <input type="checkbox" id="graph-cdm">
     <br>
-    d-z H<sub>0</sub>: <input type="number" id="graph-hypothesis">
+    d-z H<sub>0</sub>: <input value="73" type="number" id="graph-hypothesis">
+    <br>
+    &Lambda;CDM (<span style="color:red;">red</span>): 
+    H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
+    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+    
     <hr>
     Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
     
@@ -125,32 +131,12 @@
 <div id="right-side">
 <p>Click a model to play or reset it.</p>
 
-<div id="details"></div>
-
-<div id="notes">
-    <hr>
-    <p>Units of H for input boxes:</p>
-
-    <ul>
-        <li>Inverse models:  Gly<sup>-1</sup></li>
-        <li>Others: light year / year / Gly</li>
-    </ul>
-
-    <p>1 megaparsec to Mly = 3.2638 Mly <a href="https://www.convertunits.com/from/megaparsec/to/Mly" target="_ou">https://www.convertunits.com/from/megaparsec/to/Mly</a></p>
-    <hr>
-    <p>Sample z's (white dots when y-axis is redshift) from <a href="https://wolframalpha.com/" target="_out">WolframAlpha</a></p>
-    <pre id="zoutput">
-    </pre>
-
-    <a href="https://github.com/mikehelland/hubbles-law/blob/master/test.htm">Source code</a>
-</notes>
-</div>
 </div>
 
 
 <div id="hypothesiseq">
     \[  d = \frac{c}{H_{0}} log(1 + z)  \]
-    \[  H_{0} = 70~km~s^{-1}~Mpc^{-1}  \]
+    \[  H_{0} = 71~km~s^{-1}~Mpc^{-1}  \]
 </div>
 
 
@@ -159,16 +145,6 @@
 
 var black = false
 
-    var outputDiv = document.getElementById("output")
-    var trunc = n => Math.trunc(n * 1000) / 1000
-    var output = (model, photon) => {
-        outputDiv.innerHTML += (model.label || model.name) + ", " + 
-                                "t=" + model.t.toString().padEnd(8) + " d=" + 
-                                trunc(photon.x) + ", z=" + trunc(photon.z) + ", v=" + 
-                                trunc(photon.dx) + ", f=" + trunc(photon.f) + 
-                                ", w=" + trunc(299792458/photon.f) + "\n"
-    }
-    
     var details = document.getElementById("details")
 
     var background = document.getElementById("background")
@@ -232,33 +208,7 @@ var black = false
 
     var snData = []
     var zData = []
-    var zs = [
-    { z: 1, t: 7400, d: 10400 },
-    { z: 2, t: 9880, d: 16400 },
-    { z: 3, t: 11000, d: 20100 },
-    { z: 4, t: 11600, d: 22800 },
-    { z: 5, t: 11900, d: 24700 },
-    { z: 6, t: 12200, d: 26200 },
-    { z: 7, t: 12300, d: 27500 },
-    { z: 8, t: 12400, d: 28500 },
-    { z: 9, t: 12500, d: 29400 },
-    { z: 10, t: 12600, d: 30100 },
-    { z: 11, t: 12700, d: 30700 },
-    { z: 12, t: 12700, d: 31300 },
-    { z: 13, t: 12700, d: 31800 },
-    { z: 14, t: 12800, d: 32300 },
-    { z: 15, t: 12800, d: 32700 },
-    { z: 16, t: 12800, d: 33100 },
-    { z: 17, t: 12800, d: 33400 },
-    { z: 18, t: 12900, d: 33700 },
-    { z: 19, t: 12900, d: 34000 },
-    { z: 20, t: 12900, d: 34300 },
-    { z: 21, t: 12900, d: 34600 },
-    { z: 22, t: 12900, d: 34800 },
-    { z: 23, t: 12900, d: 35000 },
-    { z: 24, t: 12900, d: 35200 },
-    { z: 25, t: 12900, d: 35400 },]
-
+    
     function drawSN() {
         ctxB.lineWidth = 1
         ctxB.fillStyle = black ? "black" : "white"
@@ -268,17 +218,7 @@ var black = false
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
 
         ctxB.fillStyle = !black ? "black" : "white"
-        if (drawCDM.checked) {
-            for (dgi = 0; dgi < zs.length; dgi++) {        
-                if (yAxis.selectedIndex === 2) {
-                    ctxB.fillRect(-2 + offset + zs[dgi].d * zoomG, -2 + -offset + graph.height - zs[dgi].z * 10000 * zoomGY, 4, 4)
-                }
-                else {
-                    ctxB.fillRect(-2 + offset + zs[dgi].z * 10000 * zoomG, -2 + -offset + graph.height - zs[dgi].d * zoomGY, 4, 4)
-                }
-            }
-        }
-
+        
         if (drawHypothesis.value > 0) {
             ctxB.strokeStyle = black ? "red" : "black"
             ctxB.beginPath()
@@ -293,20 +233,19 @@ var black = false
             ctxB.stroke()
         }
 
-        // note, this file has d in Mpc, so convert it
-        // it's also huge and messy and unnecessary
-        /*var mpcToMly = 3.261563
-        ctxB.fillStyle = "red"
-        for (var sn of zData) {
-            if (yAxis.selectedIndex === 3) {
-                ctxB.fillRect(offset + sn.d * mpcToMly * zoomG, graph.height - offset - sn.z * 10000 * zoomGY, 2, 2)
-            }
-            else {
-                ctxB.fillRect(offset + sn.z * 10000 * zoomG, graph.height - offset - sn.d * mpcToMly * zoomGY, 2, 2)
-            }
-        }*/
+        ctxB.strokeStyle = "green"
+        ctxB.beginPath()
+        ctxB.moveTo(offset, graph.height - offset)
 
+        for (let ii = 0; ii<=20; ii+=0.1) {
+            d = zToD(ii) * pc2ly ///(1+ii) * c0 / drawHypothesis.value * pc2ly
+            //console.log(d)
+            ctxB.lineTo( offset + ii * 10000 * zoomG, 
+                        -offset + graph.height - d * zoomGY)
+        }
+        ctxB.stroke()
 
+    
         ctxB.fillStyle = black ? "yellow" : "red"
         var x, y
         for (var sn of snData) {
@@ -341,45 +280,6 @@ var black = false
         ctxB.fillStyle = "black"
         ctxB.fillText("Pantheon+SH0ES", offset + 5 + 20, offset + 38)
         ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
-/*
-        
-        ctxB.fillStyle = "green"
-        ctxB.fillRect(offset + 30, offset + 54, 8, 1)
-        ctxB.fillText("v = H D", offset + 5 + 40, offset + 61)
-
-        ctxB.fillText("H = 74 km/s/Mpc", offset + 5 + 40, offset + 86)
-
-
-        ctxB.font = "8px sans-serif"
-        ctxB.fillText("0", offset + 5 + 79, offset + 66)
-        ctxB.fillText("0", offset + 5 + 50, offset + 88)
-
-
-        ctxB.font = "14px sans-serif"
-        ctxB.fillStyle = "white"
-        ctxB.fillRect(offset + 30, offset + 106, 8, 1)
-        ctxB.fillStyle = "white"
-        ctxB.fillText("v = c - ", offset + 5 + 40, offset + 112)
-        ctxB.fillText("                 c", offset + 5 + 40, offset + 102)
-        ctxB.fillRect(offset + 100, offset + 109, 44, 1)
-        ctxB.fillText("            (1+H D)", offset + 5 + 40, offset + 128)
-
-        ctxB.fillText("H = 0.04 Gly", offset + 5 + 40, offset + 160)
-
-        ctxB.font = "12px sans-serif"
-
-        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
-        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
-
-        ctxB.fillText("       2", offset + 5 + 122, offset + 120)
-        ctxB.fillText("-1", offset + 5 + 132, offset + 152)
-        
-        ctxB.font = "14px sans-serif"
-
-        ctxB.font = "8px sans-serif"
-        ctxB.fillText("0", offset + 5 + 129, offset + 134)
-        ctxB.fillText("0", offset + 5 + 50, offset + 166)
-        */
 
 
         ctxB.fillStyle = !black ? "black" : "white"
@@ -421,529 +321,14 @@ var black = false
             snData.push({"dm": line[2], "z": line[0]})
         }
         calculateDistances()
-    
-    //fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
-        //snData = data
+        drawSN()
 
         //fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
         //    zData = data
-        
-            setupModels()
-            drawSN()
         //})
     })
 
-    var drawx, drawy, dgt, dgm, dgi
-    function drawGraph() {
-        
-        graph.width = graph.width 
-        ctxG.lineWidth = 1
-        for (dgm of models) {
-            ctxG.strokeStyle = dgm.color
-            ctxG.beginPath()
-            ctxG.moveTo(offset, graph.height - offset)
-            for (dgt of dgm.targets) {
-                if (dgt.hit) {
-
-                    if (xAxis.selectedIndex === 0) {
-                        drawx = dgt.z * 10000
-                    }
-                    else {
-                        drawx = dgt.start
-                    }
-
-                    
-                    if (yAxis.selectedIndex === 1) {
-                        drawy = dgt.hitX
-                    }
-                    else if (yAxis.selectedIndex === 0) {
-                        drawy = dgt.hitX
-                    }
-                    else if (yAxis.selectedIndex === 2) {
-                        drawy = dgt.z * 10000
-                    }
-                    ctxG.lineTo(offset + drawx * zoomG, -offset + graph.height - drawy * zoomGY)
-
-                }
-            }
-            ctxG.stroke()
-            
-        }
-
-        
-    }
-
-    function setupModel(model) {
-
-        var header = document.createElement("div")
-        header.className = "model-header"
-
-
-        label = document.createElement("div")
-        label.innerHTML = model.name
-        label.className = "model-label"
-        header.appendChild(label)
-
-        if (model.H) {
-            var label = document.createElement("div")
-            label.innerHTML = "H = "
-            label.className = "input-label"
-                    
-            var input = document.createElement("input")
-            input.type = "number"
-            input.value = model.H
-            input.step = 0.0001
-            
-            input.onchange = e => model.H = parseFloat(input.value)
-
-            var spacer = document.createElement("div")
-            spacer.innerHTML = "&nbsp;"//model.unitH
-            spacer.className = "header-spacer"
-
-            header.appendChild(spacer)
-            header.appendChild(label)
-            header.appendChild(input)
-
-        }
-            
-        
-        details.appendChild(header)
-        
-        model.canvas = document.createElement("canvas")
-        model.canvas.onclick = () => {
-            if (model.running || model.ran) {
-                resetModel(model)
-            }
-            else {
-                runModel(model)
-            }
-        }
-        details.appendChild(model.canvas)
-        details.appendChild(document.createElement("br"))
-
-        model.ctx = model.canvas.getContext("2d")
-        model.nextTarget = 0
-
-        model.canvas.width = 700
-        model.canvas.height = 30
-        
-        // make a target every 200 million light years until 20 billion
-        model.targets = []
-        for (var i = 100; i <= 200000; i+=100) {
-            model.targets.push({label: i/1000, start: i, x: i})
-        //for (var sn of snData) {
-        //    model.targets.push({label: sn.d/1000, start: sn.d, x: sn.d})
-        }
-
-        model.ctx.lineWidth = 1
-        draw(model.ctx, model)
-
-        models.push(model)
-    }
-
-    function stopModel(model) {
-        clearInterval(model.handle)
-
-        model.running = false
-        model.ran = true
-    }
-
-    function resetModel(model) {
-        
-        stopModel(model)
     
-        model.ran = false
-        model.photon.x = 0
-        model.photon.f_start = startFreqInput.value || model.photon.f_start || 6e5 
-        model.photon.f = model.photon.f_start
-        model.photon.w = 299792458 / model.photon.f
-        model.photon.dx = c
-        model.nextTarget = 0
-        model.targets.forEach(target => {
-            target.x = target.start
-            target.hit = 0
-        })
-    
-        model.t = 0
-
-        draw(model.ctx, model)
-    }
-
-    function draw(ctx, exp) {
-
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-        for (var i = 0; i < exp.targets.length; i++) {
-            ctx.strokeStyle = exp.targets[i].hit ? exp.color : "#888888"
-            ctx.beginPath()
-            ctx.moveTo(exp.targets[i].x * zoom, 0)
-            ctx.lineTo(exp.targets[i].x * zoom, ctx.canvas.height)
-            //ctx.fillText(exp.targets[i].label, exp.targets[i].x * zoom + 2, 20)
-
-            if (exp.targets[i].hit) {
-                //ctx.fillText(Math.trunc(exp.targets[i].x / 10) / 100, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-                //ctx.fillText(exp.targets[i].hit, exp.targets[i].x * zoom + 2, ctx.canvas.height - 10)
-            }
-
-            ctx.stroke()
-        }
-
-        ctx.fillStyle = "yellow"
-        ctx.fillRect(exp.photon.x * zoom, ctx.canvas.height / 2, 5, 5)
-    }
-
-    function runModel(model) {
-        
-        resetModel(model)
-        
-        model.running = true
-
-        var findT = document.getElementById("find-t").value
-        var findD = document.getElementById("find-d").value
-        var findZ = document.getElementById("find-z").value
-        var findV = document.getElementById("find-v").value
-        var findTarget = document.getElementById("find-target").value
-        
-        var nextSN = 0
-
-        var x, x2, dx, dx2
-        var i
-        var batch = 100
-        model.handle = setInterval(function () {
-            for (i = 0; i < batch; i++) {
-                if (model.targets[model.nextTarget]) {//&& model.t < 80000) {
-                    model.t++
-                    x = model.photon.x
-                    x2 = model.targets[model.nextTarget].x
-                    
-                    model.next()
-
-                    while (snData[nextSN] && snData[nextSN].d <= model.photon.x) {
-                        //snData[nextSN].t = model.t
-                        nextSN++
-                    }
-
-                    dx = model.photon.x - x
-                    dx2 = model.targets[model.nextTarget].x - x2
-
-                    var z = (model.photon.f_start - model.photon.f) / model.photon.f
-                    if (model.expanding) {
-                        //dx2 = dx2 - (dx - 1)
-                        z = Math.sqrt((1 + dx2) / (1 - dx2)) - 1
-                    }
-                    model.photon.z = z
-                    
-                    if (findT && fintdT === "all") {
-                        output(model, model.photon)
-                    }
-                    else if (findT && model.t >= findT) {
-                        output(model, model.photon)
-                        findT = 0
-                    }
-                    if (findZ && z >= findZ) {
-                        output(model, model.photon)
-                        findZ = 0
-                    }
-                    if (findD && findD === "all") {
-                        output(model, model.photon)
-                    }
-                    else if (findD && model.photon.x >= findD) {
-                        output(model, model.photon)
-                        findD = 0
-                    }
-                    if (findV && model.photon.dx >= findV) {
-                        output(model, model.photon)
-                        console.log(model.targets[model.nextTarget-1].dx)
-                        findV = 0
-                    }
-                    while (model.targets[model.nextTarget] && model.targets[model.nextTarget].x <= model.photon.x) {
-                        
-                        if (findTarget && findTarget === "all") {
-                            output(model, model.photon)
-                        }
-                        else if (findTarget && model.targets[model.nextTarget].start >= findTarget) {
-                            output(model, model.photon)
-                            findTarget = 0
-                        }
-
-                        //snData[model.nextTarget].t = model.t
-
-                        model.targets[model.nextTarget].hit = model.t
-                        model.targets[model.nextTarget].hitX = model.targets[model.nextTarget].x
-                        
-
-                        model.targets[model.nextTarget].z = z
-                        model.targets[model.nextTarget].dx = model.expanding ? 
-                            (model.targets[model.nextTarget].x - x2) :
-                            (1 - (model.photon.x - x))
-                        //console.log(model.targets[model.nextTarget].z, model.targets[model.nextTarget].dx)
-                        
-                        model.nextTarget++
-                    }
-                }
-                else {
-                    clearInterval(model.handle)
-                    model.running = false
-                    model.ran = true
-                }
-            }
-        }, 0)
-    }
-
-    function setupModels() {
-        setupModel({
-            div: document.getElementById("staticModel"),
-            name: "Static",
-            color: "darkblue", 
-            photon: {x: 0},
-            next: function () {
-                this.photon.x += c
-            }
-        })
-
-        setupModel({
-            name: "v<sub>target</sub> = H &times; proper, v<sub>light</sub> = c + H &times; x",
-            label: "expand",
-            color: "lightgreen", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            next: function () {
-                this.photon.dx = c + this.photon.x * this.H / 1000
-                this.photon.x += this.photon.dx
-                this.photon.w = (this.photon.dx * 299792458 / this.photon.f_start) 
-                this.photon.f = 299792458 / this.photon.w
-        
-                //this.photon.x += c + this.photon.x * this.H / 1000
-                for (var i = 0; i < this.targets.length; i++) {
-                    this.targets[i].x += this.targets[i].x * this.H / 1000
-                }
-            }
-        })
-
-
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "v<sub>light</sub> = c - H &times; D",
-            label: "v=c-HD",
-            color: "green", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-            next: function () {
-                this.photon.dx = c - this.H / 1000 * this.photon.x
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-
-        details.appendChild(document.createElement("hr"))
-        
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "v<sub>light</sub> = c - H &times; t",
-            color: "green", 
-            H: 0.0756,
-            unitH: "ly/y/Mly",
-            //photon: {x: 0, dx: c},
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            next: function () {
-                this.photon.dx = c - this.H / 1000 * this.t
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + H &times; D)",
-            color: "magenta", 
-            H: 0.0756,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / (1 + this.H / 1000 * this.photon.x)
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
-            color: "white", 
-            H: 0.0378,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / Math.pow(1 + this.H / 1000 * this.photon.x, 2)
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + H &times; D)<sup>2</sup>",
-            color: "red", 
-            H: 0.15,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / Math.pow(1 + this.photon.x / 25000, 2)
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + (H &times; D)<sup>2</sup>)",
-            color: "orange", 
-            H: 0.26,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / (1 + Math.pow(this.H / 1000 * this.photon.x, 2))
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + H &times; t)",
-            color: "yellow", 
-            H: 0.0826,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / (1 + Math.pow(this.H / 1000 * this.t, 2))
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / (1 + H &times; t)<sup>2</sup>",
-            color: "pink", 
-            H: 0.0826,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c /  Math.pow(1 + this.H / 1000 * this.t, 2)
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / sqrt(1 + (H &times; D)<sup>2</sup>)",
-            color: "orange", 
-            H: 0.26,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / Math.sqrt(1 + Math.pow(this.H / 1000 * this.photon.x, 2))
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("redshift2"),
-            name: "v<sub>light</sub> = c / sqrt(1 + H &times; D<sup>2</sup>)",
-            color: "orange", 
-            H: 0.26,
-            unitH: "Gly<sup>-1</sup>",
-            photon: {x: 0, dx: c},
-            next: function () {
-                this.photon.dx = c / Math.sqrt(1 + this.H / 1000 * Math.pow(this.photon.x, 2))
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-
-        const c0 = 299792458
-        // episolon naught is 8.8541878128e-12 in m
-        // convert 
-        const e0 = 8.8541878128e-12
-        const e0n = e0 * c0 //0.0026543905761357367
-
-        // 1.25663706212e-6 H/m
-        const mu0 = 1.25663706212e-6
-        const mu0n = mu0 * c0 //376.7343091821102
-
-        1 / Math.sqrt(e0n * mu0n)
-
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "v<sub>light</sub> = 1 / sqrt((e0+HT) * mu0)",
-            label: "e0mu0",
-            color: "white", 
-            H: 0.14,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-            next: function () {
-                this.photon.dx = 1 / Math.sqrt(
-                    (e0 + this.H/1e14 * this.t) * 
-                    mu0) / c0 
-
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "v<sub>light</sub> = 1 / sqrt((e0+HX) * mu0)",
-            label: "e0mu0",
-            color: "red", 
-            H: 0.13,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-            next: function () {
-                this.photon.dx = 1 / Math.sqrt(
-                    (e0 + this.H/1e14 * this.photon.x) * 
-                    mu0) / c0 
-
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-        setupModel({
-            div: document.getElementById("redshift1"),
-            name: "v<sub>light</sub> = 1 / sqrt(e0+HX * mu0+HX)",
-            label: "e0mu0",
-            color: "white", 
-            H: 0.183,
-            unitH: "ly/y/Mly",
-            photon: {x: 0, dx: c, f: 6e5, w: 500.6, f_start: 6e5},
-            //photon: {x: 0, dx: c, f: 1, w: 299792458, f_start: 1},
-            next: function () {
-                this.photon.dx = 1 / Math.sqrt(
-                    e0 * 
-                    (mu0 + this.H/1e9 * this.photon.x)) / c0 
-
-                this.photon.x += this.photon.dx //c - this.H / 1000 * this.photon.x
-                this.photon.f = (this.photon.dx * 299792458 / this.photon.w) 
-            }
-        })
-
-
-    }
-
-    setInterval(() => {
-        for (var m = 0; m < models.length; m++) {
-            if (models[m].running) {
-                draw(models[m].ctx, models[m]) 
-            }
-        }
-
-        drawGraph()
-    }, 1000 / 60)
 
 document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
 document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
@@ -963,13 +348,151 @@ yAxis.onchange = e => drawSN()
 xAxis.onchange = e => drawSN()
 drawHypothesis.onchange = e => drawSN()
 
-setTimeout(() => {
-    //models.forEach(model => runModel(model))
-}, 500)
 
-setTimeout(() => {
-    //models.forEach(model => stopModel(model))
-}, 10000)
+
+
+function fun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function simpson(x0, x2) {
+        h = (x2 - x0) / 2.
+        x1 = x0 + h
+        igr = h * (fun(x0, Omega_M, Omega_L, Omega_k) + 4. * fun(x1, Omega_M, Omega_L, Omega_k) + fun(x2, Omega_M, Omega_L, Omega_k)) / 3.
+        return igr
+    };
+
+    function sumint(z1) {
+        integrale = 0, zone = 1, deltaz = 0.001
+        while (zone <= (z1 - deltaz)) {
+            zini = zone
+            zfin = zone + deltaz
+            integrale += simpson(zini, zfin);
+            zone += deltaz
+        }
+        return integrale
+    };
+
+    // -------------------------------------------- 
+
+
+    function lookfun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = v1 * Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function timeint(z1start, z1end) {
+        s = 0, a = z1start, b = z1end
+        s = 0.5 * (b - a) * (lookfun(a, Omega_M, Omega_L, Omega_k) + lookfun(b, Omega_M, Omega_L, Omega_k))
+        n = 2
+        while (n <= 11) {
+            n2 = n - 2
+            it = Math.pow(2, n2)
+            tnm = it
+            del = (b - a) / tnm
+            x = a + 0.5 * del
+            sum = 0.
+            j = 1
+            while (j <= it) {
+                sum = sum + lookfun(x, Omega_M, Omega_L, Omega_k)
+                x = x + del
+                j += 1
+            }
+            s = 0.5 * (s + (b - a) * sum / tnm)
+            n += 1
+        }
+        return s
+    };
+
+    // --------------------------------------------
+
+    function sinh(x) {
+        s = (Math.exp(x) - Math.exp(-x)) / 2.
+        return s
+    };
+
+    var OmegaMinput = document.getElementById("Omega_M")
+    var OmegaLinput = document.getElementById("Omega_L")    
+    var H0input = document.getElementById("H0")    
+    var Omega_L, Omega_M, H0, Omega_k
+    OmegaMinput.onchange = e => drawSN()
+    OmegaLinput.onchange = e => drawSN()
+    H0input.onchange = e => drawSN()
+
+    function zToD(z) {
+        // From redshift to distance
+        Omega_L = OmegaLinput.value * 1
+        Omega_M = OmegaMinput.value * 1
+        H0 = H0input.value * 1
+        
+
+        z1 = 1. + z;
+        h = H0 / 100.;
+        Tnorm = 9.77810945 / h;
+        cvel = 299792.458
+        ch0 = cvel / H0;
+        pig = 3.1415926536;
+        rad = pig / 180.;
+        q0 = Omega_M / 2. - Omega_L;
+        Omega_k = 1. - Omega_M - Omega_L;
+
+        age = (timeint(1., 50.)) * Tnorm;
+
+        if (Omega_L > 0. && Omega_k == 0.) {
+            DC = ch0 * sumint(z1);
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k < 0.) {
+            curv = Math.sqrt(-Omega_k)
+            r = sumint(z1);
+            DC = ch0 * Math.sin(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k > 0.) {
+            curv = Math.sqrt(Omega_k)
+            r = sumint(z1);
+            DC = ch0 * sinh(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L == 0. && q0 > 0) {
+            q0sq = q0 * q0
+            a = 1. - q0 + q0 * z + (q0 - 1.) * (Math.sqrt(2. * q0 * z + 1.))
+            DL = ch0 * a / q0sq
+            DC = DL / z1
+        }
+        if (Omega_L == 0. && q0 == 0) {
+            DL = ch0 * z * (1. + z / 2.)
+            DC = DL / z1
+        }
+        // Lookback time
+        lookback = timeint(1., z1) * Tnorm
+        // Angular distance
+        DA = DL / (z1 * z1)
+        // Lunghezza in primi corrispondente a 1 Mpc.
+        angle = (60. / rad) * z1 * z1 / DL;
+        // Length in Mpc corresponding to 1 degree on the sky
+        R = rad * DL / (z1 * z1);
+
+        // Display result in the form.
+        /*
+        form.q0.value = q0.toFixed(2);
+        form.Omega_k.value = Omega_k.toFixed(2);
+        form.dlum.value = DL.toFixed(1);
+        form.dcom.value = DC.toFixed(1);
+        form.dang.value = DA.toFixed(1);
+        form.lsep.value = R.toFixed(1);
+        form.asep.value = angle.toFixed(1);
+        form.look.value = lookback.toFixed(1);
+        form.age.value = age.toFixed(1);
+        */
+       return DC
+    }
+
 
     
 </script>
