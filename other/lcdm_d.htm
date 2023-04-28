@@ -68,7 +68,7 @@
             data.push({z: i})
         }
 
-        var zoomY = 50
+        var zoomY = 35
 
 		var t = 0
 		var dz = []
@@ -79,9 +79,38 @@
 		   dz.push({z: z, d, t: t})
 		}
 
+        var calculateDistances = function () {
+            for (var i=0; i<snData.length; i++) {
+                // distance modulus to parsec luminosity distance
+                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5)) //- extinctionInput.value)) 
 
-        drawCanvas()
+                // convert to comoving distance
+                //d = ld / (1+z)
+                var d = ld / (1+(1*snData[i].z))
 
+                // parsec to light years
+                d = d * 3.261564
+                ld = ld * 3.261564
+
+                // ly to Mly
+                snData[i].d = d / 1000000
+                snData[i].ld = ld / 1000000
+            }            
+        }
+
+
+        var snData = []
+        fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
+
+            var lines = text.split("\n")
+            for (var i = 1; i < lines.length; i++) {
+                var line = lines[i].split(",")
+                snData.push({"dm": line[2], "z": line[0]})
+            }
+            calculateDistances()
+            drawCanvas()
+        })
+    
 		
         function drawCanvas() {
             console.log("drawing")
@@ -93,7 +122,7 @@
 
             
             var im = 0
-            const drawLCDM = (dash, lineWidth) => {
+            const drawLCDM = (mode, dash, lineWidth) => {
 
                 var ds
                 data.forEach(dp => {
@@ -104,47 +133,53 @@
                 })
 
 
-                ctx.beginPath()
-                ctx.lineWidth = lineWidth
-                ctx.strokeStyle = "black"
-                ctx.setLineDash([]) //[10, 20])
-                ctx.moveTo(0, h)
-                data.forEach(dp => {
-                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC  / zoomY)
-                })
-                //ctx.globalAlpha = 0.4
-                ctx.stroke()
+                if (mode == 0) {
+                    ctx.beginPath()
+                    ctx.lineWidth = lineWidth
+                    ctx.strokeStyle = "black"
+                    ctx.setLineDash([]) //[10, 20])
+                    ctx.moveTo(0, h)
+                    data.forEach(dp => {
+                        ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC  / zoomY)
+                    })
+                    //ctx.globalAlpha = 0.4
+                    ctx.stroke()
 
-                drawLegend(true)
+                    drawLegend(true)
+                }
 
-                ctx.beginPath()
-                ctx.lineWidth = lineWidth
-                ctx.strokeStyle = "black"
-                ctx.setLineDash([20, 10])
-                ctx.moveTo(0, h)
+                if (mode == 1) {
+                    ctx.beginPath()
+                    ctx.lineWidth = lineWidth
+                    ctx.strokeStyle = "black"
+                    ctx.setLineDash([20, 10])
+                    ctx.moveTo(0, h)
 
-                data.forEach(dp => {
-                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback / zoomY)
-                })
-                //ctx.globalAlpha = 0.4
-                ctx.stroke()
+                    data.forEach(dp => {
+                        ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback / zoomY)
+                    })
+                    //ctx.globalAlpha = 0.4
+                    ctx.stroke()
 
-                drawLegend(true)
+                    drawLegend(true)
+                }
 
-                ctx.beginPath()
-                ctx.lineWidth = lineWidth
-                ctx.strokeStyle = "black"
-                ctx.setLineDash([5, 10])
-                ctx.moveTo(0, h)
+                if (mode == 2) {
+                    ctx.beginPath()
+                    ctx.lineWidth = lineWidth
+                    ctx.strokeStyle = "black"
+                    ctx.setLineDash([5, 10])
+                    ctx.moveTo(0, h)
 
-                data.forEach(dp => {
-                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC / (1 + dp.z) / zoomY)
-                })
-                //ctx.globalAlpha = 0.4
-                ctx.stroke()
-                
+                    data.forEach(dp => {
+                        ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC / (1 + dp.z) / zoomY)
+                    })
+                    //ctx.globalAlpha = 0.4
+                    ctx.stroke()
+                    
 
-                drawLegend(true)
+                    drawLegend(true)
+                }
 
             }
 
@@ -161,73 +196,14 @@
             ctx.globalAlpha = 1
             ctx.lineWidth = 2
 			var ztest
-            
-            /*
-            ctx.strokeStyle = "red"
-            ctx.setLineDash([])
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-
-                
-            data.forEach(dp => {
-                ztest = dp.z * c / H0h * pc2ly / 1000
-                ctx.lineTo(w * dp.z / maxZ, h - h * ztest / zoomY)
-                dp.error = ztest / dp.lookback
-            })
-            ctx.stroke()
-
-            drawLegend()
-
-            ctx.strokeStyle = "blue"
-            ctx.setLineDash([])
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-
-			var dltt = 0
-            
-            var ztest
-            data.forEach(dp => {
-                ztest = -(1 / (1 + dp.z) - 1) * c / H0h * pc2ly / 1000
-                dp.demit = ztest
-                ctx.lineTo(w * dp.z / maxZ, h - h * ztest / zoomY)
-                dp.error = ztest / dp.lookback
-                dp.dltt = dltt
-                dltt += 1 - 0.0756 * ztest 
-            })
-            ctx.stroke()
-
-            drawLegend()
-
-            ctx.strokeStyle = "green"
-            ctx.setLineDash([])
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-            
-            data.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.dltt * 0.132 / zoomY)
-            })
-            ctx.stroke()
-
-            drawLegend()
-            */
-
-			/*ctx.strokeStyle = "orange"
-            ctx.setLineDash([20,20])
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-            
-            dz.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.t/100 / zoomY)
-            })
-            ctx.stroke()*/
 
             Omega_M = 0.32 
             Omega_L = 0.68
-            drawLCDM([3, 3], 4)
+            drawLCDM(0, [3, 3], 4)
             
             Omega_M = 0 
             Omega_L = 1
-            drawLCDM([5, 15], 4)
+            drawLCDM(1, [5, 15], 4)
             
             Omega_M = 0 
             Omega_L = 0
@@ -238,6 +214,12 @@
             ctx.font = "18px sans-serif"
         
             ctx.fillText("z", w - 10, h - 2)
+
+            ctx.fillStyle = "red"
+            var x, y
+            for (var sn of snData) {
+                ctx.fillRect(w * sn.z / maxZ, h - h * sn.d / 1000 / zoomY, 2, 2)
+            }
 
             ctx.globalAlpha = 1
             ctx.fillStyle = "black"

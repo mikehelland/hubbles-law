@@ -65,8 +65,8 @@
 
             #hypothesiseq {
                 position: absolute;
-                left: 420px;
-                top: 460px;
+                left: 480px;
+                top: 425px;
             }
         </style>
     </head>
@@ -148,7 +148,10 @@
 </div>
 
 
-<div id="hypothesiseq">\[  d = \frac{c}{H_{0}} log(1 + z)  \]</div>
+<div id="hypothesiseq">
+    \[  d = \frac{c}{H_{0}} log(1 + z)  \]
+    \[  H_{0} = 70~km~s^{-1}~Mpc^{-1}  \]
+</div>
 
 
 <script>
@@ -958,7 +961,7 @@ var yAxis = document.getElementById("graph-y-axis")
 var xAxis = document.getElementById("graph-x-axis")
 yAxis.onchange = e => drawSN()
 xAxis.onchange = e => drawSN()
-
+drawHypothesis.onchange = e => drawSN()
 
 setTimeout(() => {
     //models.forEach(model => runModel(model))
