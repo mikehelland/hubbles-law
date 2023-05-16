@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #right-side {
+                left: 730px;
+                top: 20px;
+                position: absolute;
+            
+            }
+            /*#graph {
+                height:400px;
+                width: 800px;
+            }*/
+            .model-label {
+                margin: 4px 0;
+                
+                
+            }
+
+            hr {
+                opacity: 0.1;
+                margin:18px;
+            }
+
+            input {
+                width: 80px;
+            }
+
+            .model-units {
+                columns: #444444;
+                font-size: 12px;
+                padding-left:4px;
+            }
+
+            #details, #notes {
+                width:700px;
+            }
+            #notes {
+                margin-left: 20px;
+            }
+
+            .model-header {
+                padding:4px;
+                display:flex;
+                align-items: center;
+            }
+            .header-spacer {
+                flex-grow: 1
+            }
+
+            td, th {
+                padding:4px 20px;
+            }
+
+            #graphLB, #graphLF, #graphRB, #graphRF {
+                height: 800px;
+                width:500px;
+                position: absolute;
+                top:0;
+                left:0;
+                
+            }
+
+            #left, #right {
+                height: 800px;
+                width:500px;
+                position: relative;
+                display: inline-block;
+            }
+        </style>
+    </head>
+<body>
+<br>
+    <div id="left">
+        <canvas id="graphLB" height="800" width="500"></canvas>
+        <canvas id="graphLF" height="800" width="500"></canvas>
+    </div>
+    <div id="right">
+        <canvas id="graphRB" height="800" width="500"></canvas>
+        <canvas id="graphRF" height="800" width="500"></canvas>
+    </div>
+    
+  
+</div>
+
+<div id="right-side">
+<script>
+var black = true
+
+    var graph = document.getElementById("graphLB")
+    var ctxG = graph.getContext("2d")
+    var graphF = document.getElementById("graphLF")
+    var ctxF = graphF.getContext("2d")
+    var graph2 = document.getElementById("graphRB")
+    var ctxG2 = graph2.getContext("2d")
+    var graphF2 = document.getElementById("graphRF")
+    var ctxF2 = graphF2.getContext("2d")
+    var models = []
+
+    
+    var c = 1
+
+    var zoom = 0.055
+    var zoom_gx = 0.95 * 0.5
+    var zoom_gy = 0.95 * 0.5
+    var zoomG = zoom * zoom_gx
+    var zoomGY = zoom * zoom_gy
+    var offset = 20
+    var offsetX = 20//400
+
+    var dgn
+    
+    var zoomz = 10000
+
+    var dz = []
+    var t = 0
+    for (let d = 0; d<=13000; d+=10) {
+        t += 1/(1 - 0.0000756 * d) 
+        z = (0.0000756 * d) / (1 - 0.0000756 * d)
+        
+        dz.push({z: z, d, t: t})
+    }
+
+    var photons = []
+
+
+    const H = 0.0000756
+
+    var drawx, drawy, dgt, dgm, dgi
+    function drawGraph(ctxG) {
+        
+        ctxG.lineWidth = 1
+        ctxG.fillStyle = black ? "black" : "white"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.strokeStyle = !black ? "black" : "white"
+        ctxG.strokeRect(offset, offset, graph.width, graph.height)
+        
+        ctxG.strokeStyle = "#444444"
+        ctxG.fillStyle = "white"
+        
+        
+        for (var y = 0; y < 100000; y+=1000) {
+            ctxG.strokeStyle = "#444444"
+            ctxG.beginPath()
+            ctxG.moveTo(offset, offset + y * zoomGY)
+            ctxG.lineTo(graph.width, offset + y * zoomGY)
+            ctxG.stroke()
+
+            if (y % 5000 == 0)
+                ctxG.fillText(y / 1000, 4, offset + y * zoomGY + 4)    
+        
+        }
+        
+        
+        ctxG.strokeStyle = "#444444"
+        var dgn = 1
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            
+            for (var x = 0; x < 100000; x+=1000) {
+                ctxG.beginPath()
+                ctxG.moveTo(offsetX + x * zoomG * dgn, offset)
+                ctxG.lineTo(offsetX + x * zoomG * dgn, graph.height)
+                //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
+                ctxG.stroke()
+            }
+        //}
+
+
+        
+        ctxG.font = "14px sans-serif"
+        
+        ctxG.fillStyle = !black ? "black" : "white"
+        ctxG.textAlign = "right"
+        ctxG.fillText("Distance", graph.width - 4,  36)
+        ctxG.textAlign = "left"
+        ctxG.fillText("Time", offset + 5, graph.height - 10)
+        
+        ctxG.font = "10px sans-serif"
+        for (dgi = -50; dgi < 50; dgi+=2) {
+            ctxG.fillText(dgi, offsetX + dgi * 1000 * zoomG - 3, offset)    
+        }
+        
+    }
+
+    function drawPhotons() {
+        graphF.width = graphF.width
+        ctxF.lineWidth = 2
+     
+        ctxF.fillStyle = "red"
+        ctxF.strokeStyle = "red"
+        photons.forEach(photon => {
+            ctxF.beginPath()
+            ctxF.arc(offsetX, offset + photon.t * zoomGY, 4, 0, 2 * Math.PI)
+            ctxF.fill()
+
+            ctxF.beginPath()
+            ctxF.moveTo(offsetX, offset + photon.t * zoomGY)
+            ctxF.lineTo(offsetX + photon.t * zoomG, offset)
+            ctxF.stroke()
+        })
+
+        ctxF.lineWidth = 4
+        ctxF.strokeStyle = "yellow"
+        ctxF.fillStyle = "yellow"
+        for (var y = 0; y < 100000; y+=1000) {
+                
+                basis = y - (1000 / (-Math.log(-y * H + 1) * 1/H)) * 1000 
+                ctxF.beginPath()
+                ctxF.moveTo(offsetX + 9000 * zoomG, offset + y * zoomGY)
+                ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY)
+                ctxF.stroke()
+
+                ctxF.beginPath()
+                ctxF.moveTo(offsetX + 9000 * zoomG - 10, offset + basis * zoomGY)
+                ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY - 3)
+                ctxF.lineTo(offsetX + 9000 * zoomG + 10, offset + basis * zoomGY)
+                ctxF.closePath()
+                ctxF.fill()
+                
+            }
+    
+    }
+
+    function drawPhotons2() {
+        graphF2.width = graphF2.width
+        ctxF2.lineWidth = 2
+ 
+        ctxF2.fillStyle = "red"
+        ctxF2.strokeStyle = "red"
+        var tt
+        photons.forEach(photon => {
+            tt = -Math.log(-photon.t * H + 1) * 1/H
+            ctxF2.beginPath()
+            ctxF2.arc(offsetX, offset + tt * zoomGY, 4, 0, 2 * Math.PI)
+            ctxF2.fill()
+
+            if (!isNaN(tt)) {
+                ctxF2.beginPath()
+                ctxF2.moveTo(offsetX, offset + tt * zoomGY)
+                for (var it = -photon.t; it < 0; it += 10) {
+                    tt = -Math.log(it * H + 1) * 1/H
+                    if (isNaN(tt)) {
+                        break;
+                    }
+                    ctxF2.lineTo(offsetX + (photon.t + it) * zoomG, offset + tt * zoomGY)
+                }
+                ctxF2.stroke()
+            }
+            
+        })
+
+    }
+
+    var t = 0
+    var speed = 10
+    
+    var intervalHandle
+    
+    setTimeout(() => {
+
+        intervalHandle = setInterval(() => {
+
+            photons.forEach(photon => {
+                photon.t += speed
+            
+            })
+
+            if (t % 100 == 0) { 
+                photons.push({t: 0})
+            }
+            t++
+
+
+            drawPhotons()
+            drawPhotons2()
+        }, 1000 / 180)
+
+    }, 500)
+    drawGraph(ctxG)
+    drawGraph(ctxG2)
+    drawPhotons()
+
+/*
+ctxG.lineWidth = 2
+
+        ctxG.strokeStyle = "blue"
+        
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            ctxG.beginPath()
+            ctxG.moveTo(offsetX, offset)
+            ctxG.lineTo(offsetX + dgn * 50e8 * zoomG, offset + 50e8 * zoomGY)
+            ctxG.stroke()
+        //}
+
+        ctxG.strokeStyle = "red"
+        
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            ctxG.beginPath()
+            ctxG.moveTo(offsetX, offset)
+            
+            dz.forEach(dp => {
+                ctxG.lineTo(offsetX + dgn * dp.d * zoomG, offset + dp.t*10 * zoomGY)
+            })
+            ctxG.stroke()
+        //}
+
+        ctxG.fillStyle = "white"
+        for (var ii = 0; ii < 25000; ii+=1000) {
+            ctxG.fillRect(offsetX + ii * zoomG - 1, offset + ii * zoomGY - 1, 2, 2)        
+        }
+
+        ctxG.fillStyle = "yellow"
+        ctxG.strokeStyle = "yellow"
+        ctxG.lineWidth = 1
+        
+        dz.forEach(dp => {
+            if (dp.d % 1000 == 0) {
+                ctxG.fillRect(offsetX + dp.d * zoomG - 1, offset + dp.t*10 * zoomGY - 1, 2, 2)
+                //console.log(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+
+                ctxG.beginPath()
+                ctxG.moveTo(offsetX + dp.d * zoomG, offset + dp.d * zoomGY)
+                ctxG.lineTo(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+                ctxG.stroke()
+            }
+        })
+        
+*/
+
+</script>
+
