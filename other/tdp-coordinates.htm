@@ -207,21 +207,22 @@ var black = true
         ctxF.lineWidth = 4
         ctxF.strokeStyle = "yellow"
         ctxF.fillStyle = "yellow"
+        
         for (var y = 0; y < 100000; y+=1000) {
                 
-                basis = y - (1000 / (-Math.log(-y * H + 1) * 1/H)) * 1000 
-                ctxF.beginPath()
-                ctxF.moveTo(offsetX + 9000 * zoomG, offset + y * zoomGY)
-                ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY)
-                ctxF.stroke()
+            basis = y - (1000 / (-Math.log(-y * H + 1) * 1/H)) * 1000 
+            ctxF.beginPath()
+            ctxF.moveTo(offsetX + 9000 * zoomG, offset + y * zoomGY)
+            ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY)
+            ctxF.stroke()
 
-                ctxF.beginPath()
-                ctxF.moveTo(offsetX + 9000 * zoomG - 10, offset + basis * zoomGY)
-                ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY - 3)
-                ctxF.lineTo(offsetX + 9000 * zoomG + 10, offset + basis * zoomGY)
-                ctxF.closePath()
-                ctxF.fill()
-                
+            ctxF.beginPath()
+            ctxF.moveTo(offsetX + 9000 * zoomG - 10, offset + basis * zoomGY)
+            ctxF.lineTo(offsetX + 9000 * zoomG, offset + basis * zoomGY - 3)
+            ctxF.lineTo(offsetX + 9000 * zoomG + 10, offset + basis * zoomGY)
+            ctxF.closePath()
+            ctxF.fill()
+            
             }
     
     }

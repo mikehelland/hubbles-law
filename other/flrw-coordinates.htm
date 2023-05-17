@@ -57,8 +57,8 @@
             }
 
             #graphLB, #graphLF, #graphRB, #graphRF {
-                height: 400px;
-                width:800px;
+                height: 800px;
+                width:400px;
                 position: absolute;
                 top:0;
                 left:0;
@@ -66,8 +66,8 @@
             }
 
             #left, #right {
-                height: 400px;
-                width:800px;
+                height: 800px;
+                width:400px;
                 position: relative;
                 display: inline-block;
             }
@@ -76,12 +76,12 @@
 <body>
 <br>
     <div id="left">
-        <canvas id="graphLB" height="400" width="800"></canvas>
-        <canvas id="graphLF" height="400" width="800"></canvas>
+        <canvas id="graphLB" height="800" width="400"></canvas>
+        <canvas id="graphLF" height="800" width="400"></canvas>
     </div>
     <div id="right">
-        <canvas id="graphRB" height="400" width="800"></canvas>
-        <canvas id="graphRF" height="400" width="800"></canvas>
+        <canvas id="graphRB" height="800" width="400"></canvas>
+        <canvas id="graphRF" height="800" width="400"></canvas>
     </div>
     
     <br>
@@ -204,6 +204,27 @@ var black = true
             ctxF.stroke()
         })
 
+        ctxF.lineWidth = 4
+        ctxF.strokeStyle = "yellow"
+        ctxF.fillStyle = "yellow"
+        for (var y = 0; y < 100000; y+=1000) {
+            
+            basis = 1 / Math.exp(H * -y) * 1000 //(1000 / (-Math.log(-y * H + 1) * 1/H)) * 1000 
+            //console.log((-Math.log(-y * H + 1) * 1/H), basis)
+            ctxF.beginPath()
+            ctxF.moveTo(offsetX + 7000 * zoomG, offset + y * zoomGY)
+            ctxF.lineTo(offsetX + (7000 + basis) * zoomG, offset + y * zoomGY)
+            ctxF.stroke()
+
+            ctxF.beginPath()
+            ctxF.moveTo(offsetX + (7000 + basis) * zoomG - 3, offset + y * zoomGY - 10)
+            ctxF.lineTo(offsetX + (7000 + basis) * zoomG + 3, offset + y * zoomGY)
+            ctxF.lineTo(offsetX + (7000 + basis) * zoomG - 3, offset + y * zoomGY + 10)
+            ctxF.closePath()
+            ctxF.fill()
+
+        }
+
     }
 
     const H = 0.0000756
@@ -216,30 +237,25 @@ var black = true
         ctxF2.fillStyle = "red"
         ctxF2.strokeStyle = "red"
         var tt
+        var d = 0
         photons.forEach(photon => {
-            tt = -Math.log(-photon.t * H + 1) * 1/H
             ctxF2.beginPath()
             ctxF2.arc(offsetX, offset + photon.t * zoomGY, 4, 0, 2 * Math.PI)
             ctxF2.fill()
 
-            if (!isNaN(tt)) {
-                console.log("begin")
-                ctxF2.beginPath()
-                ctxF2.moveTo(offsetX, offset + photon.t * zoomGY)
-                if (log) console.log(offsetX, offset + photon.t * zoomGY)
+            ctxF2.beginPath()
+            ctxF2.moveTo(offsetX, offset + photon.t * zoomGY)
+
+            d = 0
+            for (var it = -photon.t; it < 0; it += 10) {
+                basis = Math.exp(H * -it) //1 / (-Math.log(-it * H + 1) * 1/H)
+                d += 10 / basis 
                 
-                for (var it = 0; it < photon.t; it += 10) {
-                    tt = -Math.log(-it * H + 1) * 1/H
-                    if (isNaN(tt)) {
-                        break;
-                    }
-                    ctxF2.lineTo(offsetX + tt * zoomG, offset + (photon.t - it) * zoomGY)
-                    if (log)
-                        console.log(offsetX - tt * zoomG, offset + (photon.t - it) * zoomGY)
-                }
-                ctxF2.stroke()
+                ctxF2.lineTo(offsetX + d * zoomG, offset - it * zoomGY)
+                
             }
-            
+            ctxF2.stroke()
+        
         })
 
     }
@@ -273,12 +289,11 @@ var black = true
     drawGraph(ctxG)
     drawGraph(ctxG2)
 
-document.getElementById("graph-zoom-x").onchange = e => {zoomG = zoom * zoom_gx * e.target.value}
-document.getElementById("graph-zoom-y").onchange = e => {zoomGY = zoom * zoom_gy * e.target.value}
-
-var yAxis = document.getElementById("graph-y-axis")
-var xAxis = document.getElementById("graph-x-axis")
-
+document.onkeypress = e => {
+    if (e.key == " ") {
+        clearInterval(intervalHandle)
+    }
+}
 /*
 ctxG.lineWidth = 2
 
