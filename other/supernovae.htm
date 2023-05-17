@@ -4,12 +4,6 @@
             body {
                 font-family: Arial, Helvetica, sans-serif;
             }
-            #right-side {
-                left: 730px;
-                top: 20px;
-                position: absolute;
-            
-            }
             #graphs {
                 height:400px;
                 width: 700px;
@@ -22,11 +16,6 @@
                 height:400px;
                 width: 700px;
             }
-            .model-label {
-                margin: 4px 0;
-                
-                
-            }
 
             hr {
                 opacity: 0.1;
@@ -37,27 +26,6 @@
                 width: 80px;
             }
 
-            .model-units {
-                columns: #444444;
-                font-size: 12px;
-                padding-left:4px;
-            }
-
-            #details, #notes {
-                width:700px;
-            }
-            #notes {
-                margin-left: 20px;
-            }
-
-            .model-header {
-                padding:4px;
-                display:flex;
-                align-items: center;
-            }
-            .header-spacer {
-                flex-grow: 1
-            }
 
             td, th {
                 padding:4px 20px;
@@ -68,6 +36,13 @@
                 left: 480px;
                 top: 425px;
             }
+
+
+            #sse-hypothesis, #sse-lcdm {
+                text-align: right;
+                font-weight: bold;
+            }
+
         </style>
     </head>
 <body>
@@ -75,14 +50,11 @@
 <h3>Supernovae Data </h3>
 
 <p>
-    Read more about the models being tested <a href="../index.htm">on the home page.</a> 
+    Read more about the hypothesis being tested <a href="../index.htm">on the home page.</a> 
 </p>
 
 
 <div id="graph-side">
-    <button id="startButton">Run All</button> <button id="stopButton">Stop</button>
-    <br>
-    <br>
     X-axis: 
     <select id="graph-x-axis">
         <option>z redshift</option>
@@ -108,39 +80,52 @@
     <br>
     Width: <input type="number" id="graph-width" value="600" >
     Height: <input type="number" id="graph-height" value="600" >
+    <div id="extinction-container">
+        <br>
+        Light Extinction=<input id="extinction" type="number" value="0.0" step="0.01" min="0.0">
+    </div>
     <br>
-    Starting frequency=<input id="start-freq">
+    Hypothesis H<sub>0</sub>: <input value="73" type="number" id="graph-hypothesis">
     <br>
-    Light Extinction=<input id="extinction" type="number" value="0.0" step="0.01" min="0.0">
-    <br>
-    Show CDM: <input type="checkbox" id="graph-cdm">
-    <br>
-    d-z H<sub>0</sub>: <input value="73" type="number" id="graph-hypothesis">
-    <br>
-    &Lambda;CDM (<span style="color:red;">red</span>): 
+    &Lambda;CDM (<span style="color:green;">green</span>): 
     H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
     &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
     &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
     
     <hr>
-    Log when t=<input id="find-t"> d=<input id="find-d"> z=<input id="find-z"> v=<input id="find-v"> target=<input id="find-target">
-    
-    <pre id="output"></pre>
+    <div id="Errors">
+        Sum of Squared Errors:
+    <table>
+        <tr>
+            <td>Hypothesis</td>
+            <td id="sse-hypothesis"></td>
+        </tr>
+        <tr>
+            <td>LCDM</td>
+            <td id="sse-lcdm"></td>
+        </tr>
+    </table>
+    </div>
 </div>
 
 <div id="right-side">
-<p>Click a model to play or reset it.</p>
 
 </div>
 
 
 <div id="hypothesiseq">
     \[  d = \frac{c}{H_{0}} log(1 + z)  \]
-    \[  H_{0} = 71~km~s^{-1}~Mpc^{-1}  \]
+    <!--\[  H_{0} = 71~km~s^{-1}~Mpc^{-1}  \]-->
 </div>
 
 
 <script>
+
+var sseHypothesis = 0
+var sseLCDM = 0
+
+var sseHypothesisDiv = document.getElementById("sse-hypothesis")
+var sseLCDMDiv = document.getElementById("sse-lcdm")
 
 
 var black = false
@@ -153,7 +138,6 @@ var black = false
     var ctxG = graph.getContext("2d")
     var models = []
 
-    var startFreqInput = document.getElementById("start-freq")
     var extinctionInput = document.getElementById("extinction")
     extinctionInput.onchange = e => {
         calculateDistances()
@@ -161,9 +145,10 @@ var black = false
     }
 
     var calculateDistances = function () {
+        var extinction = extinctionInput.value
         for (var i=0; i<snData.length; i++) {
                 // distance modulus to parsec luminosity distance
-                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinctionInput.value)) 
+                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinction)) 
 
                 // convert to comoving distance
                 //d = ld / (1+z)
@@ -194,7 +179,7 @@ var black = false
         
 
     var zoom = 0.035
-    var zoom_gx = 0.95
+    var zoom_gx = 0.8
     var zoom_gy = 0.48
     var zoomG = zoom * zoom_gx
     var zoomGY = zoom * zoom_gy
@@ -203,13 +188,14 @@ var black = false
     var zoomz = 10000
 
     var drawnSN = false
-    var drawCDM = document.getElementById("graph-cdm")
     var drawHypothesis = document.getElementById("graph-hypothesis")
 
     var snData = []
     var zData = []
     
     function drawSN() {
+        sseHypothesis = 0
+        
         ctxB.lineWidth = 1
         ctxB.fillStyle = black ? "black" : "white"
         ctxB.fillRect(0, 0, graph.width, graph.height)
@@ -224,22 +210,23 @@ var black = false
             ctxB.beginPath()
             ctxB.moveTo(offset, graph.height - offset)
 
-            for (let ii = 0; ii<=20; ii+=0.1) {
+            for (let ii = 0; ii<=2.5; ii+=0.1) {
                 d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
                 t = c0 / drawHypothesis.value * pc2ly * Math.log(1+ii)
+                //console.log(ii, t)
                 ctxB.lineTo( offset + ii * 10000 * zoomG, 
                             -offset + graph.height - t * zoomGY)
             }
             ctxB.stroke()
         }
 
+        setLCDM()
         ctxB.strokeStyle = "green"
         ctxB.beginPath()
         ctxB.moveTo(offset, graph.height - offset)
 
-        for (let ii = 0; ii<=20; ii+=0.1) {
-            d = zToD(ii) * pc2ly ///(1+ii) * c0 / drawHypothesis.value * pc2ly
-            //console.log(d)
+        for (let ii = 0; ii<=2.5; ii+=0.1) {
+            d = zToD(ii) * pc2ly 
             ctxB.lineTo( offset + ii * 10000 * zoomG, 
                         -offset + graph.height - d * zoomGY)
         }
@@ -271,7 +258,15 @@ var black = false
             }
 
             ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 2, 2)
+
+            if (sn.z && sn.d) {
+                calculateError(sn.z, sn.d)
+            }
+            
         }
+
+        sseHypothesisDiv.innerHTML = Math.round(sseHypothesis)
+        sseLCDMDiv.innerHTML = Math.round(sseLCDM)
 
 
         ctxB.font = "14px sans-serif"
@@ -321,7 +316,9 @@ var black = false
             snData.push({"dm": line[2], "z": line[0]})
         }
         calculateDistances()
-        drawSN()
+        
+        //drawSN()
+        calculateLCDMError()
 
         //fetch("https://mikehelland.github.io/hubbles-law/data/zdata_ned.json").then(res=>res.json()).then(data=> {
         //    zData = data
@@ -329,9 +326,6 @@ var black = false
     })
 
     
-
-document.getElementById("startButton").onclick = e => models.forEach(model => runModel(model))
-document.getElementById("stopButton").onclick = e => models.forEach(model => stopModel(model))
 
 document.getElementById("graph-zoom-x").onchange = e => {
     zoomG = zoom * zoom_gx * e.target.value
@@ -348,7 +342,31 @@ yAxis.onchange = e => drawSN()
 xAxis.onchange = e => drawSN()
 drawHypothesis.onchange = e => drawSN()
 
+    function calculateError(z, d) {
 
+        var dhypothesis = c0 / drawHypothesis.value * pc2ly * Math.log(1+parseFloat(z))
+        var se = Math.pow(d - dhypothesis, 2)
+        sseHypothesis += se
+
+                
+        
+    }
+
+    function calculateLCDMError() {
+        sseLCDM = 0
+        var dlcdm
+        var se
+        setLCDM()
+        snData.forEach(sn => {
+            if (sn.z && sn.d) {
+                dlcdm = zToD(sn.z * 1) * pc2ly
+                se = Math.pow(sn.d - dlcdm, 2)
+                //console.log(sn.z, sn.d, dlcdm, se)
+                sseLCDM += se
+            }
+        })
+        drawSN()
+    }
 
 
 function fun(v1, Omega_M, Omega_L, Omega_k) {
@@ -420,15 +438,19 @@ function fun(v1, Omega_M, Omega_L, Omega_k) {
     var OmegaLinput = document.getElementById("Omega_L")    
     var H0input = document.getElementById("H0")    
     var Omega_L, Omega_M, H0, Omega_k
-    OmegaMinput.onchange = e => drawSN()
-    OmegaLinput.onchange = e => drawSN()
-    H0input.onchange = e => drawSN()
+    OmegaMinput.onchange = e => calculateLCDMError()
+    OmegaLinput.onchange = e => calculateLCDMError()
+    H0input.onchange = e => calculateLCDMError()
 
-    function zToD(z) {
-        // From redshift to distance
+    function setLCDM() {
         Omega_L = OmegaLinput.value * 1
         Omega_M = OmegaMinput.value * 1
         H0 = H0input.value * 1
+        
+    }
+
+    function zToD(z) {
+        // From redshift to distance
         
 
         z1 = 1. + z;
