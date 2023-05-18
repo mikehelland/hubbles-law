@@ -103,7 +103,7 @@ var sseLCDM = 0
 var sseHypothesisDiv = document.getElementById("sse-hypothesis")
 var sseLCDMDiv = document.getElementById("sse-lcdm")
 
-document.getElementById("recalculate").onclick = e => calculateDistances()
+document.getElementById("recalculate").onclick = e => calculateLCDMErrors()
 
 var black = false
 
@@ -145,7 +145,7 @@ var black = false
             setLCDM(iH)
             snData.forEach(sn => {
                 sseHypothesis += calculateError(sn.z, sn.d, iH)
-                sseLCDM += calculateLCDMError(sn.z, sn.d)
+                //sseLCDM += calculateLCDMError(sn.z, sn.d)
             })
             sse.push({H: iH, 
                 hypothesis: sseHypothesis, 
@@ -153,7 +153,6 @@ var black = false
             })
         }
         
-        drawSN()
     }
     
     
@@ -181,7 +180,7 @@ var black = false
     var snData = []
     var zData = []
     
-    function drawSN() {
+    function drawGraph() {
         sseHypothesis = 0
         
         ctxB.lineWidth = 2
@@ -200,31 +199,6 @@ var black = false
         ctxB.fillRect(offset + (67.5 - Hstart) * zoomG, 0,
                         1, -offset + graph.height)
         
-        
-        if (sse.length > 0) {
-            ctxB.fillStyle = !black ? "black" : "white"
-            
-            ctxB.strokeStyle = "red"
-            ctxB.beginPath()
-            ctxB.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
-
-            sse.forEach(data => {
-                ctxB.lineTo(offset + (data.H - Hstart) * zoomG, 
-                        -offset + graph.height - data.hypothesis * zoomGY)
-            })
-            ctxB.stroke()
-            
-            ctxB.strokeStyle = "green"
-            ctxB.beginPath()
-            ctxB.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
-
-            sse.forEach(data => {
-                ctxB.lineTo(offset + (data.H - Hstart) * zoomG, 
-                        -offset + graph.height - data.lcdm * zoomGY)
-            })
-            ctxB.stroke()
-        }
-
         ctxB.font = "14px sans-serif"
 
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)
@@ -251,13 +225,36 @@ var black = false
         
         for (dgi = Hstart; dgi < Hend; dgi+=1) {
             ctxB.fillText(dgi, offset + (dgi - Hstart) * zoomG - 5, graph.height - 5)    
-        }
-        
-        
-        
+        }        
     }
 
-    drawSN()
+    function drawData() {
+        graph.width = graph.width
+        ctxG.fillStyle = !black ? "black" : "white"
+            
+        ctxG.strokeStyle = "red"
+        ctxG.beginPath()
+        ctxG.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
+
+        sse.forEach(data => {
+            ctxG.lineTo(offset + (data.H - Hstart) * zoomG, 
+                    -offset + graph.height - data.hypothesis * zoomGY)
+        })
+        ctxG.stroke()
+        
+        ctxG.strokeStyle = "green"
+        ctxG.beginPath()
+        ctxG.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
+
+        sse.forEach(data => {
+            ctxG.lineTo(offset + (data.H - Hstart) * zoomG, 
+                    -offset + graph.height - data.lcdm * zoomGY)
+        })
+        ctxG.stroke()
+
+    }
+
+    drawGraph()
 
     fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
         //console.log(text)
@@ -271,6 +268,10 @@ var black = false
             
         }
         calculateDistances()
+
+        drawData()
+
+        calculateLCDMErrors()
         
     })
 
@@ -289,6 +290,33 @@ var black = false
         var dlcdm = zToD(z * 1) * pc2ly
         return se = Math.pow(d - dlcdm, 2)
         
+    }
+
+    var handle
+    function calculateLCDMErrors() {
+        var sseLCDM
+        var i = 0
+        var iH = Hstart
+        handle = setInterval(() => {
+
+            sseLCDM = 0
+
+            setLCDM(iH)
+            snData.forEach(sn => {
+                sseLCDM += calculateLCDMError(sn.z, sn.d)
+            })
+            sse[i].lcdm = sseLCDM
+            i++
+            iH += 0.1
+
+            if (iH >= 80.5) {
+                clearInterval(handle)
+            }
+
+            drawData()
+
+        }, 0)
+
     }
 
 
