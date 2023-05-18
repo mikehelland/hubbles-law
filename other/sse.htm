@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #graphs {
+                height:400px;
+                width: 700px;
+                position:relative;
+            }
+            #graphs canvas {
+                position:absolute;
+                top: 0;
+                left: 0;
+                height:400px;
+                width: 700px;
+            }
+
+            hr {
+                opacity: 0.1;
+                margin:18px;
+            }
+
+            input {
+                width: 36px;
+                border: 0;
+                font-size: 12pt;
+            }
+
+            input[type=number] {
+                appearance:textfield; /* Firefox */
+            }
+
+
+            td, th {
+                /*padding:4px 20px;*/
+                text-align: right;
+            }
+
+
+
+            #sse-hypothesis, #sse-lcdm {
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .MathJax {
+                font-size: 5pt !important;
+            }
+
+            #legend {
+                position: absolute;
+                left: 300px;
+                top:344px;
+            }
+        </style>
+    </head>
+<body>
+
+<h3>Supernovae Data - Sum of Squared Errors</h3>
+
+<p>
+    Read more about the hypothesis being tested <a href="../index.htm">on the home page.</a> 
+</p>
+
+
+<div id="graph-side">
+    <div id="graphs">
+    <canvas id="background" height="400" width="700"></canvas>
+    <canvas id="graph" height="400" width="700"></canvas>
+    </div>
+
+    <table id="legend">
+        <tr>
+            <td>Hypothesis (<span style="color:red;">red</span>): </td>
+            <td>\[  d = \frac{c}{H_{0}} log(1 + z)  \]</td>
+        </tr>
+        <tr>
+            <td>&Lambda;CDM (<span style="color:green;">green</span>): </td>
+            <td>&Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+                &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L"></td>
+        </tr>
+    </table>
+    
+    <br>
+    <br>
+    <button id="recalculate">Recalculate LCDM</button> (Press this after changing LCDM parameters... and wait 10 seconds...)
+    
+</div>
+
+
+<script>
+
+const Hstart = 62
+const Hend = 78.5
+
+var sse = []
+var sseHypothesis = 0
+var sseLCDM = 0
+
+var sseHypothesisDiv = document.getElementById("sse-hypothesis")
+var sseLCDMDiv = document.getElementById("sse-lcdm")
+
+document.getElementById("recalculate").onclick = e => calculateDistances()
+
+var black = false
+
+    var details = document.getElementById("details")
+
+    var background = document.getElementById("background")
+    var graph = document.getElementById("graph")
+    var ctxB = background.getContext("2d")
+    var ctxG = graph.getContext("2d")
+
+    var calculateDistances = function () {
+        
+
+        var extinction = 0
+        for (var i=0; i<snData.length; i++) {
+                // distance modulus to parsec luminosity distance
+                var ld = Math.pow(10, 0.2 * (1*snData[i].dm + 5 - extinction)) 
+
+                // convert to comoving distance
+                //d = ld / (1+z)
+                var d = ld / (1+(1*snData[i].z))
+
+                // parsec to light years
+                d = d * 3.261564
+                ld = ld * 3.261564
+
+                // ly to Mly
+                snData[i].d = d / 1000000
+                snData[i].ld = ld / 1000000
+
+        }
+
+        sse = []
+
+        for (var iH = Hstart; iH < 80.5; iH += 0.1) {
+            sseHypothesis = 0
+            sseLCDM = 0
+
+            setLCDM(iH)
+            snData.forEach(sn => {
+                sseHypothesis += calculateError(sn.z, sn.d, iH)
+                sseLCDM += calculateLCDMError(sn.z, sn.d)
+            })
+            sse.push({H: iH, 
+                hypothesis: sseHypothesis, 
+                lcdm: sseLCDM    
+            })
+        }
+        
+        drawSN()
+    }
+    
+    
+    // the models advance by 1 million years each step
+    // the units for distance are in Mly (million light years)
+
+    // the speed of light is 1 million lightyears per million years
+    
+    // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
+
+    var c = 1
+    const pc2ly = 3.261564
+    const c0 = 299792.458
+        
+
+    var offset = 20
+    var zoom = 1
+    var zoomG = (graph.width - offset) / (Hend - Hstart) //zoom 
+    var zoomGY = zoom / 1e6 
+    
+    var zoomz = 10000
+
+    var drawnSN = false
+    
+    var snData = []
+    var zData = []
+    
+    function drawSN() {
+        sseHypothesis = 0
+        
+        ctxB.lineWidth = 2
+        ctxB.fillStyle = black ? "black" : "white"
+        ctxB.fillRect(0, 0, graph.width, graph.height)
+
+        ctxB.strokeStyle = !black ? "black" : "white"
+        ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
+
+        ctxB.fillStyle = "yellow"
+        ctxB.globalAlpha = 0.3
+        ctxB.fillRect(offset + (67 - Hstart) * zoomG, 0,
+                        1 * zoomG, -offset + graph.height)
+        ctxB.globalAlpha = 1
+        ctxB.fillStyle = "black"
+        ctxB.fillRect(offset + (67.5 - Hstart) * zoomG, 0,
+                        1, -offset + graph.height)
+        
+        
+        if (sse.length > 0) {
+            ctxB.fillStyle = !black ? "black" : "white"
+            
+            ctxB.strokeStyle = "red"
+            ctxB.beginPath()
+            ctxB.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
+
+            sse.forEach(data => {
+                ctxB.lineTo(offset + (data.H - Hstart) * zoomG, 
+                        -offset + graph.height - data.hypothesis * zoomGY)
+            })
+            ctxB.stroke()
+            
+            ctxB.strokeStyle = "green"
+            ctxB.beginPath()
+            ctxB.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
+
+            sse.forEach(data => {
+                ctxB.lineTo(offset + (data.H - Hstart) * zoomG, 
+                        -offset + graph.height - data.lcdm * zoomGY)
+            })
+            ctxB.stroke()
+        }
+
+        ctxB.font = "14px sans-serif"
+
+        ctxB.fillRect(offset + 16, offset + 33, 2, 2)
+        ctxB.fillStyle = "black"
+        
+
+
+        ctxB.fillStyle = !black ? "black" : "white"
+        ctxB.textAlign = "left"
+        ctxB.fillText("SSE to Pantheon+SH0ES", offset + 5, offset)
+
+        ctxB.textAlign = "right"
+        ctxB.fillText("H", graph.width - 10, graph.height - 30)
+        ctxB.font = "10px sans-serif"
+        ctxB.fillText("0", graph.width - 4, graph.height - 30 + 4)
+        
+        
+        ctxB.textAlign = "left"
+        var dgi
+        ctxB.font = "10px sans-serif"
+        for (dgi = 0; dgi < 1e6; dgi+=5e4) {
+            ctxB.fillText(dgi / 10000, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+        }
+        
+        for (dgi = Hstart; dgi < Hend; dgi+=1) {
+            ctxB.fillText(dgi, offset + (dgi - Hstart) * zoomG - 5, graph.height - 5)    
+        }
+        
+        
+        
+    }
+
+    drawSN()
+
+    fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
+        //console.log(text)
+
+        var lines = text.split("\n")
+        for (var i = 1; i < lines.length; i++) {
+            var line = lines[i].split(",")
+            if (line[0]) {
+                snData.push({"dm": line[2], "z": line[0]})
+            }
+            
+        }
+        calculateDistances()
+        
+    })
+
+    
+    function calculateError(z, d, H) {
+
+        var dhypothesis = c0 / H * pc2ly * Math.log(1+parseFloat(z))
+        return se = Math.pow(d - dhypothesis, 2)
+        
+                
+        
+    }
+
+    function calculateLCDMError(z, d) {
+        sseLCDM = 0
+        var dlcdm = zToD(z * 1) * pc2ly
+        return se = Math.pow(d - dlcdm, 2)
+        
+    }
+
+
+function fun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function simpson(x0, x2) {
+        h = (x2 - x0) / 2.
+        x1 = x0 + h
+        igr = h * (fun(x0, Omega_M, Omega_L, Omega_k) + 4. * fun(x1, Omega_M, Omega_L, Omega_k) + fun(x2, Omega_M, Omega_L, Omega_k)) / 3.
+        return igr
+    };
+
+    function sumint(z1) {
+        integrale = 0, zone = 1, deltaz = 0.001
+        while (zone <= (z1 - deltaz)) {
+            zini = zone
+            zfin = zone + deltaz
+            integrale += simpson(zini, zfin);
+            zone += deltaz
+        }
+        return integrale
+    };
+
+    // -------------------------------------------- 
+
+
+    function lookfun(v1, Omega_M, Omega_L, Omega_k) {
+        v2 = v1 * v1
+        v3 = v1 * v1 * v1
+        f = v1 * Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
+        return 1. / f
+    };
+
+    function timeint(z1start, z1end) {
+        s = 0, a = z1start, b = z1end
+        s = 0.5 * (b - a) * (lookfun(a, Omega_M, Omega_L, Omega_k) + lookfun(b, Omega_M, Omega_L, Omega_k))
+        n = 2
+        while (n <= 11) {
+            n2 = n - 2
+            it = Math.pow(2, n2)
+            tnm = it
+            del = (b - a) / tnm
+            x = a + 0.5 * del
+            sum = 0.
+            j = 1
+            while (j <= it) {
+                sum = sum + lookfun(x, Omega_M, Omega_L, Omega_k)
+                x = x + del
+                j += 1
+            }
+            s = 0.5 * (s + (b - a) * sum / tnm)
+            n += 1
+        }
+        return s
+    };
+
+    // --------------------------------------------
+
+    function sinh(x) {
+        s = (Math.exp(x) - Math.exp(-x)) / 2.
+        return s
+    };
+
+    var OmegaMinput = document.getElementById("Omega_M")
+    var OmegaLinput = document.getElementById("Omega_L")    
+    var Omega_L, Omega_M, H0, Omega_k
+    OmegaMinput.onchange = e => calculateLCDMError()
+    OmegaLinput.onchange = e => calculateLCDMError()
+    
+    function setLCDM(H) {
+        Omega_L = OmegaLinput.value * 1
+        Omega_M = OmegaMinput.value * 1
+        H0 = H
+        
+    }
+
+    function zToD(z) {
+        // From redshift to distance
+        
+
+        z1 = 1. + z;
+        h = H0 / 100.;
+        Tnorm = 9.77810945 / h;
+        cvel = 299792.458
+        ch0 = cvel / H0;
+        pig = 3.1415926536;
+        rad = pig / 180.;
+        q0 = Omega_M / 2. - Omega_L;
+        Omega_k = 1. - Omega_M - Omega_L;
+
+        age = (timeint(1., 50.)) * Tnorm;
+
+        if (Omega_L > 0. && Omega_k == 0.) {
+            DC = ch0 * sumint(z1);
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k < 0.) {
+            curv = Math.sqrt(-Omega_k)
+            r = sumint(z1);
+            DC = ch0 * Math.sin(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L > 0. && Omega_k > 0.) {
+            curv = Math.sqrt(Omega_k)
+            r = sumint(z1);
+            DC = ch0 * sinh(r * curv) / curv
+            DL = DC * z1
+        }
+        if (Omega_L == 0. && q0 > 0) {
+            q0sq = q0 * q0
+            a = 1. - q0 + q0 * z + (q0 - 1.) * (Math.sqrt(2. * q0 * z + 1.))
+            DL = ch0 * a / q0sq
+            DC = DL / z1
+        }
+        if (Omega_L == 0. && q0 == 0) {
+            DL = ch0 * z * (1. + z / 2.)
+            DC = DL / z1
+        }
+        // Lookback time
+        lookback = timeint(1., z1) * Tnorm
+        // Angular distance
+        DA = DL / (z1 * z1)
+        // Lunghezza in primi corrispondente a 1 Mpc.
+        angle = (60. / rad) * z1 * z1 / DL;
+        // Length in Mpc corresponding to 1 degree on the sky
+        R = rad * DL / (z1 * z1);
+
+        // Display result in the form.
+        /*
+        form.q0.value = q0.toFixed(2);
+        form.Omega_k.value = Omega_k.toFixed(2);
+        form.dlum.value = DL.toFixed(1);
+        form.dcom.value = DC.toFixed(1);
+        form.dang.value = DA.toFixed(1);
+        form.lsep.value = R.toFixed(1);
+        form.asep.value = angle.toFixed(1);
+        form.look.value = lookback.toFixed(1);
+        form.age.value = age.toFixed(1);
+        */
+       return DC
+    }
+
+
+    
+</script>
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
