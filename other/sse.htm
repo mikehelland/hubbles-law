@@ -223,7 +223,7 @@ var black = false
         ctxB.moveTo(offset + (67.5 - Hstart) * zoomG, 0)
         ctxB.lineTo(offset + (67.5 - Hstart) * zoomG, -offset + graph.height)
         ctxB.stroke()
-        ctxB.setLineDash()
+        ctxB.setLineDash([])
         
         ctxB.font = "14px sans-serif"
 
@@ -245,6 +245,7 @@ var black = false
         ctxB.textAlign = "left"
         var dgi
         ctxB.font = "10px sans-serif"
+        ctxB.fillStyle = "black"
         for (dgi = 0; dgi < 1e8; dgi+=1e6) {
             ctxB.fillText(dgi / 100000, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
         }
