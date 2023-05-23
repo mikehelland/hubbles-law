@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/supernovae-all.png"/>
+        <meta property="og:description" content="1 + z = (1 + D/L)^2"/>
+        <meta property="og:title" content="The Redshift-Distance Relation"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            .maintext {
+                background-color: white;
+                max-width: 900px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin:auto;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            details {
+                border:1px solid #eeeeee;
+                margin: 6px;
+                padding: 16px;
+            }
+
+            summary {
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            td {padding: 10px;}
+
+        </style>
+    </head>
+
+    <body>
+        <img style="display: none;" id="e_x_arrow" src="img/e_x_arrow.png">
+        <img style="display: none;" id="e_t_arrow" src="img/e_t_arrow.png">
+
+        <div class="maintext">
+
+            <h1>Hubble's Constant and the Arrow of Time</h1>
+
+            <p>
+                Imagine a number line representing a dimension of space <i>x</i>. Say that every point on the line has a vector basis 
+                <i>e<sub>x</sub> = 1</i>, like this:
+            </p>
+
+            <p><canvas id="numberline" height="150" width="800"></canvas></p>
+
+            Let's point those up so they are easier to see.
+
+            <p><canvas id="numberline-up" height="200" width="800"></canvas></p>
+
+
+            <p><canvas id="numberline-gravity" height="200" width="800"></canvas></p>
+
+
+
+            <p><canvas id="numberline-tdp" height="200" width="800"></canvas></p>
+
+
+
+<script>
+    const H = 0.0000756
+    var exArrow = document.getElementById("e_x_arrow")
+    var etArrow = document.getElementById("e_t_arrow")
+
+    var graph = document.getElementById("numberline")
+    var xUnit = graph.width / 18.5
+
+    var x0 = graph.width / 2
+    drawNumberLine(graph, x0, graph.height / 2, 0)
+
+    graph = document.getElementById("numberline-up")
+    var y0 = graph.height * 3/4
+    drawNumberLine(graph, x0, y0, 1)
+    drawYAxis(graph, x0, y0)
+
+    graph = document.getElementById("numberline-gravity")
+    drawNumberLine(graph, x0, y0, 2)
+    drawYAxis(graph, x0, y0)
+
+    graph = document.getElementById("numberline-tdp")
+    //y0 = graph.height * 7/8
+    x0 = graph.width / 2
+    drawNumberLine(graph, x0, y0, 3)
+    drawYAxis(graph, x0, y0, 1)
+
+    function drawNumberLine(graph, x0, y, upArrow) {
+        var ctx = graph.getContext("2d")
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, graph.width, graph.height)
+
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(graph.width, y)
+        ctx.stroke()
+
+        ctx.textAlign = "center"
+        ctx.font = "12pt mono"
+        ctx.lineWidth = 2
+        var x
+        for (var i = -10; i <= 10; i++) {
+            x = i * xUnit + x0
+
+            
+            if (i !== 0 || !upArrow) {
+                ctx.fillStyle = "white"
+                ctx.fillText(i, x, y + 22)
+                ctx.strokeStyle = "white"
+            
+                ctx.beginPath()
+                ctx.moveTo(x, y - 4)
+                ctx.lineTo(x, y + 4)
+                ctx.stroke()
+            }
+
+            if (!upArrow) {
+                drawRightArrow(ctx, x, x + xUnit, y)
+            }
+            else if (upArrow === 1) {
+                drawUpArrow(ctx, x, xUnit, y)
+            }
+            else if (upArrow == 2) {
+                var schwarz = calcaulteSchwarz(i)
+                if (schwarz) {
+                    drawUpArrow(ctx, x, schwarz * xUnit, y)    
+                }
+                
+            }
+            else if (upArrow == 3) {
+                var schwarz = calcaulteTDP(i)
+                if (schwarz) {
+                    drawUpArrow(ctx, x, schwarz * xUnit, y)    
+                }
+                
+            }
+            
+        }
+    }
+
+    function drawRightArrow(ctx, x1, x2, y) {
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.fillStyle = "yellow"
+        
+        ctx.beginPath()
+        ctx.moveTo(x1, y)
+        ctx.lineTo(x2, y)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x2 - 3, y - 10)
+        ctx.lineTo(x2 + 3, y)
+        ctx.lineTo(x2 - 3, y + 10)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    function drawUpArrow(ctx, x, l, y) {
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.fillStyle = "yellow"
+        
+        ctx.beginPath()
+        ctx.moveTo(x, y)
+        ctx.lineTo(x, y - l)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x - 10, y - l + 12)
+        ctx.lineTo(x , y - l)
+        ctx.lineTo(x + 10, y - l + 12)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    function drawYAxis(graph, x, y, dimension) {
+        var ctx = graph.getContext("2d")
+
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, graph.height)
+        ctx.stroke()
+
+        ctx.textAlign = "right"
+        ctx.font = "12pt mono"
+        ctx.lineWidth = 2
+        var xUnit = graph.width / 20
+        for (var i = -5; i <= 15; i++) {
+            if (i === 0) continue
+        
+            ctx.fillStyle = "white"
+            ctx.fillText(i, x - 8, y + 6 - i * xUnit)
+            ctx.strokeStyle = "white"
+        
+            ctx.beginPath()
+            ctx.moveTo(x - 4, y - i * xUnit)
+            ctx.lineTo(x + 4, y - i * xUnit)
+            ctx.stroke()
+    
+            
+        }
+                
+        if (!dimension) {
+            ctx.drawImage(exArrow, x + 8, 4)
+        }
+        else {
+            ctx.drawImage(etArrow, x + 8, 4)
+        }
+        
+    }
+
+    function calcaulteSchwarz(x) {
+        return 1 / (1 - 0.01 / (Math.abs(x)/100))
+    }
+
+    function calcaulteTDP(x) {
+        return Math.exp(1/14 * x)
+    }
+    
+</script>
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>

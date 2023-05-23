@@ -34,7 +34,7 @@
             }
 
 
-            td, th {
+            .caption {
                 /*padding:4px 20px;*/
                 text-align: right;
             }
@@ -52,8 +52,13 @@
 
             #legend {
                 position: absolute;
-                left: 300px;
-                top:344px;
+                left: 350px;
+                top:335px;
+            }
+            #y-axis {
+                position: absolute;
+                top: -15px;
+                left: 25px;
             }
         </style>
     </head>
@@ -70,15 +75,32 @@
     <div id="graphs">
     <canvas id="background" height="400" width="700"></canvas>
     <canvas id="graph" height="400" width="700"></canvas>
+    <table id="y-axis">
+        <tr>
+            <td>\[\chi^2 \]</td>
+        </tr>
+    </table>
     </div>
 
+    <p>Data: <a href="https://github.com/PantheonPlusSH0ES/DataRelease/tree/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR">
+        Pantheon+SH0ES, Distances and Covariances
+    </a></p>
+
+    <table>
+        <tr>
+            <td>Squared Sum of Errors:</td>
+            <td>\[\chi^2= \Sigma_i (d_{d} - d_{m})^2 / \sigma^2 \]</td>
+            <td>where <i>d<sub>d</sub></i> is the comoving distance in the data, and <i>d<sub>m</sub></i> is the distance predicted by the model.</td>
+        
+        </tr>
+    </table>
     <table id="legend">
         <tr>
-            <td>Hypothesis (<span style="color:red;">red</span>): </td>
+            <td class="caption">Hypothesis (<span style="color:red;">red</span>): </td>
             <td>\[  d = \frac{c}{H_{0}} log(1 + z)  \]</td>
         </tr>
         <tr>
-            <td>&Lambda;CDM (<span style="color:green;">green</span>): </td>
+            <td class="caption">&Lambda;CDM (<span style="color:green;">green</span>): </td>
             <td>&Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
                 &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L"></td>
         </tr>
@@ -94,7 +116,7 @@
 <script>
 
 const Hstart = 62
-const Hend = 78.5
+const Hend = 80.5
 
 var sse = []
 var sseHypothesis = 0
@@ -144,7 +166,7 @@ var black = false
 
             setLCDM(iH)
             snData.forEach(sn => {
-                sseHypothesis += calculateError(sn.z, sn.d, iH)
+                sseHypothesis += calculateError(sn, iH)
                 //sseLCDM += calculateLCDMError(sn.z, sn.d)
             })
             sse.push({H: iH, 
@@ -171,7 +193,7 @@ var black = false
     var offset = 20
     var zoom = 1
     var zoomG = (graph.width - offset) / (Hend - Hstart) //zoom 
-    var zoomGY = zoom / 1e6 
+    var zoomGY = zoom / 1.5e7 
     
     var zoomz = 10000
 
@@ -208,7 +230,7 @@ var black = false
 
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "left"
-        ctxB.fillText("SSE to Pantheon+SH0ES", offset + 5, offset)
+        //ctxB.fillText("SSE to Pantheon+SH0ES", offset + 5, offset)
 
         ctxB.textAlign = "right"
         ctxB.fillText("H", graph.width - 10, graph.height - 30)
@@ -219,8 +241,8 @@ var black = false
         ctxB.textAlign = "left"
         var dgi
         ctxB.font = "10px sans-serif"
-        for (dgi = 0; dgi < 1e6; dgi+=5e4) {
-            ctxB.fillText(dgi / 10000, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+        for (dgi = 0; dgi < 1e8; dgi+=1e6) {
+            ctxB.fillText(dgi / 100000, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
         }
         
         for (dgi = Hstart; dgi < Hend; dgi+=1) {
@@ -263,7 +285,7 @@ var black = false
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].split(",")
             if (line[0]) {
-                snData.push({"dm": line[2], "z": line[0]})
+                snData.push({"dm": line[2], "z": line[0], "derr": line[0] * 1})
             }
             
         }
@@ -276,19 +298,19 @@ var black = false
     })
 
     
-    function calculateError(z, d, H) {
+    function calculateError(sn, H) {
 
-        var dhypothesis = c0 / H * pc2ly * Math.log(1+parseFloat(z))
-        return se = Math.pow(d - dhypothesis, 2)
+        var dhypothesis = c0 / H * pc2ly * Math.log(1+parseFloat(sn.z))
+        return se = Math.pow(sn.d - dhypothesis, 2) / Math.pow(sn.derr, 2)
         
                 
         
     }
 
-    function calculateLCDMError(z, d) {
+    function calculateLCDMError(sn) {
         sseLCDM = 0
-        var dlcdm = zToD(z * 1) * pc2ly
-        return se = Math.pow(d - dlcdm, 2)
+        var dlcdm = zToD(sn.z * 1) * pc2ly
+        return se = Math.pow(sn.d - dlcdm, 2) / Math.pow(sn.derr, 2)
         
     }
 
@@ -303,7 +325,7 @@ var black = false
 
             setLCDM(iH)
             snData.forEach(sn => {
-                sseLCDM += calculateLCDMError(sn.z, sn.d)
+                sseLCDM += calculateLCDMError(sn)
             })
             sse[i].lcdm = sseLCDM
             i++

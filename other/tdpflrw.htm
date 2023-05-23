@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/supernovae-all.png"/>
+        <meta property="og:description" content="1 + z = (1 + D/L)^2"/>
+        <meta property="og:title" content="The Redshift-Distance Relation"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            .maintext {
+                background-color: white;
+                max-width: 900px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin:auto;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            details {
+                border:1px solid #eeeeee;
+                margin: 6px;
+                padding: 16px;
+            }
+
+            summary {
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            td {padding: 10px;}
+
+        </style>
+    </head>
+
+    <body>
+
+        <div class="maintext">
+
+            <h1>FLRW and TDP coordinates</h1>
+
+            <p>
+                In Einstein's 1917 paper 
+                    <a href="https://einsteinpapers.press.princeton.edu/vol6-trans/433">"Cosmological Considerations in the General Theory of Relativity"</a>
+                    he writes:
+
+                <blockquote>
+                    In the particularly perspicuous case of the possibility of choosing the system of co-ordinates so that the 
+                    gravitational field at every point is spatially isotropic, we have more simply
+
+                    \[ ds^2 = - A(dx_1^2 + dx_2^2 + dx_3^2) + Bdx_4^2 \]
+
+                </blockquote>
+
+                
+            </p>
+
+            <p>
+                We will call A the space scale factor, and B the time scale factor, and make them functions of t, which preserves homogeneity and isotropy. 
+            </p>
+
+            <p>
+                To model a universe with simple expansion, we can set A(t) = e<sup>H<sub>0</sub>t</sup>, and B(t) = c<sup>2</sup>. 
+                To visualize what this does, imagine
+                a spacetime diagram where a light source fixed at x=0, sends out a photon (red dot) everyone 1 billion years: 
+            </p>
+
+            <p class="pimg">
+            <canvas id="spacetime1" height="300" width="300"></canvas>
+            </p>
+            
+            <p>The space scale factor A(t) sets a basis vector in the space direction at every point in spacetime that changes based on t. 
+                In the graph below, 
+                those basis vectors are superimposed as yellow arrows. They have a contravariant effect on the coordinates, causing 
+                distances in the past to be smaller, and distances in the future to be greater.
+            </p>
+
+            <p class="pimg">
+            <canvas id="spacetimeFLRW" height="600" width="600"></canvas>
+            </p>
+
+            <p>
+                An effect of the expanding universe is that cosmic events such as supernovae are time dilated. Observations suggest, in a sense,
+                that the past is time dilated. To model such a universe set A(t) = 1, and B(t) = e<sup>H<sub>0</sub>t</sup>c<sup>2</sup>. This 
+                produces variation over time of the time basis vectors themselves. The time basis vectors are superimposed as yellow arrows below, which
+                have the effect of moving time coordinates down.
+            </p>
+
+            <p class="pimg">
+            <canvas id="spacetimeTDP" height="600" width="600"></canvas>
+            </p>
+
+            <p>
+                The basis vectors are superimposed twice because they overlap along the time axis making them hard to read. 
+            </p>
+
+
+
+
+
+
+<script>
+    const H = 0.0000756
+
+    var graphST1 = document.getElementById("spacetime1")
+    var graphFLRW = document.getElementById("spacetimeFLRW")
+    var graphTDP = document.getElementById("spacetimeTDP")
+    
+    var black = true
+    var zoom = 0.055
+    var zoom_gx = 0.95 * 0.5
+    var zoom_gy = 0.95 * 0.5
+    var zoomG = zoom * zoom_gx
+    var zoomGY = zoom * zoom_gy
+    var offset = 20
+    var offsetX = 20//400
+    var offsetY = graphST1.height / 2
+
+    var photons = []
+    for (var i = -45; i <= 20; i++) {
+        photons.push({t: i * 1000})
+    }
+
+    drawGraph(graphST1)
+    drawGraph(graphFLRW)
+    drawGraph(graphTDP)
+
+    drawPhotons(graphST1)
+    drawFLRW(graphFLRW)
+    drawTDP(graphTDP)
+
+    function drawGraph(graph) {
+
+        var ctxG = graph.getContext("2d")
+
+        ctxG.lineWidth = 1
+        ctxG.fillStyle = black ? "black" : "white"
+        ctxG.fillRect(0, 0, graph.width, graph.height)
+
+        ctxG.strokeStyle = !black ? "black" : "white"
+        ctxG.strokeRect(offset, 0, graph.width, graph.height)
+        
+        ctxG.beginPath()
+        ctxG.moveTo(offset, offsetY)
+        ctxG.lineTo(graph.width, offsetY)
+        ctxG.stroke()
+
+        ctxG.strokeStyle = "#444444"
+        ctxG.fillStyle = "white"
+        
+        
+        for (var y = -15000; y < 100000; y+=1000) {
+            ctxG.strokeStyle = "#444444"
+            ctxG.beginPath()
+            ctxG.moveTo(offset, offsetY + y * zoomGY)
+            ctxG.lineTo(graph.width, offsetY + y * zoomGY)
+            ctxG.stroke()
+
+            if (y % 5000 == 0)
+                ctxG.fillText(-y / 1000, 4, offsetY + y * zoomGY + 4)    
+        
+        }
+        
+        
+        ctxG.strokeStyle = "#444444"
+        var dgn = 1
+        //for (dgn = -1; dgn <= 1; dgn+=2) {
+            
+            for (var x = 0; x < 100000; x+=1000) {
+                ctxG.beginPath()
+                ctxG.moveTo(offsetX + x * zoomG * dgn, 0)
+                ctxG.lineTo(offsetX + x * zoomG * dgn, graph.height)
+                //offsetX + drawx * zoomG * dgn, -offset + graph.height - drawy * zoomGY
+                ctxG.stroke()
+            }
+        //}
+    }
+
+    function drawPhotons(graph) {
+        var ctx = graph.getContext("2d")
+
+        ctx.lineWidth = 2
+     
+        ctx.fillStyle = "red"
+        ctx.strokeStyle = "red"
+        photons.forEach(photon => {
+            ctx.beginPath()
+            ctx.arc(offsetX, offsetY - photon.t * zoomGY, 4, 0, 2 * Math.PI)
+            ctx.fill()
+
+            ctx.beginPath()
+            ctx.moveTo(offsetX, offsetY - photon.t * zoomGY)
+            ctx.lineTo(offsetX + 24000 * zoomG, offsetY - (photon.t + 24000) * zoomGY )
+            ctx.stroke()
+        })
+
+    }
+
+    function drawFLRW(graph) {
+
+        var ctxF2 = graph.getContext("2d")
+        
+        //graph.width = graph.width
+        ctxF2.lineWidth = 2
+ 
+        ctxF2.fillStyle = "red"
+        ctxF2.strokeStyle = "red"
+        var tt
+        var d = 0
+        photons.forEach(photon => {
+            ctxF2.beginPath()
+            ctxF2.arc(offsetX, offsetY - photon.t * zoomGY, 4, 0, 2 * Math.PI)
+            ctxF2.fill()
+
+            ctxF2.beginPath()
+            ctxF2.moveTo(offsetX, offsetY - photon.t * zoomGY)
+
+            d = 0
+            for (var it = photon.t; it < 13000; it += 10) {
+                basis = Math.exp(H * -it) //1 / (-Math.log(-it * H + 1) * 1/H)
+                d += 10 / basis 
+                
+                ctxF2.lineTo(offsetX + d * zoomG, offsetY - it * zoomGY)
+                
+            }
+            ctxF2.stroke()
+        
+        })
+
+        ctxF2.lineWidth = 4
+        ctxF2.strokeStyle = "yellow"
+        ctxF2.fillStyle = "yellow"
+        var x = 0
+        for (var y = -17000; y < 6000; y+=1000) {
+            
+            basis = 1 / Math.exp(H * y) * 1000 //(1000 / (-Math.log(-y * H + 1) * 1/H)) * 1000 
+            //console.log((-Math.log(-y * H + 1) * 1/H), basis)
+            ctxF2.beginPath()
+            ctxF2.moveTo(offsetX + x * zoomG, offsetY - y * zoomGY)
+            ctxF2.lineTo(offsetX + (x + basis) * zoomG, offsetY - y * zoomGY)
+            ctxF2.stroke()
+
+            ctxF2.beginPath()
+            ctxF2.moveTo(offsetX + (x + basis) * zoomG - 3, offsetY - y * zoomGY - 10)
+            ctxF2.lineTo(offsetX + (x + basis) * zoomG + 3, offsetY - y * zoomGY)
+            ctxF2.lineTo(offsetX + (x + basis) * zoomG - 3, offsetY - y * zoomGY + 10)
+            ctxF2.closePath()
+            ctxF2.fill()
+
+        }
+    }
+
+    function drawTDP(graph) {
+        var ctxF = graph.getContext("2d")
+        ctxF.lineWidth = 2
+ 
+        ctxF.fillStyle = "red"
+        ctxF.strokeStyle = "red"
+        var tt
+        photons.forEach(photon => {
+            tt = Math.log(photon.t * H + 1) * 1/H
+            ctxF.beginPath()
+            ctxF.arc(offsetX, offsetY - tt * zoomGY, 4, 0, 2 * Math.PI)
+            ctxF.fill()
+
+            if (!isNaN(tt)) {
+                ctxF.beginPath()
+                ctxF.moveTo(offsetX, offsetY - tt * zoomGY)
+                for (var it = photon.t; it <= 20000; it += 10) {
+                    tt = Math.log(it * H + 1) * 1/H
+                    if (isNaN(tt)) {
+                        break;
+                    }
+                    ctxF.lineTo(offsetX - (photon.t - it) * zoomG, offsetY - tt * zoomGY)
+                }
+                ctxF.stroke()
+            }
+            
+        })
+
+
+        ctxF.lineWidth = 4
+        ctxF.strokeStyle = "yellow"
+        ctxF.fillStyle = "yellow"
+        var x
+        for (var y = -17000; y < 6000; y+=1000) {
+            //for (var ix = 0; ix < 2; ix++) {
+                x = 10000 //+ (y > 0 ? y/2 : 0)
+                
+                //basis = (1000 / (Math.log(y * H + 1) * 1/H)) * 1000 
+                basis = Math.exp(H * y) * 1000
+                ctxF.beginPath()
+                ctxF.moveTo(offsetX + x * zoomG, offsetY - y * zoomGY)
+                ctxF.lineTo(offsetX + x * zoomG, offsetY - (y + basis) * zoomGY)
+                ctxF.stroke()
+    
+                ctxF.beginPath()
+                ctxF.moveTo(offsetX + x * zoomG - 10, offsetY - (y + basis) * zoomGY)
+                ctxF.lineTo(offsetX + x * zoomG,      offsetY - (y + basis) * zoomGY - 3)
+                ctxF.lineTo(offsetX + x * zoomG + 10, offsetY - (y + basis) * zoomGY)
+                ctxF.closePath()
+                ctxF.fill()
+            //}
+            
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
