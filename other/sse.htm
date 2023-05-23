@@ -218,8 +218,12 @@ var black = false
                         1 * zoomG, -offset + graph.height)
         ctxB.globalAlpha = 1
         ctxB.fillStyle = "black"
-        ctxB.fillRect(offset + (67.5 - Hstart) * zoomG, 0,
-                        1, -offset + graph.height)
+        ctxB.setLineDash([10, 10])
+        ctxB.beginPath()
+        ctxB.moveTo(offset + (67.5 - Hstart) * zoomG, 0)
+        ctxB.lineTo(offset + (67.5 - Hstart) * zoomG, -offset + graph.height)
+        ctxB.stroke()
+        ctxB.setLineDash()
         
         ctxB.font = "14px sans-serif"
 
