@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #right-side {
+                left: 730px;
+                top: 20px;
+                position: absolute;
+            
+            }
+            /*#graph {
+                height:400px;
+                width: 800px;
+            }*/
+            .model-label {
+                margin: 4px 0;
+                
+                
+            }
+
+            hr {
+                opacity: 0.1;
+                margin:18px;
+            }
+
+            input {
+                width: 80px;
+            }
+
+            .model-units {
+                columns: #444444;
+                font-size: 12px;
+                padding-left:4px;
+            }
+
+            #details, #notes {
+                width:700px;
+            }
+            #notes {
+                margin-left: 20px;
+            }
+
+            .model-header {
+                padding:4px;
+                display:flex;
+                align-items: center;
+            }
+            .header-spacer {
+                flex-grow: 1
+            }
+
+            td, th {
+                padding:4px 20px;
+            }
+
+        </style>
+    </head>
+<body>
+<br>
+    <canvas id="graphT" height="350" width="350"></canvas>
+    <br>
+    <canvas id="graphB" height="50" width="350"></canvas>
+
+    
+<script>
+var black = false
+
+    var graph = document.getElementById("graphT")
+    var ctx = graph.getContext("2d")
+    var graphB = document.getElementById("graphB")
+    var ctxB = graphB.getContext("2d")
+
+    var x0 = graph.width / 20
+    var y0 = graph.height / 20 * 19
+        
+    var c = 1
+
+    var zoom = 50
+
+    var events = []
+    
+    var o = {x: 0.01, y: 1 / (0.01)}
+
+    drawTop()
+    //drawBottom(graphB, ctxB, graphB.height / 2)
+
+    function drawTop() {
+        ctx.fillStyle = "white"
+        ctx.fillRect(0, 0, graph.width, graph.height)
+        
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, y0)
+        ctx.lineTo(graph.width, y0)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x0, 0)
+        ctx.lineTo(x0, graph.height)
+        ctx.stroke()
+
+        ctx.lineWidth = 4
+        ctx.beginPath()
+        ctx.moveTo(x0 + 0.01 * zoom, y0 - zoom * 1/(0.01))
+        for (let ix = 0.01; ix < 10; ix+=0.01) {
+            ctx.lineTo(x0 + ix * zoom, y0 - zoom * 1/(ix))
+        }
+        ctx.stroke()
+
+        ctx.fillStyle = "red"
+        events.forEach(event => {
+            ctx.beginPath()
+            ctx.arc(x0 + event.x * zoom, y0 - event.y * zoom, 8, 0, Math.PI*2)
+            ctx.fill()        
+
+            event.d = Math.sqrt(
+                Math.pow(event.x - o.x, 2) + 
+                Math.pow(event.y - o.y, 2))
+        })
+
+        ctx.fillStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(x0 + o.x * zoom, y0 - o.y * zoom, 8, 0, Math.PI*2)
+        ctx.fill()        
+    }
+
+    function drawBottom(graph, ctx, y0) {
+        ctx.fillStyle = "white"
+        ctx.fillRect(0, 0, graph.width, graph.height)
+        
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, y0)
+        ctx.lineTo(graph.width, y0)
+        ctx.stroke()
+        
+        ctx.fillStyle = "red"
+        events.forEach(event => {
+            ctx.beginPath()
+            ctx.arc(graph.width - 10 - event.d * zoom, y0, 8, 0, Math.PI*2)
+            ctx.fill()        
+
+            event.d = Math.sqrt(
+                Math.pow(event.x - o.x, 2) + 
+                Math.pow(event.y - o.y, 2))
+        })
+
+        ctx.fillStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(graph.width - 10, y0, 8, 0, Math.PI*2)
+        ctx.fill()        
+    }
+
+    
+    var speed = 10
+    
+    var intervalHandle
+    
+    var t = 0
+    var nextEvent = 0
+
+    setTimeout(() => {
+
+        intervalHandle = setInterval(() => {
+
+            if (t === nextEvent) {
+                events.push({x: o.x, y: o.y})
+                nextEvent += 5
+            }
+    
+            t++
+            o.x += 0.01
+            o.y = 1 / o.x
+            drawTop()
+            drawBottom(graphB, ctxB, graphB.height / 2)
+
+            if (o.x >= 1) {
+                clearInterval(intervalHandle)
+            }
+        }, 1000 / 60)
+
+    }, 500)
+
+    document.body.onkeypress = e => clearInterval(intervalHandle)
+</script>
+
