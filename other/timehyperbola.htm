@@ -82,11 +82,13 @@ var black = false
 
     var events = []
     
-    var o = {x: 0.01, y: 1 / (0.01)}
+    var startX = 0.01
+    var o = {x: startX, y: 1 / startX}
 
     drawTop()
     //drawBottom(graphB, ctxB, graphB.height / 2)
 
+    var on = true
     function drawTop() {
         ctx.fillStyle = "white"
         ctx.fillRect(0, 0, graph.width, graph.height)
@@ -96,19 +98,23 @@ var black = false
         ctx.moveTo(0, y0)
         ctx.lineTo(graph.width, y0)
         ctx.stroke()
-
+        
         ctx.beginPath()
         ctx.moveTo(x0, 0)
         ctx.lineTo(x0, graph.height)
         ctx.stroke()
 
+        on = true
         ctx.lineWidth = 4
-        ctx.beginPath()
-        ctx.moveTo(x0 + 0.01 * zoom, y0 - zoom * 1/(0.01))
-        for (let ix = 0.01; ix < 10; ix+=0.01) {
+        for (let ix = 0.02; ix < 10; ix+=0.01) {
+            ctx.beginPath()
+            ctx.moveTo(x0 + (ix - 0.01) * zoom, y0 - zoom * 1/(ix - 0.01))
             ctx.lineTo(x0 + ix * zoom, y0 - zoom * 1/(ix))
+            if (on) {
+                ctx.stroke()
+            }
+            //on = !on
         }
-        ctx.stroke()
 
         ctx.fillStyle = "red"
         events.forEach(event => {
@@ -161,26 +167,33 @@ var black = false
     
     var t = 0
     var nextEvent = 0
+    var d = 0
+    var lastX = 0
+    var lastY = 0
 
     setTimeout(() => {
 
         intervalHandle = setInterval(() => {
-
-            if (t === nextEvent) {
-                events.push({x: o.x, y: o.y})
-                nextEvent += 5
-            }
-    
-            t++
+            lastX = o.x
+            lastY = o.y
             o.x += 0.01
             o.y = 1 / o.x
+            d += Math.sqrt(Math.pow(o.x - lastX, 2) + Math.pow(o.y - lastY, 2))
+    
+            if (d >= 1) {
+                console.log(d)
+                events.push({x: o.x, y: o.y})
+                d = 0
+            }
+            
+    
             drawTop()
             drawBottom(graphB, ctxB, graphB.height / 2)
 
             if (o.x >= 1) {
                 clearInterval(intervalHandle)
             }
-        }, 1000 / 60)
+        }, 1000 / 30)
 
     }, 500)
 
