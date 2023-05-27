@@ -74,19 +74,19 @@ var black = false
     var ctxB = graphB.getContext("2d")
 
     var x0 = graph.width / 20
-    var y0 = graph.height / 20 * 19
+    var y0 = graph.height / 20
         
     var c = 1
 
-    var zoom = 50
+    var zoom = 100
 
     var events = []
     
-    var startX = 0.01
-    var o = {x: startX, y: 1 / startX}
+    var startX = 0.1
+    var o = {angle: -Math.PI *3/4}
 
     drawTop()
-    //drawBottom(graphB, ctxB, graphB.height / 2)
+    drawBottom(graphB, ctxB, graphB.height / 2)
 
     var on = true
     function drawTop() {
@@ -106,10 +106,10 @@ var black = false
 
         on = true
         ctx.lineWidth = 4
-        for (let ix = 0.02; ix < 10; ix+=0.01) {
-            ctx.beginPath()
-            ctx.moveTo(x0 + (ix - 0.01) * zoom, y0 - zoom * 1/(ix - 0.01))
-            ctx.lineTo(x0 + ix * zoom, y0 - zoom * 1/(ix))
+        ctx.beginPath()
+        ctx.moveTo(x0 + Math.cosh(-2) * zoom, y0 - zoom * Math.sinh(-2))
+        for (let ix = -2; ix <= 1; ix+=0.1) {
+            ctx.lineTo(x0 + Math.cosh(ix) * zoom, y0 - zoom * Math.sinh(ix))
             if (on) {
                 ctx.stroke()
             }
@@ -145,13 +145,15 @@ var black = false
         
         ctx.fillStyle = "red"
         events.forEach(event => {
+            
+            event.d = Math.sqrt(
+                Math.pow(event.x - o.x, 2) + 
+                Math.pow(event.y - o.y, 2))
+
             ctx.beginPath()
             ctx.arc(graph.width - 10 - event.d * zoom, y0, 8, 0, Math.PI*2)
             ctx.fill()        
 
-            event.d = Math.sqrt(
-                Math.pow(event.x - o.x, 2) + 
-                Math.pow(event.y - o.y, 2))
         })
 
         ctx.fillStyle = "blue"
@@ -166,31 +168,29 @@ var black = false
     var intervalHandle
     
     var t = 0
-    var nextEvent = 0
-    var d = 0
-    var lastX = 0
-    var lastY = 0
+    var nextEvent = o.angle
 
     setTimeout(() => {
 
         intervalHandle = setInterval(() => {
-            lastX = o.x
-            lastY = o.y
-            o.x += 0.01
-            o.y = 1 / o.x
-            d += Math.sqrt(Math.pow(o.x - lastX, 2) + Math.pow(o.y - lastY, 2))
-    
-            if (d >= 1) {
-                console.log(d)
-                events.push({x: o.x, y: o.y})
-                d = 0
+
+            if (o.angle >= nextEvent) {
+                let angle = nextEvent
+                events.push({angle: angle, x: Math.cosh(angle), y: Math.sinh(angle)})
+                nextEvent += Math.PI / 24
             }
+
+
+            o.angle += 0.01
+            o.x = Math.cosh(o.angle)
+            o.y = Math.sinh(o.angle)
+               
             
     
             drawTop()
             drawBottom(graphB, ctxB, graphB.height / 2)
 
-            if (o.x >= 1) {
+            if (o.angle >= 0) {
                 clearInterval(intervalHandle)
             }
         }, 1000 / 30)
