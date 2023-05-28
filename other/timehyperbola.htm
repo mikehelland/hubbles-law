@@ -78,13 +78,14 @@ var black = false
         
     var c = 1
 
-    var zoom = 100
+    var zoom = 5
 
     var events = []
     
     var startX = 0.1
     var o = {angle: -Math.PI *3/4}
 
+    const R = 14
     drawTop()
     drawBottom(graphB, ctxB, graphB.height / 2)
 
@@ -107,9 +108,9 @@ var black = false
         on = true
         ctx.lineWidth = 4
         ctx.beginPath()
-        ctx.moveTo(x0 + Math.cosh(-2) * zoom, y0 - zoom * Math.sinh(-2))
+        ctx.moveTo(x0 + R * Math.cosh(-2) * zoom, y0 - zoom * R * Math.sinh(-2))
         for (let ix = -2; ix <= 1; ix+=0.1) {
-            ctx.lineTo(x0 + Math.cosh(ix) * zoom, y0 - zoom * Math.sinh(ix))
+            ctx.lineTo(x0 + R * Math.cosh(ix) * zoom, y0 - zoom * R * Math.sinh(ix))
             if (on) {
                 ctx.stroke()
             }
@@ -176,14 +177,14 @@ var black = false
 
             if (o.angle >= nextEvent) {
                 let angle = nextEvent
-                events.push({angle: angle, x: Math.cosh(angle), y: Math.sinh(angle)})
+                events.push({angle: angle, x: R * Math.cosh(angle), y: R * Math.sinh(angle)})
                 nextEvent += Math.PI / 24
             }
 
 
             o.angle += 0.01
-            o.x = Math.cosh(o.angle)
-            o.y = Math.sinh(o.angle)
+            o.x = R * Math.cosh(o.angle)
+            o.y = R * Math.sinh(o.angle)
                
             
     

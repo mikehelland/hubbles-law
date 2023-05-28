@@ -78,7 +78,8 @@ var black = false
         
     var c = 1
 
-    var zoom = 150
+    var zoom = 10
+    const R = 14
 
     var events = []
     for (let i = 0; i < 12; i++) {
@@ -108,11 +109,11 @@ var black = false
 
         ctx.lineWidth = 4
         ctx.beginPath()
-        ctx.arc(x0, y0, zoom, 0, Math.PI*2)
+        ctx.arc(x0, y0, R * zoom, 0, Math.PI*2)
         ctx.stroke()
 
-        o.x = Math.cos(o.angle)
-        o.y = Math.sin(o.angle)
+        o.x = R * Math.cos(o.angle)
+        o.y = R * Math.sin(o.angle)
     
         ctx.fillStyle = "red"
         events.forEach(event => {
@@ -171,7 +172,7 @@ var black = false
 
             if (o.angle >= nextEvent) {
                 let angle = nextEvent
-                events.push({angle: angle, x: Math.cos(angle), y: Math.sin(angle)})
+                events.push({angle: angle, x: R * Math.cos(angle), y: R * Math.sin(angle)})
                 nextEvent += Math.PI / 24
             }
     

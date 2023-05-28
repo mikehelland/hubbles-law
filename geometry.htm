@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta property="og:image" content="https://mikehelland.github.io/hubbles-law/img/supernovae-all.png"/>
+        <meta property="og:description" content="1 + z = (1 + D/L)^2"/>
+        <meta property="og:title" content="The Redshift-Distance Relation"/>
+        <meta property="og:url" content="https://mikehelland.github.io/hubbles-law/"/>
+        <style>
+            body {
+                background-color: #CCCCCC;
+                color:black;
+            }
+            .maintext {
+                background-color: white;
+                max-width: 900px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                margin:auto;
+            }
+
+            .pimg  {
+                text-align: center;
+            }
+
+            li code, p code {
+                background-color: #EEEEEE;
+                padding:2px;
+                font-weight: bold;
+            }
+
+            details {
+                border:1px solid #eeeeee;
+                margin: 6px;
+                padding: 16px;
+            }
+
+            summary {
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            td {padding: 10px;}
+
+        </style>
+    </head>
+
+    <body>
+        <img style="display: none;" id="e_x_arrow" src="img/e_x_arrow.png">
+        <img style="display: none;" id="e_t_arrow" src="img/e_t_arrow.png">
+        <img style="display: none;" id="supernova" src="img/supernova.png">
+        <!--https://spaceplace.nasa.gov/supernova/en/supernova1.en.jpg-->
+
+        <div class="maintext">
+
+            <h1>Hubble's Constant and the Geometry of Time</h1>
+
+            <h2>Introduction</h2>
+
+            <p>
+                Hubble's constant is the expansion rate of the universe, the most direct evidence for which is the elongating of the wavelength of 
+                light from distant places, and the time dilation of distant events, such as supernovae.
+            </p>
+
+            <p class="pimg"><canvas width="400" height="350" id="expandingspace"></canvas></p>
+
+            <p>The stretching of light's wavelength is cosmological redshift, which also has the effect of reducing the light's frequency. 
+                A reduction in frequency is also what would happen were the electromagnetic wave's period to somehow increase. By making the assumption
+                that the observed redshifts are a change in the electromagnetic wave's period, the two points of evidence previously mentioned could
+                be stated as: 
+            </p>
+
+            <ul>
+                <li>The elongated period of an electromagnetic wave</li>
+                <li>The elongated duration of supernovae</li>
+            </ul>
+
+            <p class="pimg"><canvas width="400" height="350" id="expandingtime"></canvas></p>
+
+            <p>Now the evidence is stated purely in the terms of time, with no mention of space. So consider what happens when a supernova and 
+                the crests of an electromagnetic wave are placed on the same lone time-axis. When the duration of the supernova is 
+                stretched, is it the start time or end time 
+                that changes? What about the time between the supernovae and the wave that's shown?
+            </p>
+
+            <p class="pimg"><canvas width="200" height="400" id="justtime"></canvas></p>
+
+            <p>For a consistent picture, the answer will be to stretch the entire time dimension. This can be done using a coordinate transformation
+                where <i>t</i> is the original coordinate and <i>t'</i> is the new coordinate:</p>
+
+            <p>\[ t' = \frac{1}{H_0} log(H_0 t + 1) \]</p>
+
+            <p>Hubble's constant, <i>H<sub>0</sub></i>, is used here as a "time scale factor", stretching time intead of space.</p>
+
+            <p>How this transformation can be derived from a hyperbolic manifold will be the topic of the next section. Then it will be shown 
+                how to derive equations for redshift, lookback time, and distance. After that, the model is compared to the Pantheon+SH0ES dataset,
+                and it is shown to be a better fit for the data than the current standard cosmological model, &Lambda;CDM. 
+            </p>
+
+            <p>It is proposed and discussed how the hypothesis presented may be interpreted as the arrow of time, as well as the broader implications for 
+                cosmology in general.
+            </p>
+            
+            <h2>The geometry of time</h2>
+
+            <p>We'll begin with an example geometry that produces the opposite of the desired effect, because it's simple to visualize. In a 
+                <B>R</B><sup>2</sup> space draw a circle. Place an observer (blue dot) on the circle at theta=0, and then move the observer along the circle 
+                by increasing the angle theta. Say that every pi/12 radians the observer does something, such as emit a photon, and place an event 
+                (red dot) at that location to mark the occasion.
+            </p>
+
+            <p>
+                When the observer reaches theta=pi, the distance between the events in the ambient space are not consistent. The farther back you look,
+                the more bunched up the events appear to be.
+            </p>
+
+            <p class="pimg"><img src="img/timecircle.png"></p>
+            
+            <p>
+                Consider the 1-dimensional surface of the circle to be the time dimension of a unvierse with <b>R</b><sup>3</sup> spatial dimensions.
+                To an observer of this universe, distant phenomena would appear to be "time contracted" and light would be blueshifted. There is 
+                also the amusing consequence that the observer will circle back and encounter its past events.   
+            </p>
+
+            <p>
+                To get the desired effect, a hyperbolic surface is necessary. In 2-d space, draw a hyperbola. Place the observer (blue dot) 
+                at an angle of -pi. Again increase the angle, and place an event every pi/12 radians.  
+            </p>
+            
+            <p class="pimg"><img src="img/timehyperbola.png"></p>
+            
+            <p>Now in the ambient space, the more distant the events, the more spread out they become. Using this <b>H</b><sup>1</sup> surface 
+                as the time dimension with <b>R</b><sup>3</sup> spatial dimensions describes a universe where time dilation and redshifts are observed.
+            </p>
+            
+            <p>
+                It is important to note that the observer should always exist in the present, <i>t = 0</i>, in this spacetime. The desired effects only 
+                occur from a frame of reference in the present.
+            </p>
+            
+            <h2>The metric tensor</h2>
+
+            <p>\[ ds^2 = - (e^{H_0t})^2 c^2 + dx^2 + dy^2 + dz^2 \]</p>
+
+            <h2>Redshift, lookback time, and distance</h2>
+
+            <p>\[ \frac{1}{1+z} = e^{H_0t} \]</p>
+
+            <p>\[ t_L  = - \frac{1}{H_0} log(1+z) \]</p>
+
+            <p>\[ d = \frac{z}{1+z} \frac{c}{H_0} \]</p>
+
+            <h2>Distance modulus</h2>
+
+            <h2>Observational data</h2>
+
+            <p><img src="img/pantheonshoes70.png"></p>
+
+            <p><img src="img/sse.png"></p>
+
+            <h2>The arrow of time</h2>
+
+            <p>
+                Imagine a number line representing a dimension of space <i>x</i>. Say that every point on the line has a vector basis 
+                <i>e<sub>x</sub> = 1</i>, like this:
+            </p>
+
+            <p><img src="img/aot1.png"></p>
+
+            Let's point those up so they are easier to see.
+
+            <p><img src="img/aot2.png"></p>
+
+            <p><img src="img/aot3.png"></p>
+
+            <p><img src="img/aot4.png"></p>
+
+
+            <h2>Cosmological implications</h2>
+
+
+
+
+
+            
+            
+
+
+<script>
+
+    var graph = document.getElementById("expandingspace")
+    var imgSN = document.getElementById("supernova")
+    
+    drawSpacetime(graph)
+
+    graph = document.getElementById("expandingtime")
+    drawSpacetime(graph, 1)
+
+
+    graph = document.getElementById("justtime")
+    drawTime(graph)
+
+
+    function drawSpacetime(graph, version) {
+        var ctx = graph.getContext("2d")
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, graph.width, graph.height)
+
+        var x0 = graph.width / 20
+        var y0 = graph.height / 20
+        ctx.strokeStyle = "White"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, y0)
+        ctx.lineTo(graph.width, y0)
+        ctx.stroke()
+        ctx.beginPath()
+        ctx.moveTo(x0, 0)
+        ctx.lineTo(x0, graph.height)
+        ctx.stroke()
+
+        ctx.font = "12pt Sans"
+        ctx.fillStyle = "white"
+        ctx.fillText("Time", 22, graph.height - 20)
+        ctx.textAlign = "right"
+        ctx.fillText("Space", graph.width - 5, 14)
+
+        var snStart = graph.height / 2 - 30
+        ctx.drawImage(imgSN, graph.width / 3 - imgSN.width / 2, snStart - imgSN.height)
+
+        ctx.fillStyle = "red"
+        ctx.beginPath()
+        ctx.arc(graph.width / 3, snStart, 8, 0, Math.PI*2)
+        ctx.arc(graph.width / 3, snStart - imgSN.height, 8, 0, Math.PI*2)
+        ctx.fill()
+        
+        ctx.font = "10pt Sans"
+        ctx.fillStyle = "white"
+        ctx.textAlign = "left"
+        
+        ctx.fillText("SN start", 8 + graph.width / 3, 4 + snStart)
+        ctx.fillText("SN end", 8 + graph.width / 3, 4 + snStart - imgSN.height)
+
+        drawUpArrow(ctx, graph.width / 3 - imgSN.width / 2 - 20, imgSN.height, snStart)
+        
+        var cosZoom = 9
+        var cosStartX = graph.width * 3/4 
+        var cosStartY = graph.height * 3/4 - 20
+        
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.translate(cosStartX - 4, cosStartY + 8)
+        ctx.rotate(Math.PI / 4)
+        ctx.beginPath()
+        ctx.moveTo(cosZoom * -Math.PI*2, 0 - cosZoom)
+        for (let i = -Math.PI*2; i < Math.PI*2; i+=0.1) {
+            ctx.lineTo(cosZoom * i, - cosZoom * Math.cos(i))
+        }
+        ctx.stroke()
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
+
+
+        ctx.fillStyle = "blue"
+        for (let i = -1; i < 2; i++) {
+            ctx.beginPath()
+            ctx.arc(cosStartX + i * 40, cosStartY + i * 40, 8, 0, Math.PI*2)
+            ctx.fill()
+        }
+
+        if (version === 1) {
+            drawUpArrow(ctx, cosStartX - 70, 120, cosStartY + 60)
+        }
+        else {
+            drawRightArrow(ctx, graph.width / 2 + 40, graph.width / 2 + 160, cosStartY + 70)
+        }
+        
+    }
+
+    function drawRightArrow(ctx, x1, x2, y) {
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.fillStyle = "yellow"
+        
+        ctx.beginPath()
+        ctx.moveTo(x1, y)
+        ctx.lineTo(x2, y)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x2 - 10, y - 10)
+        ctx.lineTo(x2 + 2, y)
+        ctx.lineTo(x2 - 10, y + 10)
+        ctx.closePath()
+        ctx.fill()
+
+        ctx.beginPath()
+        ctx.moveTo(x1 + 10, y - 10)
+        ctx.lineTo(x1 - 2 , y)
+        ctx.lineTo(x1 + 10, y + 10)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    function drawUpArrow(ctx, x, l, y) {
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.fillStyle = "yellow"
+        
+        ctx.beginPath()
+        ctx.moveTo(x, y)
+        ctx.lineTo(x, y - l)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x - 10, y - l + 12)
+        ctx.lineTo(x , y - l - 2)
+        ctx.lineTo(x + 10, y - l + 12)
+        ctx.closePath()
+        ctx.fill()
+
+        ctx.beginPath()
+        ctx.moveTo(x - 10, y - 12)
+        ctx.lineTo(x , y + 2)
+        ctx.lineTo(x + 10, y - 12)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    function drawTime(graph) {
+        var ctx = graph.getContext("2d")
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, graph.width, graph.height)
+
+        var x0 = graph.width / 2
+        var y0 = graph.height / 20
+        ctx.strokeStyle = "White"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(x0, 0)
+        ctx.lineTo(x0, graph.height)
+        ctx.stroke()
+
+        ctx.font = "12pt Sans"
+        ctx.fillStyle = "white"
+        ctx.fillText("Time", x0 + 4, 20)
+        
+        var snStart = graph.height / 2 - 30
+        ctx.drawImage(imgSN, x0 - imgSN.width / 2, snStart - imgSN.height)
+
+        ctx.fillStyle = "red"
+        ctx.beginPath()
+        ctx.arc(x0, snStart, 8, 0, Math.PI*2)
+        ctx.arc(x0, snStart - imgSN.height, 8, 0, Math.PI*2)
+        ctx.fill()
+        
+        ctx.font = "10pt Sans"
+        ctx.fillStyle = "white"
+        ctx.textAlign = "left"
+        
+        ctx.fillText("SN start", 8 + x0, 4 + snStart)
+        ctx.fillText("SN end", 8 + x0, 4 + snStart - imgSN.height)
+
+        drawUpArrow(ctx, graph.width / 2 - imgSN.width / 2 - 20, imgSN.height, snStart)
+        
+        var cosZoom = 9
+        var cosStartX = graph.width / 2
+        var cosStartY = graph.height * 3/4 - 20
+        
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.translate(cosStartX - 8, cosStartY)
+        ctx.rotate(Math.PI / 2)
+        ctx.beginPath()
+        ctx.moveTo(cosZoom * -Math.PI*2, 0 - cosZoom)
+        for (let i = -Math.PI*2; i < Math.PI*2; i+=0.1) {
+            ctx.lineTo(cosZoom * i, -16 + cosZoom * Math.cos(i))
+        }
+        ctx.stroke()
+
+        ctx.fillStyle = "blue"
+        for (let i = -1; i < 2; i++) {
+            ctx.beginPath()
+            ctx.arc(cosZoom * Math.PI * 2 * i, -8, 8, 0, Math.PI*2)
+            ctx.fill()
+        }
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
+
+
+        drawUpArrow(ctx, graph.width / 2 - imgSN.width / 2 - 20, 120, cosStartY + 60)
+        
+    }
+
+
+
+</script>
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
