@@ -67,7 +67,7 @@
     <select id="graph-y-axis">
         <option>distance (Gly)</option>
         <option>luminosity distance (Gly)</option>
-        <option>z redshift</option>
+        <option>distance modulus (m-M))</option>
         
     </select>
     <br>
@@ -205,19 +205,37 @@ var black = false
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
 
         ctxB.fillStyle = !black ? "black" : "white"
-        
+
+        var zs = []
+        for (let i = 0; i < 1; i += 0.001) {
+            zs.push(i)
+        }
+        for (let i = 1; i < 2.5; i += 0.1) {
+            zs.push(i)
+        }
+
+        var t
         if (drawHypothesis.value > 0) {
             ctxB.strokeStyle = black ? "red" : "black"
             ctxB.beginPath()
             ctxB.moveTo(offset, graph.height - offset)
 
-            for (let ii = 0; ii<=2.5; ii+=0.1) {
-                d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
-                t = c0 / drawHypothesis.value * pc2ly * Math.log(1+ii)
-                //console.log(ii, t)
-                ctxB.lineTo( offset + ii * 10000 * zoomG, 
+            zs.forEach(z => {
+                //d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
+                t = c0 / drawHypothesis.value * Math.log(1 + z)
+                
+                if (yAxis.selectedIndex === 2) {
+                    t = t * (1 + z) //* 1000000
+                    t = (5 * Math.log10(t) + 25 - 28) * 1000
+                }
+                else {
+                    t = t * pc2ly
+                }
+                console.log(z, t)
+                ctxB.lineTo( offset + z * 10000 * zoomG, 
                             -offset + graph.height - t * zoomGY)
-            }
+            })
+
             ctxB.stroke()
         }
 
@@ -226,11 +244,18 @@ var black = false
         ctxB.beginPath()
         ctxB.moveTo(offset, graph.height - offset)
 
-        for (let ii = 0; ii<=2.5; ii+=0.1) {
-            d = zToD(ii) * pc2ly 
-            ctxB.lineTo( offset + ii * 10000 * zoomG, 
+        zs.forEach(z => {
+            d = zToD(z)  
+            if (yAxis.selectedIndex === 2) {
+                d = d * (1 + z) //* 1000000
+                d = (5 * Math.log10(d) + 25 - 28) * 1000
+            }
+            else {
+                d = d * pc2ly
+            }
+            ctxB.lineTo( offset + z * 10000 * zoomG, 
                         -offset + graph.height - d * zoomGY)
-        }
+        })
         ctxB.stroke()
 
     
@@ -238,11 +263,11 @@ var black = false
         var x, y
         for (var sn of snData) {
             //sn.d = sn.ld
-            if (yAxis.selectedIndex === 2) {
-                y = sn.z * 10000
-            }
-            else if (yAxis.selectedIndex === 1) {
+            if (yAxis.selectedIndex === 1) {
                 y = sn.ld
+            }
+            else if (yAxis.selectedIndex === 2) {
+                y = (sn.dm - 28) * 1000
             }
             else {
                 y = sn.d
