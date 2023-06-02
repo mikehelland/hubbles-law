@@ -77,7 +77,7 @@
     <canvas id="graph" height="400" width="700"></canvas>
     <table id="y-axis">
         <tr>
-            <td>\[\chi^2 \]</td>
+            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2\]</td>
         </tr>
     </table>
     </div>
@@ -97,7 +97,7 @@
     <table id="legend">
         <tr>
             <td class="caption">Hypothesis (<span style="color:red;">red</span>): </td>
-            <td>\[  d = \frac{c}{H_{0}} log(1 + z)  \]</td>
+            <td>\[  d_L = (1+z)\frac{c}{H_{0}} log(1 + z)  \]</td>
         </tr>
         <tr>
             <td class="caption">&Lambda;CDM (<span style="color:green;">green</span>): </td>
@@ -120,8 +120,8 @@
 
 <script>
 
-const Hstart = 60
-const Hend = 80.5
+const Hstart = 64
+const Hend = 78.5
 
 var sse = []
 var sseHypothesis = 0
@@ -240,7 +240,7 @@ var black = false
         ctxB.strokeStyle = !black ? "black" : "white"
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
 
-        ctxB.fillStyle = "yellow"
+        /*ctxB.fillStyle = "yellow"
         ctxB.globalAlpha = 0.3
         ctxB.fillRect(offset + (67 - Hstart) * zoomG, 0,
                         1 * zoomG, -offset + graph.height)
@@ -252,7 +252,7 @@ var black = false
         ctxB.lineTo(offset + (67.5 - Hstart) * zoomG, -offset + graph.height)
         ctxB.stroke()
         ctxB.setLineDash([])
-        
+        */
         ctxB.font = "14px sans-serif"
 
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)

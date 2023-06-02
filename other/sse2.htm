@@ -77,7 +77,7 @@
     <canvas id="graph" height="400" width="700"></canvas>
     <table id="y-axis">
         <tr>
-            <td>\[\chi^2 \]</td>
+            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2  \]</td>
         </tr>
     </table>
     </div>
@@ -89,7 +89,7 @@
     <table>
         <tr>
             <td>Squared Sum of Errors:</td>
-            <td>\[\chi^2= \Sigma_i (d_{d} - d_{m})^2 / \sigma^2 \]</td>
+            <td>\[\chi^2= \Sigma_i (d_i^{d} - d_i^{m})^2 \]</td>
             <td>where <i>d<sub>d</sub></i> is the distance modulus in the data, and <i>d<sub>m</sub></i> is the distance predicted by the model.</td>
         
         </tr>
@@ -97,12 +97,11 @@
     <table id="legend">
         <tr>
             <td class="caption">Hypothesis (<span style="color:red;">red</span>): </td>
-            <td>\[  d = \frac{c}{H_{0}} log(1 + z)  \]</td>
+            <td>\[  d_L = (1+z)\frac{c}{H_{0}} log(1 + z)  \]</td>
         </tr>
         <tr>
             <td class="caption">&Lambda;CDM (<span style="color:green;">green</span>): </td>
-            <td>&Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
-                &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L"></td>
+            <td>&Omega;<sub>M</sub> + &Omega;<sub>&Lambda;</sub> = 1</td>
         </tr>
     </table>
     
@@ -276,7 +275,7 @@ var black = false
         ctxG.fillStyle = !black ? "black" : "white"
             
         ctxG.lineWidth = 3
-        ctxG.strokeStyle = "red"
+        ctxG.strokeStyle = "green"
         ctxG.beginPath()
         ctxG.moveTo(offset, graph.height - sses[0].lowest.sse * zoomGY - offset) 
         sses.forEach(data => {
@@ -285,16 +284,14 @@ var black = false
         })
         ctxG.stroke()
         
-        /*ctxG.strokeStyle = "green"
+        ctxG.strokeStyle = "red"
         ctxG.beginPath()
-        ctxG.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
+        ctxG.moveTo(offset, graph.height - 55.01 * zoomGY - offset)
 
-        sse.forEach(data => {
-            ctxG.lineTo(offset + (data.H - Hstart) * zoomG, 
-                    -offset + graph.height - data.lcdm * zoomGY)
-        })
+        ctxG.lineTo(offset + graph.width * zoomG, 
+                    -offset + graph.height - 55.01 * zoomGY)
         ctxG.stroke()
-        */
+        
     }
 
     drawGraph()
@@ -302,14 +299,8 @@ var black = false
     fetch("https://mikehelland.github.io/hubbles-law/data/lcdmsse.json").then(res => res.json()).then(data => {
         //console.log(text)
 
-        var lines = text.split("\n")
-        for (var i = 1; i < lines.length; i++) {
-            var line = lines[i].split(",")
-            if (line[0]) {
-                snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])})
-            }
-            
-        }
+        sses = data
+        calculateDistances()
         drawData()
         
     })
@@ -468,8 +459,6 @@ function fun(v1, Omega_M, Omega_L, Omega_k) {
     var OmegaMinput = document.getElementById("Omega_M")
     var OmegaLinput = document.getElementById("Omega_L")    
     var Omega_L, Omega_M, H0, Omega_k
-    OmegaMinput.onchange = e => calculateLCDMError()
-    OmegaLinput.onchange = e => calculateLCDMError()
     
     function setLCDM(H, L, M) {
         Omega_L = L
