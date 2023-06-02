@@ -312,7 +312,9 @@ var black = false
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].split(",")
             if (line[0]) {
-                snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])})
+                var sn = {"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])}
+                snData.push(sn)
+
             }
             
         }
@@ -353,7 +355,7 @@ var black = false
         var dd 
         
         if (useMu) {
-            dlcdm = dlcdm * (1 + sn.z)  
+            dlcdm = dlcdm * (1 + sn.z) *  pc2ly
             dlcdm = calculateDistanceModulus(dlcdm)
             dd = sn.dm
         }
@@ -371,6 +373,7 @@ var black = false
     function calculateLCDMErrors() {
         clearInterval(handle)
         console.log("calcaulting lcdms")
+        sses = []
         var sseLCDM
         var i = 0
         grandLowest = 0
@@ -380,7 +383,7 @@ var black = false
             console.log("omegaL=" + omegaL)
             var lowest = 0
     
-            for (var iH = Hstart; iH < Hend; iH += 0.1) {
+            for (var iH = Hstart; iH < Hend; iH += 1) {
 
                 sseLCDM = 0
                 setLCDM(iH, omegaL, 1 - omegaL)
