@@ -305,6 +305,21 @@ var black = false
         
     })
 
+    fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
+        //this is here in case you want to call calculateLCDMErrors() manually
+
+        var lines = text.split("\n")
+        for (var i = 1; i < lines.length; i++) {
+            var line = lines[i].split(",")
+            if (line[0]) {
+                snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])})
+            }
+            
+        }
+        
+    })
+
+
     function calculateDistanceModulus(d) {
         return 5 * Math.log10(d) + 25 
     }
