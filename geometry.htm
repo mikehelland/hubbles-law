@@ -54,19 +54,25 @@
 
             <h1>Hubble's Constant and the Geometry of Time</h1>
 
-            <h2>Introduction</h2>
+
+            <h2>Observation</h2>
 
             <p>
-                Hubble's constant, \(H_0\), is the expansion rate of the universe, the most direct evidence for which is the elongating of the wavelength of 
-                light from distant places, and the time dilation of distant events, such as supernovae.
+                Hubble's constant, \(H_0\), is the expansion rate of the universe. The most direct pieces of evidence for the expansion of space are the 
+                redshifts in light from distant galaxies, and the time dilation of distant supernovae. Light is redshifted
+                when its wavelength increases. So the observations include a strethching of time, and a stretching of space. 
             </p>
 
             <p class="pimg"><canvas width="400" height="350" id="expandingspace"></canvas></p>
 
-            <p>The stretching of light's wavelength is cosmological redshift, which also has the effect of reducing the light's frequency. 
-                A reduction in frequency is also what would happen were the electromagnetic wave's period to somehow increase. By making the assumption
-                that the observed redshifts are a change in the electromagnetic wave's period, the two points of evidence previously mentioned could
-                be stated as: 
+            <p>Light, an electromagnetic wave, would also be redshifted were the wave's period to increase somehow. Since the observed duraton of a 
+                distant supernovae is stretched, then it would follow that the duration of all similarly distant phenomena would be equally stretched, 
+                including the oscillations of electromagnetic waves emitted from that distance.  
+            </p>
+            
+            <p>
+                Consider the interpretation that the observed redshifts are a change in the electromagnetic wave's period. 
+                The evidence could then be stated as: 
             </p>
 
             <ul>
@@ -76,58 +82,117 @@
 
             <p class="pimg"><canvas width="400" height="350" id="expandingtime"></canvas></p>
 
-            <p>Now the evidence is stated purely in the terms of time, with no mention of space. So consider what happens when a supernova and 
-                the crests of an electromagnetic wave are placed on the same lone time-axis. When the duration of the supernova is 
-                stretched, is it the start time or end time 
-                that changes? What about the time between the supernovae and the wave that's shown?
+            <p>
+                As a consequence of interpretting redshift like this, the two points of evidence appear fundamentally one-in-the-same, 
+                with the suggestive hint that it has to do with some kind of dynamic of time, rather than of space.
+            </p>
+
+            <h2>Conjecture</h2>
+
+            <p>
+                The time dilation of supernovae is traditionally considered to be an effect of the expansion of space. Each photon coming from the supernova will 
+                have to travel farther than the one before it, causing its observed duraton to be stretched.
+            </p>
+
+            <p>
+                The hypothesis developed in this paper asks the reader to consider the possibility that what we are observing to happen, is actually happening. 
+                Distant supernovae don't just appear time dilated; they are time dilated. The observed time dilation isn't an effect of expanding space, because 
+                the expansion of space won't be necessary in a universe with time that possesses this dynamic characteristic.
+                The conjecture can be summarized as <b>"the past is time dilated"</b>, and the hypothesis will be referred to as the 
+                "time dilated past" (TDP) hypothesis. 
             </p>
 
             <p class="pimg"><canvas width="200" height="400" id="justtime"></canvas></p>
 
-            <p>For a consistent picture, the answer will be to stretch the entire time dimension. This can be done using a coordinate transformation
-                where <i>t</i> is the original coordinate and <i>t'</i> is the new coordinate:</p>
-
-            <p>\[ t' = \frac{1}{H_0} log(H_0 t + 1) \]</p>
-
-            <p>Hubble's constant, <i>H<sub>0</sub></i>, is used here as a "time scale factor", which stretches time instead of space.</p>
-
-            <p>How this transformation can be derived from a hyperbolic manifold will be the topic of the next section. Then it will be shown 
-                how to derive equations for redshift, lookback time, and distance. After that, the model is compared to the Pantheon+SH0ES dataset,
-                and it is shown to be a better fit for the data than the current standard cosmological model, &Lambda;CDM. 
+            <p>
+                The next sections develop the conjecture into a testable hypothesis. Time will be given an unconventional geometrical treatment, from 
+                which a redshift-distance relationship is derived. That relationship's predictions will be compared to the Pantheon+SH0ES dataset, 
+                and it will be shown to out-perform the current standard model of cosmology's predictions over a broad range of cosmological parameters.
             </p>
 
-            <p>It is proposed and discussed how the hypothesis presented may be interpreted as the arrow of time, as well as the broader implications for 
-                cosmology in general.
+            <p>The implications of a non-expanding cosmology are discussed once the hypothesis is developed and its fit to the data is analysed. 
+                The possibility that this hypothesis may be relevant to the arrow of time in a fundamental way is also reviewed.
             </p>
 
+            <h2>Hypothesis</h2>
 
+            <h3>The reference frame</h3>
 
+            <p>
+                Imagine Isaac Newton has go-kart, and he places a red apple on the track every one second. If he's traveling at a consistent 
+                1 m/s, the apples will be evenly spaced 1 m apart. 
+            </p>
+
+            <canvas width="800" id="moving"></canvas>
+
+            <p>
+                From Newton's frame of reference, the go-kart is not moving, and it appears as if the apples are being propelled backwards from it.
+            </p>
+
+            <canvas width="800" id="atrest"></canvas>
+    
+            <p>
+                Both frames of reference are equally valid. If Newton was in a windowless enclosure on the go-kart, would he know if the kart is 
+                in motion or at rest? Would he know if he was traveling in a straightline or along a gentle curve? 
+            </p>
+
+            <p>
+                With those age-old questions in mind, think about the ticks of a stationary clock. On one hand, it is intuitive to think of
+                the clock as moving forward in time, leaving behind a trail of spacetime events representing its ticks. The clock moves into the future, 
+                leaving the past behind.  
+            </p>
+
+            <p>
+                Alternatively, and perhaps less intuitively, consider the view from the clock's frame of reference: it is always in the present; 
+                it never leaves and the future never arrives; events that occur in the present get pushed into the past, which itself is moving away from the present. 
+                To visualize this view of time, it may be helpful to imagine the observer as being on a go-kart that is on a conveyor built moving against it.
+            </p>
+
+            <p>
+                Is it possible to make a measurement or observation that would distinguish one noton of time from the other, or are they equivalent? 
+                Is it possible that cosmic time dilation and redshift are evidence of one view over the other?
+            </p>
+
+            <h3>The geometry of time</h3>
+
+            <p>
+                To answer the questions of the previous section, and to provide the geometrical foundations for a hypothesis, the unusual step of 
+                giving time curvature will be taken. Note that this is not curvature in the Gaussian sense, which is a product of two principals 
+                of curvature. Since time is one dimensional, it only has the opportunity to curve in one direction.
+            </p>
             
-            <h2>The geometry of time</h2>
-
-            <p>Commonly we say that \(t\in\mathbb{R}\), but the other options are \(t\in\mathbb{S}^1\) and \(t\in\mathbb{H}^1\). So let's consider those.</p>
-
             <p>
-                Say \( (x, y) \in \mathbb{R}^2\) and draw a circle \( x^2 + y^2 = r^2 \). If we place an event and an observer on that circle, 
-                separated by angle \( \theta \), the distance between the observer and an event along the circle will be \( r \theta \) 
-                (assuming \( \theta \) is in radians).
+                The desired effect of the hypothesis is to time dilate the past, but the counter example of contracting the duration between events 
+                is a simple introduction to the concept of curved time.
+                So consider Newton in his go-kart, which is placed on a circular conveyor belt that matches his speed in the opposite direction.
+            </p> 
+            
+            <canvas width="800" height="500" id="circle"></canvas>
+            
+            <p>
+                Were Newton and the conyeor belt to take a break after an appropriate amount of time,  
+                he would notice upon surveying the track that the distance to each apple from himself is no longer evenly space. 
+                After half a rotation of the track, 
+                the apple's begin to bunch together, and then start heading back toward Newton. When Newton resumes his driving, sure enough, 
+                he'll see the apple's he had left behind coming toward him from the front.   
             </p>
 
-            <p class="pimg"><img src="img/timecircle.png"></p>
+            <canvas width="800" height="200" id="circle-d"></canvas>
 
-            <p>
-                But the distance in the ambient space (ambient time?) will be the Pythagorean theorem between the (x, y) coordinates, 
-                shown underneath the circle, which is:
+            <p>Typically we would say that time is the real number line, or formally speaking, that \(t\in\mathbb{R}\). 
+                Here we are presented with an alternative option, where our dimension of time is on the circumference of a 2-dimensional circle, or
+                \(t\in\mathbb{S}^1\), where \( \mathbb{S}^1 = \{ (x, y) \in \mathbb{R}^2 : x^2 + y^2 = r^2 \} \).
             </p>
 
+            <p>
+                The distance along the curve is measured in r&theta;, but in the 2-d ambient space, distances are measured by the Pythagorean theorem, 
+                which, given the angle &theta; between the two points on the circle we want the distance for, is:
+            </p>
+            
             <p>\[ d^2 = (r \cos(\theta) - 1)^2 + (r \sin(\theta))^2 \]</p>
 
             <p>
-                This would mean that time is circular, events that travel far enough in the past would also show up in the future. This would also "time contract" the past, and cause blueshifts to be observed. 
-            </p>
-
-            <p>
-                Let's try to induce a metric that takes the distance \(t = r\theta \) and maps it to \( (x, y) \). We need the following formula:
+                With this, the goal is to induce a metric that preserves distance from the ambient space, which we could get with the following formula:
             </p>
 
             <p>\[ g_{ab}=\partial _{a}X^{\mu }\partial _{b}X^{\nu }g_{\mu \nu }\ \]</p>
@@ -139,14 +204,18 @@
                 \[  g_{tt} = (- \sin t)^2 + (\cos t)^2  \]
             </p>
 
-            <p>As mentioned before, this leads to a time contracted, blueshifted universe, which is the opposite of what the evidence describes.
-                To get the desired effect, a hyperbolic surface is necessary. In \( \mathbb{R}^2 \), draw a hyperbola: 
+            <p>
+                As mentioned before, this leads to a time contracted past, which is the opposite of what the evidence describes.
+                To get the desired effect, let's make the track a hyperbola: 
             </p>
             
-            <p class="pimg"><img src="img/timehyperbola.png"></p>
+            <canvas width="800" height="500" id="hyperbola"></canvas>
             
-            <p>Now in the ambient space, the more distant the events, the more spread out they become, which is observed as time dilation and redshift. 
+            <p>
+                Now in the ambient space, the more distant the events, the more spread out they become, which is observed as time dilation and redshift. 
             </p>
+
+            <canvas width="800" height="200" id="hyperbola-d"></canvas>
 
             <p>The same reasoning applies as before, except now \( X^{0} = r \cosh t\) and \( X^{1} = r \sinh t\).
                 The derivative of \( \cosh t\) is \( \sinh t\), which gives us:
@@ -157,6 +226,22 @@
                 \[  g_{tt} = (\sinh t)^2 + (\cosh t)^2  \]
             </p>
 
+
+            <script src="other/kart.js"></script>
+
+
+            <p class="pimg"><img src="img/timecircle.png"></p>
+
+            <p>
+                But the distance in the ambient space (ambient time?) will be the Pythagorean theorem between the (x, y) coordinates, 
+                shown underneath the circle, which is:
+            </p>
+
+            
+            
+            <p class="pimg"><img src="img/timehyperbola.png"></p>
+            
+            
             
             <p>
                 It is important to note that the observer should always exist in the present, <i>t = 0</i>, in this spacetime. The desired effects only 

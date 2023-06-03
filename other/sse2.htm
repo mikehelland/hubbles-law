@@ -355,7 +355,7 @@ var black = false
         var dd 
         
         if (useMu) {
-            dlcdm = dlcdm * (1 + sn.z) *  pc2ly
+            dlcdm = dlcdm * (1 + sn.z) 
             dlcdm = calculateDistanceModulus(dlcdm)
             dd = sn.dm
         }
@@ -386,7 +386,7 @@ var black = false
             for (var iH = Hstart; iH < Hend; iH += 1) {
 
                 sseLCDM = 0
-                setLCDM(iH, omegaL, 1 - omegaL)
+                setLCDM(iH, omegaL, Math.max(1 - omegaL, 0))
                 snData.forEach(sn => {
                     sseLCDM += calculateLCDMError(sn)
                 })
@@ -548,7 +548,7 @@ function fun(v1, Omega_M, Omega_L, Omega_k) {
         form.look.value = lookback.toFixed(1);
         form.age.value = age.toFixed(1);
         */
-       return DC
+       return DC //lookback * 1000 /  pc2ly //DC
     }
 
 
