@@ -88,6 +88,8 @@
     <br>
     Hypothesis H<sub>0</sub>: <input value="70" type="number" id="graph-hypothesis">
     <br>
+    Geometry R: <input value="6" type="number" id="graph-geometry">
+    <br>
     &Lambda;CDM (<span style="color:green;">green</span>): 
     H<sub>0</sub>: <input type="number" value="67" step="0.5" id="H0">
     &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
@@ -115,8 +117,8 @@
 
 
 <div id="hypothesiseq">
-    \[  d = \frac{c}{H_{0}} log(1 + z)  \]
-    <!--\[  H_{0} = 71~km~s^{-1}~Mpc^{-1}  \]-->
+    <!--\[  d = \frac{c}{H_{0}} log(1 + z)  \]-->
+    \[  H_{0} = 70~\text{km s}^{-1}~\text{Mpc}^{-1}  \]
 </div>
 
 
@@ -127,6 +129,60 @@ var sseLCDM = 0
 
 var sseHypothesisDiv = document.getElementById("sse-hypothesis")
 var sseLCDMDiv = document.getElementById("sse-lcdm")
+
+var drawHypothesis = document.getElementById("graph-hypothesis")
+var drawGeometry = document.getElementById("graph-geometry")
+
+var R = drawGeometry.value
+var sq = n => Math.pow(n, 2)
+var sqrt = n => Math.sqrt(n)
+var cosh = n => Math.cosh(n)
+var data = []
+
+drawGeometry.onchange = e => {
+    calcData()
+    drawSN()
+}
+
+function calcData() {
+    data = []
+    R = drawGeometry.value
+
+    for (let i = 0; i < 10; i+=0.1) {
+        let d = {
+            d: i,
+            t: sqrt(sq(R * Math.cosh(i / R) - R) + sq(R * Math.sinh(i / R))), 
+            t2: -14 * Math.log(1/14 * -i + 1)
+        }
+        //d.z = tToz(d.t)
+        d.z = dToz(d.d)
+        d.z2 = 1 / Math.exp(1/14 * -d.t2) - 1
+        data.push(d)
+    }
+
+}
+calcData()
+
+function tToz(t) {
+    //(sqrt(2) t)/sqrt((R^2 + 2 t^2) (abs(R) sqrt(R^2 + 2 t^2) - R^2 + t^2))
+    //https://www.wolframalpha.com/input?i2d=true&i=D%5BArcCosh%5BDivide%5B%5C%2840%29Power%5BR%2C2%5D+%2B+sqrt%5C%2840%29Power%5BR%2C4%5D+%2B+2+Power%5BR%2C2%5D+Power%5Bt%2C2%5D%5C%2841%29%5C%2841%29%2C%5C%2840%292+Power%5BR%2C2%5D%5C%2841%29%5D%5D%2Ct%5D
+
+    oneOverOnePlusZ = R * (sqrt(2) * t) / sqrt((sq(R) + 2 * sq(t)) * (Math.abs(R) * sqrt(sq(R) + 2 * sq(t)) - sq(R) + sq(t)))
+    return 1 / oneOverOnePlusZ - 1
+}
+
+
+function tTod(t) {
+    Math.acosh((Math.pow(H, 2) + Math.sqrt(Math.pow(H, 4) + 2 * Math.pow(H, 2) * Math.pow(a.d, 2) )) / (2 * Math.pow(H, 2)))
+}
+
+function dToz(x) {
+    // https://www.wolframalpha.com/input?i2d=true&i=D%5BSqrt%5BPower%5BR+cosh%5C%2840%29Divide%5Bx%2CR%5D%5C%2841%29-R%2C2%5D%2BPower%5BR+sinh%5C%2840%29Divide%5Bx%2CR%5D%5C%2841%29%2C2%5D%5D%2Cx%5D
+    //cosh((3 x)/(2 R))/sqrt(cosh(x/R))
+
+    return cosh((3 * x) / (2 *R) ) / sqrt(cosh(x/R)) - 1
+
+}
 
 
 var black = false
@@ -153,7 +209,7 @@ var black = false
 
                 // convert to comoving distance
                 //d = ld / (1+z)
-                var d = ld / (1+(1*snData[i].z))
+                var d = ld / (1+snData[i].z) // (1+snData[i].z)  
 
                 // parsec to light years
                 d = d * 3.261564
@@ -186,10 +242,9 @@ var black = false
     var zoomGY = zoom * zoom_gy
     var offset = 20
     
-    var zoomz = 10000
+    var zZoom = 10000
 
     var drawnSN = false
-    var drawHypothesis = document.getElementById("graph-hypothesis")
 
     var snData = []
     var zData = []
@@ -220,9 +275,10 @@ var black = false
             ctxB.beginPath()
             ctxB.moveTo(offset, graph.height - offset)
 
+            let H0 = drawHypothesis.value
             zs.forEach(z => {
                 //d = ii/(1+ii) * c0 / drawHypothesis.value * pc2ly
-                t = c0 / drawHypothesis.value * Math.log(1 + z)
+                t = c0 / H0 * Math.log(1 + z)
                 
                 if (yAxis.selectedIndex === 2) {
                     t = t * (1 + z) //* 1000000
@@ -231,15 +287,30 @@ var black = false
                 else {
                     t = t * pc2ly
                 }
-                console.log(z, t)
-                ctxB.lineTo( offset + z * 10000 * zoomG, 
+                ctxB.lineTo( offset + z * zZoom * zoomG, 
                             -offset + graph.height - t * zoomGY)
             })
 
             ctxB.stroke()
         }
 
+        if (drawGeometry.value > 0) {
+            ctxB.lineWidth = 1
+            ctxB.strokeStyle = "blue"
+            ctxB.beginPath()
+            ctxB.moveTo(offset, graph.height - offset)
+            data.forEach(d => {
+                ctxB.lineTo( offset + d.z * zZoom * zoomG, 
+                                -offset + graph.height - d.d * 1000 * zoomGY)
+            })
+            ctxB.stroke()
+
+        }
+
+
+
         setLCDM()
+        ctxB.lineWidth = 1
         ctxB.strokeStyle = "green"
         ctxB.beginPath()
         ctxB.moveTo(offset, graph.height - offset)
@@ -253,7 +324,7 @@ var black = false
             else {
                 d = d * pc2ly
             }
-            ctxB.lineTo( offset + z * 10000 * zoomG, 
+            ctxB.lineTo( offset + z * zZoom * zoomG, 
                         -offset + graph.height - d * zoomGY)
         })
         ctxB.stroke()
@@ -270,18 +341,10 @@ var black = false
                 y = (sn.dm - 28) * 1000
             }
             else {
-                y = sn.d
+                y = sn.d // (1 + sn.z)
             }
 
-            if (xAxis.selectedIndex === 0) {
-                x = sn.z * 10000
-            }
-            else if (xAxis.selectedIndex === 2) {
-                x = sn.ld
-            }
-            else {
-                x = sn.d
-            }
+            x = sn.z * zZoom
 
             ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 2, 2)
 
@@ -300,7 +363,7 @@ var black = false
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)
         ctxB.fillStyle = "black"
         ctxB.fillText("Pantheon+SH0ES", offset + 5 + 20, offset + 38)
-        ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
+        //ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
 
 
         ctxB.fillStyle = !black ? "black" : "white"
@@ -313,21 +376,20 @@ var black = false
         var dgi
         ctxB.font = "10px sans-serif"
         if (xAxis.selectedIndex === 0) {
-            for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+            
+            if (yAxis.selectedIndex === 2) {
+                for (dgi = 28; dgi < 50; dgi+=5) {
+                    ctxB.fillText(dgi, 4, -offset + graph.height - (dgi - 28) * 1000 * zoomGY + 4)    
+                }
             }
+            else {
+                for (dgi = 0; dgi < 80; dgi+=5) {
+                    ctxB.fillText(dgi, 4, -offset + graph.height - dgi * 1000 * zoomGY + 4)    
+                }
+            }            
             
             for (dgi = 0; dgi < 110; dgi+=5) {
-                ctxB.fillText(dgi / 10, offset + dgi / 10 * 10000 * zoomG + 4, graph.height - 5)    
-            }
-        }
-        else {
-            for (dgi = 0; dgi < 80; dgi+=5) {
-                ctxB.fillText(dgi, -offset + dgi * 1000 * zoomG + 4, graph.height - 5)    
-            }
-            
-            for (dgi = 0; dgi < 110; dgi+=5) {
-                ctxB.fillText(dgi / 10, 4, -offset + graph.height - dgi / 10 * 10000 * zoomGY + 4)    
+                ctxB.fillText(dgi / 10, offset + dgi / 10 * zZoom * zoomG + 4, graph.height - 5)    
             }
         }
         
@@ -339,7 +401,7 @@ var black = false
         var lines = text.split("\n")
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].split(",")
-            snData.push({"dm": line[2], "z": line[0]})
+            snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0])})
         }
         calculateDistances()
         
@@ -541,6 +603,16 @@ function fun(v1, Omega_M, Omega_L, Omega_k) {
        return DC
     }
 
+    function hyperbolicTime(t) {
+        /*
+            \theta = \cosh^{-1}(\frac{R^4} + \sqrt{R^2 + 2R^2 t^2}{2R^2})
+        */
+        return Math.acosh((
+            Math.pow(H, 2) + Math.sqrt(Math.pow(H, 4) + 2 * Math.pow(H, 2) * Math.pow(t, 2) )) / 
+            (2 * Math.pow(H, 2)))
+
+    }
+    
 
     
 </script>

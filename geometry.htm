@@ -60,7 +60,8 @@
             <p>
                 Hubble's constant, \(H_0\), is the expansion rate of the universe. The most direct pieces of evidence for the expansion of space are the 
                 redshifts in light from distant galaxies, and the time dilation of distant supernovae. Light is redshifted
-                when its wavelength increases. So the observations include a strethching of time, and a stretching of space. 
+                when its wavelength increases, and time dilation is an increase in duration. 
+                So the observations include a strethching of length, and a stretching of time. 
             </p>
 
             <p class="pimg"><canvas width="400" height="350" id="expandingspace"></canvas></p>
@@ -103,34 +104,157 @@
             </p>
 
             <p class="pimg"><canvas width="200" height="400" id="justtime"></canvas></p>
+            <script src="other/evidence.js"></script>
 
             <p>
-                The next sections develop the conjecture into a testable hypothesis. Time will be given an unconventional geometrical treatment, from 
-                which a redshift-distance relationship is derived. That relationship's predictions will be compared to the Pantheon+SH0ES dataset, 
-                and it will be shown to out-perform the current standard model of cosmology's predictions over a broad range of cosmological parameters.
+                The next sections describe two attempts at developing this conjecture into a testable hypothesis. First in a purely ad hoc way, and then 
+                with a geometrical foundation.
             </p>
 
-            <p>The implications of a non-expanding cosmology are discussed once the hypothesis is developed and its fit to the data is analysed. 
-                The possibility that this hypothesis may be relevant to the arrow of time in a fundamental way is also reviewed.
+            <h2>An ad hoc solution</h2>
+
+            <p>
+                The scale factor a(t) plays a very important role in describing an expanding universe: 
             </p>
 
-            <h2>Hypothesis</h2>
+            <p>
+                \[ ds^2 = - c^2 dt^2 + a(t)^2 (dx^2 + dy^2 + dz^2) \]
+            </p>
+
+            <p>
+                And in a universe that expands very simply, such as a dark energy only universe: 
+            </p>
+
+            <p>
+                \[a(t) = e^{H_0t} \]
+            </p>
+
+            <p>
+                As a means of exploring the conjecture, consider what happens when the scale factor is repurposed as a "time scale factor", b(t): 
+            </p>
+
+            <p>
+                \[ ds^2 = - b(t)^2 c^2 dt^2 + dx^2 + dy^2 + dz^2 \]
+                \[b(t) = \frac{1}{1+z} = e^{H_0t} \]
+            </p>
+
+            <p>
+                This metric form has no curvature and amounts to a transformation of the time coordinate in Minkowski spacetime. It cannot be 
+                claimed to produce the effects of time dilation, or explain why it happens, which is why a geometrical solution 
+                is pursued in the next section. For now, we just need to assume that the time dilation that is observed is really happening,
+                and that the \(t\) coordinate measured by an observer shows those effects. Under those assumptions, we can use the following transformation
+                to produce a time coordinate \(\tau\) that excludes the effects of time dilation: 
+            </p>
+
+            <p>
+                \[ \tau = \frac{1}{H_0} ( e^{H_0t} - 1)\]
+            </p>
+
+            <p>
+                It is important to note that \(t = 0 \) will always represent the present, and that all the measured time 
+                coordinates used will be negative since cosmological observations are dealing with the past. Therefore \(\tau \leq 0 \) too.
+                This means the exponent in the equation should always be zero or negative.
+            </p>
+
+            <p>
+                It will be convenient to speak of distances as positive values though. 
+                Knowing \(\tau \) gives us the "un-time dilated" time coordinate, from which we can know that the physical distance \(d\) 
+                to a source of light is \(d = -c\tau \). The time scale factor in terms of redshift z can be substituted into the transformation, giving:
+            </p>
+
+            <p>
+                \[ \tau = (\frac{1}{1+z} - 1) \frac{1}{H_0}\]
+                \[ \tau = -\frac{z}{1+z} \frac{1}{H_0}  \]
+                \[ d = \frac{z}{1+z} \frac{c}{H_0} \]
+            </p>
+
+            <p>
+                The light travel time distance, \(d_t = -ct \), will be longer than the physical distance due to the effects of time dilation, and 
+                can be related to z by reversing the time transformation:
+            </p>
+
+            <p>
+                \[ H_0\tau + 1 = e^{H_0t} \]
+                \[ t = \frac{1}{H_0} \log(H_0\tau + 1)\]
+            </p>
+
+            <p>
+                And due to the time scale factor's relationship with redshift:
+            </p>
+            <p>
+                \[ H_0\tau + 1 = \frac{1}{1+z} \]
+                \[ H_0\tau = \frac{1}{1+z} - 1\]
+                \[ t = \frac{1}{H_0} \log(\frac{1}{1+z} - 1 + 1)\]
+                \[ t = \frac{1}{H_0} \log(\frac{1}{1+z})\]
+                \[ -ct = \frac{c}{H_0} \log(1+z)\]
+                \[ d_t = \frac{c}{H_0} \log(1+z)\]
+            </p>
+
+            <h3>Test</h3>
+
+            <p>
+                To test the hypothesis against the Pantheon+SH0ES dataset, a distance modulus needs to be calculated from the redshift.
+                A distance modulus can be obtained from a luminosity distance, for which we will use \(-ct(1+z)\), which accounts for the effects of time 
+                dilation in the flux of the light source.
+            </p>
+
+
+            <p class="pimg"><img src="img/pantheonshoes_dm.png"></p>
+
+            <p>
+                To calculate a best fit for the hypothesis to determine a value for Hubble's constant, \(H_0\), we'll use this equation for the sum 
+                of squared errors (SSE):
+            </p>
+
+            <p>
+                \[\chi^2= \Sigma_i (\mu_i^{d} - \mu_i^{m})^2 \]
+            </p>
+
+            <p>where \( \mu_i^d \) is the distance modulus of the i-th supernova in the dataset, and \( \mu_i^m \) is the distance modulus 
+                predicted by the model from the redshift z.
+            
+                When an SSE is calculated for a range of \(H_0\), the best fit is 70.4 km/s/Mpc. 
+            </p>
+
+            <p class="pimg"><img src="img/sse.png"></p>
+
+            <p>
+                The hypothesis is also shown here to be a better fit to the data than the concodrance model of cosmology, &Lambda;CDM.
+                In fact, these calculations show that the hypothesis is a better fit to the supernovae data than any "flat" FLRW model 
+                (\(\Omega_\Lambda + \Omega_M = 1\)), for any value of \(H_0\):
+            </p>
+
+
+            <p class="pimg"><img src="img/sselcdm.png"></p>
+
+            <p>
+                Although lacking a geometrical foundation, the ad hoc hypothesis is simpler than the standard model of cosmology, and a better 
+                fit for the supernovae data, which may be of some practical value as-is. However, in the tradition of general relativity,
+                a solution that arises from an underlying geometry is preferred. 
+            </p>
+
+
+            <h2>A geometrical solution</h2>
 
             <h3>The reference frame</h3>
 
             <p>
-                Imagine Isaac Newton has go-kart, and he places a red apple on the track every one second. If he's traveling at a consistent 
+                Imagine Isaac Newton has a go-kart, and he places a red apple on the track every one second. If he's traveling at a consistent 
                 1 m/s, the apples will be evenly spaced 1 m apart. 
             </p>
 
-            <canvas width="800" id="moving"></canvas>
+            <p class="pimg">
+                <canvas width="800" id="moving"></canvas>
+            </p>
 
             <p>
                 From Newton's frame of reference, the go-kart is not moving, and it appears as if the apples are being propelled backwards from it.
             </p>
 
-            <canvas width="800" id="atrest"></canvas>
-    
+            <p class="pimg">
+                <canvas width="800" id="atrest"></canvas>
+            </p>
+            
             <p>
                 Both frames of reference are equally valid. If Newton was in a windowless enclosure on the go-kart, would he know if the kart is 
                 in motion or at rest? Would he know if he was traveling in a straightline or along a gentle curve? 
@@ -145,7 +269,7 @@
             <p>
                 Alternatively, and perhaps less intuitively, consider the view from the clock's frame of reference: it is always in the present; 
                 it never leaves and the future never arrives; events that occur in the present get pushed into the past, which itself is moving away from the present. 
-                To visualize this view of time, it may be helpful to imagine the observer as being on a go-kart that is on a conveyor built moving against it.
+                To visualize this view of time, it may be helpful to imagine the observer as being on a go-kart that is on a conveyor belt moving against it.
             </p>
 
             <p>
@@ -157,78 +281,148 @@
 
             <p>
                 To answer the questions of the previous section, and to provide the geometrical foundations for a hypothesis, the unusual step of 
-                giving curvature to time will be taken. Note that this is not curvature in the Gaussian sense, which is a product of two principals 
+                giving curvature to time will be taken. Note that this is not curvature in the Gaussian sense, which is the product of two principals 
                 of curvature. Since time is one dimensional, it only has the opportunity to curve in one direction.
             </p>
             
             <p>
-                The desired effect of the hypothesis is to time dilate the past, but the counter example of contracting the duration between events 
-                is a simple introduction to the concept of curved time.
+                The simplest example of curved time is in a circle.
                 So consider Newton in his go-kart, which is placed on a circular conveyor belt that matches his speed in the opposite direction.
             </p> 
             
-            <canvas width="800" height="500" id="circle"></canvas>
+            <p class="pimg">
+                <canvas width="800" height="500" id="circle"></canvas>
+            </p>
             
             <p>
                 Were Newton and the conyeor belt to take a break after an appropriate amount of time,  
-                he would notice upon surveying the track that the distance to each apple from himself is no longer evenly space. 
+                he would notice upon surveying the track that the distance to each apple from himself is no longer evenly spaced. 
                 After half a rotation of the track, 
                 the apple's begin to bunch together, and then start heading back toward Newton. When Newton resumes his driving, sure enough, 
                 he'll see the apple's he had left behind coming toward him from the front.   
             </p>
 
-            <canvas width="800" height="200" id="circle-d"></canvas>
-
-            <p>Typically we would say that time is the real number line, or formally speaking, that \(t\in\mathbb{R}\). 
-                Here we are presented with an alternative option, where our dimension of time is on the circumference of a 2-dimensional circle, or
-                \(t\in\mathbb{S}^1\), where \( \mathbb{S}^1 = \{ (x, y) \in \mathbb{R}^2 : x^2 + y^2 = r^2 \} \).
-            </p>
-
-            <p>
-                The distance along the curve is measured in r&theta;, but in the 2-d ambient space, distances are measured by the Pythagorean theorem, 
-                which, given the angle &theta; between the two points on the circle we want the distance for, is:
+            <p class="pimg">
+                <canvas width="800" height="200" id="circle-d"></canvas>
             </p>
             
-            <p>\[ d^2 = (r \cos(\theta) - 1)^2 + (r \sin(\theta))^2 \]</p>
-
-            <p>
-                With this, the goal is to induce a metric that preserves distance from the ambient space, which we could get with the following formula:
+            <p>Typically we would say that time is the real number line, or formally, that \(t\in\mathbb{R}\). 
+                Here we are presented with an alternative option, where our dimension of time is on the circumference of a 2-dimensional circle, or
+                \(t\in\mathbb{S}^1\), where \( \mathbb{S}^1 = \{ (x, y) \in \mathbb{R}^2 : x^2 + y^2 = R^2 \} \).
             </p>
 
+            <p>
+                The distance along the curve, we'll call \(\tau\), is \(\tau = R\theta\), and the distance in the 2-d ambient space
+                that Newton measures, which we'll call \(t\), is given
+                by the Pythagorean theorem:
+            </p>
+            
+            <p>\[ t^2 = (R \cos( \frac{\tau}{R}) - R)^2 + (R \sin(\frac{\tau}{R}))^2 \]</p>
+
+            <p>In the above equation, \(t\) will be the time coordinate in the resulting dimension of time, which represents the length of a chord
+                on the circle, thus preserving the distance in the ambient space.
+            </p>
+         <!--
+                We may induce a metric for our dimension of time using the following formula:
+   
             <p>\[ g_{ab}=\partial _{a}X^{\mu }\partial _{b}X^{\nu }g_{\mu \nu }\ \]</p>
 
-            <p>where \( g_{\mu \nu } \) is the Euclidean metric. Well need for \( X^{0} = r \cos t\) and \( X^{1} = r \sin t\), which gives us:</p>
-
-            <p>
-                \[  g_{tt} = \partial_t \cos(t) \partial_t \cos(t) +  \partial_t \sin(t) \partial_t \sin(t) \]
-                \[  g_{tt} = (- \sin t)^2 + (\cos t)^2  \]
+            <p>where \( g_{\mu \nu } \) is the Euclidean metric in radial coordinates:
             </p>
 
             <p>
-                As mentioned before, this leads to a time contracted past, which is the opposite of what the evidence describes.
-                To get the desired effect, let's make the track a hyperbola: 
+                \[ g_{\mu \nu } =\begin{bmatrix} 1&0\\ 0&r^{2} \end{bmatrix} \]
+            </p>
+
+            <p>
+                Since we can convert a chord length \(l\) to an arc length using:
+            </p>
+
+            <p>\[ r\theta = 2r \arcsin (\frac{l}{2r}) \]</p>
+            
+            <p>Then to map the \(t\) coordinate back to the ambient space in \( (r, \theta) \) coordinates we can use: </p>
+
+            <p>
+                \[ X^{r}(t) = r \]
+                \[ X^{\theta}(t) = 2 \arcsin (\frac{t}{2r}) \]
+            </p>
+
+            <p>Or, in (x, y) coordinates:</p>
+
+            <p>
+                \[ X^{x}(t) = \cos (2r \arcsin (\frac{t}{2r})) \]
+                \[ X^{y}(t) = \sin (2r \arcsin (\frac{t}{2r})) \]
             </p>
             
-            <canvas width="800" height="500" id="hyperbola"></canvas>
+
+            <p>
+                \[  g_{tt} = \partial_t r \partial_t r +  (\partial_t 2 \arcsin (\frac{t}{2r}))^2 r^2 \]
+                \[  g_{tt} = (\frac{2}{r \sqrt{4 - x^2/r^2}})^2 r^2  \]
+            </p>
+-->
+            <p>
+                If time is the surface of a circle as described here, the events that happen in the present will be bunched together in the past.
+                This would lead to the observation of time contraction and blueshifted light. 
+                Since we observe the opposite, let's apply the same reasoning to a hyperbolic track: 
+            </p>
+            
+            <p class="pimg">
+                <canvas width="800" height="500" id="hyperbola"></canvas>
+            </p>
             
             <p>
                 Now in the ambient space, the more distant the events, the more spread out they become, which is observed as time dilation and redshift. 
             </p>
 
-            <canvas width="800" height="200" id="hyperbola-d"></canvas>
+            <p class="pimg"><canvas width="800" height="200" id="hyperbola-d"></canvas></p>
+            <script src="other/kart.js"></script>
 
-            <p>The same reasoning applies as before, except now \( X^{0} = r \cosh t\) and \( X^{1} = r \sinh t\).
-                The derivative of \( \cosh t\) is \( \sinh t\), which gives us:
+
+            <p>The same reasoning applies as before; our \(t\) coordinate will be the length of a chord of the hyperbola from the starting position,
+                which can be found from the arc length, \(\tau\):
             </p>
 
             <p>
-                \[  g_{tt} = \partial_t \cosh(t) \partial_t \cosh(t) +  \partial_t \sinh(t) \partial_t \sinh(t) \]
-                \[  g_{tt} = (\sinh t)^2 + (\cosh t)^2  \]
+                \[t^2 = (R \cosh(\frac{\tau}{R}) - R)^2 + (R \sinh (\frac{\tau}{R}))^2 \]
             </p>
 
+            <p>
+                This function gives us the lookback time from the time given by the arc length. The arc length \(\tau\) represents time without 
+                the effects of time dilation. Therefore \(c\tau\) gives you the physical distance to the source, and \(ct\) gives you the light travel time 
+                distance.  
+            </p>
 
-            <script src="other/kart.js"></script>
+            <p>
+                At z=1, the effects of time dilation should double the duration of some kind of cosmic event. However, the lookback time will not be double. 
+                This is because the light travels from z=1 to z=0 and passes all the points along the way. To find how much time dilation is occuring 
+                at a certain distance, we need to find the slope of the above equation for the appropriate \(\tau\). 
+            </p>
 
+            <p>
+                \[ 1 + z = \frac{\text{d}t}{\text{d}\tau} = \frac{\cosh{\frac{3 \tau}{2 R} } }{\sqrt{\cosh{ \frac{\tau}{R}}}} \]
+            </p>
+                
+            <p>Our measurements give us the \(t\) coordinate (the chord length), so in the cases of finding \(\tau\) (the arc length) we can use the reverse:</p>
+
+            <p>
+                <!-- x = ± (-R cosh^(-1)(1/2 sqrt((2 y^2)/R^2 + 1) + 1/2)) -->
+                \[ \tau = R \cosh^{-1} \left( \frac{1}{2} \sqrt{ \frac{2t^2}{R^2} + 1} +\frac{1}{2} \right)\]
+            </p>
+
+            <!--
+            <p>
+                \[ X^{r}(t) = R \]
+                \[ X^{\theta}(t) = \cosh^{-1} \left(\frac{R^4 + \sqrt{R^2 + 2R^2 t^2}}{2R^2} \right) \]
+                \[  \frac{\partial \theta}{\partial t} =-\frac{\sqrt{2} t }{  \sqrt{(R^2 + 2t^2)(|R| \sqrt{R^2 + 2t^2} - R^2 + t^2) } } \]
+                    
+                    -(sqrt(2) t)/sqrt((R^2 + 2 t^2) (abs(R) sqrt(R^2 + 2 t^2) - R^2 + t^2))
+
+            https://www.wolframalpha.com/input?i2d=true&i=D%5B+-ArcCosh%5BDivide%5BPower%5BR%2C2%5D+%2B+sqrt%5C%2840%29Power%5BR%2C4%5D+%2B+2+Power%5BR%2C2%5D+Power%5Bt%2C2%5D%5C%2841%29%2C2+Power%5BR%2C2%5D%5D%5D%2Ct%5D 
+
+            https://www.wolframalpha.com/input?i2d=true&i=Power%5Bt%2C2%5D%3DPower%5B%5C%2840%29R+*+cosh%5C%2840%29a%5C%2841%29%5C%2841%29%2C2%5D%2BPower%5B%5C%2840%29R*cosh%5C%2840%29a%5C%2841%29-R%5C%2841%29%2C2%5D-Power%5BR%2C2%5D+for+a  
+            -->
+
+            <!--
 
             <p class="pimg"><img src="img/timecircle.png"></p>
 
@@ -252,7 +446,7 @@
 
             <p>\[ ds^2 = - (e^{H_0t})^2 c^2 + dx^2 + dy^2 + dz^2 \]</p>
 
-            <h2>Redshift, lookback time, and distance</h2>
+            <h2>Redshift, lookback time, and distances</h2>
 
             <p>\[ \frac{1}{1+z} = e^{H_0t} \]</p>
 
@@ -260,14 +454,15 @@
 
             <p>\[ d = \frac{z}{1+z} \frac{c}{H_0} \]</p>
 
-            <h2>Distance modulus</h2>
+            <p>\[ f =\frac{L}{4 \pi d^2} \]</p>
 
-            <h2>Observational data</h2>
+            <p>\[ f =\frac{L}{4 \pi (ct)^2} \]</p>
 
-            <p><img src="img/pantheonshoes70.png"></p>
-
-            <p><img src="img/sse.png"></p>
-
+            <p>\[ d_L  = (1+z) \frac{c}{H_0} log(1+z) \]</p>
+            -->
+            
+            
+            <!--
             <h2>The arrow of time</h2>
 
             <p>
@@ -284,7 +479,7 @@
             <p><img src="img/aot3.png"></p>
 
             <p><img src="img/aot4.png"></p>
-
+            -->
 
             <h2>Cosmological implications</h2>
 
@@ -297,225 +492,6 @@
 
 
 <script>
-
-    var graph = document.getElementById("expandingspace")
-    var graph2 = document.getElementById("expandingtime")
-    var graph3 = document.getElementById("justtime")
-    var imgSN = document.getElementById("supernova")
-
-    var t = 0
-
-    setInterval(() => {
-        drawSpacetime(graph)
-        drawSpacetime(graph2, 1)
-        drawTime(graph3)
-        t++
-    }, 1000 / 30)
-
-
-    function drawSpacetime(graph, version) {
-        var ctx = graph.getContext("2d")
-
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, graph.width, graph.height)
-
-        var x0 = graph.width / 20
-        var y0 = graph.height / 20
-        ctx.strokeStyle = "White"
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.moveTo(0, y0)
-        ctx.lineTo(graph.width, y0)
-        ctx.stroke()
-        ctx.beginPath()
-        ctx.moveTo(x0, 0)
-        ctx.lineTo(x0, graph.height)
-        ctx.stroke()
-
-        ctx.font = "12pt Sans"
-        ctx.fillStyle = "white"
-        ctx.fillText("Time", 22, graph.height - 20)
-        ctx.textAlign = "right"
-        ctx.fillText("Space", graph.width - 5, 14)
-
-        var snStart = graph.height / 2 - 30
-        ctx.drawImage(imgSN, graph.width / 3 - imgSN.width / 2, snStart - imgSN.height)
-
-        var scale = Math.sin(t / 10) * 5
-        ctx.fillStyle = "red"
-        ctx.beginPath()
-        ctx.arc(graph.width / 3, snStart + scale, 8, 0, Math.PI*2)
-        ctx.arc(graph.width / 3, snStart - imgSN.height - scale, 8, 0, Math.PI*2)
-        ctx.fill()
-        
-        ctx.font = "10pt Sans"
-        ctx.fillStyle = "white"
-        ctx.textAlign = "left"
-        
-        ctx.fillText("SN start", 8 + graph.width / 3, 4 + snStart)
-        ctx.fillText("SN end", 8 + graph.width / 3, 4 + snStart - imgSN.height)
-
-        drawUpArrow(ctx, graph.width / 3 - imgSN.width / 2 - 20, imgSN.height + 2 * scale, snStart + scale)
-        
-        var cosZoom = 9
-        var cosStartX = graph.width * 3/4 
-        var cosStartY = graph.height * 3/4 - 20
-        
-        ctx.strokeStyle = "white"
-        ctx.lineWidth = 2
-        ctx.translate(cosStartX - 4, cosStartY + 8)
-        ctx.rotate(Math.PI / 4)
-        ctx.beginPath()
-        ctx.moveTo(cosZoom * -Math.PI*2, 0 - cosZoom)
-        for (let i = -Math.PI*2; i < Math.PI*2; i+=0.1) {
-            ctx.lineTo(cosZoom * i + scale, - cosZoom * Math.cos(i))
-        }
-        ctx.stroke()
-        ctx.setTransform(1, 0, 0, 1, 0, 0)
-
-
-        if (version === 1) {
-            drawUpArrow(ctx, cosStartX - 70, 120 + 2 * scale, cosStartY + 60 + scale)
-        }
-        else {
-            drawRightArrow(ctx, graph.width / 2 + 40 - scale, graph.width / 2 + 160 + 2 * scale, cosStartY + 70)
-        }
-
-        ctx.fillStyle = "blue"
-        for (let i = -1; i < 2; i++) {
-            ctx.beginPath()
-
-            if (version === 1) {
-                ctx.arc(cosStartX + i * 40, cosStartY + i * (40 + scale), 8, 0, Math.PI*2)
-            }
-            else {
-                ctx.arc(cosStartX + i * (40 + scale), cosStartY + i * 40, 8, 0, Math.PI*2)
-            }
-            ctx.fill()
-        }
-
-
-    }
-
-    function drawRightArrow(ctx, x1, x2, y) {
-        ctx.lineWidth = 4
-        ctx.strokeStyle = "yellow"
-        ctx.fillStyle = "yellow"
-        
-        ctx.beginPath()
-        ctx.moveTo(x1, y)
-        ctx.lineTo(x2, y)
-        ctx.stroke()
-
-        ctx.beginPath()
-        ctx.moveTo(x2 - 10, y - 10)
-        ctx.lineTo(x2 + 2, y)
-        ctx.lineTo(x2 - 10, y + 10)
-        ctx.closePath()
-        ctx.fill()
-
-        ctx.beginPath()
-        ctx.moveTo(x1 + 10, y - 10)
-        ctx.lineTo(x1 - 2 , y)
-        ctx.lineTo(x1 + 10, y + 10)
-        ctx.closePath()
-        ctx.fill()
-    }
-
-    function drawUpArrow(ctx, x, l, y) {
-        ctx.lineWidth = 4
-        ctx.strokeStyle = "yellow"
-        ctx.fillStyle = "yellow"
-        
-        ctx.beginPath()
-        ctx.moveTo(x, y)
-        ctx.lineTo(x, y - l)
-        ctx.stroke()
-
-        ctx.beginPath()
-        ctx.moveTo(x - 10, y - l + 12)
-        ctx.lineTo(x , y - l - 2)
-        ctx.lineTo(x + 10, y - l + 12)
-        ctx.closePath()
-        ctx.fill()
-
-        ctx.beginPath()
-        ctx.moveTo(x - 10, y - 12)
-        ctx.lineTo(x , y + 2)
-        ctx.lineTo(x + 10, y - 12)
-        ctx.closePath()
-        ctx.fill()
-    }
-
-    function drawTime(graph) {
-        var ctx = graph.getContext("2d")
-
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, 0, graph.width, graph.height)
-
-        var x0 = graph.width / 2
-        var y0 = graph.height / 20
-        ctx.strokeStyle = "White"
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.moveTo(x0, 0)
-        ctx.lineTo(x0, graph.height)
-        ctx.stroke()
-
-        ctx.font = "12pt Sans"
-        ctx.fillStyle = "white"
-        ctx.fillText("Time", x0 + 4, 20)
-        
-        var snStart = graph.height / 2 - 30
-        ctx.drawImage(imgSN, x0 - imgSN.width / 2, snStart - imgSN.height)
-
-        var scale = Math.sin(t / 10) * 5
-        
-        ctx.fillStyle = "red"
-        ctx.beginPath()
-        ctx.arc(x0, snStart + scale, 8, 0, Math.PI*2)
-        ctx.arc(x0, snStart - imgSN.height - scale, 8, 0, Math.PI*2)
-        ctx.fill()
-        
-        ctx.font = "10pt Sans"
-        ctx.fillStyle = "white"
-        ctx.textAlign = "left"
-        
-        ctx.fillText("SN start", 8 + x0, 4 + snStart)
-        ctx.fillText("SN end", 8 + x0, 4 + snStart - imgSN.height)
-
-        drawUpArrow(ctx, graph.width / 2 - imgSN.width / 2 - 20, imgSN.height + 2 * scale, snStart + scale)
-        
-        var cosZoom = 9
-        var cosStartX = graph.width / 2
-        var cosStartY = graph.height * 3/4 - 20
-        
-        ctx.strokeStyle = "white"
-        ctx.lineWidth = 2
-        ctx.translate(cosStartX - 8, cosStartY)
-        ctx.rotate(Math.PI / 2)
-        ctx.beginPath()
-        ctx.moveTo(cosZoom * -Math.PI*2, 0 - cosZoom)
-        for (let i = -Math.PI*2; i < Math.PI*2; i+=0.1) {
-            ctx.lineTo((cosZoom) * i + scale * Math.sign(i), -16 + cosZoom * Math.cos(i))
-        }
-        ctx.stroke()
-
-        ctx.fillStyle = "blue"
-        for (let i = -1; i < 2; i++) {
-            ctx.beginPath()
-            ctx.arc(cosZoom * Math.PI * 2 * i + i * scale, -8, 8, 0, Math.PI*2)
-            ctx.fill()
-        }
-
-        ctx.setTransform(1, 0, 0, 1, 0, 0)
-
-
-        drawUpArrow(ctx, graph.width / 2 - imgSN.width / 2 - 20, 120 + 2 * scale, cosStartY + 60 + scale)
-        
-    }
-
-
 
     window.MathJax = {
         tex: {
