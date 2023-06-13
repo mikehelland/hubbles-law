@@ -67,7 +67,7 @@
     <select id="graph-y-axis">
         <option>distance (Gly)</option>
         <option>luminosity distance (Gly)</option>
-        <option>distance modulus (m-M))</option>
+        <option>distance modulus (m-M)</option>
         
     </select>
     <br>
@@ -301,7 +301,7 @@ var black = false
             ctxB.moveTo(offset, graph.height - offset)
             data.forEach(d => {
                 ctxB.lineTo( offset + d.z * zZoom * zoomG, 
-                                -offset + graph.height - d.d * 1000 * zoomGY)
+                                -offset + graph.height - d.t * 1000 * zoomGY)
             })
             ctxB.stroke()
 
