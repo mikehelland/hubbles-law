@@ -79,23 +79,36 @@ var black = false
     var c = 1
 
 
-    const R = 6.2
+    const R = 4 //6.2
 
 
     var sq = n => Math.pow(n, 2)
     var sqrt = n => Math.sqrt(n)
     var cosh = n => Math.cosh(n)
     var data = []
-    for (let i = 0; i < 50; i++) {
+    var dd = 0
+    var lastX = R
+    var lastY = 0
+    for (let i = 0; i < 5; i+=0.01) {
         let d = {
             d: i,
-            t: sqrt(sq(R * Math.cosh(i / R) - R) + sq(R * Math.sinh(i / R))), 
+            dd,
+            x: R * Math.cosh(i / R),
+            y: R * Math.sinh(i / R), 
             t2: -14 * Math.log(1/14 * -i + 1)
         }
+        d.t = sqrt(sq(d.x - R) + sq(d.y)) 
+        d.dh = Math.log((1+i)/(1-i))
+
         d.z = tToz(d.t)
         //d.z = dToz(d.d)
         d.z2 = 1 / Math.exp(1/14 * -d.t2) - 1
         data.push(d)
+
+        dd += sqrt(sq(lastX - d.x) + sq(lastY - d.y))
+        d.dd = dd
+        lastX = d.x
+        lastY = d.y
     }
 
     function tToz(t) {
@@ -128,7 +141,7 @@ var black = false
     }
     */
     var testAngle = -1 * Math.PI
-    events.push({i: "1", angle: testAngle, x: R * Math.cosh(testAngle), y: R * Math.sinh(testAngle)})
+    //events.push({i: "1", angle: testAngle, x: R * Math.cosh(testAngle), y: R * Math.sinh(testAngle)})
     
     var startX = 0.1
     var o = {x: R, y: 0, angle: -Math.PI *3/4}
@@ -137,7 +150,7 @@ var black = false
     drawBottom(graphB, ctxB, graphB.height * 19 / 20)
 
     var on = true
-    function drawTop() {
+    function drawTop() {14
 
         var zoom = 10
         ctx.fillStyle = "white"
@@ -213,8 +226,8 @@ var black = false
 
     function drawBottom(graph, ctx, y0) {
 
-        var zoom = 20
-        var zoomY = zoom / 2
+        var zoom = 80 //20
+        var zoomY = 50 //zoom / 2
         ctx.fillStyle = "white"
         ctx.fillRect(0, 0, graph.width, graph.height)
         
@@ -225,6 +238,7 @@ var black = false
         ctx.stroke()
         
         ctx.fillStyle = "black"
+        /*
         ctx.globalAlpha = 0.3
         ctx.lineWidth = 0.5
         for (let ix = 0; ix <= 20; ix+=1) {
@@ -248,13 +262,14 @@ var black = false
             ctx.stroke()
         }
         ctx.globalAlpha = 1
+        */
         
-        ctx.lineWidth = 2
+        ctx.lineWidth = 1
         ctx.strokeStyle = "green"
         ctx.beginPath()
         ctx.moveTo(x0, y0)
         data.forEach(d => {
-            ctx.lineTo(x0 + d.z * zoom, y0 - d.d * zoomY)
+            ctx.lineTo(x0 + d.d * zoom, y0 - d.t * zoomY)
         })
         ctx.stroke()
 
@@ -262,9 +277,27 @@ var black = false
         ctx.beginPath()
         ctx.moveTo(x0, y0)
         data.forEach(d => {
-            ctx.lineTo(x0 + d.z2 * zoom, y0 - d.t2 * zoomY)
+            ctx.lineTo(x0 + d.d * zoom, y0 - d.dd * zoomY)
+        })
+        ctx.stroke()
+
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "red"
+        ctx.beginPath()
+        ctx.moveTo(x0, y0)
+        data.forEach(d => {
+            ctx.lineTo(x0 + d.dd * zoom, y0 - d.t * zoomY)
         })
         //ctx.stroke()
+
+        ctx.strokeStyle = "orange"
+        ctx.beginPath()
+        ctx.moveTo(x0, y0)
+        data.forEach(d => {
+            ctx.lineTo(x0 + d.d * zoom, y0 - R*(Math.exp(d.d/R) - 1) * zoomY)
+        })
+        //ctx.stroke()
+
 
         events.forEach(event => {
             ctx.fillStyle = "red"
