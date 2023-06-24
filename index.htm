@@ -193,18 +193,18 @@
             <p>
                 Distances, on the other hand, should be regarded as positive values. 
                 Since \(\tau \) gives us the "un-time dilated" time coordinate, we know that the physical distance \(d\) 
-                to a source of light is \(d = -c\tau \). The time scale factor in terms of redshift z can be substituted into the transformation, giving:
+                to a source of light is \(d = -c\tau \). The time scale factor in terms of redshift \(z\) can be substituted into the transformation, giving:
             </p>
 
             <p>
-                \[ \tau = (\frac{1}{1+z} - 1) \frac{1}{H_0}\]
+                \[ \tau = \frac{1}{H_0} \left(\frac{1}{1+z} - 1 \right) \]
                 \[ \tau = -\frac{z}{1+z} \frac{1}{H_0}  \]
-                \[ d = \frac{z}{1+z} \frac{c}{H_0} \]
+                \[ d =  \frac{z}{1+z} \frac{c}{H_0} \]
             </p>
 
             <p>
                 The light travel time distance, \(d_t = -ct \), will be longer than the physical distance due to the effects of time dilation, and 
-                can be related to z by reversing the time transformation:
+                can be related to \(z\) by reversing the time transformation:
             </p>
 
             <p>
@@ -218,8 +218,8 @@
             <p>
                 \[ H_0\tau + 1 = \frac{1}{1+z} \]
                 \[ H_0\tau = \frac{1}{1+z} - 1\]
-                \[ t = \frac{1}{H_0} \log(\frac{1}{1+z} - 1 + 1)\]
-                \[ t = \frac{1}{H_0} \log(\frac{1}{1+z})\]
+                \[ t = \frac{1}{H_0} \log \left(\frac{1}{1+z} - 1 + 1\right)\]
+                \[ t = \frac{1}{H_0} \log \left(\frac{1}{1+z}\right)\]
                 \[ -ct = \frac{c}{H_0} \log(1+z)\]
                 \[ d_t = \frac{c}{H_0} \log(1+z)\]
             </p>
@@ -298,18 +298,15 @@
 
             <p>
                 Hyperbolic time, then, would seem to be able to produce time dilation and redshift of the past when observed from the present.
-                And it would also seem that a universe with static spatial coordinates, and a time that slowed down at a distance is de Sitter's original 1917
-                universe. The following figure and caption is from <a href="http://www.bourbaphy.fr/moschella.pdf">The de Sitter and anti-de Sitter Sightseeing Tour</a>:
             </p>
 
-            <p class="pimg"><img src="img/desitter.png"></p>
-
-            <!--
             <p>
-                \[ ds^2 = -\left(1-\frac{r^2}{\alpha^2}\right)dt^2 + \left(1-\frac{r^2}{\alpha^2}\right)^{-1}dr^2 + r^2 d\Omega_{2}^2  \]
-                https://physics.stackexchange.com/questions/93319/can-hubble-redshift-be-interpreted-as-time-dilation
-
-            </p>-->
+                As seen from the equation for physical distance, as \(z\) approaches infinity, \(d\) approaches \(c/H_0\). This means there is a cosmological 
+                horizon at that distance. A spacetime that fits the description of closed, static space is de Sitter's original coordinates.
+                The following figure and caption is from <a href="http://www.bourbaphy.fr/moschella.pdf">The de Sitter and anti-de Sitter Sightseeing Tour</a>:
+            </p>
+            
+            <p class="pimg"><img src="img/desitter.png"></p>
 
             <p>
                 The "Sightseeing Tour" also has this to say:
@@ -320,13 +317,46 @@
                 </blockquote>
             </p>
 
+
+            <!--
             <p>
-                It doesn't seem clear that a "cosmic time" is necessary in this hypothesis. There is the measured time coordinate of an observer,
+                \[ ds^2 = -\left(1-\frac{r^2}{\alpha^2}\right)dt^2 + \left(1-\frac{r^2}{\alpha^2}\right)^{-1}dr^2 + r^2 d\Omega_{2}^2  \]
+                https://physics.stackexchange.com/questions/93319/can-hubble-redshift-be-interpreted-as-time-dilation
+
+            </p>-->
+
+            <p> 
+                In <a href="papers/desitter1917.pdf">de Sitter's 1917 paper</a> he proposes three models, system A, system B, and system C, 
+                given by three line elements, equations 8A, 8B, and 8C. On page 18 he says of the systems: 
+                
+                <blockquote>
+                The system A satisfies the "material postulate of relativity of inertia," but it restricts the admissible transformation to those for 
+                which at infinity t' = t, and thus introduces a quasi-absolute time, as has been explained in art. 2. In B and C the time is entirely 
+                relative, and completely equivalent to the other three co-ordinates. ...<!--In A there is a world-matter, with which the whole world is filled, 
+                and this can be in a state of equilibrium without any internal stresses or pressures, if it is entirely homogeneous and at rest. 
+                In B there may, or may not, be matter, but if there is more than one material particle these cannot be at rest, and if the world were 
+                filled homogeneously with matter this could be at rest without internal pressure or stress; for if it were, we would have the 
+                system A, with g<sub>44</sub> = 1 for all values of the four co-ordinates.--> The system B satisfies the "mathematical postulate" of 
+                relativity of inertia, which does not appear to admit of a simple physical interpretation.
+                </blockquote>
+                
+            </p>
+
+            <p>
+                A possible physical interpretation of system B could be that the past is time dilated. 
+
+                <!--<a href="https://new-ground.com/en/articles/eight-significant-shortcomings-of-the-standard-model-of-cosmology/new-ground.2023.77033">A recent article about the "cracks" in &Lambda;CDM</a> 
+                includes the problem that de Sitter seems to be refering to about the g<sub>tt</sub> component always being 1.-->
+            </p>
+
+            <p>
+                A "cosmic time" is not necessary in this hypothesis. There is the measured time coordinate of an observer,
                 \(t\), which can be transformed to a coordinate, \(\tau\), that excludes the effects of time dilation. Having the freedom to choose
                 how the time coordinate is defined in the geometry, by choosing a time coordinate that includes the effects of the time dilation 
-                that we observe, space remains static yet time dilation and redshift occur. The role of Hubble's constant is ultimately similar to 
-                its role in FLRW, as the inverse of the radius of a hyperboloid. However, in the case of the hypothesis, it describes the curvature 
-                of time rather than the expansion of space. 
+                that we observe, space remains static and redshift occurs. The role of Hubble's constant is ultimately similar to 
+                its role in FLRW, as the inverse of the radius of a hyperboloid. 
+                <!--However, in the case of the hypothesis, it describes the curvature 
+                of time rather than the expansion of space. -->
             </p>
 
 
@@ -340,9 +370,23 @@
                 is unsatisfyingly silent. 
             </p>
 
+            <h3>The Cosmic Microwave Background</h3>
+            
             <p>
                 The cosmic microwave background in particular has no immediate explanation in a universe that isn't expanding, and thus has no 
-                conceivable beginning. For the hypothesis to be true without such an explanation, the CMB as a view of the universe in its infancy 
+                conceivable beginning. 
+            </p>
+
+            <p>
+                As the hypothesis sets a cosmological horizon at \(d=c/H_0\), the horizon itself could be a source of a thermal black body spectrum 
+                due to Hawking radiation. The temperature of this radiation, though, is estimated to be far too low to even be considered 
+                as the source of the CMB.  
+                
+            </p>
+
+            
+                
+                For the hypothesis to be true without such an explanation, the CMB as a view of the universe in its infancy 
                 would have to be mistaken. There is some evidence to suggest that the microwave radiation in question is not even of cosmological origin.
                 Some correlation between features of the CMB and the solar system, the so-called 
                 <a href="https://en.wikipedia.org/wiki/Axis_of_evil_(cosmology)">"Axis of Evil"</a>, have been observed, 
