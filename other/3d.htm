@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>3d hyperboloid</title>
+    <meta charset="utf-8">
+    <style>
+        body {margin:0; padding:0;}
+    </style>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+    <div id="container"></div>
+
+    <script type="module">
+        import * as THREE from 'https://cdn.skypack.dev/three@0.136';
+        import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136/examples/jsm/controls/OrbitControls.js';
+        import { ParametricGeometry } from 'https://cdn.skypack.dev/three@0.136/examples/jsm/geometries/ParametricGeometry.js';
+
+        const cos = t => Math.cos(2 * Math.PI * t)
+        const cosh = t => Math.cosh(2 * Math.PI * t)
+        const sin = t => Math.sin(2 * Math.PI * t)
+        const sinh = t => Math.sinh(2 * Math.PI * t)
+
+        var camera, scene, renderer, mesh, light;
+        var clock = new THREE.Clock();
+
+
+        const R = 1
+
+        var events = []
+        
+        init();
+        renderer.render(scene, camera);
+
+        animate()
+        //setTimeout(() => animate(), 5000)
+
+        function init() {
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.x = 0;
+            camera.position.y = -10;
+            camera.position.z = 0;
+            window.camera = camera
+            
+            light = new THREE.PointLight(0xffffff);
+            light.position.set(10, -500, 10);
+            scene.add(light);
+
+            var axis = new THREE.AxesHelper(20);
+            //scene.add(axis);
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0xAAAAAA);
+
+            let controls = new OrbitControls(camera, renderer.domElement);
+
+            document.body.appendChild(renderer.domElement);
+            //////////////////////////////////////////////////////////////
+            var meshFunc = function (u, v, pos) {
+                const x = R * cosh(-1 / 2 + v) * cos(-1 / 2 + u);
+                const y = R * cosh(-1 / 2 + v) * sin(-1 / 2 + u);
+                const z = R * sinh(-1 / 2 + v);
+
+
+                pos.set(x, y, z);
+            };
+            var geometry = new ParametricGeometry(meshFunc, 40, 40);
+            var material = new THREE.MeshPhongMaterial({
+                color: 0x5678ff,
+                wireframe: false,
+                side: THREE.DoubleSide,
+            });
+
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+
+            //var ball = new Sphere()
+            var clocks = []
+            
+            for (let i = -2; i < 3; i++) {
+                const cgeo = new THREE.CircleGeometry( 0.1, 32 ); 
+                const cmaterial = new THREE.MeshBasicMaterial( { color: 0xffff00, side: THREE.DoubleSide } ); 
+                const circle = new THREE.Mesh( cgeo, cmaterial );
+                let angle =  i * Math.PI/6
+                //circle.rotation.y = -angle;
+                circle.position.y = -R * Math.cos(angle) - 0.05;
+                circle.position.x = -R * Math.sin(angle);
+                circle.rotation.x = Math.PI / 2;
+                circle.rotation.y = -angle;
+                
+                scene.add( circle );
+
+                var line = drawWorldLine(angle)
+                line.rotation.z = angle
+                scene.add( line );
+
+                var sgeo = new THREE.SphereGeometry(0.05, 12);
+                var smaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff5678,
+                    wireframe: false,
+                });
+                var event = new THREE.Mesh(sgeo, smaterial)
+                event.position.y = circle.position.y
+                event.position.x = circle.position.x
+                scene.add(event)
+
+                events.push({angle, sphere: event})
+
+            }
+
+
+        }
+
+        function drawWorldLine(angle) {
+
+            const material = new THREE.LineBasicMaterial( { color: 0x000088, linewidth: 14 } );
+            const points = [];
+
+            angle = 0
+            for (var i = -Math.PI; i <= Math.PI; i+= Math.PI / 12) {
+                points.push( new THREE.Vector3( 
+                         
+                        Math.sinh(angle), 
+                        -R * Math.cosh(i) - 0.01, // * Math.sin(angle), 
+                        -R * Math.sinh(i), // * Math.cos(angle), 
+                        ) );
+            
+            }
+
+            const geometry = new THREE.BufferGeometry().setFromPoints( points );
+            const line = new THREE.Line( geometry, material );
+            return line
+        }
+
+        var startTime = 0
+        document.body.onkeydown = e => {
+            startTime = clock.getElapsedTime()
+        }
+        function animate() {
+
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+
+            if (!startTime) return 
+
+            var t = (clock.getElapsedTime() - startTime) / 5;
+
+            events.forEach(event => {
+                event.sphere.position.x = Math.cosh(t) * -Math.sin(event.angle)
+                event.sphere.position.y = Math.cosh(t) * -Math.cos(event.angle) - 0.05
+                event.sphere.position.z = -Math.sinh(t)
+                
+                //let xyzs = event.sphere.geometry.getAttribute('position');
+
+            })
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
