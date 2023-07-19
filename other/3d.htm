@@ -63,7 +63,7 @@
             camera.lookAt(0, 0, -2)
             camera.up.set(0, 0, 1);
             
-            //let controls = new OrbitControls(camera, renderer.domElement);
+            let controls = new OrbitControls(camera, renderer.domElement);
 
             
             document.body.appendChild(renderer.domElement);
@@ -106,7 +106,7 @@
                 line.rotation.z = angle
                 scene.add( line );
 
-                clocks.push({circle, i, angle})
+                clocks.push({circle, i, angle, hits: []})
 
             }
 
@@ -176,7 +176,7 @@
                 event.position.x = clock.circle.position.x
                 scene.add(event)
 
-                events.push({t, i: clock.i, angle: clock.angle, sphere: event, hangle: 0})
+                events.push({clock, t, i: clock.i, angle: clock.angle, sphere: event, hangle: 0})
 
             })
 
@@ -196,12 +196,22 @@
             setTimeout(()=> {
                 clearInterval(h)
             }, 30000)
-        }, 2000)
+        }, 1000)
+
+        var stop = false
+        document.body.onkeypress = e => stop = true
         
+
+        var sx, sy, sz
         var startTime = 0
         function animate() {
 
-            requestAnimationFrame(animate);
+            if (!stop) {
+                requestAnimationFrame(animate);
+            }
+            else {
+                console.log(clocks)
+            }
             renderer.render(scene, camera);
 
             if (!loopStart) return 
@@ -210,6 +220,7 @@
             var t
             var lastT = -1
             var angle
+            
             events.forEach(event => {
 
                 if (event.t !== lastT) {
@@ -217,20 +228,64 @@
                     lastT = event.t
                 }
                 event.hangle = angle
-                event.sphere.position.x = Math.cosh(angle) * -Math.sin(event.angle)
-                event.sphere.position.y = Math.cosh(angle) * -Math.cos(event.angle) - 0.05
-                event.sphere.position.z = -Math.sinh(angle)
+                sx = Math.cosh(angle) * -Math.sin(event.angle)
+                sy = Math.cosh(angle) * -Math.cos(event.angle)
+                sz = Math.sinh(angle)
 
+                event.sphere.position.x = sx
+                event.sphere.position.y = sy - 0.05
+                event.sphere.position.z = sz
+
+                if (stop) {
+                    //console.log(sx, sy, sz)
+                }
+                
+                //if (Math.abs(sx) + sz < 0.01 && Math.sy + 1 < 0.1) {
+                if (!event.hit && sy + 1 < 0.01) {
+                    //console.log("hit", event.i)
+                    
+                    event.clock.hits.push(tt - startTime)
+                    event.hit = true
+                    event.sphere.material.color.setHex(0x00ff00)
+                    //scene.remove(event.sphere)
+                }
             })
 
         }
 
 
+        const sq = n => Math.pow(n, 2)
+        var xx, yy, dd, j
         function getNextAngle(tt, t, hangle) {
 
-            //console.log(tt)
-            return (tt - t) / 2
+            //return -(tt - t) / 2
+            
+            xx = Math.cosh(hangle)
+            yy = Math.sinh(hangle)
+            dd = 0
+
+            for (j = 0; j > -1000; j -= 0.0005) {
+
+                dd += Math.sqrt(sq(xx - R * Math.cosh(hangle + j)) + sq(yy - R * Math.sinh(hangle + j)))
                 
+                //console.log(d)
+                if (dd >= 0.005) {
+                    break
+                }
+
+                xx = Math.cosh(hangle)
+                yy = Math.sinh(hangle)
+            
+
+            }
+            if (j === -1000) console.log("went to 1000")
+            if (j === -0.001) console.log("went once")
+            
+            return hangle + j 
+
+
+
+            //console.log(tt)
         }
 
     </script>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                text-align: center;
+                color:white;
+                font-family: Arial, Helvetica, sans-serif;
+                background-color: #444444;
+            }
+
+            canvas {
+                height: 100%;
+                width:100%;
+                position: absolute;
+                top:0;
+                left:0;
+                
+            }
+
+            #left, #right {
+                height: 800px;
+                width:800px;
+                position: relative;
+                display: inline-block;
+            }
+
+            
+        </style>
+    </head>
+<body>
+    <div id="left">
+        <canvas id="spacetime1" height="800" width="800"></canvas>
+        <canvas id="spacetime2" height="800" width="800"></canvas>
+    </div>
+    
+  
+</div>
+
+<script>
+    
+    var st1 = document.getElementById("spacetime1")
+    var ctx1 = st1.getContext("2d")
+    
+    var st2 = document.getElementById("spacetime2")
+    var ctx2 = st2.getContext("2d")
+    
+    var h = ctx1.canvas.height 
+    var h2 = h // 4 * 3
+    var w = ctx1.canvas.width 
+    var w2 = w / 2
+
+
+    var clocks = []
+    var ticks = []
+    for (var io = 0; io < 9; io++) {
+        clocks.push({i: io, t: 0})
+    }
+
+    var lastT = 0
+    var t = 0
+    var nextT = 0
+    var tStart = Date.now()
+    drawGraph(ctx1)
+    drawClocks(ctx2)
+
+    var handle
+    setTimeout(() => {
+        tStart = Date.now()
+        handle = setInterval(() => {
+
+            if (t >= nextT) {
+                //makeTicks()
+                nextT += 50
+            }
+            st2.width = st2.width
+            drawTicks(ctx2)
+            drawClocks(ctx2)
+            lastT = t
+            t = (Date.now() - tStart) / 25
+
+
+        }, 1000/60)
+    }, 2000)
+
+    function makeTicks() {
+        clocks.forEach(clock => {
+            ticks.push({i: clock.i, t})
+        })
+    }
+
+    function drawTicks(ctx, mode) {
+        var y
+        ticks.forEach(tick => {
+            y = h2 - tick.t
+
+            if (!tick.hit && t - tick.i * 100 > tick.t) {
+                tick.hit = t
+            }
+            ctx.fillStyle = tick.hit ? "green" : "red"
+            ctx.beginPath()
+            ctx.arc(tick.i * 100, y, 8, 0, 2 * Math.PI)
+            ctx.fill()
+    
+        })
+    }
+
+    function drawGraph(ctx, mode) {
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, w, h)
+
+        ctx.strokeStyle = "#444444"
+
+        
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(0, h2)
+        ctx.lineTo(w, h2)
+        ctx.stroke()
+        
+        /*
+        ctx.beginPath()
+        ctx.moveTo(w2, mode ? h2 : 0)
+        ctx.lineTo(w2, h)
+        ctx.stroke()
+        */
+
+        var ihStart = mode ? 0 : -400
+        var ih
+        for (ih = 0; ih <= 800; ih += 50) {
+            //if (Math.round(ih) === 0) continue
+        
+            ctx.lineWidth = 1
+            ctx.strokeStyle = "#444444"
+
+            ctx.beginPath()
+            ctx.moveTo(0, ih)
+            ctx.lineTo(w, ih)
+            ctx.stroke()
+        }
+
+        for (ih = 0; ih <= 800; ih += 50) {
+            //if (Math.round(ih) === 0) continue
+
+            ctx.lineWidth = 1
+            ctx.strokeStyle = "#444444"
+
+            ctx.beginPath()
+            ctx.moveTo(ih, 0)
+            ctx.lineTo(ih, h)
+            ctx.stroke()
+
+            if (ih % 100 != 0) continue 
+            
+            ctx.globalAlpha = 0.2
+            ctx.lineWidth = 10
+            ctx.strokeStyle = "#0000FF"
+
+            ctx.beginPath()
+            ctx.moveTo(ih, mode ? h2 : 0)
+            ctx.lineTo(ih, h)
+            ctx.stroke()
+            ctx.globalAlpha = 1
+        }
+
+        ctx.font = "14px sans-serif"
+        ctx.fillStyle = "white"
+        ctx.textAlign = "right"
+        ctx.fillText("Space", w - 4, h2 - 36)
+        ctx.textAlign = "left"
+        ctx.fillText("Time", h2 + 5, h - 10)
+
+    }
+
+    var ht = 0
+    var htt
+    var lastSin = -1
+    var xsin, ycos
+    function drawClocks(ctx, mode) {
+        var y = h2 - (mode ? 0 : t)
+
+        htt = (t - lastT) * Math.exp(t/600)
+        ht += htt
+        
+        ctx.lineWidth = 1
+        ctx.strokeStyle = "yellow"
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(1000, y + 1000)
+        ctx.stroke()
+
+        clocks.forEach(clock => {
+
+            ctx.fillStyle = "yellow"
+            ctx.beginPath()
+            ctx.arc(clock.i * 100, y, 18, 0, 2 * Math.PI)
+            ctx.fill()
+
+            ctx.fillStyle = "white"
+            ctx.beginPath()
+            ctx.arc(clock.i * 100, y, 16, 0, 2 * Math.PI)
+            ctx.fill()
+
+            xsin = Math.sin(2 * Math.PI * ht/50)
+            ycos = Math.cos(2 * Math.PI * ht/50)
+            
+            if (xsin >= 0 && lastSin < 0) {
+                console.log(xsin, lastSin)
+                makeTicks()
+            }
+            lastSin = xsin
+
+            ctx.lineWidth = 2
+            ctx.strokeStyle = "black"
+            ctx.beginPath()
+            ctx.moveTo(clock.i * 100, y)
+            ctx.lineTo(clock.i * 100 + xsin * 16, y - ycos * 16)
+            ctx.stroke()
+
+        })
+
+    }
+
+    document.body.onkeydown = e => clearInterval(handle)
+
+</script>
+
