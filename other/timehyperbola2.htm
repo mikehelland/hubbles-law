@@ -82,6 +82,7 @@ var black = false
     const R = 4 //6.2
 
 
+    const PI = Math.PI
     var sq = n => Math.pow(n, 2)
     var sqrt = n => Math.sqrt(n)
     var cosh = n => Math.cosh(n)
@@ -133,13 +134,32 @@ var black = false
     }
 
     var events = []
-    /*
-    for (let i = 0; i <= 360; i+=45) {
-        let angle = -i / 180 * Math.PI
-        events.push({i, angle: angle, x: R * Math.cosh(angle/R), y: R * Math.sinh(angle/R)})
+    var j
+    var xx = R
+    var yy = 0
+    var angle = 0
+    for (let i = 0; i < 10; i++) {
+        
+        
+        for (j = 0; j > -1000; j -= 0.01) {
+
+            d = sqrt(sq(xx - R * Math.cosh(angle + j)) + sq(yy - R * Math.sinh(angle + j)))
+            //console.log(d)
+            if (d >= PI/2) {
+                break
+            }
+
+        }
+        angle += j
+        xx = R * Math.cosh(angle)
+        yy = R * Math.sinh(angle)
+        console.log(xx, yy)
+        
+        //angle = -PI/4 * i
+        events.push({i, angle: angle, x: xx, y: yy})
                 
     }
-    */
+    
     var testAngle = -1 * Math.PI
     //events.push({i: "1", angle: testAngle, x: R * Math.cosh(testAngle), y: R * Math.sinh(testAngle)})
     
@@ -152,7 +172,7 @@ var black = false
     var on = true
     function drawTop() {14
 
-        var zoom = 10
+        var zoom = 20
         ctx.fillStyle = "white"
         ctx.fillRect(0, 0, graph.width, graph.height)
         
@@ -210,12 +230,14 @@ var black = false
                 Math.pow(event.x - o.x, 2) + 
                 Math.pow(event.y - o.y, 2))
 
+            /*
             ctx.strokeStyle = "blue"
             ctx.lineWidth = 2
             ctx.beginPath()
             ctx.moveTo(x0 + R * zoom, y0)
             ctx.lineTo(x0 + event.x * zoom, y0 - event.y * zoom)
             ctx.stroke()
+            */
         })
 
         ctx.fillStyle = "blue"

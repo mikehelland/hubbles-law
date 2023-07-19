@@ -30,8 +30,10 @@
 
 
         const R = 1
+        const piFrac = Math.PI/12
 
         var events = []
+        var clocks = []
         
         init();
         renderer.render(scene, camera);
@@ -44,9 +46,6 @@
             scene = new THREE.Scene();
 
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-            camera.position.x = 0;
-            camera.position.y = -10;
-            camera.position.z = 0;
             window.camera = camera
             
             light = new THREE.PointLight(0xffffff);
@@ -60,10 +59,15 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(0xAAAAAA);
 
-            let controls = new OrbitControls(camera, renderer.domElement);
+            camera.position.set(0, -6, -1)
+            camera.lookAt(0, 0, -2)
+            camera.up.set(0, 0, 1);
+            
+            //let controls = new OrbitControls(camera, renderer.domElement);
 
+            
             document.body.appendChild(renderer.domElement);
-            //////////////////////////////////////////////////////////////
+
             var meshFunc = function (u, v, pos) {
                 const x = R * cosh(-1 / 2 + v) * cos(-1 / 2 + u);
                 const y = R * cosh(-1 / 2 + v) * sin(-1 / 2 + u);
@@ -84,13 +88,12 @@
 
 
             //var ball = new Sphere()
-            var clocks = []
             
-            for (let i = -2; i < 3; i++) {
-                const cgeo = new THREE.CircleGeometry( 0.1, 32 ); 
+            for (let i = -4; i < 5; i++) {
+                const cgeo = new THREE.CircleGeometry( 0.05, 32 ); 
                 const cmaterial = new THREE.MeshBasicMaterial( { color: 0xffff00, side: THREE.DoubleSide } ); 
                 const circle = new THREE.Mesh( cgeo, cmaterial );
-                let angle =  i * Math.PI/6
+                let angle =  i * piFrac
                 //circle.rotation.y = -angle;
                 circle.position.y = -R * Math.cos(angle) - 0.05;
                 circle.position.x = -R * Math.sin(angle);
@@ -103,19 +106,15 @@
                 line.rotation.z = angle
                 scene.add( line );
 
-                var sgeo = new THREE.SphereGeometry(0.05, 12);
-                var smaterial = new THREE.MeshPhongMaterial({
-                    color: 0xff5678,
-                    wireframe: false,
-                });
-                var event = new THREE.Mesh(sgeo, smaterial)
-                event.position.y = circle.position.y
-                event.position.x = circle.position.x
-                scene.add(event)
-
-                events.push({angle, sphere: event})
+                clocks.push({circle, i, angle})
 
             }
+
+            line = drawNullGeodesic(-1)
+            scene.add( line );
+
+            line = drawNullGeodesic(1)
+            scene.add( line );
 
 
         }
@@ -141,30 +140,98 @@
             return line
         }
 
-        var startTime = 0
-        document.body.onkeydown = e => {
-            startTime = clock.getElapsedTime()
+        function drawNullGeodesic(angle) {
+
+            const material = new THREE.LineBasicMaterial( { color: 0xFFFF00, linewidth: 14 } );
+            const points = [];
+
+            for (var i = -4 * Math.PI; i <= 4 * Math.PI; i+= Math.PI / 12) {
+                points.push( new THREE.Vector3( 
+                    i,
+                    -1.02,
+                    -angle * i)) 
+
+                        
+                        //Math.sinh(angle), 
+                        //-R * Math.cosh(i) - 0.01, // * Math.sin(angle), 
+                        //-R * Math.sinh(i), // * Math.cos(angle), 
+                        
+            }
+
+            const geometry = new THREE.BufferGeometry().setFromPoints( points );
+            const line = new THREE.Line( geometry, material );
+            return line
         }
-        function animate() {
 
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+        function addEvents(t) {
 
-            if (!startTime) return 
+            clocks.forEach(clock => {
+                var sgeo = new THREE.SphereGeometry(0.02, 12);
+                var smaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff5678,
+                    wireframe: false,
+                });
+                var event = new THREE.Mesh(sgeo, smaterial)
+                event.position.y = clock.circle.position.y
+                event.position.x = clock.circle.position.x
+                scene.add(event)
 
-            var t = (clock.getElapsedTime() - startTime) / 5;
-
-            events.forEach(event => {
-                event.sphere.position.x = Math.cosh(t) * -Math.sin(event.angle)
-                event.sphere.position.y = Math.cosh(t) * -Math.cos(event.angle) - 0.05
-                event.sphere.position.z = -Math.sinh(t)
-                
-                //let xyzs = event.sphere.geometry.getAttribute('position');
+                events.push({t, i: clock.i, angle: clock.angle, sphere: event, hangle: 0})
 
             })
 
         }
 
+
+        var startTime
+        var loopStart = clock.getElapsedTime()
+        setTimeout(() => {
+            loopStart = clock.getElapsedTime()
+            startTime = loopStart
+
+            var h = setInterval(() => {
+                //loopStart = clock.getElapsedTime()
+                addEvents(clock.getElapsedTime())
+            }, 1000)
+            setTimeout(()=> {
+                clearInterval(h)
+            }, 30000)
+        }, 2000)
+        
+        var startTime = 0
+        function animate() {
+
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+
+            if (!loopStart) return 
+
+            var tt = clock.getElapsedTime() //(clock.getElapsedTime() - loopStart) / 5;
+            var t
+            var lastT = -1
+            var angle
+            events.forEach(event => {
+
+                if (event.t !== lastT) {
+                    angle = getNextAngle(tt, event.t, event.hangle)
+                    lastT = event.t
+                }
+                event.hangle = angle
+                event.sphere.position.x = Math.cosh(angle) * -Math.sin(event.angle)
+                event.sphere.position.y = Math.cosh(angle) * -Math.cos(event.angle) - 0.05
+                event.sphere.position.z = -Math.sinh(angle)
+
+            })
+
+        }
+
+
+        function getNextAngle(tt, t, hangle) {
+
+            //console.log(tt)
+            return (tt - t) / 2
+                
+        }
 
     </script>
 
