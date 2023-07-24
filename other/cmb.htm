@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head><style>
+        body {background-color: #808080;}
+    </style></head>
+
+<body>
+    <canvas height="500" width="500" id="canvas2"></canvas>
+    <canvas height="500" width="500" id="canvas"></canvas>
+    <canvas height="500" width="500" id="canvas3"></canvas>
+
+
+
+<script>
+
+    var canvas = document.getElementById("canvas")
+    var ctx = canvas.getContext("2d")
+    var c2 = document.getElementById("canvas2")
+    var ctx2 = c2.getContext("2d")
+    var c3 = document.getElementById("canvas3")
+    var ctx3 = c3.getContext("2d")
+    var w = canvas.width
+    var h = canvas.height
+
+    var R = w/3.5
+    var r = 8
+
+    drawCircle(ctx)
+    drawCircle(ctx2)
+    drawCircle(ctx3)
+
+    // in
+    drawRightArrow(ctx, -R, -r, 0)
+    ctx.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx, -R, -r, 0)
+    ctx.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx, -R, -r, 0)
+    ctx.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx, -R, -r, 0)
+    ctx.rotate(Math.PI / 2)
+
+    // out
+    drawRightArrow(ctx2, r, R, 0)
+    ctx2.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx2, r, R, 0)
+    ctx2.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx2, r, R, 0)
+    ctx2.rotate(Math.PI / 2)
+
+    drawRightArrow(ctx2, r, R, 0)
+    ctx2.rotate(Math.PI / 2)
+
+
+    // middle
+    for (let i = 0; i < 8; i++) {
+        drawRightArrow(ctx3, -R * 1.5, -R * 1.5 + R, 0)
+        ctx3.rotate(Math.PI / 4)
+    }
+
+
+
+    function drawCircle(ctx) {
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, w, h)
+
+        ctx.translate(w/2, h/2)
+
+        ctx.fillStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(0, 0, r, 0, Math.PI * 2)
+        ctx.fill()
+
+        ctx.lineWidth = 3
+        ctx.strokeStyle = "red"
+        ctx.beginPath()
+        ctx.arc(0, 0, R, 0, Math.PI * 2)
+        ctx.stroke()
+    }
+
+
+    function drawRightArrow(ctx, x1, x2, y) {
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.fillStyle = "yellow"
+        
+        ctx.beginPath()
+        ctx.moveTo(x1, y)
+        ctx.lineTo(x2 - 6, y)
+        ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(x2 - 12, y - 10)
+        ctx.lineTo(x2 + 0 , y)
+        ctx.lineTo(x2 - 12, y + 10)
+        ctx.closePath()
+        ctx.fill()
+    }
+
+</script>
+
+</body>
+
+
+</html>
