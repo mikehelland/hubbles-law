@@ -120,7 +120,7 @@
 
 <script>
 
-const Hstart = 64
+var Hstart = 64
 const Hend = 78.5
 
 var sse = []
@@ -154,6 +154,7 @@ var black = false
     useErrorEl.onchange = e => {
         console.log("onchange")
         useError = !useError //useErrorEl.value
+        Hstart = useError ? 50 : 64
         zoomGY = getZoom()
         calculateDistances()
         drawGraph()
@@ -171,6 +172,7 @@ var black = false
     var zoomG = (graph.width - offset) / (Hend - Hstart) //zoom 
 
     var getZoom = () => {
+        zoomG = (graph.width - offset) / (Hend - Hstart)
         if (useMu) {
             return useError ? zoom / 7000 : zoom * 3 
         }
