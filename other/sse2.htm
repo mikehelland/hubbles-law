@@ -77,7 +77,7 @@
     <canvas id="graph" height="400" width="700"></canvas>
     <table id="y-axis">
         <tr>
-            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2  \]</td>
+            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2 / \sigma^2 \]</td>
         </tr>
     </table>
     </div>
@@ -156,8 +156,8 @@ var black = false
         zoomGY = getZoom()
         calculateDistances()
         drawGraph()
-        drawData()
         calculateLCDMErrors()
+        drawData()
     }
 
     var c = 1
@@ -171,7 +171,7 @@ var black = false
 
     var getZoom = () => {
         if (useMu) {
-            return useError ? zoom / 7000 : zoom * 3 
+            return useError ? zoom * 0.2 : zoom * 3 
         }
         else {
             return  (useError ? zoom / 1200000 : zoom / 70000)   
@@ -222,13 +222,6 @@ var black = false
     }
     
     
-    // the models advance by 1 million years each step
-    // the units for distance are in Mly (million light years)
-
-    // the speed of light is 1 million lightyears per million years
-    
-    // Hubble's Constant (H) is in units of Gly^-1 or ly/y/Gly, so it is divided by 1000  
-    
     function drawGraph() {
         sseHypothesis = 0
         
@@ -260,9 +253,9 @@ var black = false
         var dgi
         ctxB.font = "10px sans-serif"
         ctxB.fillStyle = "black"
-        var range = useMu ? !useError ? [0.00005, 0.0001] : [1, 2] : !useError ? [5, 25] : [100, 1000]
+        var range = useMu ? !useError ? [0.00005, 0.0001] : [0.001, 0.002] : !useError ? [5, 25] : [100, 1000]
         for (dgi = 0; dgi <= range[1] * 1e6; dgi+=range[0] * 1e6) {
-            ctxB.fillText(dgi, 0, -offset + graph.height - dgi * zoomGY + 4)    
+            ctxB.fillText(dgi.toString().replace("000", "K"), 0, -offset + graph.height - dgi * zoomGY + 4)    
         }
         
         for (dgi = 0; dgi < 11; dgi+=1) {
@@ -271,6 +264,7 @@ var black = false
     }
 
     function drawData() {
+        var hypothesis = useError ? 839.3 : 55.01
         graph.width = graph.width
         ctxG.fillStyle = !black ? "black" : "white"
             
@@ -286,10 +280,10 @@ var black = false
         
         ctxG.strokeStyle = "red"
         ctxG.beginPath()
-        ctxG.moveTo(offset, graph.height - 55.01 * zoomGY - offset)
+        ctxG.moveTo(offset, graph.height - hypothesis * zoomGY - offset)
 
         ctxG.lineTo(offset + graph.width * zoomG, 
-                    -offset + graph.height - 55.01 * zoomGY)
+                    -offset + graph.height - hypothesis * zoomGY)
         ctxG.stroke()
         
     }
@@ -312,7 +306,7 @@ var black = false
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].split(",")
             if (line[0]) {
-                var sn = {"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])}
+                var sn = {"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[3])}
                 snData.push(sn)
 
             }
