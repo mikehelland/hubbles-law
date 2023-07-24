@@ -77,7 +77,7 @@
     <canvas id="graph" height="400" width="700"></canvas>
     <table id="y-axis">
         <tr>
-            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2\]</td>
+            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2 / \sigma^2 \]</td>
         </tr>
     </table>
     </div>
@@ -126,6 +126,8 @@ const Hend = 78.5
 var sse = []
 var sseHypothesis = 0
 var sseLCDM = 0
+var lowestHypothesis = 0
+var lowestLCDM = 0
 
 document.getElementById("recalculate").onclick = e => calculateLCDMErrors()
 
@@ -154,7 +156,7 @@ var black = false
     useErrorEl.onchange = e => {
         console.log("onchange")
         useError = !useError //useErrorEl.value
-        Hstart = useError ? 50 : 64
+        //Hstart = useError ? 50 : 64
         zoomGY = getZoom()
         calculateDistances()
         drawGraph()
@@ -172,9 +174,9 @@ var black = false
     var zoomG = (graph.width - offset) / (Hend - Hstart) //zoom 
 
     var getZoom = () => {
-        zoomG = (graph.width - offset) / (Hend - Hstart)
+        //zoomG = (graph.width - offset) / (Hend - Hstart)
         if (useMu) {
-            return useError ? zoom / 7000 : zoom * 3 
+            return useError ? zoom / 7 : zoom * 3 
         }
         else {
             return  (useError ? zoom / 1200000 : zoom / 70000)   
@@ -209,6 +211,8 @@ var black = false
 
         sse = []
 
+        lowestHypothesis = 0
+        
         for (var iH = Hstart; iH < Hend; iH += 0.1) {
             sseHypothesis = 0
             sseLCDM = 0
@@ -216,6 +220,10 @@ var black = false
             snData.forEach(sn => {
                 sseHypothesis += calculateError(sn, iH)
             })
+
+            if (!lowestHypothesis || sseHypothesis < lowestHypothesis.sse) {
+                lowestHypothesis = {sse: sseHypothesis, H0: iH}
+            }
             sse.push({H: iH, 
                 hypothesis: sseHypothesis, 
                 lcdm: sseLCDM    
@@ -321,7 +329,7 @@ var black = false
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i].split(",")
             if (line[0]) {
-                snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[0])})
+                snData.push({"dm": parseFloat(line[2]), "z": parseFloat(line[0]), "derr": parseFloat(line[3])})
             }
             
         }
@@ -384,6 +392,7 @@ var black = false
         console.log("calcaulting lcdms")
         var sseLCDM
         var i = 0
+        lowestLCDM = 0 
         handle = setInterval(() => {
 
             sseLCDM = 0
@@ -394,7 +403,11 @@ var black = false
             })
             sse[i].lcdm = sseLCDM
             i++
-        
+
+            if (!lowestLCDM || sseLCDM < lowestLCDM.sse) {
+                lowestLCDM = {sse: sseLCDM, H0: sse[i].H}
+            }
+
             if (i >= sse.length) {
                 clearInterval(handle)
             }
