@@ -79,7 +79,7 @@
     var height = graph.height - offset
     var zoom = 1
     var zoomGY = height * 0.75
-    var zoomG = zoom * 6.98
+    var zoomG = zoom * 6.9
 
 
     var Omega_M = 0.3 
@@ -153,11 +153,11 @@
         ctxB.font = "10px sans-serif"
         ctxB.fillStyle = "black"
         for (dgi = 0; dgi <= 1.5; dgi+=0.5) {
-            ctxB.fillText(dgi, 0, -offset + graph.height - dgi * zoomGY + 4)    
+            ctxB.fillText(dgi, 10, -offset + graph.height - dgi * zoomGY + 4)    
         }
         
         for (dgi = 0; dgi <= 140; dgi+=10) {
-            ctxB.fillText(dgi/10, offset + dgi  * zoomG - 5, graph.height - 5)    
+            ctxB.fillText(dgi/10, offset + dgi  * zoomG, graph.height - 5)    
         }        
 
         ctxB.lineWidth = 1
