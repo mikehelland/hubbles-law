@@ -33,6 +33,7 @@
             }
 
             #hypothesiseq {
+                display: none;
                 position: absolute;
                 left: 480px;
                 top: 425px;
@@ -42,6 +43,12 @@
             #sse-hypothesis, #sse-lcdm {
                 text-align: right;
                 font-weight: bold;
+            }
+
+            #lcdm {
+                position: absolute;
+                left:220px;
+                top:450px;
             }
 
         </style>
@@ -85,16 +92,18 @@
         <br>
         Light Extinction=<input id="extinction" type="number" value="0.0" step="0.01" min="0.0">
         <br>
-        Geometry R: <input value="0" type="number" id="graph-geometry">
+        Hypothesis2 R: <input value="0" type="number" id="graph-hypothesis2">
         </div>
     <br>
     Hypothesis H<sub>0</sub>: <input value="70" type="number" id="graph-hypothesis">
     <br>
-    &Lambda;CDM (<span style="color:green;">green</span>): 
-    H<sub>0</sub>: <input type="number" value="67" step="0.5" id="H0">
-    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
-    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
-    
+    <div id="lcdm">
+        &Lambda;CDM (<span style="color:green;">green</span>): 
+        H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
+        &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+        &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+    </div>
+
     <hr>
     <div id="Errors">
         Sum of Squared Errors:
@@ -131,58 +140,6 @@ var sseHypothesisDiv = document.getElementById("sse-hypothesis")
 var sseLCDMDiv = document.getElementById("sse-lcdm")
 
 var drawHypothesis = document.getElementById("graph-hypothesis")
-var drawGeometry = document.getElementById("graph-geometry")
-
-var R = drawGeometry.value
-var sq = n => Math.pow(n, 2)
-var sqrt = n => Math.sqrt(n)
-var cosh = n => Math.cosh(n)
-var data = []
-
-drawGeometry.onchange = e => {
-    calcData()
-    drawSN()
-}
-
-function calcData() {
-    data = []
-    R = drawGeometry.value
-
-    for (let i = 0; i < 10; i+=0.1) {
-        let d = {
-            d: i,
-            t: sqrt(sq(R * Math.cosh(i / R) - R) + sq(R * Math.sinh(i / R))), 
-            t2: -14 * Math.log(1/14 * -i + 1)
-        }
-        //d.z = tToz(d.t)
-        d.z = dToz(d.d)
-        d.z2 = 1 / Math.exp(1/14 * -d.t2) - 1
-        data.push(d)
-    }
-
-}
-calcData()
-
-function tToz(t) {
-    //(sqrt(2) t)/sqrt((R^2 + 2 t^2) (abs(R) sqrt(R^2 + 2 t^2) - R^2 + t^2))
-    //https://www.wolframalpha.com/input?i2d=true&i=D%5BArcCosh%5BDivide%5B%5C%2840%29Power%5BR%2C2%5D+%2B+sqrt%5C%2840%29Power%5BR%2C4%5D+%2B+2+Power%5BR%2C2%5D+Power%5Bt%2C2%5D%5C%2841%29%5C%2841%29%2C%5C%2840%292+Power%5BR%2C2%5D%5C%2841%29%5D%5D%2Ct%5D
-
-    oneOverOnePlusZ = R * (sqrt(2) * t) / sqrt((sq(R) + 2 * sq(t)) * (Math.abs(R) * sqrt(sq(R) + 2 * sq(t)) - sq(R) + sq(t)))
-    return 1 / oneOverOnePlusZ - 1
-}
-
-
-function tTod(t) {
-    Math.acosh((Math.pow(H, 2) + Math.sqrt(Math.pow(H, 4) + 2 * Math.pow(H, 2) * Math.pow(a.d, 2) )) / (2 * Math.pow(H, 2)))
-}
-
-function dToz(x) {
-    // https://www.wolframalpha.com/input?i2d=true&i=D%5BSqrt%5BPower%5BR+cosh%5C%2840%29Divide%5Bx%2CR%5D%5C%2841%29-R%2C2%5D%2BPower%5BR+sinh%5C%2840%29Divide%5Bx%2CR%5D%5C%2841%29%2C2%5D%5D%2Cx%5D
-    //cosh((3 x)/(2 R))/sqrt(cosh(x/R))
-
-    return cosh((3 * x) / (2 *R) ) / sqrt(cosh(x/R)) - 1
-
-}
 
 
 var black = false
@@ -248,6 +205,13 @@ var black = false
 
     var snData = []
     var zData = []
+    var zs = []
+    for (let i = 0; i < 1; i += 0.001) {
+        zs.push(i)
+    }
+    for (let i = 1; i < 2.5; i += 0.1) {
+        zs.push(i)
+    }
     
     function drawSN() {
         sseHypothesis = 0
@@ -260,14 +224,6 @@ var black = false
         ctxB.strokeRect(offset, -10, graph.width, graph.height + 10 - offset)
 
         ctxB.fillStyle = !black ? "black" : "white"
-
-        var zs = []
-        for (let i = 0; i < 1; i += 0.001) {
-            zs.push(i)
-        }
-        for (let i = 1; i < 2.5; i += 0.1) {
-            zs.push(i)
-        }
 
         var t
         if (drawHypothesis.value > 0) {
@@ -294,18 +250,8 @@ var black = false
             ctxB.stroke()
         }
 
-        if (drawGeometry.value > 0) {
-            ctxB.lineWidth = 1
-            ctxB.strokeStyle = "blue"
-            ctxB.beginPath()
-            ctxB.moveTo(offset, graph.height - offset)
-            data.forEach(d => {
-                ctxB.lineTo( offset + d.z * zZoom * zoomG, 
-                                -offset + graph.height - d.t * 1000 * zoomGY)
-            })
-            ctxB.stroke()
-
-        }
+        var dz
+        
 
 
 

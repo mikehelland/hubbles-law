@@ -1,0 +1,137 @@
+
+As the universe expands, light gets stretched in space, increasing its wavelength.
+
+This causes the light to redshift. 
+
+[left wave stretching in space]
+
+What if the light were to be stretched in time, instead of space? Then the wave's period would increase, which decreases its frequency. That's redshift too.
+
+[left wave stretching in time]
+
+And if that's why light is redshifted, then the universe isn't expanding.
+
+[ttile]
+
+We're going to take a deeper look at redshift and time dilation in today's episode of "Nonexpanding", the show about the evidence for and against the expanding universe.
+
+[list of evidence]
+
+Of the evidence for the expanding universe, the most prominent is the redshifted light. Another line of very convincing evidence is the time dilation of distant supernovae. 
+
+[light up redshift and time dilation]
+
+Part 1. Redshift
+
+Light is an electromagnetic wave. It has a wavelength, the distance between crests, a period, the time between crests, and a frequency, which is the inverse of period. The frequency tells us how many crests occur over a period of time. For example, if the wave crests, or repeats itself, once every second it has a frequency of 1 over 1 second, or 1 Hz.
+
+[light properties]
+
+Visible light is part of the electromagnetic specturm between infrared and ultraviolet. An electromagnetic wave with a wavelength of 400 nm is violet light. Imagine that this violet light is emitted far away and travels across the univese to reach an observer who measures its wavelength as 600 nm, and sees it as orange light. 
+
+Because the wavelength of the light has increased, and because red has the largest wavelength of visible light, we say that the light has redshifted.
+
+Redshift is a unitless number, represented by the letter z. We use this formula, 1 + z = wavelength_obserd / wavelength_emitted to calculate z. Since the light was emitted at 400 nm, and observed at 600 nm, its z is z = 600 / 400 - 1 or z = 0.5
+
+We can also describe the light and redshift by frequency.
+
+The speed of a wave is its frequency times its wavelength. And the speed of light is constant c, so knowing lights wavelength tells you its frequency. The frequency of the 400 nm wavelength violet light is about 750 THz, and the frequency of the 600 nm wavelength orange light is 500 THz.
+
+Given the observed and emitted frequencies, we can calculate redshift using the formula 1 + z = frequency_emit / frequency_obs, and we again get z = 0.5.  
+
+
+Part 2. Time dilation
+
+When a star goes supernova, explodes, it will reach a peak brightness and then diminish over time, which is plotted as a light curve. For a Type Ia supernova, the light cuerve is fairly predictable. About a month after peak brightness, the luminosity-decline rate will become more gradual and linear.
+
+[light curve]
+
+[SN Start - End]
+
+It is predicted by the expanding universe, and rigorously confirmed by observation, that this duration is stretched based on the distance, ie the redshift, of the supernova. 
+
+[animate sn]
+
+This is a prediction of the expanding universe because the light from the end of the supernova will have farther to travel to an observer than the light from the start of the supernova.
+
+[expanding universe time dilation animat]
+
+Time dilation has also been recently confirmed in observations of high redshift quasars. Keep that in mind as look at the properties of light.
+
+[Lewis and Brewer article shot]
+
+
+Part 3
+
+
+
+So let's return to the electromagnetic waves from the beginning of the video in time and space.
+
+[into graphs]
+
+On the left is a wave being stretched in space, changing its wavelength, and reddening the wave. On the rigth, the same wave being stretched in time. By stretching out the time it takes for the wave to repeat, its frequency decreases. We've seen this would also cause redshift. If it was repeating once per second, and now repeats only once over two seconds, its frequency is halved.  
+
+Being stretched in space is a familiar and easy to grasp idea, while being stretched in time is probably unfamiliar and unintuitive. But the stretching of space itself isn't any less strange than time being stretched. 
+
+In the expanding universe, the stretching of the light's wavelength and the time dilation of supernovae are commonly considered to be two different consequences of expansion.
+
+[stretching time]
+
+However, if time itself were stretched, the duration of a supernova and the period of an electromagnetic wave would be equally affected. And a time dilated electromagnetic wave is a redshifted wave. In this interpretation of the evidence, redshift and time dilation are not two distinct phenomena, but rather fundamentally the same phenomenon.
+
+
+
+This interpretation of the evidence serves to motivate a novel idea, called the time dilated past hypothesis, which says that, in light of the directly observable evidence, that time is stretched such that the past is observed as time dilated. 
+
+
+We observe the past to be time dilated. What if it is? 
+
+The time dilated past hypothesis can be stated mathematically as:
+
+\[ \tau = \frac{1}{H_0} (e^{H_0 t} - 1) \]
+
+where \(t\) will be called the measured time which exhibits the effects of time dilation, and \(\tau\) is called Minkowski time, where the effects of time dilation are removed. \(H_0\) is Hubble's constant and \(e\) is Euler's number.
+
+How this equation is obtained and its possible physical interpretations will be discussed in a future video. There's a link in the description for a paper that also describes where the equation comes from.
+
+For now, if we take the measured time \(t\), and put it into this formula, we get \(\tau\), which is called Minkowski time because this time coordinate is exactly what you would expect in the Minkowski spacetime of special relativity.
+
+From this equation, one can obtain a redshift-luminosity distanace equation, which will also be discussed in more depth in a future video, and is also described by the paper linked below. The  redshift-luminosity distanace relationship is:
+
+\(d_L = \frac{1}{H_0} (1+z) \log (1+z) \)
+
+Having the luminosity distanace for a given z allows us to calculate a distance modulus and compare the hypothesis to the data in the Patntheon+SH0ES dataset, a well known database of supernovae containing their redshift and distance modulus.
+
+
+This simple formula gives a pretty good fit to the data. 
+
+We can compare it to the standard model of cosmology, which is called LCDM (LCDM), by taking the squared sum of errors (SSE) over a range of values for Hubble's constant. Which you can calculatre with this formula:
+
+[X^2 = ...]
+
+So I wrote a little program to compute the an SSE for the hypothesis to the data using every value from 65 to 80 km/s/Mpc in 0.5 increments for Hubble's value. And then I did the same thing for LCDM using OmegaM=0.3 and OmegaL=0.7.
+
+The lowest SSE value provides the best fit to the data, and you can see here that for the hypothesis, that is H_0 = 70.5.
+
+LCDM's lowest SSE is just slightly lower and thus a better fit at the value fo H_0 = 73.0 km/s/Mpc. 
+
+You may have heard of the Hubble tension before. Well, this is it. 
+
+LCDM's best fit to the data is 73.0. But LCDM's own inferred value for Hubble's constant is 67.5 km/s/Mpc. The tension is that the numbers don't agree.
+
+[sse]
+
+Also, if you've ever wondered exactly why dark energy is a thing, you can see it right here in the supernovae data.
+
+[back to sndata, animated]
+
+In a universe with just matter and no dark energy, so OmegaM = 1 and OmegaLamda = 0, the curve won't fit the data well just by adjusting Hubble's constant
+
+
+We'll be talking a lot more about the time dilated past hypothesis in future videos. And other nonexpanding models that are being proposed.
+
+We'll look at the other lines of evidence for and against the expanding universe. If there are topics you'd like to see discussed listed here sooner than others, let me know in the comments. And if I'm missing something that you'd like to see addressed, post those comments too. As well as any disagreements or criticisms you may have.
+
+I also plan to post videos about new papers that come out, especially ones related to JWST observations about the early universe, and whether the fit an expanding universe, or a nonexpanding one.
+
+That's it for today. Comment, like, subscribe and that good stuff. And don't be afraid to ask some questions.

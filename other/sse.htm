@@ -120,7 +120,7 @@
 
 <script>
 
-var Hstart = 64
+var Hstart = 66
 const Hend = 78.5
 
 var sse = []
@@ -176,7 +176,7 @@ var black = false
     var getZoom = () => {
         //zoomG = (graph.width - offset) / (Hend - Hstart)
         if (useMu) {
-            return useError ? zoom / 7 : zoom * 3 
+            return useError ? zoom / 6 : zoom * 3 
         }
         else {
             return  (useError ? zoom / 1200000 : zoom / 70000)   
@@ -313,8 +313,10 @@ var black = false
         ctxG.moveTo(offset, graph.height - sse[0].hypothesis * zoomGY - offset)
 
         sse.forEach(data => {
-            ctxG.lineTo(offset + (data.H - Hstart) * zoomG, 
+            if (data.lcdm) {
+                ctxG.lineTo(offset + (data.H - Hstart) * zoomG, 
                     -offset + graph.height - data.lcdm * zoomGY)
+            }
         })
         ctxG.stroke()
 
