@@ -1,7 +1,10 @@
 var graphTD = document.getElementById("time-dilation")
 var imgSN = document.getElementById("supernova")
 
-drawSpacetimeTDE(graphTD, 0)
+setTimeout(() => {
+    drawSpacetimeTDE(graphTD, 0)
+
+})
 
 function drawSpacetimeTDE(graph, percent) {
     var ctx = graph.getContext("2d")
@@ -28,8 +31,6 @@ function drawSpacetimeTDE(graph, percent) {
     ctx.fillText("Time", 86, 24)
     ctx.fillText("Space", graph.width - 5, y0 - 34)
 
-    ctx.fillStyle = "red"
-
     if (percent > 0) {
         ctx.strokeStyle = "yellow"
         ctx.lineWidth = 3
@@ -46,9 +47,15 @@ function drawSpacetimeTDE(graph, percent) {
 
     }
 
+    ctx.fillStyle = "red"
     ctx.beginPath()
     ctx.arc(x0 + 400, y0 + 400, 16, 0, Math.PI*2)
     ctx.fill()
+
+    ctx.font = "12pt Sans"
+    ctx.fillStyle = "white"
+    ctx.textAlign = "center"
+    ctx.fillText("SN Start", x0 + 400, y0 + 430)
 
     ctx.drawImage(imgSN, 
         x0 + 400 - imgSN.width / 2 + 100 * percent, 
@@ -58,10 +65,7 @@ function drawSpacetimeTDE(graph, percent) {
 }
 
 function animateTDEStart() {
-    var ctx = graphTD.getContext("2d")
-    var x0 = graphTD.width / 20
-    var y0 = graphTD.height / 3
-    console.log(y0)
+
     var start = Date.now()
     var t
     var h = setInterval(() => {
@@ -73,28 +77,32 @@ function animateTDEStart() {
         }
         drawSpacetimeTDE(graphTD, t)
 
-        if (t === 1) {
-            console.log(y0)
-            setTimeout(() => {
-                ctx.strokeStyle = "blue"
-                ctx.lineWidth = 10
-                ctx.beginPath()
-                ctx.moveTo(x0 + 570, y0 + 400)
-                ctx.lineTo(x0 + 570, y0 + 300)
-                ctx.stroke()
-            }, 1000)
-            
-            setTimeout(() => {
-                ctx.strokeStyle = "red"
-                ctx.lineWidth = 10
-                ctx.beginPath()
-                ctx.moveTo(x0 - 12, y0)
-                ctx.lineTo(x0 - 12, y0 - 200)
-                ctx.stroke()
-            }, 2000)
-
-        }
     })
+
+}
+
+function tdeBlueLine() {
+    var ctx = graphTD.getContext("2d")
+    var x0 = graphTD.width / 20
+    var y0 = graphTD.height / 3
+    ctx.strokeStyle = "blue"
+    ctx.lineWidth = 10
+    ctx.beginPath()
+    ctx.moveTo(x0 + 400, y0 + 400)
+    ctx.lineTo(x0 + 400, y0 + 300)
+    ctx.stroke()
+}
+
+function tdeRedLine() {
+    var ctx = graphTD.getContext("2d")
+    var x0 = graphTD.width / 20
+    var y0 = graphTD.height / 3    
+    ctx.strokeStyle = "red"
+    ctx.lineWidth = 10
+    ctx.beginPath()
+    ctx.moveTo(x0 - 12, y0)
+    ctx.lineTo(x0 - 12, y0 - 200)
+    ctx.stroke()
 
 }
 

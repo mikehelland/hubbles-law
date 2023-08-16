@@ -83,6 +83,26 @@
     .spectrum600 {
         left:420px;
     }
+
+    .canvas-container canvas {
+                height: 100%;
+                width:100%;
+                position: absolute;
+                top:0;
+                left:0;
+                
+            }
+    .canvas-container {
+        position: relative;
+        height: 800px;
+        width: 800px;
+        margin: auto;
+    }
+
+    #summary-ul li {
+        padding-bottom: 6px;
+    }
+
 </style>
 </head>
 
@@ -328,7 +348,28 @@
 
 <div class="slide">
 
-    <h1>And recently quasars</h1>
+    <h2>Javascript Supernovae data</h2>
+    <img height="500px" src="code-sndata.png">
+
+    <div class="fi">
+        <h3>
+            "mu" is the distance modulus, given by the symbol: 
+        </h3>
+
+        <h1>\(\mu\)</h1>
+
+    </div>
+    <br>
+    <p class="fi">
+        Links in the description to the source code for slides, animations, and charts at:
+        <br>
+        <a href="asdasdas">https://github.com/mikehelland/hubbles-law/tree/master/nonexpanding/ep1</a>
+    </p>
+</div>
+
+<div class="slide">
+
+    <h1>Time dilation in quasars</h1>
 
     <img src="lewis.png">
 
@@ -372,22 +413,6 @@
 
 <div class="slide" >
 
-    <style>
-        .canvas-container canvas {
-                height: 100%;
-                width:100%;
-                position: absolute;
-                top:0;
-                left:0;
-                
-            }
-            .canvas-container {
-                position: relative;
-                height: 800px;
-                width: 800px;
-                margin: auto;
-            }
-    </style>
     <br><br><br>
     <div class="canvas-container">
         <canvas id="spacetime1" height="800" width="800"></canvas>
@@ -441,6 +466,7 @@
         </tr>
     </table>
     
+    <p class="fi">(Link to paper in the description)</p>
 
     <script src="stretched-spacetime2.js"></script>
 
@@ -450,14 +476,13 @@
 <div class="slide" >
     <h2>Redshift-luminosity distance relationship</h2>
 
-    <h2 class="fi">\(d_L =  \frac{c}{H_0} (1+z) \log (1+z) \)</h2>
+    <h2>\(d_L =  \frac{c}{H_0} (1+z) \log (1+z) \)</h2>
     <h2 class="fi">\(\mu =  5 \log_{10}d_L + 25 \)</h2>
 
+    <br>
     <h2 class="fi">Compared to the Pantheon+SH0ES Supernovae data</h2>
     <img width="1000px" class="fi" src="../../img/pantheonshoes_dm.png">
 
-
-    <p class="fi">Source code: <br><a href="alsdkfj">https://mikehelland.github.io/hubbles-law/other/supernovae.htm</a></p>
 
 </div>
 
@@ -483,26 +508,25 @@
     </ul>
 
     <br>
-    <h3 class="fi">Calculate \(\chi^2\) over a range of values for H<sub>0</sub></h3>
-
-
-    <h2 class="fi">A lower \(\chi^2\) is a better fit</h2>
-
-    <br>
-    <br>
-    <p class="fi">Source code: <br><a href="alsdkfj">https://mikehelland.github.io/hubbles-law/other/sse.htm</a></p>
-
+    <img height="500px" class="fi" src="code-sse.png">
 </div>
 
 <div class="slide" >
     
-    <h2>Sum of Squared Errors (SSE)</h2>
+    <h1>Calculate \(\chi^2\) over a range of values for H<sub>0</sub></h1>
+
+    <h3 class="fi">A lower \(\chi^2\) is a better fit</h3>
 
     <img width="1000px" id="ssehypothesis" src="ssehypothesis.png">
 
     <h3 class="fi">Time Dilated Past best fit \(H_0 = 70.5\) km s<sup>-1</sup> Mpc<sup>-1</sup></h3>
 
     <h3 class="fi">&Lambda;CDM best fit \(H_0 = 73.0\) km s<sup>-1</sup> Mpc<sup>-1</sup></h3>
+
+
+    <!--
+        <p class="fi">Source code: <br><a href="alsdkfj">https://mikehelland.github.io/hubbles-law/other/sse.htm</a></p>
+    -->
 
 </div>
 
@@ -517,9 +541,10 @@
 
     <h1>How fast is the universe actually expanding?</h1>
 
-    <h3 class="fi">Best fit value of H<sub>0</sub> for &Lambda;CDM to Supernova measurements</h3>
-
     <div class="fi">
+    
+        <h3>Best fit value of H<sub>0</sub> for &Lambda;CDM to Supernova measurements</h3>
+
         <h1>\(73.0\) km s<sup>-1</sup> Mpc<sup>-1</sup></h1>
 
         <img width="1000px" src="../../img/sseerr.png">
@@ -533,7 +558,7 @@
 
     <h2>Hubble Tension</h2>
 
-    <h2>Value of H<sub>0</sub> according to &Lambda;CDM + CMB measurements</h2>
+    <h2>Value of H<sub>0</sub> according to &Lambda;CDM + Planck CMB measurements</h2>
 
     <h1 class="fi">\(67.4\) km s<sup>-1</sup> Mpc<sup>-1</sup></h1>
 
@@ -556,13 +581,99 @@
 
     <h2>Measurements of H<sub>0</sub></h2>
 
-    <img src="h0.png">
+    <img src="h0.png" id="h0">
+
+
+</div>
+
+<div class="slide">
+    <br><br><br><br>
+    <h2 style="color:#AAA;">&nbsp;</h2>
+    <h1 style="font-size:96pt;"><i>Summary</i></h1>
+    
+<hr style="width:50%;">
+<br><br><br>
+</div>
+
+
+<div class="slide" style="text-align: left; padding:80px; font-size: 150%;">
+
+    <h2>In summary...</h2>
+
+    <hr>
+
+    <ul style="font-size: 150%;" id="summary-ul">
+        <li class="fi">Light redshifts when stretched in space</li>
+        <li class="fi">... or when stretched in time</li>
+        <li class="fi">Time dilation is observed in supernovae and quasars</li>
+        <li class="fi">The Time Dilated Past hypothesis says:</li>
+        <ul>
+            <li class="fi">the past is time dilated</li>
+            <li class="fi">redshifted light is time dilated light</li>
+            <li class="fi">space is not expanding</li>
+            <li class="fi">H<sub>0</sub> = 70.5 km s<sup>-1</sup> Mpc<sup>-1</sup></li>
+        </ul>
+    </ul>
 
 
 </div>
 
 
+
+<div class="slide" style="text-align: left; padding:80px; font-size: 150%;">
+
+    <h1>Evidence for the Expanding Universe</h1>
+
+    <hr>
+
+    <ul style="font-size: 150%;">
+        <li>Cosmic Redshift</li>
+        <li>Cosmic Time Dilation</li>
+        <li style="color:#555;">The Cosmic Microwave Background</li>
+        <li style="color:#555;">The evolution of galaxies</li>
+        <ul>
+            <li style="color:#555;">Metallicity</li>
+            <li style="color:#555;">Mass</li>
+            <li style="color:#555;">Shape</li>
+        </ul>
+        <li style="color:#555;">Big Bang Nucleosynthesis</li>
+        <li style="color:#555;">Baryonic Acoustic Oscillations</li>
+    </ul>
+
+
+</div>
+
+
+<div class="slide">
+    <h1>What topic should I cover next?</h1>
+
+    <h2 class="fi">Comments... criticisms?</h2>
+
+    <br>
+    <br>
+    <br>
+
+    <h1 class="fi">Subscribe!</h1>
+
+    <h2 class="fi">Check out the <a href="adffs">links</a> in the description</h2>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p class="fi">Thanks to: Bob Helland</p>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <p class="fi"><i>&copy;2023 Nonexpanding</i></p>
+</div>
+
+
 <script src="redshifts.js"></script>
+
 
 <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
 
@@ -570,7 +681,7 @@
 <script>
 
     var slides = document.getElementsByClassName("slide")
-    var slide = 17 //-1
+    var slide = -1
     var fi = 0
     var fis = document.getElementsByClassName("fi")
     for (let i = 0; i < fis.length; i++) {
@@ -617,6 +728,10 @@
              fis.push(els[i])
         }
 
+        if (slide === 0) {
+            fis.splice(0, 0, ()=>animateRedshifts())
+        }
+        
         if (slide === 2) {
             fis.push(() => {
                 var lis = slides[slide].getElementsByTagName("li")
@@ -636,6 +751,8 @@
         }
         if (slide === 9) {
             fis.push(()=>animateTDEStart())
+            fis.push(()=>tdeBlueLine())
+            fis.push(()=>tdeRedLine())
         }
         if (slide === 10) {
             fis.splice(0, 0, ()=> {
@@ -643,13 +760,13 @@
                 gif.src = "sn1.gif"
             })
         }
-        if (slide === 14) {
+        if (slide === 15) {
             fis.splice(0, 0, ()=> {
                 stretchedTime()
             })
         }
 
-        if (slide === 15) {
+        if (slide === 16) {
             fis.push(()=> {
                 animateClocks()
             })
@@ -657,7 +774,7 @@
                 clearInterval(animClocksHandle)
             })
         }
-        if (slide === 16) {
+        if (slide === 17) {
             fis.splice(1, 0, ()=> {
                 spacetime1.drawConnections()
             })
@@ -665,13 +782,27 @@
                 spacetime1.drawTimedilated()
             })
         }
-        if (slide === 20) {
-            fis.splice(1, 0, ()=> {
+        if (slide === 21) {
+            fis.splice(2, 0, ()=> {
                 var gif = document.getElementById("ssehypothesis")
                 gif.src = "sselcdm.gif"
             })
         }
-        
+        if (slide === 26) {
+            fis.push(()=> document.getElementById("h0").src="h02.png")
+            fis.push(()=> document.getElementById("h0").src="h03.png")
+            fis.push(()=> document.getElementById("h0").src="h04.png")
+            fis.push(()=> document.getElementById("h0").src="h07.png")
+        }
+        if (slide === 29) {
+            fis.push(() => {
+                var lis = slides[slide].getElementsByTagName("li")
+                for (let i = 1; i < lis.length; i++) {
+                    lis[i].style.color = "#FFFFFF"
+                }
+            })
+            
+        }
 
         slides[slide].style.opacity = 0
         slides[slide].style.display = "block"

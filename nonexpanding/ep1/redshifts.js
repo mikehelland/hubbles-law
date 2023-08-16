@@ -13,14 +13,19 @@ drawSpacetime(graph2, 1)
 var animHandle
 
 setTimeout(() => {
+    drawSpacetime(graph)
+    
+}, 1000)
+
+function animateRedshifts() {
     animHandle = setInterval(() => {
         drawSpacetime(graph)
         drawSpacetime(graph2, 1)
         t++
     }, 1000 / 30)
-    setTimeout(() => clearInterval(animHandle), 30 * 1000)
-    
-}, 1000)
+    setTimeout(() => clearInterval(animHandle), 30 * 1000)    
+}
+
 
 function drawSpacetime(graph, version) {
     var ctx = graph.getContext("2d")
