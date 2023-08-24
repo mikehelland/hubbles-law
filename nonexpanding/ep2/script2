@@ -1,0 +1,80 @@
+The expansion of the universe pushes everything away from us.
+
+Gravity wants to pull everything back, which decelerates the expansion.
+
+When the deceleration was measured, we found it wasn't there. It was actually negative.
+
+That's why dark energy is necessary. It has to counteract the gravity that counteracts expansion.
+
+We'll dive deeper into the evidence and theory for dark energy on 
+
+
+[title]
+
+this episode of Nonexpanding, the evidence for and against the expanding universe
+
+Dark Energy
+
+Why we need it, and why it's not real
+
+Part 1, the data and the model
+
+[recapp data and js]
+
+The reason we need dark energy can be found in the supernovae data we looked at in episode 1. This is called the Pantheon+SH0ES data, and here is some JavaScript code I used to graph it, and here's what you get.
+
+
+[sn graph]
+
+The redshift of the supernova is its z, which is on the x axis, and its distance modulus is mu, on the y axis.
+
+[LCDM]
+
+Also recall that the standard model of cosmology is called LambdaCDM, or sometimes just LCDM.
+
+[dark energy vs dark matter]
+
+The Lambda represents the dark energy, and the CDM is for cold dark matater. It's easy to confuse dark energy and dark matter, just beacuse they both have the word dark in them.
+
+This video is just about dark energy. Not dark matter, which aren't really related.
+
+
+[LCDM parameteres]
+
+The LambdaCDM model allows you to specificy how much of the universe is dark energy (OmegaLambda) and how much is matter, both regular and dark matter, Omega M.
+
+To compare LCDM to the supernova data, we will use the model to calculate a distance modulus for every redshift z in the data.
+
+[Cappi]
+
+To do that, I found a cosmological calculator written in JavaScript by Alberto Cappi, 
+
+http://www.bo.astro.it/~cappi/cosmotools
+
+Which gives us a JavaScript function to get values from LCDM provided we give it a z, the matter and dark energy parameters OmegaM and OmegaLambda, and a Hubble's constant, Hsub0. 
+
+Link in the description
+
+[animated gif omegaL=0]
+
+If we set OmegaLamda to 0, which would mean there is no dark energy, and we set OmegaM to 1, which fills the universe with matter, then no value of Hubble's constant gives a good fit to the data.
+
+You can see with your own eyes, the model might fit the data for the lower redshifts, or the upper redshifts, but not both.
+
+[dark energy]
+
+However, if we include dark energy, we can get a good fit to all the data.
+
+Part 2: Push, Pull, Push
+
+Recall from the beginning of the video where we had the pushing of expansion, the pulling of gravity, and the pushing again of dark energy.
+
+That's the standard way of intepretting the results of the supernovae study. That the expected deceleration wasn't measured, which means the effects of gravity are counteracted by the effects of dark energy.
+
+An alternative interpretation of these results is that it is a null result, that the effects of gravity don't actually impact redshift and time dilation at all. 
+
+We saw what happens when we set OmegaL to 0 and OmegaM to 1, it didn't fit the data.
+
+We can see what happens when we set OmegaM and OmegaL to 0, which says the universe is, for our purposes, devoid of matter and energy. This is called the Milne Model is you want to find more information about that.
+
+To compare these models, we'll use the sum of squared errors discussed in the first episode. You can pause this to take a look at how it works. We're looking for the lowest value, and here's 3 sets of parameters. Also included is a pure dark energy model, where OmegaL is 1 and OmegaM is 0. This is known as de Sitter universe, and you can find lots of information about that.

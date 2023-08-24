@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+    body {
+        text-align: center;
+        color:white;
+        background-color: #080808;
+        overflow: hidden;
+        font-size: 20pt;
+    }
+
+    table {
+        margin:auto;
+    }
+
+    .slide {
+        padding:0.9em;
+        display:none;
+    }
+
+    .sidebyside {
+        display: inline-block;
+        padding:70px;
+    }
+
+    #pantheoncode {
+        position: absolute;
+        top:400px;
+        left:40px;
+    }
+    #pantheongraph {
+        position: absolute;
+        top:300px;
+        left:900px;
+    }
+
+    hr {width: 50%;}
+</style>
+</head>
+
+<body>
+
+    <img style="display: none;" id="supernova" src="../../img/supernova.png">
+    <img style="display: none;" id="spectrum" src="visiblespectrum.png">
+
+
+    <div class="slide">
+        <canvas width="1000" height="1000" id="arrows"></canvas>
+        <script src="arrows.js"></script>
+    </div>
+    
+
+
+    <div class="slide">
+        <h1 style="font-size:96pt;">Nonexpanding</h1>
+        <h2 style="color:#AAA;"><i>Evidence for and against the expanding universe</i></h2>
+        <br><br><br><br>
+    <hr style="width:50%;">
+    <br><br><br>
+        <h1 class="fi"><span style="color:#AAA;">Ep. 2:</span> Dark Energy: Why we need it & why it's not real</h1>
+    
+    </div>
+    
+    <div class="slide">
+        <br><br><br><br>
+        <h2 style="color:#AAA;">Part 1</h2>
+        <h1 style="font-size:96pt;"><i>The data and the model</i></h1>
+        
+    <hr style="width:50%;">
+    <br><br><br>
+    </div>
+
+    <div class="slide">
+        <h2>Pantheon+SH0ES Supernovae data</h2>
+        <img src="../ep1/pantheonsh0es.png" id="pantheondata">
+        <img class="fi" src="../ep1/code-sndata.png" id="pantheoncode">
+        <img class="fi" src="pantheondata.png" height="500px" id="pantheongraph">
+    </div>
+
+    <div class="slide">
+
+        <h2>The standard model of cosmology is</h2>
+        <h1>&Lambda;CDM</h1>
+        <h3>a.k.a. LCDM</h3>
+        <h2>&Lambda; = "Lambda"</h2>
+        <h2>&Lambda; = Dark Energy</h2>
+        <h2>CDM = Cold Dark Matter</h2>
+
+    </div>
+
+
+
+    <div class="slide" style="text-align: left; font-size: 140%; padding-left: 100px;">
+
+        <h1>Dark Energy vs Dark Matter</h1>
+        <hr>
+        <h2>What they have in common</h2>
+        <ul><li>The word "Dark"</li></ul>
+        <h2>How they differ</h2>
+        <ul><li>Everyway else</li></ul>
+        
+        <hr>
+        <h1>Dark Energy &NotEqual; Dark Matter</h1>
+
+    </div>
+
+    <div class="slide">
+
+        <h1>&Lambda;CDM Parameters</h1>
+
+        <hr>
+
+        <h1>&Omega;<sub>&Lambda;</sub></h1>
+        <h3>How much of the universe is Dark Energy</h3>
+        <h1>&Omega;<sub>M</sub></h1>
+        <h3>How much of the universe is matter (regular and dark)</h3>
+
+        <hr>
+        <h3>For a "flat" universe:</h3>
+        <h1>&Omega;<sub>&Lambda;</sub> + &Omega;<sub>M</sub> = 1</h1>
+        
+        <hr>
+        <h2>Concordance model:</h2> 
+        <h2>&Omega;<sub>&Lambda;</sub> ≈ 0.7 </h2>
+        <h2>&Omega;<sub>M</sub> ≈ 0.3
+    </div>
+
+    <div class="slide">
+        <h3>Calculating &Lambda;CDM</h3>
+        <img src="cappi.png">
+        <h3>by Alberto Cappi, <a href="asdasdasd">http://www.bo.astro.it/~cappi/cosmotools</a></h3>
+    </div>
+
+
+    <div class="slide">
+
+    </div>
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+
+
+<script>
+
+    var slides = document.getElementsByClassName("slide")
+    var slide = -1
+    var fi = 0
+    var fis = document.getElementsByClassName("fi")
+    for (let i = 0; i < fis.length; i++) {
+        fis[i].style.opacity = 0
+    }
+    fis = []
+
+    document.onkeypress = e => {
+
+        if (!isNaN( parseInt(e.key))) {
+            slide = e.key * 1 - 1
+            console.log(slide)
+        }
+
+        advance()
+    }
+
+    function advance() {
+        
+        if (slide > -1 && fi < fis.length) {
+            if (typeof fis[fi] === "function") {
+                fis[fi]()
+            }
+            else {
+                fadeIn(fis[fi])
+            }
+            fi++
+        }
+        else {
+
+            if (slides[slide]) {
+                fadeOut(slides[slide], nextSlide)
+            }
+            else {
+                nextSlide()
+            }
+
+        }
+    }
+    //nextSlide()
+
+    function nextSlide() {
+        slide++
+        fi = 0
+        
+        fis = []
+        var els = slides[slide].getElementsByClassName("fi")
+        for (let i = 0; i < els.length; i++) {
+             fis.push(els[i])
+        }
+
+        onNewSlide(slide, fis)
+        
+
+        slides[slide].style.opacity = 0
+        slides[slide].style.display = "block"
+        fadeIn(slides[slide])
+    }
+
+    const fiLen = 100
+    function fadeIn(el) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.min(1, (Date.now() - start) / fiLen)
+            if (el.style.opacity == 1) {
+                clearInterval(h)
+                console.log("dade done")
+            }
+        }, 1000/100)
+    }
+
+    const f0Len = 50
+    function fadeOut(el, callback) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.max(0, 1 - (Date.now() - start) / fiLen)
+            if (el.style.opacity == 0) {
+                clearInterval(h)
+                el.style.display = "none"
+
+                if (callback) callback()
+            }
+        }, 1000/100)
+    }
+
+    function onNewSlide(slide, fi) {
+        if (slide === 3) {
+            fis.splice(0, 0, ()=> {
+                document.getElementById("pantheondata").style.opacity = 0.5
+                setTimeout(advance, 0)
+            })
+        }
+        
+    }
+</script>
