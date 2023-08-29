@@ -1,7 +1,5 @@
+function addExpansion (canvas, varNames) {
 
-(function() {
-
-    var canvas = document.getElementById("arrows")
     var ctx = canvas.getContext("2d")
 
     var w = canvas.width
@@ -21,24 +19,53 @@
 
     ctx.font = "20pt arial"
     ctx.fillStyle = "white"
-    ctx.fillText("EXPANSION", 90, 10)
-
-    for (let i = 0; i < 8; i+=2) {
-        drawRightArrow(ctx, "blue", -R + 10, -r - 10, -38)
-        ctx.rotate(Math.PI / 2)
+    if (varNames) {
+        ctx.fillText("H   EXPANSION", 90, 10)
+        ctx.font = "14pt arial"
+        ctx.fillText("0", 110, 14)
+    }
+    else {
+        ctx.fillText("EXPANSION", 90, 10)
     }
 
-    ctx.fillStyle = "white"
-    ctx.fillText("GRAVITY", 90, 48)
-
-
-    for (let i = 0; i < 8; i+=2) {
-        drawRightArrow(ctx, "red", r + 50, R - 10, -40)
-        ctx.rotate(Math.PI / 2)
+    addGravity = function () {
+        for (let i = 0; i < 8; i+=2) {
+            drawRightArrow(ctx, "blue", -R + 10, -r - 10, -38)
+            ctx.rotate(Math.PI / 2)
+        }
+    
+        ctx.fillStyle = "white"
+        ctx.font = "20pt arial"
+        if (varNames) {
+            ctx.fillText("Ω   GRAVITY", 90, 48)
+            ctx.font = "14pt arial"
+            ctx.fillText("M", 110, 52)
+        }
+        else {
+            ctx.fillText("GRAVITY", 90, 48)
+        }
+    
     }
 
-    ctx.fillStyle = "white"
-    ctx.fillText("DARK ENERGY", 90, -30)
+    addDarkEnergy = function () {
+        for (let i = 0; i < 8; i+=2) {
+            drawRightArrow(ctx, "red", r + 50, R - 10, -40)
+            ctx.rotate(Math.PI / 2)
+        }
+    
+        ctx.fillStyle = "white"
+        ctx.font = "20pt arial"
+        if (varNames) {
+            ctx.fillText("Ω   DARK ENERGY", 90, -30)
+            ctx.font = "14pt arial"
+            ctx.fillText("Λ", 110, -26)
+        }
+        else {
+            ctx.fillText("DARK ENERGY", 90, -30)
+        }
+    
+    }
+
 
 
 
@@ -60,4 +87,5 @@
         ctx.fill()
     }
 
-})()
+    return {addGravity, addDarkEnergy}
+}

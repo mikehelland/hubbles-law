@@ -99,11 +99,14 @@
     <br>
     <div id="lcdm">
         &Lambda;CDM (<span style="color:green;">green</span>): 
-        H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
-        &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+        H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0input">
         &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+        &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
     </div>
-
+    <br>
+    <div>
+        <input id="showsn" type="checkbox" checked="true"> Show SNe
+    </div>
     <hr>
     <div id="Errors">
         Sum of Squared Errors:
@@ -141,6 +144,10 @@ var sseLCDMDiv = document.getElementById("sse-lcdm")
 
 var drawHypothesis = document.getElementById("graph-hypothesis")
 
+var showSN = document.getElementById("showsn")
+showSN.onchange = e => {
+    drawSN()
+}
 
 var black = false
 
@@ -209,7 +216,7 @@ var black = false
     for (let i = 0; i < 1; i += 0.001) {
         zs.push(i)
     }
-    for (let i = 1; i < 2.5; i += 0.1) {
+    for (let i = 1; i < 5; i += 0.1) {
         zs.push(i)
     }
     
@@ -277,27 +284,30 @@ var black = false
 
     
         ctxB.fillStyle = black ? "yellow" : "red"
-        var x, y
-        for (var sn of snData) {
-            //sn.d = sn.ld
-            if (yAxis.selectedIndex === 1) {
-                y = sn.ld
-            }
-            else if (yAxis.selectedIndex === 2) {
-                y = (sn.dm - 28) * 1000
-            }
-            else {
-                y = sn.d // (1 + sn.z)
+        if (showSN.checked) {
+            var x, y
+            for (var sn of snData) {
+                //sn.d = sn.ld
+                if (yAxis.selectedIndex === 1) {
+                    y = sn.ld
+                }
+                else if (yAxis.selectedIndex === 2) {
+                    y = (sn.dm - 28) * 1000
+                }
+                else {
+                    y = sn.d // (1 + sn.z)
+                }
+
+                x = sn.z * zZoom
+
+                ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 2, 2)
+
+                if (sn.z && sn.d) {
+                    calculateError(sn.z, sn.d)
+                }
+                
             }
 
-            x = sn.z * zZoom
-
-            ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 2, 2)
-
-            if (sn.z && sn.d) {
-                calculateError(sn.z, sn.d)
-            }
-            
         }
 
         sseHypothesisDiv.innerHTML = Math.round(sseHypothesis)
@@ -306,9 +316,12 @@ var black = false
 
         ctxB.font = "14px sans-serif"
 
-        ctxB.fillRect(offset + 16, offset + 33, 2, 2)
-        ctxB.fillStyle = "black"
-        ctxB.fillText("Pantheon+SH0ES", offset + 5 + 20, offset + 38)
+        if (showSN.checked) {
+            ctxB.fillRect(offset + 16, offset + 33, 2, 2)
+            ctxB.fillStyle = "black"
+            ctxB.fillText("Pantheon+SH0ES", offset + 5 + 20, offset + 38)
+        
+        }
         //ctxB.fillText("comoving distance", offset + 5 + 20, offset + 54)
 
 
@@ -470,7 +483,7 @@ function fun(v1, Omega_M, Omega_L, Omega_k) {
 
     var OmegaMinput = document.getElementById("Omega_M")
     var OmegaLinput = document.getElementById("Omega_L")    
-    var H0input = document.getElementById("H0")    
+    var H0input = document.getElementById("H0input")    
     var Omega_L, Omega_M, H0, Omega_k
     OmegaMinput.onchange = e => calculateLCDMError()
     OmegaLinput.onchange = e => calculateLCDMError()

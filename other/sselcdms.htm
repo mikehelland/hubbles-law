@@ -278,6 +278,8 @@
         ctxG.fillStyle = !black ? "black" : "white"
             
         sse.forEach(model => {
+            if (!model.data[0]) return 
+            
             ctxG.strokeStyle = model.color
             ctxG.beginPath()
             ctxG.moveTo(offset, graph.height - model.data[0].sse * zoomGY - offset)

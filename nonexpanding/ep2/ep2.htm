@@ -42,68 +42,103 @@
 
 <body>
 
-    <img style="display: none;" id="supernova" src="../../img/supernova.png">
-    <img style="display: none;" id="spectrum" src="visiblespectrum.png">
-
-
-    <div class="slide">
-        <canvas width="1000" height="1000" id="arrows"></canvas>
-        <script src="arrows.js"></script>
-    </div>
+    <img style="display: none;" id="galaxy" src="galaxy.png">
     
 
+    <div class="slide">
+        <style>
+            #galaxies {
+                width:100%;
+                height:100%;
+                top:0; left:0;
+                position:absolute;
+                z-index: -1;
+            }
+        </style>
+        <canvas id="galaxies"></canvas>
+        <script src="galaxies.js"></script>
 
+        <canvas width="1000" height="1000" id="arrows"></canvas>
+
+
+        <style>
+            #pushpullpush0 {
+                position:absolute;
+                left:60%;
+                top:60%;
+                text-align: left;
+            }
+            #but0, #push0, #pull0 {display:none;}
+            #accelerating {
+                position: absolute;
+                top:200px;
+                z-index: 2;
+            }
+        </style>
+        <div id="pushpullpush0">
+            <!--<h3>Expansion pushes out</h3>-->
+            <h3>Expansion pushes out</h3>
+            <h3 id="pull0">Gravity decelerates expansion</h3>
+            <h3 id="but0">... which is measured to be negative</h3>
+            <h3 id="push0">Dark energy counteracts gravity</h3>
+    
+    
+        </div>    
+    
+        <div id="accelerating">
+            <img class="fi" src="goldfaber.png">
+            <img style="position: relative;top:-0px" class="fi" src="ingrained.png">    
+        </div>
+
+    </div>
+    
     <div class="slide">
         <h1 style="font-size:96pt;">Nonexpanding</h1>
         <h2 style="color:#AAA;"><i>Evidence for and against the expanding universe</i></h2>
         <br><br><br><br>
     <hr style="width:50%;">
     <br><br><br>
-        <h1 class="fi"><span style="color:#AAA;">Ep. 2:</span> Dark Energy: Why we need it & why it's not real</h1>
+        <h1 class="fi"><span style="color:#AAA;">Ep. 2:</span> Dark Energy</h1>
+        <h2 class="fi">Why we need it 
+            <span style="color:#AAA;">&</span> why it's not real</h2>
     
     </div>
     
     <div class="slide">
         <br><br><br><br>
         <h2 style="color:#AAA;">Part 1</h2>
-        <h1 style="font-size:96pt;"><i>The data and the model</i></h1>
+        <h1 style="font-size:96pt;"><i>The model</i></h1>
         
     <hr style="width:50%;">
     <br><br><br>
     </div>
 
-    <div class="slide">
-        <h2>Pantheon+SH0ES Supernovae data</h2>
-        <img src="../ep1/pantheonsh0es.png" id="pantheondata">
-        <img class="fi" src="../ep1/code-sndata.png" id="pantheoncode">
-        <img class="fi" src="pantheondata.png" height="500px" id="pantheongraph">
-    </div>
 
-    <div class="slide">
+    <div class="slide" style="font-size: 125%;">
+
+        <style>
+            .sidenote {
+                border: 1px solid red;
+                padding: 30px;
+                width:60%;
+                margin:auto;
+            }
+        </style>
+
 
         <h2>The standard model of cosmology is</h2>
         <h1>&Lambda;CDM</h1>
-        <h3>a.k.a. LCDM</h3>
-        <h2>&Lambda; = "Lambda"</h2>
-        <h2>&Lambda; = Dark Energy</h2>
-        <h2>CDM = Cold Dark Matter</h2>
-
-    </div>
-
-
-
-    <div class="slide" style="text-align: left; font-size: 140%; padding-left: 100px;">
-
-        <h1>Dark Energy vs Dark Matter</h1>
-        <hr>
-        <h2>What they have in common</h2>
-        <ul><li>The word "Dark"</li></ul>
-        <h2>How they differ</h2>
-        <ul><li>Everyway else</li></ul>
         
-        <hr>
-        <h1>Dark Energy &NotEqual; Dark Matter</h1>
+        <h2 style="color:yellow;" class="fi">&Lambda; is "Lambda"</h2>
+        <h2 class="fi">&Lambda; represents Dark Energy</h2>
+        <br>
+        <h2 class="fi">CDM = Cold Dark Matter</h2>
 
+        <div class="fi sidenote" id="sidenote">
+            <h3>Dark Energy &NotEqual; Dark Matter</h3>
+            <p class="fi">This video is about Dark Energy</p>
+
+        </div>
     </div>
 
     <div class="slide">
@@ -112,31 +147,255 @@
 
         <hr>
 
-        <h1>&Omega;<sub>&Lambda;</sub></h1>
-        <h3>How much of the universe is Dark Energy</h3>
-        <h1>&Omega;<sub>M</sub></h1>
-        <h3>How much of the universe is matter (regular and dark)</h3>
+        <div class="fi">
+            <h1>H<sub>0</sub></h1>
+            <h3>Hubble's constant, "H naught", the expansion rate</h3>
+    
+        </div>
+
+        <div class="fi sidenote">
+            <h2>Hubble's constant is <i>NOT</i> actually constant!</h2>
+            <h3 class="fi">Technically, Hubble's constant (H<sub>0</sub>) 
+                <br> is the value of Hubble's parameter (H)
+                <br> today, right now.
+            </h3>
+            <h3 class="fi">Hubble's parameter changes over time</h3>
+    
+        </div>
+    </div>
+
+    <div class="slide">
+        <h1>So... acceleration means H<sub>0</sub> is increasing?</h1>
+
+        <div class="fi sidenote"><h1><h1>No</h1></h1>
+            <h2 class="fi">That would make too much sense</h2>
+        </div>
+
+        <br>
+        <h2 class="fi">Decelerating = H<sub>0</sub> &rarr; drops to zero</h2>
+
+        <h2 class="fi">Accelerating = H<sub>0</sub>  &rarr; drops toward +N</h2>
+    </div>
+
+    <div class="slide">
+        <h2 style="color: #AAA;">Special Case:</h2> 
+        <h1>Hubble's constant <i>IS</i> truly constant</h1> 
+
+        <table>
+            <td>
+                <img height="500px" id="desitter" src="desitter1.png">
+        
+            </td>
+            <td style="padding: 20px;">
+                <h3 class="fi">\(d = z\frac{c}{H_0} \)</h3>
+                <h3 class="fi">Exponentially expanding</h3>
+                <h3 class="fi">de Sitter universe</h3>
+                <h3 class="fi">"pure dark energy"</h3>
+        
+            </td>
+        </table>
+        <p class="fi" style="color: #AAA;">
+            The farther a galaxy is, the faster it moves away, 
+            <br>making it farther, making it faster...
+        </p>
+
+        <h3 class="fi">Galaxies accelerate away, even if H<sub>0</sub> is constant</h3>
+        
+    </div>
+
+    <div class="slide">
+
+        <style>
+            #omega {position: absolute; color: yellow; 
+            top:355px; left:620px; border:2px solid yellow;
+            padding: 5px 20px; display: none;}
+            #deperct {position: absolute; color: yellow; 
+            top:280px; left:1120px; border:2px solid yellow;
+            padding: 5px 20px;  display: none;}
+        </style>
+        <div id="omega"><h2>"Omega" &rarr;</h2></div>
+        <h1>&Lambda;CDM Parameters</h1>
 
         <hr>
-        <h3>For a "flat" universe:</h3>
-        <h1>&Omega;<sub>&Lambda;</sub> + &Omega;<sub>M</sub> = 1</h1>
-        
-        <hr>
-        <h2>Concordance model:</h2> 
-        <h2>&Omega;<sub>&Lambda;</sub> ≈ 0.7 </h2>
-        <h2>&Omega;<sub>M</sub> ≈ 0.3
+
+        <div style="color:#AAA;">
+            <h1>H<sub>0</sub></h1>
+            <h3>Hubble's constant, "H naught", the expansion rate</h3>
+    
+        </div>
+
+        <div class="fi">
+            <h1>&Omega;<sub>&Lambda;</sub></h1>
+            <h3>How much of the universe is Dark Energy</h3>
+    
+        </div>
+        <div class="fi">
+            <h1>&Omega;<sub>M</sub></h1>
+            <h3>How much of the universe is matter (regular and dark)</h3>
+                
+        </div>
     </div>
+
+
+
+    <div class="slide">
+        <h2>No Dark Energy, Matter Only:</h2> 
+        <h2>&Omega;<sub>&Lambda;</sub> = 0.0 </h2>
+        <h2>&Omega;<sub>M</sub> = 1.0
+
+            <br><br><br>
+            <img height="530px" id="matteronly" src="matteronly.png">
+
+    </div>
+
+
+    <div class="slide">
+        <h2>With Dark Energy:</h2> 
+        <div id="deperct"><h2>&larr; ~70% Dark Energy </h2></div>
+        <!--<h2>H<sub>0</sub> = 73.0 km s<sup>-1</sup> Mpc<sup>-1</sup> </h2>-->
+        <h2>&Omega;<sub>&Lambda;</sub> = 0.7 </h2>
+        <h2>&Omega;<sub>M</sub> = 0.3
+
+        <br><br>
+        <img src="pantheonlcdm73.png" height="530px">
+
+    </div>
+
+    <div class="slide">
+        <br><br><br><br>
+        <h1>Therefore:</h1>
+        <br><br>
+        <h1 class="fi" style="font-size: 300%;">Dark Energy <i>has</i> to exist</h1>
+    </div>
+
+
+    <div class="slide">
+        <br><br><br><br>
+        <h2 style="color:#AAA;">Part 2</h2>
+        <h1 style="font-size:96pt;"><i>The Null Hypothesis</i></h1>
+        
+    <hr style="width:50%;">
+    <br><br><br>
+    </div>
+
+    <div class="slide">
+        <canvas width="1000" height="1000" id="arrows2"></canvas>
+        <script src="arrows.js"></script>
+
+        <style>
+            #pushpullpush {
+                position:absolute;
+                left:60%;
+                top:60%;
+                text-align: left;
+            }
+            #but, #push, #pull {display:none;}
+        </style>
+        <div id="pushpullpush">
+            <!--<h3>Expansion pushes out</h3>-->
+            <h3>Expansion pushes out</h3>
+            <h3 id="pull">Gravity decelerates expansion</h3>
+            <h3 id="but">... which is measured to be negative</h3>
+            <h3 id="push">Dark energy counteracts gravity</h3>
+        </div>
+    </div>
+
+
+    <div class="slide">
+        <h3 style="color:#AAA">Could it be argued that:</h3>
+        <h2>Failing to measure the deceleration of expansion:</h2>
+
+        <ul style="text-align: left; width:60%;font-size: 150%; margin:auto;">
+            <li class="fi">Doesn't mean we discovered Dark Energy</li>
+            <li class="fi">Does mean gravity does NOT decelerate expansion</li>
+        </ul>
+        <img src="expanding3.png" id="expanding" width="800">
+    </div>
+
+    <div class="slide">
+        <br><br>
+        <h1 style="color:#AAA">The Null Hypothesis:</h1>
+        <br><br>
+        <h1 style="line-height: 180%;">There is no relationship 
+            <span class="fi"><br>between the observed redshifts </span>
+            <span class="fi"><br>(or time dilation)<br></span> 
+            <span class="fi">and gravity</span></h1>
+        
+    </div>
+
+    <div class="slide">
+        <h3 style="color:#AAA">Let's assume:</h3>
+        <h2>Gravity and matter have no effect on redshift and time dilation</h2>
+        
+        <div class="fi">
+            <h3 style="color:#AAA">What happens</h3>
+            <h2>&Omega;<sub>&Lambda;</sub> = 0.0 </h2>
+            <h2>&Omega;<sub>M</sub> = 0.0</h2>
+        </div>
+
+        <p class="fi">This approximates an "empty" universe, also called the Milne Model</p>
+        <img class="fi" src="pantheonempty.png">
+        <br>
+        <p class="fi">Meh.</p>
+    </div>
+
+    <div class="slide">
+        <br><br><br><br>
+        <h2 style="color:#AAA;">Part 3</h2>
+        <h1 style="font-size:96pt;"><i>The Time Dilated Past Hypothesis</i></h1>
+        
+    <hr style="width:50%;">
+    <br><br><br>
+    </div>
+
+    <div class="slide">
+        <h2><span style="color:#AAA">Assuming:</span> gravity has no effect on redshift</h2>
+
+        <h2></h2>
+    </div>
+
+        <!--<div class="slide">
+        <h2>Pantheon+SH0ES Supernovae data</h2>
+        <img src="../ep1/pantheonsh0es.png" id="pantheondata">
+        <img class="fi" src="../ep1/code-sndata.png" id="pantheoncode">
+        <img class="fi" src="pantheondata.png" height="500px" id="pantheongraph">
+
+        if (slide === 3) {
+            fis.splice(0, 0, ()=> {
+                document.getElementById("pantheondata").style.opacity = 0.5
+                setTimeout(advance, 0)
+            })
+        }
+        
+    </div>
+
+    -->
+    <!-- <div class="slide" style="font-size: 160%;">
+        <h3>Calculating &Lambda;CDM</h3>
+        <img src="code-lcdm.png" height="200px">
+
+        <p style="font-size: 80%;">Parameters are H<sub>0</sub>, &Omega;<sub>&Lambda;</sub>, &Omega;<sub>M</sub>, z</p>
+        <p class="fi">Provided a redshift <i>z</i>, this returns:</p>
+        <ul class="fi" style="text-align: left; width:35%; margin:auto;">
+            <li>luminosity distance</li>
+            <li>co-moving distance</li>
+            <li>angular diameter distance</li>
+            <li>lookback time</li>
+            <li>more...</li>
+        </ul>
+        
+    </div>
+
+
 
     <div class="slide">
         <h3>Calculating &Lambda;CDM</h3>
-        <img src="cappi.png">
+        <img id="cappi" src="cappi.png" height="810px">
         <h3>by Alberto Cappi, <a href="asdasdasd">http://www.bo.astro.it/~cappi/cosmotools</a></h3>
     </div>
+-->
 
 
-    <div class="slide">
-
-    </div>
 
 <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
 
@@ -144,7 +403,7 @@
 <script>
 
     var slides = document.getElementsByClassName("slide")
-    var slide = -1
+    var slide = 12//-1
     var fi = 0
     var fis = document.getElementsByClassName("fi")
     for (let i = 0; i < fis.length; i++) {
@@ -194,14 +453,14 @@
         var els = slides[slide].getElementsByClassName("fi")
         for (let i = 0; i < els.length; i++) {
              fis.push(els[i])
-        }
-
-        onNewSlide(slide, fis)
-        
+        }        
 
         slides[slide].style.opacity = 0
         slides[slide].style.display = "block"
         fadeIn(slides[slide])
+
+        onNewSlide(slide, fis)
+
     }
 
     const fiLen = 100
@@ -233,12 +492,73 @@
     }
 
     function onNewSlide(slide, fi) {
-        if (slide === 3) {
-            fis.splice(0, 0, ()=> {
-                document.getElementById("pantheondata").style.opacity = 0.5
+        if (slide === 0) {
+            let funcs = addExpansion(arrows)
+            setupGalaxies()
+            fis.splice(0, 0, () => {
+                funcs.addGravity()
+                reverseGalaxies()
+                pull0.style.display = "block"
+            })
+            fis.splice(3, 0, () => {
+                accelerating.style.display = "none"
+            })
+            fis.push(() => {
+                funcs.addDarkEnergy()
+                reverseGalaxies()
+                push0.style.display = "block"
+            })
+        }
+        if (slide === 1 && stopGalaxies) {
+            stopGalaxies()
+        }
+        
+        if (slide === 6) {
+            
+        }
+        
+        
+        if (slide === 6) {
+            
+            fis.splice(4, 0, () => desitter.src = "desitter.gif")
+
+            fis.splice(7, 0, () => desitter.src = "desitter2.png")
+
+        }
+        if (slide === 7) {
+            fis.splice(2, 0, () => omega.style.display = "block")
+        }
+        if (slide === 8) {    
+            fis.push(() => matteronly.src = "matteronly2.png")
+            fis.push(() => matteronly.src = "matteronly3.png")
+            fis.push(() => matteronly.src = "matteronly4.png")
+            fis.push(() => matteronly.src = "darkenergy.gif")
+        }
+
+        if (slide === 13) {
+            let funcs = addExpansion(arrows2, true)
+            fis.push(() => {
+                funcs.addGravity()
+                pull.style.display = "block"
+            })
+            /*fis.push(() => {
+                but.style.display = "block"
+            })
+            fis.push(() => {
+                funcs.addDarkEnergy()
+                push.style.display = "block"
+            })*/
+        }
+        
+        if (slide === 15) {
+            fis.splice(0, 0, () => {
+                expanding.src = "expanding2.png"
+                setTimeout(advance, 0)
+            })
+            fis.splice(2, 0, () => {
+                expanding.src = "expanding1.png"
                 setTimeout(advance, 0)
             })
         }
-        
     }
 </script>

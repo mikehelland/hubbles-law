@@ -77,4 +77,8 @@ We saw what happens when we set OmegaL to 0 and OmegaM to 1, it didn't fit the d
 
 We can see what happens when we set OmegaM and OmegaL to 0, which says the universe is, for our purposes, devoid of matter and energy. This is called the Milne Model is you want to find more information about that.
 
+H0=71.2 (without error)
+H0=71.3 (with error)
+
 To compare these models, we'll use the sum of squared errors discussed in the first episode. You can pause this to take a look at how it works. We're looking for the lowest value, and here's 3 sets of parameters. Also included is a pure dark energy model, where OmegaL is 1 and OmegaM is 0. This is known as de Sitter universe, and you can find lots of information about that.
+
