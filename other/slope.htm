@@ -2,9 +2,13 @@
 <html>
 <head>
 <style>
-    canvas {border-bottom: 1px solid black; border-left: 1px solid black;}
-    input[type=number] {font-size: 125%; width: 200px;}
-    body {font-size: 150%;}
+    input[type=number] {font-size: 125%; width: 100px;}
+    body {font-size: 125%;}
+    #zparams {
+        position:absolute;
+        top:520px;
+        left:350px;
+    }
 </style>
 </head>
 <body>
@@ -15,8 +19,8 @@
     <br> 
     H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0h">
     </p>
-    <p>
-    &Lambda;CDM (<span style="color:red;">red</span>): 
+    <p id="params">
+    &Lambda;CDM: 
     <br>
     H<sub>0</sub>: <input type="number" value="73" step="0.5" id="H0">
     &Omega;<sub>M</sub>: <input type="number" min="0" value="0.0" step="0.05" id="Omega_M">
@@ -25,10 +29,10 @@
     </form>
 
     
-    <canvas id="canvas" width="1000" height="600"></canvas>
+    <canvas id="canvas" width="800" height="500"></canvas>
 
     <p>
-        Show Error: <input type="checkbox" checked="true" id="show-error">
+        Show 2nd derivative: <input type="checkbox" checked="true" id="show-2nd">
     </p>
 
     <p>The hypothesis being tested is:</p>
@@ -50,16 +54,18 @@
         form.Omega_M.onchange = e => drawCanvas()
         
 
-        var maxZ = 1.5
+        var maxZ = 3
         var maxD = 40
         var data = []
-        for (var i = 0; i <= maxZ; i=i+0.005) {
+        var dd = 0.005
+        for (var i = 0; i <= maxZ; i=i+dd) {
             data.push({z: i})
         }
 
-        var showErrorInput = document.getElementById("show-error")
-        showErrorInput.onchange = e => drawCanvas()
+        var show2nd = document.getElementById("show-2nd")
+        show2nd.onchange = e => drawCanvas()
 
+        var zoomY = 15
         drawCanvas()
 
         function drawCanvas() {
@@ -73,32 +79,28 @@
             var h = canvas.height
             var w = canvas.width
             canvas.width = w
+            ctx.translate(0, h /2 - 10)
 
-            ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
-            for (var i = 0; i <= maxZ; i=i+1) {
-                ctx.fillText(i, i / maxZ * w, h)
-            }
-            ctx.fillText("z", w - 10, h)
-
             ctx.fillStyle = "black"
-            ctx.font = "16px sans-serif"
-            for (var i = 0; i <= maxZ; i=i+1) {
-                ctx.fillText(i, i / maxZ * w, h)
-            }
-            for (var i = 0; i <= maxD; i=i+5) {
-                ctx.fillText(i, 0, h - h * i / maxD)
-            }
-            ctx.fillText("distance (lookback time x c)", 28, 18)
-            ctx.fillText("billion light years", 28, 38)
+            ctx.fillText("z", w - 10, -2)
 
-            if (showErrorInput.checked) {
-                ctx.lineWidth = 2
-                ctx.strokeStyle = "#808080"
-                ctx.moveTo(0, h/2)
-                ctx.lineTo(w, h/2)
-                ctx.stroke()
+            for (var i = 0; i <= maxZ; i=i+0.5) {
+                ctx.fillText(Math.round(i*10)/10, i / maxZ * w, -2)
             }
+            for (var i = -maxD; i <= maxD; i=i+5) {
+                ctx.fillText(i, 0, -  i * zoomY)
+            }
+            //ctx.fillText("distance (lookback time x c)", 28, 18)
+            //ctx.fillText("billion light years", 28, 38)
+
+            ctx.beginPath()
+            ctx.lineWidth = 1
+            ctx.strokeStyle = "black"
+            ctx.moveTo(0, 0)
+            ctx.lineTo(w, 0)
+            ctx.stroke()
+
 
             ctx.beginPath()
             ctx.lineWidth = 10
@@ -110,40 +112,56 @@
                 dp.dc = zToD(dp.z) * pc2ly / 1000
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.dc / maxD)
                 if (lastdp) {
-                    lastdp.slope = dp.dc - lastdp.dc
+                    lastdp.slope = (dp.dc - lastdp.dc) / dd
                 }
                 lastdp = dp
             })
             ctx.globalAlpha = 0.4
-            ctx.stroke()
+            //ctx.stroke()
 
             ctx.globalAlpha = 1
             ctx.lineWidth = 2
-            ctx.strokeStyle = "black"
+            ctx.strokeStyle = "red"
             ctx.beginPath()
-            ctx.moveTo(0, h)
+            ctx.moveTo(0, - data[0].slope * zoomY)
 
-            var ztest
+            lastdp = undefined
             data.forEach(dp => {
-                //ztest = -(1 / (1 + dp.z) - 1) * c / H0h * pc2ly / 1000
-                ctx.lineTo(w * dp.z / maxZ, h - dp.slope * 4000)
-                dp.error = ztest / dp.dc
+                if (lastdp) {
+                    lastdp.slope2 = (dp.slope - lastdp.slope) / dd
+                }
+                ctx.lineTo(w * dp.z / maxZ, - dp.slope * zoomY)
+                lastdp = dp
             })
             ctx.stroke()
 
-            if (showErrorInput.checked) {
+            ctx.textAlign = "right"
+            ctx.fillText("Slope of green line", w - 10, - 74)
+
+            if (show2nd.checked) {
+
                 ctx.strokeStyle = "blue"
                 ctx.beginPath()
-                ctx.moveTo(0, h/2)
+                ctx.moveTo(0, - data[0].slope2 * zoomY)
 
-                var error = 0
                 data.forEach(dp => {
-                    error += dp.error
-                    ctx.lineTo(w * dp.z / maxZ, h * dp.error / 2)
+                    ctx.lineTo(w * dp.z / maxZ, - dp.slope2 * zoomY)
                 })
                 ctx.stroke()
-                //test.errorEl.innerHTML = (error / test.data.length).toFixed(5)
+
+                ctx.fillText("Slope of red line", w - 10,  54)
+            
             }
+
+            ctx.font = "30px sans-serif"
+            ctx.fillStyle = "#111111"
+            //ctx.fillText("Past", w - 90, -h/2+54)
+            ctx.font = "50px sans-serif"
+            //ctx.fillText("←", w/2, -h/2+72)
+            
+
+
+
         }
 
 
