@@ -12,13 +12,15 @@
 
 
 
-<canvas id="graph" height="400" width="600"></canvas>
+<canvas id="graph" height="800" width="800"></canvas>
 
 <script>
     var sn 
     var obs 
     var p1 
     var p2
+    var p1d
+    var p2d
     var t
     var c = 1
     var H = 1/14000
@@ -27,13 +29,66 @@
     var graph = document.getElementById("graph")
     var ctxG = graph.getContext("2d")
     var offset = 20
-    var zoom = 0.035
+    var zoom = 0.05
 
     var fromSource = true // otherwise distance from observer
     var expanding = true
     
-    run()
+    var dxs = []
+    var dx2 = []
+    runExpanding()
+//    run()
     draw()
+
+    function runExpanding() {
+        var done
+
+        sn = [0]
+        obs = [7000]
+        p1 = [0]
+        p2 = []
+        p1d = []
+        p2d = []
+        
+        t = 0
+        
+        while (!done) {
+            obs.push(obs[t] + obs[t] * H)
+            p1.push(p1[t] + c + p1[t] * H)
+            p2.push(p2[t] + c + p2[t] * H)
+          
+            if (obs[t] > p1[t]) {
+                p1d.push(c + p1[t] * H)
+            }
+            p2d.push(c + p2[t] * H)
+                
+            sn.push(0)
+
+            t++
+
+            if (t === p2Start) {
+                p2[t] = 0
+            }
+
+            if (obs[t] <= p2[t]) {
+                console.log(t, p2[t])
+                done = true
+            }
+        }
+
+        //p1d.push(1)
+
+        dxs = []
+        for (let i = 0; i < p1d.length; i++) {
+            dxs[i] = p1d[p1d.length - i - 1] 
+        }
+
+        dxs2 = []
+        for (let i = 0; i < p2d.length; i++) {
+            dxs2[i] = p2d[t - i - 1] 
+        }
+
+    }
 
 
     function run() {
@@ -44,13 +99,16 @@
         obs = [7000]
         p1 = [0]
         p2 = []
+        
         t = 0
         
         while (!done) {
             if (expanding) {
                 obs.push(obs[t] + obs[t] * H)
-                p1.push(p1[t] + c + p1[t] * H)
-                p2.push(p2[t] + c + p2[t] * H)
+                p1.push(p1[t] + dxs[t])
+                p2.push(p2[t] + dxs2[t - p2Start])
+                
+                //p2.push(p2[t] + c + p2[t] * H)
             }
             else {
                 obs.push(obs[t])
@@ -63,20 +121,21 @@
 
             if (t === p2Start) {
                 p2[t] = 0
-                //expanding = false
+                //expanding = !expanding
             }
 
             if (obs[t] <= p1[t] && !p1Hit) {
                 p1Hit = t
-                console.log(t)
+                console.log(t, p1[t])
             }
 
-            if (obs[t] <= p2[t]) {
-                console.log(t)
+            if (obs[t] <= p2[t] || t > 14000) {
+                console.log(t, p2[t])
                 done = true
             }
 
         }
+
     }
 
 
