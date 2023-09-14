@@ -116,7 +116,7 @@
     <input id="usemu" type="checkbox" checked="true">Use Mu</input> 
 </div>
 
-<script src="lcdm.js"></script>
+<script src="flrw.js"></script>
 
 <script>
 
@@ -350,7 +350,7 @@ var black = false
     function calculateLCDMError(iH, omegaL, omegaM, sn) {
         sseLCDM = 0
         
-        var dlcdm = LCDM(iH, omegaL, omegaM, sn.z).DC 
+        var dlcdm = FLRW(iH, omegaL, omegaM, sn.z).DC 
         //var dlcdm = zToD(sn.z) 
         var dd 
         

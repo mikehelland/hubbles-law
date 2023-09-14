@@ -34,6 +34,10 @@
     var fromSource = true // otherwise distance from observer
     var expanding = true
     
+    // dummy variable for integration
+    var di = 100
+
+
     var dxs = []
     var dx2 = []
     runExpanding()
@@ -53,14 +57,14 @@
         t = 0
         
         while (!done) {
-            obs.push(obs[t] + obs[t] * H)
-            p1.push(p1[t] + c + p1[t] * H)
-            p2.push(p2[t] + c + p2[t] * H)
+            obs.push(obs[t] + (obs[t] * H) / di)
+            p1.push(p1[t] + (c + p1[t] * H) / di)
+            p2.push(p2[t] + (c + p2[t] * H) / di)
           
             if (obs[t] > p1[t]) {
-                p1d.push(c + p1[t] * H)
+                p1d.push((c + p1[t] * H) / di)
             }
-            p2d.push(c + p2[t] * H)
+            p2d.push((c + p2[t] * H) / di)
                 
             sn.push(0)
 
@@ -104,7 +108,7 @@
         
         while (!done) {
             if (expanding) {
-                obs.push(obs[t] + obs[t] * H)
+                obs.push(obs[t] + (obs[t] * H) / di)
                 p1.push(p1[t] + dxs[t])
                 p2.push(p2[t] + dxs2[t - p2Start])
                 
@@ -129,7 +133,7 @@
                 console.log(t, p1[t])
             }
 
-            if (obs[t] <= p2[t] || t > 14000) {
+            if (obs[t] <= p2[t] || t > 14000 * di) {
                 console.log(t, p2[t])
                 done = true
             }
@@ -168,10 +172,10 @@
         }
         for (var i = 0; i < t; i++) {
             if (fromSource) {
-                ctxG.lineTo(obs[i] * zoom, -i * zoom)
+                ctxG.lineTo(obs[i] * zoom, -i * zoom / di)
             }
             else {
-                ctxG.lineTo(0, -i * zoom)
+                ctxG.lineTo(0, -i * zoom / di)
             }
         }
         ctxG.stroke()
@@ -192,10 +196,10 @@
         }
         for (var i = 0; i < t; i++) {
             if (fromSource) {
-                ctxG.lineTo(sn[i] * zoom, -i * zoom)
+                ctxG.lineTo(sn[i] * zoom, -i * zoom / di)
             }
             else {
-                ctxG.lineTo((obs[i] - sn[i]) * zoom, -i * zoom)
+                ctxG.lineTo((obs[i] - sn[i]) * zoom, -i * zoom / di)
             }
         }
         ctxG.stroke()
@@ -216,10 +220,10 @@
         }
         for (var i = 0; i < t; i++) {
             if (fromSource) {
-                ctxG.lineTo(p1[i] * zoom, -i * zoom)
+                ctxG.lineTo(p1[i] * zoom, -i * zoom / di)
             }
             else {
-                ctxG.lineTo((obs[i] - p1[i]) * zoom, -i * zoom)
+                ctxG.lineTo((obs[i] - p1[i]) * zoom, -i * zoom / di)
             }
         }
         ctxG.stroke()
@@ -240,10 +244,10 @@
         }
         for (var i = p2Start; i < t; i++) {
             if (fromSource) {
-                ctxG.lineTo(p2[i] * zoom, -i * zoom)
+                ctxG.lineTo(p2[i] * zoom, -i * zoom / di)
             }
             else {
-                ctxG.lineTo((obs[i] - p2[i]) * zoom, -i * zoom)
+                ctxG.lineTo((obs[i] - p2[i]) * zoom, -i * zoom / di)
             }
         }
         ctxG.stroke()

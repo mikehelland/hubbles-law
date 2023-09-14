@@ -1,4 +1,4 @@
-var LCDM = (function() {
+var FLRW = (function() {
     var H0, Omega_L, Omega_M, Omega_k
 
     function fun(v1, Omega_M, Omega_L, Omega_k) {
@@ -117,7 +117,7 @@ var LCDM = (function() {
         // Length in Mpc corresponding to 1 degree on the sky
         R = rad * DL / (z1 * z1);
     
-        return {Omega_k, q0, DL, DC, DA, R, angle, lookback, age}
+        return {z, Omega_k, q0, DL, DC, DA, R, angle, lookback, age}
     }
     
 
@@ -129,3 +129,51 @@ var LCDM = (function() {
         return zToD(z)
     }
 })()
+
+
+function lcdm(H0, maxZ) {
+    return flrw(H0, 0.7, 0.3, maxZ)
+}
+
+// returns distances in million light years
+//   d_C = comoving distance 
+//   d_A = angular diamter distance (d_A), 
+//   d_T = light travel time distance
+function flrw(H0, OmegaL, OmegaM, maxZ) {
+
+    // non-flat models get stuck in the loop
+    if (OmegaL + OmegaM !== 1) {
+        return []
+    }
+
+    maxZ = maxZ || 10
+
+    // convert km/s/Mpc  to  Mly/My/Mly
+    H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+    var H = H0 
+    var c = 1
+
+    var z
+    var dx
+
+    var x = 0
+    var t = 0
+    var data = []
+
+    while (true) {
+
+        dx = c + H * x
+        x += dx
+        z = dx / c - 1
+
+        data.push({z, d_C: x, d_A: x/(1+z), d_T: t})
+
+        if (z >= maxZ) break;
+
+        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 1.75) + OmegaL)
+        t++
+
+    }
+
+    return data
+}
