@@ -28,6 +28,9 @@
 
     <img style="display: none;" id="galaxy" src="galaxy.png">
     
+
+    <div class="slide">
+    </div>
     
     <div class="slide">
         <h1 style="font-size:96pt;">Nonexpanding</h1>
@@ -35,49 +38,11 @@
         <br><br><br><br>
     <hr style="width:50%;">
     <br><br><br>
-        <h1 class="fi"><span style="color:#AAA;">Ep. 3:</span> Javascript Cosmology</h1>
-        <h2 class="fi">The expanding universe for beginners</h2>
-    </div>
-
-    <div class="slide">
-        <style>
-            #galaxies {
-                width:100%;
-                height:100%;
-                top:0; left:0;
-                position:absolute;
-                z-index: -1;
-            }
-        </style>
-        <canvas id="galaxies"></canvas>
-        <script src="galaxies.js"></script>
-
-    </div>
-
-
-    <div class="slide" style="text-align: left; padding:80px; font-size: 150%;">
-
-        <h2>Topics</h2>
-    
-        <hr style="margin-left: 20px;">
-    
-        <ul style="font-size: 150%; line-height: 150%;" id="summary-ul">
-            <li class="fi">A basic expanding universe</li>
-            <li class="fi">Distances in cosmolgoy</li>
-            <li class="fi">A changing expansion rate</li>
-            <li class="fi">Supernovae data</li>
-            <li class="fi">Calculating Hubble's constant</li>
-        </ul>
-    
+        <h1 class="fi"><span style="color:#AAA;">Ep. 2:</span> Dark Energy</h1>
+        <h2 class="fi">Do we need it? Is it real?</h2>
     
     </div>
-
-
-    <div class="slide">
-
-    </div>
-
-
+    
     <div class="slide">
         <br><br><br><br>
         <h2 style="color:#AAA;">Part 1</h2>
@@ -191,18 +156,7 @@
     }
 
     function onNewSlide(slide, fi) {
-        if (slide === 1) {
-            setupGalaxies()
-            runGalaxies()
-            fis.push(stopGalaxies)
-            fis.push(() => {
-                reverseGalaxies()
-                runGalaxies()
-            })
-        }
-        if (slide === 2) {
-            stopGalaxies()
-        }
+        
         
     }
 </script>

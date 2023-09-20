@@ -135,16 +135,21 @@ function lcdm(H0, maxZ) {
     return flrw(H0, 0.7, 0.3, maxZ)
 }
 
+// Imagine an observer at the source with incoming photons
+// run the expansion of the universe backwards
+// when the photons reach a distant galaxy in the model
+// that would be the state of the universe when the photons 
+// were emitted
+
 // returns distances in million light years
 //   d_C = comoving distance 
-//   d_A = angular diamter distance (d_A), 
+//   d_A = angular diameter distance 
 //   d_T = light travel time distance
+
 function flrw(H0, OmegaL, OmegaM, maxZ) {
 
     // non-flat models get stuck in the loop
-    if (OmegaL + OmegaM !== 1) {
-        return []
-    }
+    if (OmegaL + OmegaM !== 1) return []
 
     maxZ = maxZ || 10
 
@@ -153,25 +158,48 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
     var H = H0 
     var c = 1
 
-    var z
-    var dx
-
-    var x = 0
     var t = 0
+    var z = 0
+
+    // these are our photons, one has a head start
+    var x1 = 0.1
+    var x2 = 0
+
+    // add a bunch of galaxies to our model
     var data = []
+    for (let i = 100; i < 40000; i+= 100) {
+        data.push({d_A: i, d_C: i})
+    }
 
-    while (true) {
+    while (z < maxZ) {
 
-        dx = c + H * x
-        x += dx
-        z = dx / c - 1
+        // move the photons with the hubble flow (in reverse)
+        x1 += c - H * x1
+        x2 += c - H * x2
 
-        data.push({z, d_C: x, d_A: x/(1+z), d_T: t})
+        // the redshift is how far apart the photons have drifted
+        z = 0.1 / (x1 - x2) - 1
 
-        if (z >= maxZ) break;
-
-        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 1.75) + OmegaL)
         t++
+        
+        for (var ig = 0; ig < data.length; ig++) {
+            if (!data[ig].d_T) {
+
+                // move the galaxies with the hubble flow (in reverse)
+                data[ig].d_A -= H * data[ig].d_A
+
+                // record when the photons have reached (left) the galaxy
+                if (data[ig].d_A <= x2) {
+                    data[ig].d_T = t
+                    data[ig].z = z
+                    console.log(z)
+
+                }
+            }
+        }
+        
+        // update the Hubble parameter
+        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
 
     }
 

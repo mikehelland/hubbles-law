@@ -73,9 +73,9 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
         var data2
         const c = 299792.458
         const pc2ly = 3.261564
-        var zoomY = 35 * 1000
+        var zoomY = 10 * 1000
         
-        var maxZ = 15
+        var maxZ = 1
 
         form.H0.onchange = e => run()
         form.Omega_L.onchange = e => {
@@ -148,7 +148,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
             })
             ctx.globalAlpha = 0.4
-            //ctx.stroke()
+            ctx.stroke()
 
             ctx.beginPath()
             ctx.moveTo(0, h)
@@ -178,7 +178,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             data2.forEach(dp => {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_A / zoomY)
             })
-            //ctx.stroke()
+            ctx.stroke()
 
             ctx.beginPath()
             ctx.moveTo(0, h)
@@ -186,6 +186,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             data2.forEach(dp => {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_C / zoomY)
             })
+            ctx.strokeStyle = "blue"
             ctx.stroke()
 
         }
