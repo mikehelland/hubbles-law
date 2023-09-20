@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <canvas id="graph" width="800" height="800"></canvas>
+
+
+
+    <script>
+
+        var model = flrw(70, 0.7, 0.3, 10)
+        draw()
+
+
+        function draw() {
+            var ctx = graph.getContext("2d")
+            ctx.fillStyle = "black"
+            ctx.fillRect(0, 0, graph.width, graph.height)
+
+            ctx.translate(20, 20)
+            
+            ctx.strokeStyle = "white"
+            ctx.strokeRect(0, 0, graph.width, graph.height)
+
+            var zoom = 0.05
+
+            ctx.lineWidth = 2
+
+            ctx.strokeStyle = "blue"
+            
+            var tx
+            for (j = 0; j < model.data.length; j++) {
+                ctx.beginPath()
+                ctx.moveTo(model.data[j].ax[1] * zoom, 0)
+                for (i = 0; i < model.data[j].ax.length; i++) {
+                    tx = model.data[j].ax[i]
+                    ctx.lineTo(tx[1] * zoom, tx[0] * zoom)
+                }    
+                ctx.stroke()
+            }
+
+            ctx.strokeStyle = "yellow"
+            
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+
+            for (var i = 0; i < model.ax.length; i++) {
+                ctx.lineTo(model.ax[i][1] * zoom, model.ax[i][0] * zoom)
+            }
+            ctx.stroke()
+
+        }
+
+
+        function flrw(H0, OmegaL, OmegaM, maxZ) {
+
+            // non-flat models get stuck in the loop
+            if (OmegaL + OmegaM !== 1) return []
+
+            maxZ = maxZ || 10
+
+            // convert km/s/Mpc  to  Mly/My/Mly
+            H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+            var H = H0
+            var c = 1
+
+            var t = 0
+            var z = 0
+
+            // these are our photons, one has a head start
+            var x1 = 0.1
+            var x2 = 0
+
+            var ax = [[0, 0]]
+
+            // add a bunch of galaxies to our model
+            var data = []
+            for (let i = 1000; i < 30000; i += 1000) {
+                data.push({ x: i, x0: i, ax: [[0, i]] })
+            }
+
+            while (z < maxZ) {
+
+                // move the photons with the hubble flow (in reverse)
+                x1 += c - H * x1
+                x2 += c - H * x2
+
+                // the redshift is how far apart the photons have drifted
+                z = 0.1 / (x1 - x2) - 1
+
+                t++
+
+                ax.push([t, x2])
+
+                for (var ig = 0; ig < data.length; ig++) {
+                    if (!data[ig].d_T) {
+
+                        // move the galaxies with the hubble flow (in reverse)
+                        data[ig].x -= H * data[ig].x
+                        data[ig].ax.push([t, data[ig].x])
+
+                        // record when the photons have reached (left) the galaxy
+                        if (data[ig].x <= x2) {
+                            data[ig].d_T = t
+                            data[ig].z = z
+                            console.log(z)
+
+                        }
+                    }
+                }
+
+                // update the Hubble parameter
+                H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
+
+            }
+
+            return {ax, data}
+        }
+
+
+
+    </script>
+</body>
+
+</html>
