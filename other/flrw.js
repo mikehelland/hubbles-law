@@ -33,8 +33,10 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
     var x2 = 0
 
     // add a bunch of galaxies to our model
+    var Dgx = 10
+    console.log(Dgx)
     var data = []
-    for (let i = 100; i < 40000; i+= 100) {
+    for (let i = Dgx; i < 40000; i+= Dgx) {
         data.push({d_A: i, d_C: i})
     }
 
@@ -59,7 +61,6 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
                 if (data[ig].d_A <= x2) {
                     data[ig].d_T = t
                     data[ig].z = z
-                    console.log(z)
 
                 }
             }

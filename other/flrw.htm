@@ -75,7 +75,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
         const pc2ly = 3.261564
         var zoomY = 10 * 1000
         
-        var maxZ = 1
+        var maxZ = 2
 
         form.H0.onchange = e => run()
         form.Omega_L.onchange = e => {
@@ -129,6 +129,12 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             }
             ctx.fillText("billion light years", 28, 18)
 
+
+            ctx.fillStyle = "black"
+            data2.forEach(dp => {
+                ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
+            })
+
             ctx.lineWidth = 10
             ctx.strokeStyle = "red"
             ctx.beginPath()
@@ -175,9 +181,13 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             ctx.beginPath()
             ctx.moveTo(0, h)
 
-            data2.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_A / zoomY)
-            })
+            var dp
+            for (i = 0; i < data2.length; i++) {
+                dp = data2[i]
+                if (dp.z) {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_A / zoomY)
+                }
+            }
             ctx.stroke()
 
             ctx.beginPath()
