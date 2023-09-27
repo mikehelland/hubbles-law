@@ -2,13 +2,15 @@
 <html>
 
 <body>
-    <canvas id="graph" width="800" height="800"></canvas>
+    <canvas id="graph" width="800" height="700"></canvas>
 
 
 
     <script>
 
+        console.time()
         var model = flrw(70, 0.7, 0.3, 10)
+        console.timeEnd()
         draw()
 
 
@@ -18,23 +20,38 @@
             ctx.fillRect(0, 0, graph.width, graph.height)
 
             ctx.translate(20, 20)
+
+            var zoom = 0.05
+
+            ctx.font = "10pt serif"
+            ctx.fillStyle = "white"
+            for (j = 0; j < 15; j++) {
+                ctx.fillText(j, j * 1000 * zoom - 5, -4)
+            }
+            
+            ctx.fillText("time", 4, graph.height - 24)
+            
+            ctx.textAlign = "right"
+            for (j = 0; j < 16; j++) {
+                ctx.fillText(j, -3, 4 + zoom * 1000 * j)
+            }
+            
+            ctx.fillText("space", graph.width - 24, -4)
             
             ctx.strokeStyle = "white"
             ctx.strokeRect(0, 0, graph.width, graph.height)
-
-            var zoom = 0.05
 
             ctx.lineWidth = 2
 
             ctx.strokeStyle = "blue"
             
             var tx
-            for (j = 0; j < model.data.length; j++) {
+            for (j = 0; j < model.objs.length; j++) {
                 ctx.beginPath()
-                ctx.moveTo(model.data[j].ax[1] * zoom, 0)
-                for (i = 0; i < model.data[j].ax.length; i++) {
-                    tx = model.data[j].ax[i]
-                    ctx.lineTo(tx[1] * zoom, tx[0] * zoom)
+                ctx.moveTo(model.objs[j].data[1] * zoom, 0)
+                for (i = 0; i < model.objs[j].data.length; i++) {
+                    tx = model.objs[j].data[i]
+                    ctx.lineTo(tx * zoom, i * zoom)
                 }    
                 ctx.stroke()
             }
@@ -44,10 +61,25 @@
             ctx.beginPath()
             ctx.moveTo(0, 0)
 
-            for (var i = 0; i < model.ax.length; i++) {
-                ctx.lineTo(model.ax[i][1] * zoom, model.ax[i][0] * zoom)
+            for (var i = 0; i < model.data.length; i++) {
+                ctx.lineTo(model.data[i] * zoom, i * zoom)
             }
             ctx.stroke()
+
+
+            /*
+            ctx.strokeStyle = "green"
+            
+            ctx.beginPath()
+            ctx.moveTo(0, graph.height / 2)
+
+            for (var i = model.objs[0].data.length - 1; i > 0; i--) {
+                if (model.objs[0].data[i][2])
+                    ctx.lineTo(model.objs[0].data[i][1] * zoom, graph.height / 2 + -model.objs[0].data[i][2] * 100)
+            }
+            ctx.stroke()
+            */
+
 
         }
 
@@ -66,18 +98,27 @@
 
             var t = 0
             var z = 0
+            var lastZ = 0
 
             // these are our photons, one has a head start
             var x1 = 0.1
             var x2 = 0
 
-            var ax = [[0, 0]]
+            var data = [0]
+            var hitTurnaround
+
+            var coVel = 0
 
             // add a bunch of galaxies to our model
-            var data = []
+            var objs = []
             for (let i = 1000; i < 30000; i += 1000) {
-                data.push({ x: i, x0: i, ax: [[0, i]] })
+                objs.push({i: objs.length, x: i, x0: i, data: [i] })
             }
+            //data.push({i: data.length, x: 12230, x0: 12230, ax: [[0, 12230]] })
+            //var i = 14833
+            //objs.push({i: data.length, x: i, x0: i, data: [i] })
+
+            //objs.push({i: data.length, x: 14836, x0: 14836, data: [14836] })
 
             while (z < maxZ) {
 
@@ -86,23 +127,38 @@
                 x2 += c - H * x2
 
                 // the redshift is how far apart the photons have drifted
+                lastZ = z
                 z = 0.1 / (x1 - x2) - 1
+
+
+                coVel += 1 / Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL) * (z - lastZ)
+
+
+                if (!hitTurnaround && x2 < data[t]) {
+                    hitTurnaround = t + 1
+                    console.log(lastZ, data[t], x2)
+                }
 
                 t++
 
-                ax.push([t, x2, z, H])
+                data.push(x2)
 
-                for (var ig = 0; ig < data.length; ig++) {
-                    if (!data[ig].d_T) {
+                for (var ig = 0; ig < objs.length; ig++) {
+                    if (!objs[ig].d_T) {
 
                         // move the galaxies with the hubble flow (in reverse)
-                        data[ig].x -= H * data[ig].x
-                        data[ig].ax.push([t, data[ig].x])
+                        var dx = H * objs[ig].x
+                        objs[ig].x -= dx
+                        objs[ig].data.push(objs[ig].x)
+
+                        if (!objs[ig].hitC && H * objs[ig].x >= 1) {
+                            objs[ig].hitC = t
+                        }
 
                         // record when the photons have reached (left) the galaxy
-                        if (data[ig].x <= x2) {
-                            data[ig].d_T = t
-                            data[ig].z = z
+                        if (objs[ig].x <= x2) {
+                            objs[ig].d_T = t
+                            objs[ig].z = z
                             console.log(z)
 
                         }
@@ -114,10 +170,75 @@
 
             }
 
-            return {ax, data}
+            return {data, objs, hitTurnaround}
         }
 
+        function findTurnaround() {
+            var lastD = 0
+            for (var i = 1; i < model.objs.length; i++) {
+                if (model.objs[i].x < model.objs[i - 1].x)
+                    return model.objs[i]
+            }
+        }
 
+function paper(H0, OmegaL, OmegaM, maxZ) {
+
+// non-flat models get stuck in the loop
+if (OmegaL + OmegaM !== 1) return []
+
+maxZ = maxZ || 10
+
+// convert km/s/Mpc  to  Mly/My/Mly
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+var H = H0
+var c = 1
+
+var t = 0
+var z = 0
+var lastZ = 0
+
+// these are our photons, one has a head start
+var x1 = 0.1
+var x2 = 0
+
+
+var data = [0]
+
+// add a bunch of galaxies to our model, 1 Bly apart
+var objs = []
+for (let i = 1000; i < 32000; i += 1000) {
+    objs.push({i: objs.length, x: i, x0: i, data: [i] })
+}
+
+while (z < maxZ) {
+
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    t++
+
+    data.push(x2)
+
+    for (var i = 0; i < objs.length; i++) {
+        if (objs[i].t) continue
+
+        // move the galaxies 
+        objs[i].x -= H * objs[i].x
+        objs[i].data.push(objs[i].x)
+
+        // record when the photons reach the galaxy
+        if (objs[i].x <= x2) {
+            objs[i].t = t
+            objs[i].z = z
+        }
+    }
+
+    // update the Hubble parameter
+    H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
+}
+
+return {data, objs}
+}
 
     </script>
 </body>

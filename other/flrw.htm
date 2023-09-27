@@ -2,7 +2,6 @@
 <html>
 <head>
 <style>
-    canvas {border-bottom: 1px solid black; border-left: 1px solid black;}
     input[type=number] {font-size: 125%; width: 200px;}
     body {font-size: 150%;}
 </style>
@@ -30,41 +29,42 @@
 
     <p>(black):</p>
     <pre>
-function flrw(H0, OmegaL, OmegaM, maxZ) {
+var findZ = 10
+var H0 = 70
+var OmegaL = 0.7
+var OmegaM = 1 - OmegaL
 
-    if (OmegaL + OmegaM !== 1) {
-        return []
-    }
+// convert km/s/Mpc  to  Mly/My/Mly
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+var H = H0 
+var c = 1
 
-    maxZ = maxZ || 10
-    var data = []
+// the photons, x1 has a head start
+var x1 = 0.1
+var x2 = 0
 
-    H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
-    var H = H0 
-    var c = 1
+var t = 0, z = 0, data = []
+
+while (z < findZ) {
+    t--
+
+    // move the photons 
+    x1 += c - H * x1
+    x2 += c - H * x2
+
+    // compare their separation
+    z = 0.1 / (x1 - x2) - 1
     
-    var dx
-    var z
+    // update the Hubble parameter
+    H = H0 * Math.sqrt(OmegaM * 
+        Math.pow(1 + z, 3) + OmegaL)
 
-    var photon = 0
-    var t = 0
-    
-    while (!done) {
-
-        dx = c + photon * H
-        photon += dx
-        z = dx / c - 1
-
-        data.push({z, DC: photon, lookback: t, DA: photon/(1+z)})
-
-        if (z >= maxZ) break;
-
-        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 1.75) + OmegaL)
-        t++
-
-    }
-
-    return data
+    data.push({
+        z,
+        d_A: x2,
+        d_C: x2 * (1+z),
+        d_T: -c * t
+    })
 }
     </pre>
 
@@ -73,9 +73,9 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
         var data2
         const c = 299792.458
         const pc2ly = 3.261564
-        var zoomY = 10 * 1000
+        var zoomY = 35 * 1000
         
-        var maxZ = 2
+        var maxZ = 10
 
         form.H0.onchange = e => run()
         form.Omega_L.onchange = e => {
@@ -99,7 +99,8 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
                 data.push(FLRW(H0, OmegaL, OmegaM, i))
             }
             
-            data2 = flrw(H0, OmegaL, OmegaM, maxZ)
+            //data2 = flrw(H0, OmegaL, OmegaM, maxZ)
+            data2 = flrw2(H0, OmegaL, maxZ)
             
             drawCanvas()
 
@@ -115,25 +116,27 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
             for (var i = 0; i <= maxZ; i=i+1) {
-                ctx.fillText(i, i / maxZ * w, h)
+                ctx.fillText(i, 20 + i / maxZ * w, h)
             }
             ctx.fillText("z", w - 10, h)
 
-            ctx.fillStyle = "black"
-            ctx.font = "16px sans-serif"
-            for (var i = 0; i <= maxZ; i=i+1) {
-                ctx.fillText(i, i / maxZ * w, h)
-            }
+            ctx.textAlign = "right"
             for (var i = 0; i <= zoomY; i=i+2000) {
-                ctx.fillText(i / 1000, 0, h - h * i / zoomY)
+                ctx.fillText(i / 1000, 18, h - 20 - h * i / zoomY)
             }
+            ctx.textAlign = "left"
             ctx.fillText("billion light years", 28, 18)
 
+            
+            ctx.translate(20, -20)
 
-            ctx.fillStyle = "black"
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, canvas.height)
+            
+            /*ctx.fillStyle = "black"
             data2.forEach(dp => {
                 ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
-            })
+            })*/
 
             ctx.lineWidth = 10
             ctx.strokeStyle = "red"
@@ -166,9 +169,10 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             ctx.stroke()
 
             ctx.globalAlpha = 1
-            ctx.lineWidth = 2
+            ctx.lineWidth = 4
             ctx.strokeStyle = "black"
 
+            ctx.setLineDash([50, 10])
             ctx.beginPath()
             ctx.moveTo(0, h)
 
@@ -178,6 +182,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             ctx.stroke()
 
 
+            ctx.setLineDash([])
             ctx.beginPath()
             ctx.moveTo(0, h)
 
@@ -190,13 +195,13 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
             }
             ctx.stroke()
 
+            ctx.setLineDash([5, 5])
             ctx.beginPath()
             ctx.moveTo(0, h)
 
             data2.forEach(dp => {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_C / zoomY)
             })
-            ctx.strokeStyle = "blue"
             ctx.stroke()
 
         }

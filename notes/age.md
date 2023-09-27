@@ -5,6 +5,12 @@ From H_0
 c=299792
 
 
+https://cosmocalc.icrar.org/
+HT = (3.08568025e+19/(H0 * 31556926))/1e+09
+60*60*24*365.2422
+
+
+
 Age of the universe, according to the measurements at the time:
 
 1929 - 2 billion years
