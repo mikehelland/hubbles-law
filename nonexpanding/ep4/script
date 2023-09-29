@@ -1,0 +1,54 @@
+In the last video we made this algorithm that calculates three distances in an expanding universe
+
+
+
+We can understand those three distances by imagining two cars driving in opposite directions
+
+And one honks their horn
+
+We'll call the time of the horn honk t_honk.
+
+And at this specific moment in time, we'll call the distance between the cars x_honk
+
+
+
+But the other car won't hear the honk exactly at t_honk. The sound waves have to travel to the other car.
+
+While the sound waves travel, so do the cars.
+
+
+
+The sound waves reach the other car at time t_heard
+
+And now the distance between the cars at time x_heard
+
+
+
+Notice that the sound wave doesn't travel the full distance of x_heard
+
+The sound wave left one car at t_honk and reached the other car at t_heard
+
+
+The distance the sound traveled should be somewhere between x_honk and x_heard.
+
+It will be the x of car 1 at t_honk - x car 2 at t_heard
+
+It will also be the speed of sound times t_heard - t_honk 
+
+
+
+
+So we have the distance between the cars at the time the horn was honked, the distance between them when the honk was heard
+
+and also the actual distance the sound traveled.
+
+
+This is why the distance to a galaxy in an expanding universe isn't just one simple distance. 
+
+There is the distance to the galaxy when it emitted the light t_emit
+
+There is the distance the galaxy has gotten to when that light was observed, t_observe, or t_now
+
+And the distance the light actually traveled, c * (t_observe - t_emit)
+
+
