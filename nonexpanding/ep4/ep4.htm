@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+    body {
+        text-align: center;
+        color:white;
+        background-color: #080808;
+        overflow: hidden;
+        font-size: 20pt;
+    }
+
+    table {
+        margin:auto;
+    }
+
+    .slide {
+        padding:0.9em;
+        display:none;
+    }
+
+    hr {width: 50%;}
+</style>
+</head>
+
+<body>
+
+    <img style="display: none;" id="galaxy" src="../ep2/galaxy.png">
+    
+    <style>
+        .slide1 {
+            display: flex;
+            align-items: center;            
+        }
+    </style>
+    <div class="slide">
+        <div class="slide1">
+            <img src="flrwcode.png">
+            <img class="" src="flrwgraph.png">
+    
+        </div>
+    </div>
+
+    
+    <style>
+        #threedistances {width:100%; background-color: black; height: 600px;} 
+        #distemit, #distobserve, #disttravel {position: absolute; display:none;}
+        .posrel{position: relative;}
+    </style>
+    <div class="slide posrel">
+        <h1>Three distances?</h1>
+        <canvas id="threedistances"></canvas>
+        <div id="distemit">distance at \(t_{emit}\)</div>
+        <div id="distobserve">distance at \(t_{now}\)</div>
+        <div id="disttravel" style="color:yellow;">\( c\Delta t \)</div>
+        <div id="distz" style="font-size: 40pt;" class="fi">\(1 + z = \frac{\lambda_{now}}{\lambda_{emit}} = \frac{d_{now}}{d_{emit}} \)</div>
+        <br><br>
+        <div class="fi">\(\Delta t = t_{now} - t_{emit}\)</div>
+        <script src="threedistances.js"></script>
+    </div>
+
+
+    <style>
+        #demit, #dobserve, #dtravel {font-size:24pt; position:absolute;}
+        #demit {top: 550px;      left: 1475px;}
+        #dobserve {top: 70px;   left: 1475px;}
+        #dtravel {top: 370px;    left: 1475px;}
+    </style>
+    <div class="slide">
+        <img id="flrwgraph" src="flrwgraph.png">
+        <div class="fi" id="demit">\(d_{emit}\)</div>
+        <div class="fi" id="dobserve">\(d_{now}\)</div>
+        <div class="fi" id="dtravel" style="color:yellow;">\( c\Delta t \)</div>
+        <br><br>
+        <div class="fi">\( z\rightarrow \infty \)</div>
+        <br>
+        <div class="fi" ><span style="color:yellow;">\( c\Delta t \) </span> = age of the universe</div>
+        <br>
+        <div class="fi">\( d_{emit} = 0 \)</div>
+        <br>
+        <div class="fi">(Distances are zero at the big bang)</div>
+    </div>
+    
+
+    <style>
+        #expanding1 {width:100%; background-color: black; height: 600px;}
+    </style>
+    <div class="slide">
+        <h1>How is that even possible?!</h1>
+        <canvas id="expanding1"></canvas>
+        <script src="expanding1.js"></script>
+    </div>
+
+    <div class="slide">
+    
+        <h2>Static expansion rate</h2>
+        <hr>
+        <p style="color:#888888;" >Exponentially expanding, pure dark energy universe...</p>
+        <img  id="desittergraph" src="flrwgraph3.png">
+        <h3 class="fi">No distance turnaround</h3>
+
+    </div>
+
+
+    <div class="slide">
+    
+        <h2>&Lambda;CDM universe</h2>
+        <hr>
+        <p style="color:#888888;" >Evolving expansion rate</p>
+        <img  id="desittergraph2" src="flrwgraph.png">
+        <h3 class="fi">Expansion was faster in the past</h3>
+
+    </div>
+
+    <div class="slide">
+        <div class="slide1">
+            <img src="flrwcode.png">
+            <div>
+                <canvas width="1100" height="100" style="background-color: black;" id="contractingtop"></canvas>
+                <br>
+                <canvas width="1100" height="800" style="background-color: black;" id="contractingbottom"></canvas>
+                <script src="contracting1.js"></script>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+
+
+<script>
+
+    var slides = document.getElementsByClassName("slide")
+    var slide = -1
+    var fi = 0
+    var fis = document.getElementsByClassName("fi")
+    for (let i = 0; i < fis.length; i++) {
+        fis[i].style.opacity = 0
+    }
+    fis = []
+
+    document.onkeypress = e => {
+
+        if (!isNaN( parseInt(e.key))) {
+            slide = e.key * 1 - 1
+            console.log(slide)
+        }
+
+        advance()
+    }
+
+    function advance() {
+        
+        if (slide > -1 && fi < fis.length) {
+            if (typeof fis[fi] === "function") {
+                fis[fi]()
+            }
+            else {
+                fadeIn(fis[fi])
+            }
+            fi++
+        }
+        else {
+
+            if (slides[slide] && slides[slide + 1]) {
+                fadeOut(slides[slide], nextSlide)
+            }
+            else {
+                nextSlide()
+            }
+
+        }
+    }
+    //nextSlide()
+
+    function nextSlide() {
+        slide++
+
+        if (!slides[slide]) {
+            return
+        }
+
+
+        fi = 0
+        
+        fis = []
+        var els = slides[slide].getElementsByClassName("fi")
+        for (let i = 0; i < els.length; i++) {
+             fis.push(els[i])
+        }        
+
+        slides[slide].style.opacity = 0
+        slides[slide].style.display = "block"
+        fadeIn(slides[slide])
+
+        onNewSlide(slide, fis)
+
+    }
+
+    const fiLen = 100
+    function fadeIn(el) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.min(1, (Date.now() - start) / fiLen)
+            if (el.style.opacity == 1) {
+                clearInterval(h)
+                console.log("dade done")
+            }
+        }, 1000/100)
+    }
+
+    const f0Len = 50
+    function fadeOut(el, callback) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.max(0, 1 - (Date.now() - start) / fiLen)
+            if (el.style.opacity == 0) {
+                clearInterval(h)
+                el.style.display = "none"
+
+                if (callback) callback()
+            }
+        }, 1000/100)
+    }
+
+    function onNewSlide(slide, fi) {
+        if (slide === 1) {
+            var d1 = demo1()
+            d1.go()
+            fis.splice(0, 0, () => d1.go())
+            fis.splice(2, 0, () => d1.drawLTT())
+        }
+        if (slide === 2) {
+            fis.push(() => flrwgraph.src="flrwgraph2.png")
+            //fis.push(() => flrwgraph.src="flrwgraph2b.png")
+        }
+        if (slide === 3) {
+            var d2 = demoExpanding1()
+            d2.go()
+            fis.push(() => {
+                d2.stop()
+                setTimeout(advance)
+            })
+        }
+        if (slide === 4) {
+            fis.splice(0, 0, () => desittergraph.src = "flrwgraph4.png")
+        }
+        if (slide === 5) {
+            fis.splice(0, 0, () => desittergraph2.src = "flrwgraph2b.png")
+            fis.splice(1, 0, () => desittergraph2.src = "flrwgraph2c.png")
+        }
+        if (slide === 6) {
+            var d3 = demoContracting1()
+            fis.push(d3.go)
+            fis.push(() => {
+                d3.stop()
+                setTimeout(advance)
+            })
+        }
+    }
+</script>

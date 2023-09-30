@@ -67,10 +67,6 @@ function flrw2(H0, OmegaL, maxZ) {
 //   d_T = light travel time distance
 
 function flrw(H0, OmegaL, OmegaM, maxZ) {
-
-    // non-flat models get stuck in the loop
-    if (OmegaL + OmegaM !== 1) return []
-
     maxZ = maxZ || 10
 
     // convert km/s/Mpc  to  Mly/My/Mly
@@ -86,11 +82,9 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
     var x2 = 0
 
     // add a bunch of galaxies to our model
-    var Dgx = 10
-    console.log(Dgx)
     var data = []
-    for (let i = Dgx; i < 40000; i+= Dgx) {
-        data.push({d_A: i, d_C: i})
+    for (let i = 1000; i < 40000; i+= 1000) {
+        data.push({x: i, x0: i})
     }
 
     while (z < maxZ) {
@@ -105,14 +99,14 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
         t++
         
         for (var ig = 0; ig < data.length; ig++) {
-            if (!data[ig].d_T) {
+            if (!data[ig].t) {
 
                 // move the galaxies with the hubble flow (in reverse)
-                data[ig].d_A -= H * data[ig].d_A
+                data[ig].x -= H * data[ig].x
 
                 // record when the photons have reached (left) the galaxy
-                if (data[ig].d_A <= x2) {
-                    data[ig].d_T = t
+                if (data[ig].x <= x2) {
+                    data[ig].t = t
                     data[ig].z = z
 
                 }
@@ -120,7 +114,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
         }
         
         // update the Hubble parameter
-        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
+        H = H0 * Math.sqrt(OmegaM * (1 + z)**3 + OmegaL)
 
     }
 

@@ -114,6 +114,21 @@ function stretchedSpacetime2() {
             ctxG.fillText(dgi, offsetX + dgi * 1000 * zoomG - 3, offset)    
         }
         
+        ctxG.fillStyle = "yellow"
+        ctxG.strokeStyle = "yellow"
+        ctxG.lineWidth = 1
+        
+        dz.forEach(dp => {
+            if (dp.d % 1000 == 0) {
+                ctxG.fillRect(offsetX + dp.d * zoomG - 1, offset + dp.t*10 * zoomGY - 1, 2, 2)
+                console.log(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+
+                ctxG.beginPath()
+                ctxG.moveTo(offsetX + dp.d * zoomG, offset + dp.d * zoomGY)
+                ctxG.lineTo(offsetX + dp.d * zoomG, offset + dp.t*10 * zoomGY)
+                ctxG.stroke()
+            }
+        })
     }
 
     function drawTimedilated() {

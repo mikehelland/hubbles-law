@@ -2,20 +2,27 @@
 <html>
 <head>
 <style>
-    input[type=number] {font-size: 125%; width: 200px;}
+    input[type=number] {font-size: 125%; 
+        width: 50px;
+        appearance:textfield;
+        border: 0;
+    }
     body {font-size: 150%;}
+
+    form {
+        position: absolute;
+        left:50px;
+        top:50px;
+    }
 </style>
 </head>
 <body>
 
     <form name="form">
-    <p>
-    &Lambda;CDM : 
-    <br>
+    &Lambda;CDM - 
     H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
-    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
     &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
-    </p>    
+    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
     </form>
 
     
@@ -118,9 +125,11 @@ while (z < findZ) {
             for (var i = 0; i <= maxZ; i=i+1) {
                 ctx.fillText(i, 20 + i / maxZ * w, h)
             }
-            ctx.fillText("z", w - 10, h)
-
+            
             ctx.textAlign = "right"
+            ctx.fillText("redshift z", w - 10, h - 25)
+
+            
             for (var i = 0; i <= zoomY; i=i+2000) {
                 ctx.fillText(i / 1000, 18, h - 20 - h * i / zoomY)
             }
@@ -169,7 +178,7 @@ while (z < findZ) {
             ctx.stroke()
 
             ctx.globalAlpha = 1
-            ctx.lineWidth = 4
+            ctx.lineWidth = 6
             ctx.strokeStyle = "black"
 
             ctx.setLineDash([50, 10])
