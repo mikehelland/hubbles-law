@@ -38,7 +38,7 @@ function flrw2(H0, OmegaL, maxZ) {
             z,
             d_A: x2,
             d_C: x2 * (1+z),
-            d_T: -t
+            d_T: -t, 
         })
         
         
@@ -88,6 +88,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
     }
 
     while (z < maxZ) {
+        t--
 
         // move the photons with the hubble flow (in reverse)
         x1 += c - H * x1
@@ -95,8 +96,6 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
 
         // the redshift is how far apart the photons have drifted
         z = 0.1 / (x1 - x2) - 1
-
-        t++
         
         for (var ig = 0; ig < data.length; ig++) {
             if (!data[ig].t) {

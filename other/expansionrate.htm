@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    input[type=number] {font-size: 125%; 
+        width: 50px;
+        appearance:textfield;
+        border: 0;
+    }
+    body {font-size: 150%;}
+
+    form {
+        position: absolute;
+        left:50px;
+        top:50px;
+    }
+</style>
+</head>
+<body>
+
+    <form name="form">
+    \( \frac{H}{H_0} = [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)
+    
+    <br><br>
+        &Lambda;CDM - 
+    H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
+    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+    </form>
+    <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+
+    
+    <canvas id="canvas" width="1000" height="600"></canvas>
+
+    <script>
+        var data
+        var data2
+        const c = 299792.458
+        const pc2ly = 3.261564
+        var zoomY = 18
+        
+        var maxZ = 15
+
+        form.H0.onchange = e => run()
+        form.Omega_L.onchange = e => {
+            form.Omega_M.value = 1 - form.Omega_L.value
+            run()
+        }
+        form.Omega_M.onchange = e => {
+            form.Omega_L.value = 1 - form.Omega_M.value
+            run()
+        }
+        
+        run()
+
+        function run() {
+            var H0 = parseFloat(form.H0.value)
+            var OmegaL = parseFloat(form.Omega_L.value)
+            var OmegaM = parseFloat(form.Omega_M.value)
+
+            data = []
+            
+            //data2 = flrw(H0, OmegaL, OmegaM, maxZ)
+            data2 = flrw2(H0, OmegaL, maxZ)
+            
+            drawCanvas()
+
+        }
+
+        function drawCanvas() {
+
+            var ctx = canvas.getContext("2d")
+            var h = canvas.height
+            var w = canvas.width
+            canvas.width = w
+
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, 20 + i / maxZ * w, h)
+            }
+            
+            ctx.textAlign = "right"
+            ctx.fillText("lookback time (billion years)", w - 10, h - 25)
+
+            
+            for (var i = 0; i <= zoomY; i++) {
+                ctx.fillText(i, 18, h - 15 - h * i / zoomY)
+            }
+            ctx.textAlign = "left"
+            //ctx.fillText("billion light years", 28, 18)
+
+            
+            ctx.translate(20, -20)
+
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, canvas.height)
+            
+            /*ctx.fillStyle = "black"
+            data2.forEach(dp => {
+                ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
+            })*/
+
+            
+            ctx.lineWidth = 6
+            ctx.strokeStyle = "black"
+
+            ctx.setLineDash([50, 10])
+            ctx.beginPath()
+            ctx.moveTo(0, h - h / zoomY)
+
+            data2.forEach(dp => {
+                ctx.lineTo(w * -dp.t / 1000 / maxZ, h - h * dp.HH0 / zoomY)
+            })
+            ctx.stroke()
+
+
+        }
+
+
+
+
+        function flrw2(H0, OmegaL, maxZ) {
+
+            maxZ = maxZ || 10
+            var OmegaM = 1 - OmegaL
+
+            // convert km/s/Mpc  to  Mly/My/Mly
+            H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+            var H = H0 
+            var c = 1
+
+            var t = 0
+            var z = 0
+
+            // these are our photons, one has a head start
+            var x1 = 0.1
+            var x2 = 0
+
+            var data = []
+
+            var HH0 = 1
+
+            while (z < maxZ) {
+
+                // move the photons with the hubble flow (in reverse)
+                x1 += c - H * x1
+                x2 += c - H * x2
+
+                // the redshift is how far apart the photons have drifted
+                z = 0.1 / (x1 - x2) - 1
+
+                t--
+
+                data.push({
+                    z,
+                    t, 
+                    HH0
+                })
+                
+                
+                // update the Hubble parameter
+                HH0 = Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
+                H = H0 * HH0
+
+            }
+
+            return data
+        }
+
+
+
+
+
+
+
+    </script>

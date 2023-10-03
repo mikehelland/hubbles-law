@@ -22,24 +22,30 @@ function demo1() {
         ctx.translate(c.width / 2, c.height / 2)
 
         if (length1) {
-            ctx.globalAlpha = 0.1
+            if ((phase > 0 && phase < 3) || phase === 4) {
+                ctx.globalAlpha = 0.1
+            }
             ctx.drawImage(galaxy, length1.x + length1.l - gw, -gh)
+            ctx.globalAlpha = 0.1
             ctx.drawImage(galaxy, length1.x - gw, -gh)
             ctx.globalAlpha = 1
     
         }
 
-        if (phase === 3) {
+        if (phase >= 3) {
             ctx.globalAlpha = 0.1
         }
         ctx.drawImage(galaxy, g1.x - gw, -gh)
+        if (phase < 4) {
+            ctx.globalAlpha = 1
+        }
         ctx.drawImage(galaxy, g2.x - gw, -gh)
+
         ctx.globalAlpha = 1
-        
-        ctx.font = "14pt serif"
+        ctx.font = "25pt serif"
         ctx.textAlign = "center"
         if (photon) {
-            if (phase == 3) {
+            if (phase == 4) {
                 ctx.fillStyle = "yellow"
                 ctx.fillRect(photon.x, -8, length1.x + length1.l - g2.x, 16)
                 ctx.fillRect(photon.x, -16, 16, 32)
@@ -47,12 +53,12 @@ function demo1() {
             }
             else {
                 ctx.fillStyle = "yellow"
-                ctx.fillRect(photon.x - photon.l/2, -10, photon.l, 20)
+                ctx.fillRect(photon.x - photon.l/2, -20, photon.l, 40)
                 ctx.strokeStyle = "black"
                 ctx.lineWidth = 5
-                ctx.strokeRect(photon.x - photon.l/2, -10, photon.l, 20)
+                ctx.strokeRect(photon.x - photon.l/2, -20, photon.l, 40)
                 ctx.fillStyle = "black"
-                ctx.fillText("λ", photon.x, 5)
+                ctx.fillText("λ", photon.x, 10)
             }
             
         }
@@ -92,7 +98,7 @@ function demo1() {
                 distemit.style.display = "block"
                 distemit.style.left = c.offsetLeft + c.width / 2 - distemit.clientWidth / 2 + "px"
                 
-                photon = {x: g1.x, l: 20}
+                photon = {x: g1.x, l: 40}
                 clearInterval(h)
             }
 
@@ -112,6 +118,12 @@ function demo1() {
         }, 1000/60)
     }
 
+    var lttGalaxies = function () {
+        phase++
+        draw()
+
+    }
+
     var drawLTT = function () {
         phase++
         draw()
@@ -125,6 +137,6 @@ function demo1() {
 
     draw()
 
-    return {go, drawLTT}
+    return {go, drawLTT, lttGalaxies}
 
 }

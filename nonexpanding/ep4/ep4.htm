@@ -27,7 +27,7 @@
 <body>
 
     <img style="display: none;" id="galaxy" src="../ep2/galaxy.png">
-    
+
     <style>
         .slide1 {
             display: flex;
@@ -105,7 +105,7 @@
 
     <div class="slide">
     
-        <h2>&Lambda;CDM universe</h2>
+        <h2>Standard model of cosmology (&Lambda;CDM)</h2>
         <hr>
         <p style="color:#888888;" >Evolving expansion rate</p>
         <img  id="desittergraph2" src="flrwgraph.png">
@@ -114,13 +114,87 @@
     </div>
 
     <div class="slide">
+    
+        <h2>&Lambda;CDM Expansion Rate</h2>
+        <hr>
+        <p style="color:#888888;" >Evolving expansion rate</p>
+        <img  id="desittergraph2" src="expansionrate.png">
+
+    </div>
+
+    <div class="slide">
+        <div id="addturnaround" class="fi" style="font-size: 120%; position: absolute; top:755px;left:970px;">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;light &larr; <i>c</i>
+            <br>
+            expansion &rarr; <i>c</i>
+            
+        </div>
+    
         <div class="slide1">
-            <img src="flrwcode.png">
+            <img id="flrwcode" src="flrwcode.png">
             <div>
                 <canvas width="1100" height="100" style="background-color: black;" id="contractingtop"></canvas>
                 <br>
-                <canvas width="1100" height="800" style="background-color: black;" id="contractingbottom"></canvas>
+                <canvas width="1100" height="840" style="background-color: black;" id="contractingbottom"></canvas>
                 <script src="contracting1.js"></script>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="slide">
+    
+        <h2>\(d_{emit}\), <span style="color: #888888;">a.k.a.,</span> angular diameter distance</h2>
+
+        <img  id="distancenames" src="flrwgraph2.png">
+        <br>
+        <h3 class="fi">\(z \approx 1.5 \)</h3>
+        <h class="fi">recession velocity is \(c\) (at \(t_{emit} \))</h>
+        
+        <p class="fi">photon "stalled" until expansion rate decreases</p>
+        <p class="fi"><i>
+            (speed of light can be zero as long as everything around it is moving at \(c\))
+        </i>
+            
+        </p>
+        
+    </div>
+
+    <div class="slide">
+    
+        <br><br><br>
+
+        <h1>Angular Diameter Distance Turnaround</h1>
+        <hr>
+        
+        <br><br><br>
+        <h3 style="color: #888888;">Objects of the same size and color at different distances</h3>
+        <div class="slide1" style="justify-content: center;">
+            <div>
+                <img src="addt1.png">
+                <br>
+                \( z=0.4 \)
+            
+            </div>
+            <div>
+                <img src="addt2.png">
+                <br>
+                \( z=0.9 \)
+            </div>
+            <div>
+                <img src="addt3.png">
+                <br>
+                \( z=1.5 \)
+            </div>
+            <div>
+                <img src="addt4.png">
+                <br>
+                \( z=2.7 \)
+            </div>
+            <div>
+                <img src="addt5.png">
+                <br>
+                \( z=7 \)
             </div>
             
         </div>
@@ -233,7 +307,8 @@
             var d1 = demo1()
             d1.go()
             fis.splice(0, 0, () => d1.go())
-            fis.splice(2, 0, () => d1.drawLTT())
+            fis.splice(2, 0, () => d1.lttGalaxies())
+            fis.splice(3, 0, () => d1.drawLTT())
         }
         if (slide === 2) {
             fis.push(() => flrwgraph.src="flrwgraph2.png")
@@ -249,17 +324,52 @@
         }
         if (slide === 4) {
             fis.splice(0, 0, () => desittergraph.src = "flrwgraph4.png")
+            fis.splice(1, 0, () => desittergraph.src = "flrwgraph4b.png")
         }
         if (slide === 5) {
             fis.splice(0, 0, () => desittergraph2.src = "flrwgraph2b.png")
             fis.splice(1, 0, () => desittergraph2.src = "flrwgraph2c.png")
         }
-        if (slide === 6) {
+        if (slide === 7) {
             var d3 = demoContracting1()
-            fis.push(d3.go)
+
+            fis.splice(0, 0, () => flrwcode.src="flrwcode2.png")
+            fis.splice(1, 0, d3.draw)
+
+            fis.splice(2, 0, () => flrwcode.src="flrwcode3.png")
+            fis.splice(3, 0, () => flrwcode.src="flrwcode4.png")
+
+            fis.splice(4, 0, () => flrwcode.src="flrwcode5.png")
+            
+            fis.splice(5, 0, () => {
+                flrwcode.src="flrwcode.png"
+                d3.go()
+            })
+
+            fis.splice(6, 0, () => flrwcode.src="flrwcode6.png")
+
             fis.push(() => {
-                d3.stop()
-                setTimeout(advance)
+                d3.go()
+                addturnaround.style.display = "none"
+                //setTimeout(advance)
+            })
+
+            fis.push(() => flrwcode.src="flrwcode.png")
+
+            fis.push(() => {
+                d3.selectTwo()
+                d3.rev()
+            })
+
+            fis.push(() => {
+                d3.rev(2)
+            })
+
+        }
+
+        if (slide === 8) {
+            fis.splice(0, 0, () => {
+                distancenames.src = "flrwgraph_names.png"
             })
         }
     }

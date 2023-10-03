@@ -55,10 +55,10 @@
                 left: 350px;
                 top:335px;
             }
-            #y-axis {
+            #y-axis, #y-axis-noerr {
                 position: absolute;
-                top: -15px;
-                left: 25px;
+                top:  15px;
+                left: 35px;
             }
         </style>
     </head>
@@ -75,11 +75,12 @@
     <div id="graphs">
     <canvas id="background" height="400" width="700"></canvas>
     <canvas id="graph" height="400" width="700"></canvas>
-    <table id="y-axis">
-        <tr>
-            <td>\[\chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2 / \sigma^2 \]</td>
-        </tr>
-    </table>
+    <div id="y-axis">
+        \( \chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2 / \sigma^2 \)
+    </div>
+    <div id="y-axis-noerr">
+        \( \chi^2 = \Sigma_i (\mu_i^{d} - \mu_i^{m})^2  \)
+    </div>
     </div>
 
     <p>Data: <a href="https://github.com/PantheonPlusSH0ES/DataRelease/tree/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR">
@@ -153,12 +154,29 @@ var black = false
 
     var useErrorEl = document.getElementById("useerrorbars")
     var useError = useErrorEl.checked
+    
+    var yAxis = document.getElementById("y-axis")
+    var yAxisNoErr = document.getElementById("y-axis-noerr")
+
+    var updateYAxis = function () {
+        if (useError) {
+            yAxis.style.display = "block"
+            yAxisNoErr.style.display = "none"
+        }
+        else {
+            yAxis.style.display = "none"
+            yAxisNoErr.style.display = "block"
+        }
+    }
+    updateYAxis()
+
     useErrorEl.onchange = e => {
         console.log("onchange")
         useError = !useError //useErrorEl.value
         //Hstart = useError ? 50 : 64
         zoomGY = getZoom()
         calculateDistances()
+        updateYAxis()
         drawGraph()
         drawData()
         calculateLCDMErrors()

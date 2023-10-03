@@ -2,13 +2,11 @@
 <html>
 <head>
 <style>
-    input[type=number] {font-size: 125%; 
-        width: 50px;
+    .sshot {font-size: 125%; 
+        width: 40px;
         appearance:textfield;
         border: 0;
     }
-    body {font-size: 150%;}
-
     form {
         position: absolute;
         left:50px;
@@ -18,17 +16,27 @@
 </head>
 <body>
 
+
     <form name="form">
     &Lambda;CDM - 
-    H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
     &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
     &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+    H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
     </form>
 
     
     <canvas id="canvas" width="1000" height="600"></canvas>
+    <br>
+    <p style="text-align: center; width: 1000px;">
+        comoving distance (dotted), light travel time distance (dashed), angular diameter distance (solid)
+    </p>
+    
+    <br>
+    <br>
+    <input type="checkbox" checked="checked" id="flat"> Flat (link inputs)
 
-
+    <br>
+    <input type="checkbox" id="screenshot"> Screenshot mode
 
     <script src="flrw.js"></script>
     <p>(<span style="color:red;">red</span>) JavaScript Cosmology Calculator by <a href="http://www.bo.astro.it/~cappi/cosmotools" target="_blank">Alberto Cappi</a>
@@ -84,13 +92,23 @@ while (z < findZ) {
         
         var maxZ = 10
 
+        screenshot.onchange = e => {
+            var cls = screenshot.checked ? "sshot" : ""
+            form.H0.className = cls
+            form.Omega_L.className = cls
+            form.Omega_M.className = cls
+        }
+
+
         form.H0.onchange = e => run()
         form.Omega_L.onchange = e => {
-            form.Omega_M.value = 1 - form.Omega_L.value
+            if (flat.checked) 
+                form.Omega_M.value = 1 - form.Omega_L.value
             run()
         }
         form.Omega_M.onchange = e => {
-            form.Omega_L.value = 1 - form.Omega_M.value
+            if (flat.checked) 
+                form.Omega_L.value = 1 - form.Omega_M.value
             run()
         }
         
@@ -102,12 +120,15 @@ while (z < findZ) {
             var OmegaM = parseFloat(form.Omega_M.value)
 
             data = []
+            
             for (var i = 0; i <= maxZ; i=i+0.1) {
                 data.push(FLRW(H0, OmegaL, OmegaM, i))
             }
             
             //data2 = flrw(H0, OmegaL, OmegaM, maxZ)
-            data2 = flrw2(H0, OmegaL, maxZ)
+            if (OmegaL + OmegaM === 1) {
+                data2 = flrw2(H0, OmegaL, maxZ)
+            }
             
             drawCanvas()
 

@@ -16,9 +16,6 @@ function demoExpanding1() {
         })
     }
 
-    var phase = 0
-
-    var photon, length1, length2
 
     var zoom = 0.15
 
@@ -32,25 +29,6 @@ function demoExpanding1() {
             
         }
         
-        
-        if (photon) {
-            if (phase == 3) {
-                ctx.fillStyle = "yellow"
-                ctx.fillRect(photon.x, -8, length1.x + length1.l - g2.x, 16)
-                ctx.fillRect(photon.x, -16, 16, 32)
-                ctx.fillRect(photon.x + length1.x + length1.l - g2.x, -16, 16, 32)        
-            }
-            else {
-                ctx.fillStyle = "yellow"
-                ctx.fillRect(photon.x - photon.l/2, -10, photon.l, 20)
-                ctx.strokeStyle = "black"
-                ctx.lineWidth = 5
-                ctx.strokeRect(photon.x - photon.l/2, -10, photon.l, 20)
-                ctx.fillStyle = "black"
-                ctx.fillText("λ", photon.x, 5)
-            }
-            
-        }
 
         
     }
