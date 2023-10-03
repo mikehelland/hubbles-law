@@ -1,8 +1,51 @@
-function lcdm(H0, maxZ) {
-    return flrw(H0, 0.7, 0.3, maxZ)
+// returns distances in million light years
+//   d_C = comoving distance 
+//   d_A = angular diameter distance 
+//   d_T = light travel time distance
+
+function flrwz(H0, OmegaL, maxZ) {
+
+    maxZ = maxZ || 10
+    var OmegaM = 1 - OmegaL
+
+    // convert km/s/Mpc  to  Mly/My/Mly
+    H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+    var H = H0 
+    var c = 1
+
+    var t = 0
+    var z = 0
+
+    // these are our photons, one has a head start
+    var x1 = 0.1
+    var x2 = 0
+
+    while (z < maxZ) {
+
+        // move the photons with the hubble flow (in reverse)
+        x1 += c - H * x1
+        x2 += c - H * x2
+
+        // the redshift is how far apart the photons have drifted
+        z = 0.1 / (x1 - x2) - 1
+
+        t--
+        
+        // update the Hubble parameter
+        H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
+
+    }
+
+    return {
+        z,
+        d_A: x2,
+        d_C: x2 * (1+z),
+        d_T: -t, 
+    }
 }
 
 
+//this version returns an array for all data points up to maxZ
 
 function flrw2(H0, OmegaL, maxZ) {
 
@@ -55,16 +98,8 @@ function flrw2(H0, OmegaL, maxZ) {
 
 
 
-// Imagine an observer at the source with incoming photons
-// run the expansion of the universe backwards
-// when the photons reach a distant galaxy in the model
-// that would be the state of the universe when the photons 
-// were emitted
+// this version keeps tracks of galaxies so you can plot their worldlines
 
-// returns distances in million light years
-//   d_C = comoving distance 
-//   d_A = angular diameter distance 
-//   d_T = light travel time distance
 
 function flrw(H0, OmegaL, OmegaM, maxZ) {
     maxZ = maxZ || 10
