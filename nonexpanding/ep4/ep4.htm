@@ -320,7 +320,7 @@
                     \(\theta_{1/2}\simeq0.015 -0.04'' \)
                 </td>
                 <td></td>
-                <td class="fi">
+                <td>
                     \(\theta_{1/2} = \) ?
                 </td>
             </tr>
@@ -357,21 +357,21 @@
         <style>
             #Xgaddt1 {border: 2px solid #888888; position: absolute; left:20px;}
             #gaddt2 {border: 2px solid #888888; position: absolute; left:700px; top:260px;}
-            #gaddt3 {border: 2px solid #888888; position: absolute; left:100px; top:200px;}
-            #gaddt4 {border: 2px solid #888888; position: absolute; left:680px; top:668px;}
+            #gaddt3 {border: 2px solid #888888; position: absolute; left:100px; top:100px;}
+            #gaddt4 {border: 2px solid #888888; position: absolute; left:680px; top:658px;}
             
         </style>
 
 
-        <img id="gaddt1" src="lopez1.png">
-        <img class="fi" id="gaddt3" src="lopez3.png">
-        <img class="fi"  id="gaddt4" src="lopez4b.png">
+        <br>
+        <img src="lopez1.png">
         
         
     </div>
 
     <div class="slide">
-        <img class="fi" id="gaddt2" src="lopez2.png">
+        <img " id="gaddt3" src="lopez3.png">
+        <img class="fi"  id="gaddt4" src="lopez4b.png">
 
     </div>
     <!--
@@ -406,14 +406,16 @@
             
         </div>
         <br>
-        <p class="fi">Do we just think that because we expect them to be bigger due to the turnaround? </p>
-        <p class="fi">If there is no turnaround, then aren't they just oridinary galaxies really far away? </p>
-        <p style="color: #888888;" class="fi"><i>Probably even bigger than ordinary, since they're the first to be seen at their distance?</i></p>
-            <br>
+        <p class="fi">The angular diameter turnaround should cause them to appear larger </p>
+        <p class="fi">So they are <i>really</i> small... </p>
+        <p class="fi">or the turnaround isn't real...</p>
+        <p class="fi">and they are ordinary galaxies really far away</p>
+        
         
         <br>
-        <p class="fi">Or are they actually compact, early galaxies?</p>
-
+        <!--<p class="fi">Or are they actually compact, early galaxies?</p>-->
+        <p class="fi">Who's to say?</p>
+        
         <img class="fi" src="jwst.png">
 
 
@@ -438,13 +440,18 @@
 
     </div>
 
+    <div class="slide">
+        <img id="gaddt1" src="lopez1.png">
+        <div class="fi">lol</div>
+    </div>
+
 <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
 
 
 <script>
 
     var slides = document.getElementsByClassName("slide")
-    var slide = 12//-1
+    var slide = -1
     var fi = 0
     var fis = document.getElementsByClassName("fi")
     for (let i = 0; i < fis.length; i++) {
@@ -610,11 +617,11 @@
         }
 
 
-        if (slide === 18) {
-            fis.splice(0, 0, () => gaddt3.src = "lopez3a.png")
-        }
-        if (slide === 18) {
+        if (slide === 22) {
             fis.splice(0, 0, () => gaddt1.src = "lopez1a.png")
+        }
+        if (slide === 19) {
+            fis.splice(0, 0, () => gaddt3.src = "lopez3a.png")
         }
         
         if (slide === 13) {
