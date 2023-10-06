@@ -47,16 +47,16 @@
         #threedistances {width:100%; background-color: black; height: 600px;} 
         #distemit, #distobserve, #disttravel {position: absolute; display:none;}
         .posrel{position: relative;}
+        #delta {position: absolute; left:486px; top:299px; border:1px solid yellow; padding: 20px; color:yellow;}
     </style>
     <div class="slide posrel">
         <h1>Three distances?</h1>
         <canvas id="threedistances"></canvas>
         <div id="distemit">distance at \(t_{emit}\)</div>
         <div id="distobserve">distance at \(t_{now}\)</div>
-        <div id="disttravel" style="color:yellow;">\( c\Delta t \)</div>
+        <div id="disttravel" style="color:yellow;">\( c t \)</div>
         <div id="distz" style="font-size: 40pt;" class="fi">\(1 + z = \frac{\lambda_{now}}{\lambda_{emit}} = \frac{d_{now}}{d_{emit}} \)</div>
-        <br><br>
-        <div class="fi">\(\Delta t = t_{now} - t_{emit}\)</div>
+        
         <script src="threedistances.js"></script>
     </div>
 
@@ -71,11 +71,11 @@
         <img id="flrwgraph" src="flrwgraph.png">
         <div class="fi" id="demit">\(d_{emit}\)</div>
         <div class="fi" id="dobserve">\(d_{now}\)</div>
-        <div class="fi" id="dtravel" style="color:yellow;">\( c\Delta t \)</div>
+        <div class="fi" id="dtravel" style="color:yellow;">\( c t \)</div>
         <br><br>
         <div class="fi">\( z\rightarrow \infty \)</div>
         <br>
-        <div class="fi" ><span style="color:yellow;">\( c\Delta t \) </span> = age of the universe</div>
+        <div class="fi" ><span style="color:yellow;">\( t \) </span> =  age of the universe</div>
         <br>
         <div class="fi">\( d_{emit} = 0 \)</div>
         <br>
@@ -146,7 +146,7 @@
     
         <h2>\(d_{emit}\), <span style="color: #888888;">a.k.a.,</span> angular diameter distance</h2>
 
-        <img  id="distancenames" src="flrwgraph2.png">
+        <img class="fi" id="distancenames" src="flrwgraph2.png">
         <br>
         <h3 class="fi">\(z \approx 1.6 \)</h3>
         <h class="fi">recession velocity is \(c\) (at \(t_{emit} \))</h>
@@ -164,7 +164,7 @@
     
         <br><br><br>
 
-        <h1>Angular Diameter Distance Turnaround</h1>
+        <h1>Angular Diameter Turnaround</h1>
         <hr>
         
         <br><br><br>
@@ -184,7 +184,7 @@
             <div class="fi">
                 <img width="300" src="addt3.png">
                 <br>
-                \( z=1.5 \)
+                \( z=1.6 \)
             </div>
             <div class="fi">
                 <img width="300" src="addt4.png">
@@ -203,6 +203,29 @@
         <p class="fi"><i>With distance, objects appear smaller, then larger, but always redder</i></p>
     </div>
 
+
+    <div class="slide" style="text-align: left; padding:80px; font-size: 150%;">
+
+        <style>
+            #summary-ul li {
+                padding-bottom: 86px;
+            }
+        </style>
+        <h2>In summary...</h2>
+    
+        <hr style="margin-left: 20px;">
+    
+        <ul style="font-size: 150%;" id="summary-ul">
+            <li class="fi">\(d_{now}, d_{emit}, c t\) distances</li>
+            <li class="fi">\(d_{emit} \) is angular diameter distance</li>
+            <li class="fi">It reaches a maxiumum then decreases</li>
+            <li class="fi">Things look larger at redshift \(z > 1.6 \)</li>
+            
+        </ul>
+    
+    
+    </div>
+
     <div class="slide">
         <br><br><br><br>
         <h2 style="color:#AAA;">&nbsp;</h2>
@@ -211,6 +234,7 @@
     <hr style="width:50%;">
     <br><br><br>
     </div>
+    
 
     <div class="slide">
         <br><br><br><br>
@@ -226,36 +250,6 @@
     <br><br><br>
     </div>
 
-    <div class="slide">
-        <style>
-            #gaddt1 {border: 2px solid #888888; position: absolute; left:20px;}
-            #gaddt2 {border: 2px solid #888888; position: absolute; left:800px; top:60px;}
-            #gaddt3 {border: 2px solid #888888; position: absolute; left:400px; top:200px;}
-        </style>
-        <h3 style="text-align: left;">Evidence?</h3>
-        <img id="gaddt1"src="google_addt.png">
-        <img class="fi" id="gaddt2"src="google_addt_evidence1.png">
-        <img class="fi" id="gaddt3"src="google_addt_against.png">
-        
-        
-    </div>
-
-    <div class="slide">
-        <style>
-            
-        </style>
-        <h3 style="text-align: left;">Evidence?</h3>
-        <img src="evidence0.png">
-        <img style="border: 2px solid #888888; position: absolute; top:280px; left:400px;" class="fi" src="evidence1hi.png">
-        
-        
-    </div>
-
-    <div class="slide">
-        <h3 style="text-align: left;">Evidence?</h3>
-        <img src="jackson.png">
-        
-    </div>
 
     <div class="slide">
         <style>
@@ -268,22 +262,16 @@
         
     </div>
 
-    <div class="slide">
-        <h3 style="text-align: left;">Evidence?</h3>
-            <img height="322" src="JADES-GS-z13-0.png">
-            <img src="jades_size.png">
-        
-        <br>
-        https://arxiv.org/abs/2212.04480
 
-        <div class="fi">
-            <br>
-            <img src="jades3.png">
-            <br>
-            https://arxiv.org/abs/2212.04568
-    
-        </div>
+    <div class="slide">
         
+        <img  src="jades.png">
+        <br>
+        <img src="jades_size.png">
+        <br>
+        <img  src="JADES-GS-z13-0.png">
+            
+
         <br>
         
     </div>
@@ -300,22 +288,19 @@
                 <td>
                     <h1>\(z=10.01 \) </h1>
                     <hr style="width: 80%;">
-                    <h3>\(d_{emit} = 2.8 \) Gly</h3>
+                    <h3 style="color: cadetblue;">\(d_{emit} = 2.8 \) Gly</h3>
                     <h3>\(d_{now} = 30.8 \) Gly</h3>
             
                 </td>
-                <td>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;
+                <td style="padding:100px;" class="fi">
+                    angular diameter <br>
+                    distance "buddy"
                 </td>
                 <td>
                     <div class="fi">
-                        <h1>\(z=0.27 \)</h1>
+                        <h1>\(z=0.272 \)</h1>
                         <hr style="width: 80%;">
-                        <h3>\(d_{emit} = 2.8 \) Gly</h3>
+                        <h3 style="color: cadetblue;">\(d_{emit} = 2.8 \) Gly</h3>
                         <h3>\(d_{now} = 3.6 \) Gly</h3>
                         
                     </div>
@@ -332,17 +317,11 @@
             
             <tr class="fi">
                 <td>
-                    \(r_{1/2} = 50- 165 \) pc 
-                    <br>
-                    <br>
-                    \(\theta_{1/2}\simeq0.15 -0.04'' \)
+                    \(\theta_{1/2}\simeq0.015 -0.04'' \)
                 </td>
                 <td></td>
                 <td class="fi">
-                    \(r_{1/2} = ??? \) 
-                    <br>
-                    <br>
-                    \(\theta_{1/2} = \) ???
+                    \(\theta_{1/2} = \) ?
                 </td>
             </tr>
             
@@ -351,9 +330,11 @@
     </div>
 
     <div class="slide">
-        <h2>Goin' fishin'....</h2>
+        <h2>Fishin' </h2>
         <img src="ned0.27.png">
     </div>
+
+    <!--
     <div class="slide">
         <br>
         <img src="nedtxt.png">
@@ -362,34 +343,72 @@
         https://mikehelland.github.io/hubbles-law/nonexpanding/ep4/ned0.27.txt
         
     </div>
+    -->
     <div class="slide">
-        <p><i>(I tried a bunch at random, almost gave up...)</i></p>
+        <h2>\( z = 0.27 \)</h2>
         <img id="nedd" src="ned_diameter.png">
+        <img id="nedd" src="ned_diameter3.png">
 
     </div>
+
+
+    
     <div class="slide">
-        <img id="nedd2" src="neddiameters.png">
+        <style>
+            #Xgaddt1 {border: 2px solid #888888; position: absolute; left:20px;}
+            #gaddt2 {border: 2px solid #888888; position: absolute; left:700px; top:260px;}
+            #gaddt3 {border: 2px solid #888888; position: absolute; left:100px; top:200px;}
+            #gaddt4 {border: 2px solid #888888; position: absolute; left:680px; top:668px;}
+            
+        </style>
 
-        <br>
-        <br>
-        <p class="fi">Is this evidence for or against the angular diameter turnaround? </p>
-        <p class="fi">A very unscientific example</p>
-        <p class="fi"><span style="color: #888888;">TODO:</span> Use ChatGPT to build bigger datasets?</p>
 
+        <img id="gaddt1" src="lopez1.png">
+        <img class="fi" id="gaddt3" src="lopez3.png">
+        <img class="fi"  id="gaddt4" src="lopez4b.png">
+        
         
     </div>
 
+    <div class="slide">
+        <img class="fi" id="gaddt2" src="lopez2.png">
+
+    </div>
+    <!--
+    <div class="slide">
+        <style>
+            
+        </style>
+        <h3 style="text-align: left;">Evidence?</h3>
+        <img src="evidence0.png">
+        <img style="border: 2px solid #888888; position: absolute; top:280px; left:400px;" class="fi" src="evidence1hi.png">
+        
+        
+    </div>
 
     <div class="slide">
-        <h1>Question?</h1>
+        <h3 style="text-align: left;">Evidence?</h3>
+        <img src="jackson.png">
+        
+    </div>
+    -->
+
+
+    <!--
+
+-->
+
+    <div class="slide">
+        <h1>But... wait...</h1>
         <div class="fi">
             <hr>
             <h2>Are the \(z > 10 \) galaxies <i>really</i> that small and compact?</h2>
             
         </div>
         <br>
+        <p class="fi">Do we just think that because we expect them to be bigger due to the turnaround? </p>
         <p class="fi">If there is no turnaround, then aren't they just oridinary galaxies really far away? </p>
-        <p style="color: #888888;" class="fi"><i>Maybe even bigger than ordinary, since they're the first to be seen out there?</i></p>
+        <p style="color: #888888;" class="fi"><i>Probably even bigger than ordinary, since they're the first to be seen at their distance?</i></p>
             <br>
         
         <br>
@@ -401,20 +420,22 @@
     </div>
 
 
-    <div class="slide">
-        <h1 style="font-size:96pt;">Nonexpanding</h1>
-        <h2 style="color:#AAA;"><i>Evidence for and against the expanding universe</i></h2>
-        <br><br><br><br>
-    <hr style="width:50%;">
-    <br><br><br>
-        <h1 ><span style="color:#AAA;">Ep. 4:</span> The cosmic turnaround</h1>
-    
-    </div>
 
     <div class="slide">
-        <h2 style="color:#AAA;"><i>What topic should I cover next?</i></h2>
-        <h1 style="font-size:96pt;">Leave a comment! </h1>
+        <h1><u>Subscribe</u> to be updated as the story unfolds!</h1>
+        <br>
+        <br>
+
+
+        <h2 class="fi" style="color:#AAA;"><i>What topic should I cover next?</i></h2>
+        <h2 class="fi" style="color:#AAA;"><i>Have something to add?</i></h2>
         
+        <h1 class="fi" style="font-size:96pt;">Leave a <u>comment</u>! </h1>
+
+        <br>
+        <br>
+        <h2 class="fi" style="color:#AAA;"><i>Thanks for watching!</i></h2>
+
     </div>
 
 <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
@@ -583,21 +604,23 @@
         }
 
         if (slide === 8) {
-            fis.splice(0, 0, () => {
+            fis.splice(1, 0, () => {
                 distancenames.src = "flrwgraph_names.png"
             })
         }
 
-        if (slide === 15) {
+
+        if (slide === 18) {
+            fis.splice(0, 0, () => gaddt3.src = "lopez3a.png")
+        }
+        if (slide === 18) {
+            fis.splice(0, 0, () => gaddt1.src = "lopez1a.png")
+        }
+        
+        if (slide === 13) {
             fis.push(() => ethan.src = "ethan1hi.png")
         }
 
-        if (slide === 20) {
-            fis.push(() => nedd.src = "ned_diameter2.png")
-        }
-        if (slide === 21) {
-            fis.splice(0, 0, () => nedd2.src = "neddiameters2.png")
-        }
 
     }
 </script>
