@@ -1,0 +1,124 @@
+
+https://astronomy.swin.edu.au/cosmos/T/Type+Ia+supernova+light+curves
+
+
+In the first episosde I said that time dilation occurs in an expanding universe because each photon has to travel farther than the one before it. 
+
+Since everything is moving away from us, the end of a light pulse will have to travel farther to us than the beginning of the pulse.
+
+I showed this example where the supernova is moving away at the speed of light, which causes the observed duration of the supernova to be twice as long as it actually happened, through simple geometry.
+
+
+
+If the duration is double when observed from a vast distance, the supernova is said to have occured at z = 1, because the time dilation factor 2, equals 1 + z.
+
+
+z = 1 is half way accross the observable universe, and half way back to the big bang.
+
+So when someone says "at z = 1", they mean a far distance through space as well as a time is the distant past.
+
+
+But in the last video I said that at z = 1.6 there is a distance turnaround where the speed that things are moving away from us is c, the speed of light.
+
+If the galaxy is moving at the speed of light at z = 1.6, its time dilation factor is 2.6 (cuz 1 + z).
+
+
+Is what I said in episode 1 inconsistent with what I said in episode 4? 
+
+Yes. 
+
+The simple geometric explanation of time dilation from episode 1 is wrong.
+
+We'll talk about why time dilation really happens in an expanding universe in this episode of Nonexpanding.
+
+[title]
+
+[part 1]
+
+First of all, what exactly does time dilation mean?
+
+Imagine you're looking at a large clock tower. If you start a stop watch  and then stop it after 1 minute, you should notice that the clock on the tower has also progressed 1 minute.
+
+And then you hike out several miles away with a telescope and point it at the clock tower, you should still see your stop wach acting consistently with the clock on the tower. 
+
+Why wouldn't it?
+
+The JWST telescope is 1 million miles away from Earth and it takes 5 seconds for light to travel back and forth. 
+
+If the telescope looked back at Earth and saw the ticking of the tower clock, the tower clock would appear 5 seconds behind the clock on the telecope due to light having to travel for 5 seconds to reach the telscope, but they would still each count 1 minute passing as the same amount of time. 
+
+
+Now, let's say the clock on the tower was big enough and your telescope was powerful enough that you could watch the clock from 1 billion light years away.
+
+
+
+What you would notice is that after 1 minute goes by on your stop watch, the tower clock hasn't progressed a full minute. It will be behind. The tower clock will appear to be running slow.
+
+So when you meansure on your stop watch how long it takes the tower clock to progress a full minute, you will measure more than one 1 minute.
+
+That's called cosmological time dilation. 
+
+The time we observe from cosmological distances is stretched out compared to what you'd observe if you were standing near the clock.
+
+Since in the expanding universe things are moving away from each other, the tower and a nearby observer are at rest with respect to each other, but the tower and very distant observer are moving apart. So the frame of refernce of the nearby observer is called the "rest frame".
+
+
+Instead of huge clocks on towers, astronomers use supernove. A certain type of supernova called type Ia behaves consistently enough that it can be used as a clock which tells us the factor of the time dilation at that redshift, when we get lucky enough to catch one happening.
+
+
+[part2]
+
+There are a couple reasons the simple geometric reason cannot be the real reason for time dilation. We already mentioned one.
+
+For the time dilation of a supernova to be a factor of 2, it must be moving at the speed of light away. That in itself is not actually a problem.
+
+It's just that if it were moving at any less than or more than the speed of light, the time dilation would not be a factor of 2. Which means the z has to be 1. 
+
+Be we already saw in our model of the angular diameter distance turn around, where things are moving at the speed of light is actually z = 1.6. 
+
+A galaxy at z = 1, according to the model, is moving away at 0.8 c.
+
+So they don't match up.
+
+It's not an issue that the supernova would be moving at the speed of light or greater, because it's not your ordinary, inertia based motion. It's caused by distance between things increasing, so its special like that.
+
+Which leads us to the second problem with the simple explanation for time dilation. 
+
+It can't be a normal Doppler or even relativistic Doppler effect because those equations breaks down when the speed becomes 0. 
+
+There are divide by zero errors that show up. So those explanation aren't suitable for the cosmological type of time dilation we're talking about.
+
+[part3]
+
+Imagine someone is going to go for a walk, where they take 1 step every second. The first step they take is 1 cm. The second step the take is 2 centimenters. The third step they take is 3 centimeters. So they've traveled 6 centimeters. 
+
+Imagine a second person does the same thing, but started 1 second after the first walker.
+
+After 1 second, the first walker will be 1 cm ahead. The first walker then steps 2 cm while the second walked steps 1 cm. Their positions are now 3 cm and 1 cm, which is 2 cm apart after 2 seconds.
+
+The next step has them walking 3 cm and 2 cm, bring their totals to 6 cm and 3 cm, the first walked has a 3 cm lead after 3 seconds. And on and on.
+
+The speed of each walker is based on how far they've already walked, which means the lead walker will have a higher speed than the second walker, which will give it a higher increase in distance, meaning the first walkers lead will continually increase. 
+
+Suppose there was a fixed finish line where the walkers will stop. Even though the first walker gets farther and farther away from the second walker, once they stop, the second walker's speed will still be increasing. The second walker will finish with the same speed, and the same number of steps as the first walker did, having done all the same things they did.
+
+And they will finish 1 second part, just as they started.
+
+But imagine the finish line is not fixed. 
+
+Let's say the finish line itself is moving, and its speed increases with each second just as the walkers.
+
+After the first walker finishes, the second walker will be moving toward a finish line that is farther away and thus moving faster than the first walker ever had to contend with.
+
+
+Because of this, the second walker will take more time than the first to cross the finish line. Though the walkers left 1 second apart, they will arrive more than one second apart.
+
+
+So the second walker takes longer to reach the finish line because it does have to cover more distance. But that's due to what happens at the end, near the finish line.
+
+What happens at the beginning has only a tiny, negligible effect on the results.
+
+Say that, like the second walker, the the finish line is stationary until the first second passes. This doesn't affect the outcome very much.
+
+[Part4]
+

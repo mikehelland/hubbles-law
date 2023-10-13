@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section id="intro">
+					<p>
+						<small>Cosmic time dilation according to episode 1</small>
+					</p>
+
+					<script src="time-dilation1.js"></script>
+										
+					<canvas id="time-dilation1" width="800" height="800"></canvas>
+					
+					<p>
+						<span id="td1a" class="fragment"></span>
+						<span id="td1b" class="fragment"></span>
+						
+						<span id="td1c" class="fragment"><small>observed duration is doubled</small>
+						<br>
+						<span class="fragment"><small>If $1 + z = 2$, then $z = 1 $</small></span>
+						<br>
+						<span class="fragment"><small>when recession velocity is $c$</small></span>
+						
+					</p>
+					<p id="td1d" class="fragment"></p>
+					
+					
+				</section>
+
+				<section id="addt">
+					<p>
+						<small>According to the model in episode 4</small>
+					</p>
+
+					<script src="contracting1.js"></script>
+										
+					<canvas id="contracting1" width="800" height="800"></canvas>
+					
+					<p>
+						<span><small>The recession velocity is $c$ at the angular diameter turnaround</small></span>
+						<br>
+						<span class="fragment"><small>Which is at $z = 1.6 $</small></span>
+						<br>
+						<span class="fragment"><small>Time is stretched by $1 + z = 2.6$</small>
+
+					</p>
+					
+				</section>
+
+				<section>
+					<section>
+						<p>
+							<small>So which is right?</small>
+						</p>
+	
+						<div style="display: flex; justify-content: center;">
+							<div>
+								Episode 1, basic geometry
+								<br>
+								<img src="ep1.png">
+								<br>
+								$z = 1$
+							</div>
+							<div>
+								Episode 4, the model
+								<br>
+								<img src="ep4.png">
+								<br>
+								$z = 1.6$
+							</div>
+						</div>
+	
+					</section>
+					
+					<section>
+						<p>
+							<small>This is right</small>
+						</p>
+	
+						<div style="display: flex; justify-content: center;">
+							<div>
+								Episode 4, the model
+								<br>
+								<img src="ep4.png">
+								<br>
+								$z = 1.6$
+							</div>
+						</div>
+						
+					</section>
+	
+					<section>
+						<p>
+							<small>This is wrong</small>
+						</p>
+	
+						<div style="display: flex; justify-content: center;">
+							<div>
+								Episode 1, basic geometry
+								<br>
+								<img src="ep1w.png">
+								<br>
+								$z = 1$
+							</div>
+						</div>
+						
+					</section>
+					
+				</section>
+
+
+				<section>
+					<h1>Nonexpanding</h1>
+					<p style="color:#888888;">Evidence for and against the expanding universe</p>
+					<hr style="width: 40%;">
+
+					<br>
+					<br>
+					<p  class="fragment" >
+						<span style="color:#888888; ">Episode 5:</span> The <i style="font-style: italic;">REAL</i> reason for cosmic time dilation<b>*</b>
+						
+					</p>
+					<p class="fragment"><small>* in an expanding universe</small></p>
+				</section>
+
+
+				<section>
+					<section style="text-align: left;">
+						<a href="https://skdfjldsfjklsfj.com">Part 1.</a> <br>
+						<h1>What is Cosmic Time Dilation?</h1>
+						
+					</section>
+	
+					<section id="clocks-demo">
+						<canvas id="clocks" width="1900" height="600"></canvas>
+						
+						<div class="fragment" id="clockf1"></div>
+						<div class="fragment" id="clockf2"></div>
+						<div class="fragment" id="clockf3"></div>
+						<div class="fragment" id="clockf4"></div>
+						<div class="fragment" id="clockf5"></div>
+						<div class="fragment" id="clockf6"></div>
+						<p class="fragment" >Time is stretched by 1.4</p>
+						<p class="fragment" >$1 + z = 1.4$</p>
+						<p class="fragment" >So, $z = 0.4$</p>
+						
+						
+					</section>
+					
+					<script src="clocks.js"></script>
+
+					<section>
+
+						<p>Type Ia Supernovae can be used as big clocks</p>
+						
+						<img id="lightcurve" src="lightcurve.png" width="1200">
+						
+						<p><small><a href="asdsad">https://astronomy.swin.edu.au/cosmos/T/Type+Ia+supernova+light+curves</a></small></p>
+						
+						<div class="fragment" id="snP"></div>	
+					</section>
+
+
+					<section id="sn-demo">
+						<canvas id="sn" width="1900" height="600"></canvas>
+						<script src="sn-demo.js"></script>
+
+						<div class="fragment" id="sn1"></div>	
+
+						<p class="fragment">The observed duration is stretched, <span style="color:#888888;">a.k.a.,</span> "time dilated"</p>
+					</section>
+
+					<section>
+
+						<h2>Special Relativity?</h2>
+						<hr style="width: 40%;">
+						<br>
+						<table>
+							<tr>
+								<td>Relativistic time dilation</td>
+								<td>&nbsp;</td>
+								<td>Cosmic time dilation</td>
+							</tr>
+
+							<tr>
+								<td>length contraction</td>
+								<td>&nbsp;</td>
+								<td>no length contraction</td>
+								
+							</tr>
+
+							<tr>
+								<td>undefined at $c$</td>
+								<td>&nbsp;</td>
+								<td>speed can be $\geq c$</td>
+							</tr>
+						</table>
+						
+						<br><br>
+
+						<p class="fragment">At $z=1.6$ recession velocity is $c$</p>
+						<br>
+						<p class="fragment">$\gamma=\frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}$</p>
+
+						<p class="fragment">$\gamma=\frac{1}{0}$</p>
+
+						<br>
+						<p class="fragment">(Can't divide by zero.)</p>
+
+					</section>
+
+					
+				</section>
+				
+				<section style="text-align: left;">
+					<a href="https://skdfjldsfjklsfj.com">Part 2.</a> <br>
+					<h1>Time dilation and expansion</h1>
+					
+				</section>
+
+				<section id="runner-demo">
+					<p>Runner: 1 m/s</p>
+					<canvas id="runner"  width="1900" height="800"></canvas>
+					<script src="runner.js"></script>
+					<div class="fragment" id="run1"></div>
+					<div class="fragment" id="showArrows"></div>
+				</section>
+
+			</div>
+
+		</div>
+
+		<img id="telescope" src="telescope_small.png" style="display: none;">
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			var td1 = timeDilation1(document.getElementById("time-dilation1"))
+			var c1 = contracting1(document.getElementById("contracting1"))
+
+			var clocks = clocksDemo(document.getElementById("clocks"))
+			var sn = snDemo(document.getElementById("sn"))
+			var runners = runnerDemo(document.getElementById("runner"))
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				width: 1920,
+  				height: 1080,
+				//hash: false,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX  ]
+			});
+			
+			Reveal.on( 'fragmentshown', event => {
+				if (event.fragment.id == "td1a") {
+					td1.run()
+				}
+				if (event.fragment.id == "td1b") {
+					td1.blueLine()
+				}
+				if (event.fragment.id == "td1c") {
+					td1.redLine()
+				}
+				if (event.fragment.id == "td1d") {
+					td1.change()
+				}
+
+				if (event.fragment.id == "clockf1" || event.fragment.id == "clockf6") {
+					clocks.run()
+				}
+				if (event.fragment.id == "clockf2" || event.fragment.id == "clockf3" || event.fragment.id == "clockf5") {
+					clocks.move1()
+				}
+				if (event.fragment.id == "clockf4") {
+					clocks.light()
+				}
+
+
+				if (event.fragment.id == "snP") {
+					lightcurve.src = "lightcurve2.png"
+				}
+
+				if (event.fragment.id == "sn1") {
+					sn.run()
+				}
+
+				if (event.fragment.id == "run1") {
+					runners.run()
+				}
+
+				if (event.fragment.id == "showArrows") {
+					runners.arrows()
+				}
+
+			} );
+
+			Reveal.on( 'ready', event => {
+				if (event.currentSlide.id === "intro") {
+					console.log("ready!")
+					td1.draw()
+
+				}
+			} );
+
+			Reveal.on( 'slidechanged', event => {
+				if (event.currentSlide.id === "addt") {
+					c1.go()
+				}
+
+				if (event.currentSlide.id === "clocks-demo") {
+					clocks.draw()
+				}
+
+				if (event.currentSlide.id === "sn-demo") {
+					sn.draw()
+				}
+
+				if (event.currentSlide.id === "runner-demo") {
+					runners.draw()
+				}
+			})
+		</script>
+
+	</body>
+</html>
