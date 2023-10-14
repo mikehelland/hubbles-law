@@ -30,6 +30,8 @@ function clocksDemo(canvas) {
         ctx.font = "46pt serif"
         ctx.fillText(caption, 0, -210)
 
+
+
         ctx.fillRect(clock0.x, -190, clock1.x - clock0.x, 10)
         ctx.fillRect(clock0.x, -190, 10, 30)
         ctx.fillRect(clock1.x, -190, 10, 30)
@@ -40,6 +42,14 @@ function clocksDemo(canvas) {
 
         ctx.fillStyle = "peru"
         ctx.fillRect(clock1.x - clock1.r - 8, -clock1.r - 8, clock1.r * 2 + 16, clock1.r * 3)
+
+        ctx.fillStyle = "white"
+        if (t0 === 0 && phase === 0) {
+            ctx.fillText("Stopwatch", clock0.x, 210)
+            ctx.fillText("Tower", clock1.x, 210)
+    
+        }
+
 
         ctx.fillStyle = "white"
         ctx.beginPath()

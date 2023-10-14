@@ -84,6 +84,9 @@ function snDemo(canvas) {
                 ctx.fillText("28 days", clock0.x, 210)
             }
             ctx.fillText("20 days", clock1.x, 210)
+            ctx.font = "26pt serif"
+            ctx.fillStyle = "#888888"
+            ctx.fillText('("rest frame")', clock1.x, 260)
         
         }
 

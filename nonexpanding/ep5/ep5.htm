@@ -200,32 +200,30 @@
 
 						<h2>Special Relativity?</h2>
 						<hr style="width: 40%;">
-						<br>
-						<table>
-							<tr>
-								<td>Relativistic time dilation</td>
-								<td>&nbsp;</td>
-								<td>Cosmic time dilation</td>
-							</tr>
+						<div class="fragment">
+							<table>
+								<tr>
+									<td>Relativistic time dilation</td>
+									<td>&nbsp;</td>
+									<td>Cosmic time dilation</td>
+								</tr>
 
-							<tr>
-								<td>length contraction</td>
-								<td>&nbsp;</td>
-								<td>no length contraction</td>
-								
-							</tr>
+								<tr>
+									<td>length contraction</td>
+									<td>&nbsp;</td>
+									<td>no length contraction</td>
+									
+								</tr>
 
-							<tr>
-								<td>undefined at $c$</td>
-								<td>&nbsp;</td>
-								<td>speed can be $\geq c$</td>
-							</tr>
-						</table>
-						
+								<tr class="fragment">
+									<td>undefined at <i style="font-style: italic;">c</i><!--$c$--></td>
+									<td>&nbsp;</td>
+									<td>speed can be <i style="font-style: italic;"> ≥ c</i><!--$\geq c$--></td>
+								</tr>
+							</table>
+						</div>
 						<br><br>
 
-						<p class="fragment">At $z=1.6$ recession velocity is $c$</p>
-						<br>
 						<p class="fragment">$\gamma=\frac{1}{\sqrt{1 - \frac{v^2}{c^2}}}$</p>
 
 						<p class="fragment">$\gamma=\frac{1}{0}$</p>
@@ -244,13 +242,252 @@
 					
 				</section>
 
-				<section id="runner-demo">
-					<p>Runner: 1 m/s</p>
-					<canvas id="runner"  width="1900" height="800"></canvas>
-					<script src="runner.js"></script>
-					<div class="fragment" id="run1"></div>
-					<div class="fragment" id="showArrows"></div>
+				<section>
+					<section id="runner-demo">
+						<canvas id="runner"  width="1900" height="800"></canvas>
+						<script src="runner.js"></script>
+						<div class="fragment" id="run1"></div>
+						<div class="fragment" id="showArrows"></div>
+						<p>Runner: $1$ m/s <span class="fragment">$+ \color{green} Hd$</span></p>
+						
+						<div class="fragment" id="run2"></div>
+						<div class="fragment" id="secondRunner"></div>
+						<div class="fragment" id="run3"></div>
+						<div class="fragment" id="run4"></div>
+						<div class="fragment" id="resume"></div>
+					</section>
+
+					<section id="runner-demo2">
+						<canvas id="runner2"  width="1900" height="800"></canvas>
+						<script src="runner2.js"></script>
+						<p>Runners: $1$ m/s $+ \color{green}Hd$</p>
+						<p class="fragment">Finish Line: $\color{green}Hd$</p>
+						<div class="fragment" id="run21"></div>
+						<div class="fragment" id="yesTD"></div>
+						<div class="fragment" id="run2reset"></div>
+						<div class="fragment" id="run22"></div>
+						
+						
+					</section>
+	
 				</section>
+
+				<section>
+					<table>
+						<tr>
+							<td></td>
+							<td>Not Expanding</td>
+							<td>Always Expanding</td>
+							<td>Selectively Expanding</td>
+						</tr>
+						<tr>
+							<td>start delay</td>
+							<td><span>1 s</span></td>
+							<td><span>1 s</span></td>
+							<td><span>1 s</span></td>
+						</tr>
+						<tr>
+							<td>finish delay</td>
+							<td><span style="color:#42affa;">1 s</span></td>
+							<td><span style="color:#42affa;">2.65 s</span></td>
+							<td><span style="color:#42affa;">2.20 s</span></td>
+						</tr>
+						<tr>
+							<td>total</td>
+							<td>10 s</td>
+							<td>18 s</td>
+							<td>16 s</td>
+						</tr>
+					</table>
+				</section>
+
+
+				<section>
+					<section>
+						<img src="lightcurve2.png">
+	
+						<p>
+							Delay between "start" and "end" of a supernova is 20 days
+						</p>
+					</section>
+	
+					<section>
+						<p>
+							Total trip is &gt; 1 billion years
+						</p>
+						<img src="ep4.png">
+
+					</section>
+
+					<section>
+							<p style="font-size: 60pt;">$\frac{28~\text{days}}{1~\text{billion years}} \approx 0$</p>
+
+							<br><br>
+
+							<p class="fragment">The motion of the galaxies when the light is emitted or received isn't significant</p>
+
+						<p class="fragment">Cosmic time dilation is caused by distances increasing during the trip</p>
+						
+					</section>
+				</section>
+				
+
+				<section style="text-align: left;">
+					<a href="https://skdfjldsfjklsfj.com">Part 3.</a> <br>
+					<p style="font-size: 60pt;">So... $z=1$?</p>
+					
+				</section>
+
+				<section>
+					<section>
+						<p>At $z=1$ time is dilated by a factor of $2$</p>
+						<br>
+						<p class="fragment">Shouldn't that be related to the speed of light, somehow?</p>
+					</section>
+	
+					<section>
+						<p>In an exponentially expanding universe it is.</p>
+						<br>
+						<img src="desitter.png">
+						<p>Static expansion rate <span class="fragment highlight-blue">(watch Episode 2!)</span></p>
+					</section>
+	
+					<section id="desitter-demo">
+						<p>$z=1$ with a static expansion rate</p>
+						<img height="800" src="flrwcode5.png">
+						<canvas id="contracting2" style="margin-bottom: 20px;" width="800" height="800"></canvas>
+						
+					</section>
+	
+				</section>
+				
+				<section>
+					<section>
+						<p>Standard model of cosmology (&Lambda;CDM)</p>
+						<br>
+						<img src="../ep4/flrwgraph.png">
+						<p>Dynamic expansion rate <span class="fragment highlight-blue">(watch Episode 2!)</span></p>
+					</section>
+	
+					<section id="lcdm-demo">
+						<p>$z=1$ with a dynamic expansion rate</p>
+						<img height="800" src="flrwcode5.png">
+						<canvas id="contracting3" style="margin-bottom: 20px;" width="800" height="800"></canvas>
+						
+					</section>
+	
+				</section>
+
+				<section style="text-align: left;">
+					<a href="https://skdfjldsfjklsfj.com">Part 4.</a> <br>
+					<h1>Time dilation & dark energy</h1>
+					<!--<p style="font-size: 60pt;">Time dilation & Dark Energy</p>-->
+					
+				</section>
+
+				<section style="text-align: left;">
+					<p><span style="color:#888888;">Claim:</span> Time dilation in supernovae proves the existence of dark energy</p>
+					<hr>
+					<br>
+					<h3 class="fragment">Close...</h3>
+					<p class="fragment">Time dilation happens in an expanding universe with <span class="fragment highlight-blue">or without dark energy</span>.</p>
+
+				</section>
+
+				<section>
+					<p></p>
+					<p>$z$ is the measure of redshift and time dilation</p>
+					<img src="../ep2/pantheondata.png">
+					<p class="fragment">Time dilation in supernovae extends measurements of $z$</p>
+				</section>
+
+				<section>
+					<p></p>
+					<p>The data doesn't fit the model without dark energy</p>
+					<table>
+						<tr>
+							<td>
+								<img src="../ep2/darkenergy.gif">
+								<br>without dark energy
+							</td>
+							<td>
+								<img src="../ep2/lcdmdata.png">
+								<br>with dark energy
+							</td>
+						</tr>
+					</table>
+					
+
+				</section>
+
+				<section style="text-align: left;">
+					<p><span style="color:#888888;">Claim:</span> The <span class="fragment highlight-blue">specific amount of time dilation measured</span> 
+						in supernovae proves the existence of dark energy <span class="fragment">*</span></p>
+					<hr>
+					<br>
+					<p class="fragment">* in an expanding universe</span>.</p>
+
+				</section>
+
+				<section style="text-align: left;">
+					<h1>Summary</h1>
+					<!--<p style="font-size: 60pt;">Time dilation & Dark Energy</p>-->
+					
+				</section>
+
+				<section>
+					<h3>Cosmic time dilation</h3>
+					<ul>
+						<li class="fragment">Is a stretching of the duration observed</li>
+						<li class="fragment">Happens because of changing distances</li>
+						<li class="fragment">Not because of motion</li>
+						<li class="fragment">Not classical Doppler effect</li>
+						<li class="fragment">Not time dilation in special relativity</li>
+						<li class="fragment">Not caused by dark energy, happens without it</li>
+					</ul>
+				</section>
+
+				<section style="text-align: left;">
+					<a href="https://skdfjldsfjklsfj.com">With all that said...</a> <br>
+					<p class="fragment" style="font-size: 60pt;">Is any of this real?</p>
+					
+				</section>
+
+				<section>
+					<p style="font-size: 40pt;">* in an expanding universe</p>
+					
+				</section>
+
+				<section>
+					<p>I don't actually believe in any of this stuff</p>
+					<p class="fragment" style="color:#888888">(I used to.)</p>
+					<p class="fragment">It might be real. </p>
+					<p class="fragment" style="color:#888888">(But I doubt it.)</p>
+				</section>
+
+				<section>
+					<h1>Why do <span style="font-style: italic">I</span> think time is dilated?</h1>
+
+					<p class="fragment">Because time was slower in the past.</p>
+
+					<br><br>
+					<p style="color:#888888;" class="fragment">More on that in Episode 1.</p>
+					<p style="color:#888888;" class="fragment">(And in future videos.)</p>
+				</section>
+
+				<section>
+					<img style="position: absolute; left:5%; top:5%;" width="400" src="../logo1.png">
+					<br><br><br><br><br><br>	
+					<ul>
+						<li>Have a correction?</li>
+						<li>Have a suggestion for a topic to cover?</li>
+						<li>Leave a comment!</li>
+						<li>Subscribe!</li>
+						<li>Thanks for watching!</li>
+					</ul>
+					<br><br><br><br><br><br>
+				</section>
+
 
 			</div>
 
@@ -269,10 +506,13 @@
 
 			var td1 = timeDilation1(document.getElementById("time-dilation1"))
 			var c1 = contracting1(document.getElementById("contracting1"))
+			var c2 = contracting1(document.getElementById("contracting2"), 1)
+			var c3 = contracting1(document.getElementById("contracting3"), 0.7)
 
 			var clocks = clocksDemo(document.getElementById("clocks"))
 			var sn = snDemo(document.getElementById("sn"))
 			var runners = runnerDemo(document.getElementById("runner"))
+			var runners2 = runnerDemo2(document.getElementById("runner2"))
 
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
@@ -323,12 +563,28 @@
 					sn.run()
 				}
 
-				if (event.fragment.id == "run1") {
+				if (event.fragment.id == "run1" || event.fragment.id == "run2" 
+						|| event.fragment.id == "run3" || event.fragment.id == "run4") {
 					runners.run()
 				}
-
 				if (event.fragment.id == "showArrows") {
 					runners.arrows()
+				}
+				if (event.fragment.id == "secondRunner") {
+					runners.secondRunner()
+				}
+				if (event.fragment.id == "resume") {
+					runners.resume()
+				}
+
+				if (event.fragment.id == "run21" || event.fragment.id == "run22") {
+					runners2.run()
+				}
+				if (event.fragment.id == "yesTD") {
+					runners2.yesTD()
+				}
+				if (event.fragment.id == "run2reset") {
+					runners2.reset()
 				}
 
 			} );
@@ -356,6 +612,18 @@
 
 				if (event.currentSlide.id === "runner-demo") {
 					runners.draw()
+				}
+				if (event.currentSlide.id === "runner-demo2") {
+					runners2.draw()
+				}
+
+				if (event.currentSlide.id === "desitter-demo") {
+					c2.draw()
+					c2.go()
+				}
+				if (event.currentSlide.id === "lcdm-demo") {
+					c3.draw()
+					c3.go()
 				}
 			})
 		</script>

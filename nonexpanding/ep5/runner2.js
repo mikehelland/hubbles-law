@@ -1,26 +1,29 @@
-function runnerDemo(canvas) {
+function runnerDemo2(canvas) {
     var ctx = canvas.getContext("2d")
     var w = canvas.width
     var h = canvas.height
 
     var finishLine = {x: 10}
-    var runner1 = {x: 0, y: 300}
-    var runner2
-
-    var zoom = 150
+    var runner1 = {x: 0, y: 150}
+    var runner2 = {x: 0, y: 400}
+    
+    var zoom = 50
     
     var ii
     var x
     var lastX
 
-    var showArrows = 0
+    var showArrows = 1
 
     var t = 0
     var rw = 80
 
-    var H = 0
+    var H = 1/16
+    var H0 = H
 
-    var t1, t2
+    var t1
+    var t2
+    var ii
 
     var draw = function () {
 
@@ -34,18 +37,20 @@ function runnerDemo(canvas) {
         ctx.fillText("START", 0, 40)
         ctx.fillText("FINISH", finishLine.x * zoom, 40)
 
-        ctx.fillText("10 meters", finishLine.x * zoom / 2, h - 140)
+        if (t === 0) {
+            ctx.fillText("10 meters", finishLine.x * zoom / 2, h - 140)
+        }
 
         ctx.fillText(Math.floor(t) + " s", finishLine.x * zoom / 2, 0)
 
         if (t1) {
-            ctx.fillText("finished:", finishLine.x * zoom / 2, runner1.y + 40)
+            ctx.fillText("finished:", 280, runner1.y + 40)
             ctx.fillStyle = "blue"
-            ctx.fillText( Math.floor(t1) + " s", finishLine.x * zoom / 2, runner1.y + rw + 80)
+            ctx.fillText( t1.toFixed(2) + " s", 280, runner1.y + rw + 80)
         }
         if (t2) {
             ctx.fillStyle = "red"
-            ctx.fillText(Math.floor(t2) + " s", finishLine.x * zoom / 2, runner2.y + rw - 40)
+            ctx.fillText(t2.toFixed(2) + " s", 280, runner2.y + rw - 40)
         }
 
         ctx.fillStyle = "white"
@@ -55,7 +60,7 @@ function runnerDemo(canvas) {
         if (showArrows) {
             lastX = 0
             ctx.globalAlpha = showArrows
-            for (var ii = 0; ii < 7; ii++) {
+            for (ii = 0; ii < 15; ii++) {
                 x = lastX + 1.05 + lastX / 10
                 drawRightArrow(lastX * zoom, x * zoom, h - 250)
                 drawRightArrow(lastX * zoom, x * zoom, 100)
@@ -88,8 +93,7 @@ function runnerDemo(canvas) {
     }
 
         ctx.lineWidth = 10
-
-        /*
+    /*
         if (showTime) {
             ctx.fillStyle = "white"
             ctx.font = "36pt serif"
@@ -106,6 +110,7 @@ function runnerDemo(canvas) {
     var line1
     var line2
 
+    var phase = 0
     var pauses = 0
     var run = function () {
         //t = 0
@@ -116,75 +121,48 @@ function runnerDemo(canvas) {
         var h = setInterval(() => {
             t += dt
             
-            runner1.x += (1 + runner1.x * H) * dt 
-
             if (runner2 && t >= 1) {
                 runner2.x += (1 + runner2.x * H) * dt 
-                if (pauses === 0) {
-                    clearInterval(h)
-                    line1 = {x: 0, l: runner1.x}
-                    pauses++
-                }
             }
 
-            if (runner1.x >= finishLine.x) {
+            if (phase === 1 && t < 1) {
+                runner1.x += (1) * dt 
+            }
+            else {
+                runner1.x += (1 + runner1.x * H) * dt 
+            }
+
+            if (showArrows < 1 && t >= 1 && !t1) {
+                showArrows += 0.1
+            }
+            if (phase > 0 && showArrows > 0 && t1) {
+                showArrows= Math.max(0, showArrows - 0.1)
+            }
+            if (phase === 0 || (t >= 1 && !t1)) {
+                //showArrows = Math.min(1, showArrows + 0.1)
+                finishLine.x += (finishLine.x * H) * dt 
+            }
+            
+            if (runner1.x >= finishLine.x && !t1) {
+                t1 = t
+                if (phase > 0) {
+                    H = 0
+                }
+            }
+            if (runner2.x >= finishLine.x) {
+                t2 = t
                 clearInterval(h)
                 if (pauses === 1) {
                     line2 = {x: runner2.x, l: runner1.x - runner2.x}
-                    t1 = t                    
+                    
                 }
             }
-
-            draw()
-        }, 1000/60)
-
-    }
-
-    var resume = function () {
-        
-        var dt = 0.05
-
-        var h = setInterval(() => {
-            t += dt
-            
-            runner2.x += (1 + runner2.x * H) * dt 
-        
-            if (runner2.x >= finishLine.x) {
-                clearInterval(h)
-                t2 = t
-            }
-
             draw()
         }, 1000/60)
 
     }
 
 
-    var arrows = function () {
-        var start = Date.now()
-        var tt
-        runner1.x = 0
-        t = 0
-                
-        var h = setInterval(() => {
-            tt = (Date.now() - start) / 1000
-            showArrows = Math.min(1, tt)
-            if (showArrows === 1) {
-                clearInterval(h)
-                H = 1/10
-            }
-            draw()
-        }, 1000/60)
-    }
-
-    var secondRunner = function () {
-        runner2 = {x: 0, y: 400}
-        runner1.y = 180
-        runner1.x = 0
-        rw = 80
-        t = 0
-        draw()
-    }
 
     function drawRightArrow(x1, x2, y) {
         ctx.lineWidth = 14
@@ -203,16 +181,49 @@ function runnerDemo(canvas) {
         ctx.closePath()
         ctx.fill()
     
-        /*
-        ctx.beginPath()
-        ctx.moveTo(x1 + 10, y - 10)
-        ctx.lineTo(x1 - 2 , y)
-        ctx.lineTo(x1 + 10, y + 10)
-        ctx.closePath()
-        ctx.fill()
-        */
     }
 
-    return {draw, run, arrows, secondRunner, resume}
+    var yesTD = function () {
+        ctx.fillStyle = "pink"
+        ctx.font = "48pt serif"
+        ctx.fillText("TIME DILATION!!", finishLine.x * zoom / 2, 380)
+        
+    } 
+
+    var reset = function () {
+        phase++
+        t = 0
+        runner1.x = 0
+        runner2.x = 0
+        finishLine.x = 10
+        t1 = 0
+        t2 = 0
+
+        arrows(false)
+        
+    }
+
+    var arrows = function (on) {
+        var start = Date.now()
+        var tt
+        runner1.x = 0
+        t = 0
+                
+        var h = setInterval(() => {
+            tt = (Date.now() - start) / 1000
+            showArrows = Math.min(1, tt)
+
+            if (!on) {
+                showArrows = 1 - showArrows
+            }
+
+            if (showArrows === (on ? 1 : 0)) {
+                clearInterval(h)
+            }
+            draw()
+        }, 1000/60)
+    }
+
+    return {draw, run, reset, yesTD}
 
 }

@@ -1,14 +1,29 @@
-function contracting1(canvas) {
+function contracting1(canvas, oL) {
 
+    var OmegaM = 0.3
+    var OmegaL = 0.7
+    var done
+
+    if (oL) {
+        OmegaM = 1 - oL
+        OmegaL = oL
+    }
     var ctx = canvas.getContext("2d")
     //canvas.width = canvas.clientWidth
     //canvas.height = canvas.clientHeight
 
     var gs = []
     //gs.push({x: 0, ax: []})
-    gs.push({
-        x: 15 * 10, ax: []
-    })
+    if (oL === 1) {
+        gs.push({x: 13.9 * 10, ax: []})
+    }
+    else if (oL === 0.7) {
+        gs.push({x: 10.8 * 10, ax: []})
+    }
+    else {
+        gs.push({x: 15 * 10, ax: []})
+    }
+    
 
     var phase = 0
 
@@ -44,6 +59,13 @@ function contracting1(canvas) {
 
         ctx.translate(x0, y0)
 
+        for (i = 1; i < 30; i++) {
+            ctx.fillText(i, i * 10 * zoom, -2)
+        }
+        for (i = -30; i < 10; i++) {
+            ctx.fillText(i, -2, -i * 10 * zoom)
+        }
+
         ctx.lineWidth = 2
         ctx.strokeStyle = "blue"
         for (i = 0; i < gs.length; i++) {
@@ -66,6 +88,14 @@ function contracting1(canvas) {
         }
         ctx.stroke()
         
+        if (oL === 1 && done) {
+            ctx.fillText("v = 0.5c", canvas.width / 2 + 70, canvas.height - 330)
+            ctx.fillText("v = c", canvas.width - 70, 40)
+        }
+        if (oL === 0.7 && done) {
+            ctx.fillText("v = 0.68c", canvas.width / 3 + 110, canvas.height - 400)
+            ctx.fillText("v = 0.77c", canvas.width - 180, 40)
+        }
     }
 
     var drawRev = function () {
@@ -131,7 +161,7 @@ function contracting1(canvas) {
     var H = H0 
     var c = 1
 
-    x2 = 0.1
+    var x2 = 0.1
 
     var h
     var z
@@ -158,7 +188,9 @@ function contracting1(canvas) {
                             gs[i].t = t
                             gs[i].emit = gs[i].x
                             gs[i].z = z
-
+                            console.log(z)
+                            console.log(gs[i].ax[gs[i].ax.length - 1] - gs[i].ax[gs[i].ax.length - 2])
+                            console.log(gs[i].ax[1] - gs[i].ax[0])
                         }
                     }
                     
@@ -168,14 +200,24 @@ function contracting1(canvas) {
                 if (photon.x < 0) {
                     clearInterval(h)
                     clearInterval(h2)
+                    done = true
+                    draw()
                     tend = t
+                }
+
+                if (oL && t < -110) {
+                    clearInterval(h)
+                    clearInterval(h2)
+                    done = true
+                    draw()
+                    
                 }
             }
             
 
             //draw()
 
-            H = H0 * (0.3 * (1+z)**3 + 0.7)**0.5
+            H = H0 * (OmegaM * (1+z)**3 + OmegaL)**0.5
 
             if (tend && tend - 100 > t) {
                 clearInterval(h)
