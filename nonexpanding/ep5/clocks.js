@@ -215,6 +215,7 @@ function clocksDemo(canvas) {
                         start2 = Date.now()
                     }
                     if (received === 5) {
+                        t0 = 0
                         showTime0 = true
                         clearInterval(h)
                     }
