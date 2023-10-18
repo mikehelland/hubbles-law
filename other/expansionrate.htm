@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-    input[type=number] {font-size: 125%; 
-        width: 50px;
-        appearance:textfield;
-        border: 0;
-    }
-    body {font-size: 150%;}
 
-    form {
-        position: absolute;
-        left:50px;
-        top:50px;
-    }
-</style>
+<head>
+    <style>
+        input[type=number] {
+            font-size: 125%;
+            width: 50px;
+            appearance: textfield;
+            border: 0;
+        }
+
+        body {
+            font-size: 150%;
+        }
+
+        form {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+        }
+    </style>
 </head>
+
 <body>
 
     <form name="form">
-    \( \frac{H}{H_0} = [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)
-    
-    <br><br>
-        &Lambda;CDM - 
-    H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
-    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
-    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+        \( \frac{H}{H_0} = [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)
+
+        <br><br>
+        &Lambda;CDM -
+        H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
+        &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+        &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
     </form>
     <script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
 
-    
+
     <canvas id="canvas" width="1000" height="600"></canvas>
+    <br>
+    <canvas id="canvasz" width="1000" height="600"></canvas>
 
     <script>
         var data
@@ -38,7 +46,7 @@
         const c = 299792.458
         const pc2ly = 3.261564
         var zoomY = 18
-        
+
         var maxZ = 15
 
         form.H0.onchange = e => run()
@@ -50,7 +58,7 @@
             form.Omega_L.value = 1 - form.Omega_M.value
             run()
         }
-        
+
         run()
 
         function run() {
@@ -59,11 +67,12 @@
             var OmegaM = parseFloat(form.Omega_M.value)
 
             data = []
-            
+
             //data2 = flrw(H0, OmegaL, OmegaM, maxZ)
             data2 = flrw2(H0, OmegaL, maxZ)
-            
+
             drawCanvas()
+            drawCanvasz()
 
         }
 
@@ -76,32 +85,32 @@
 
             ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
-            for (var i = 0; i <= maxZ; i=i+1) {
+            for (var i = 0; i <= maxZ; i = i + 1) {
                 ctx.fillText(i, 20 + i / maxZ * w, h)
             }
-            
+
             ctx.textAlign = "right"
             ctx.fillText("lookback time (billion years)", w - 10, h - 25)
 
-            
+
             for (var i = 0; i <= zoomY; i++) {
                 ctx.fillText(i, 18, h - 15 - h * i / zoomY)
             }
             ctx.textAlign = "left"
             //ctx.fillText("billion light years", 28, 18)
 
-            
+
             ctx.translate(20, -20)
 
             ctx.lineWidth = 1
             ctx.strokeRect(0, 0, canvas.width, canvas.height)
-            
+
             /*ctx.fillStyle = "black"
             data2.forEach(dp => {
                 ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
             })*/
 
-            
+
             ctx.lineWidth = 6
             ctx.strokeStyle = "black"
 
@@ -118,6 +127,57 @@
         }
 
 
+        function drawCanvasz() {
+
+            var ctx = canvasz.getContext("2d")
+            var h = canvas.height
+            var w = canvas.width
+            canvasz.width = w
+
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            for (var i = 0; i <= maxZ; i = i + 1) {
+                ctx.fillText(i, 20 + i / maxZ * w, h)
+            }
+
+            ctx.textAlign = "right"
+            ctx.fillText("redshift (z)", w - 10, h - 25)
+
+
+            for (var i = 0; i <= zoomY; i++) {
+                ctx.fillText(i, 18, h - 15 - h * i / zoomY)
+            }
+            ctx.textAlign = "left"
+            //ctx.fillText("billion light years", 28, 18)
+
+
+            ctx.translate(20, -20)
+
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, canvas.height)
+
+            /*ctx.fillStyle = "black"
+            data2.forEach(dp => {
+                ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
+            })*/
+
+
+            ctx.lineWidth = 6
+            ctx.strokeStyle = "black"
+
+            ctx.setLineDash([50, 10])
+            ctx.beginPath()
+            ctx.moveTo(0, h - h / zoomY)
+
+            data2.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.HH0 / zoomY)
+            })
+            ctx.stroke()
+
+
+        }
+
+
 
 
         function flrw2(H0, OmegaL, maxZ) {
@@ -127,7 +187,7 @@
 
             // convert km/s/Mpc  to  Mly/My/Mly
             H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
-            var H = H0 
+            var H = H0
             var c = 1
 
             var t = 0
@@ -154,11 +214,11 @@
 
                 data.push({
                     z,
-                    t, 
+                    t,
                     HH0
                 })
-                
-                
+
+
                 // update the Hubble parameter
                 HH0 = Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL)
                 H = H0 * HH0
