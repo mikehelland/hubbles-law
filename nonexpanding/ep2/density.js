@@ -66,9 +66,9 @@ function setupdeDemo () {
         ctx.fillStyle = "white"
         ctx.translate(w / 2, h / 2)
         ctx.textAlign = "center"
-        ctx.font = 40 * 2 * zoom + "px sans-serif"
+        ctx.font = 40 * 2 * zoom + "px serif"
         ctx.fillText("Ω", -6 * zoom, 10 * zoom)
-        ctx.font = 24 * 2 * zoom + "px sans-serif"
+        ctx.font = 24 * 2 * zoom + "px serif"
         ctx.fillText("Λ", 36 * zoom, 24 * zoom)
 
         ctx.strokeStyle = "yellow"

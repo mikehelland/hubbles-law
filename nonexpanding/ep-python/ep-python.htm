@@ -1,0 +1,1584 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding python</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
+		<style>
+			.mainpre {height:955px; width:1900px !important;}
+			#maincanvas {display:none; position: absolute; right:20px; top: 60px; z-index: 1;}
+		</style>
+	</head>
+
+	<body>
+
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+
+				<section style="text-align: left;">
+					<h1>Coding the Big Bang using Python</h1>
+					<a href="https://skdfjldsfjklsfj.com">Mike Helland</a> <br>
+					
+				</section>
+
+
+				<section data-auto-animate id="intro">
+						<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+
+					
+				</section>
+			<div class="slides">
+
+				<section data-auto-animate >
+						<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+
+
+
+
+
+
+
+
+
+
+</code></pre>
+
+						<div class="fragment drawc1"></div>
+					
+				</section>
+
+				<section data-auto-animate>
+					<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+while True:
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+							
+
+					</code></pre>
+					
+
+			</section>
+
+			<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="12-13"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+while True:
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+				
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="6-7"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+while True:
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+					
+
+			</code></pre>
+			
+	</section>
+
+	<section id="whileloop" data-auto-animate>
+		<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+while True:
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+				
+
+		</code></pre>
+		
+</section>
+
+			<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c
+	p += c 
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+			
+		</section>
+
+			<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="9-10"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c
+	p += c 
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+							
+		</section>
+
+
+			<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="14-15"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c
+	p += c 
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+				
+				<div class="fragment" id="withPhoton"></div>
+			
+		</section>
+
+
+			<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="14-15"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+				
+				<div class="fragment" id="withPhotonH"></div>
+			
+		</section>
+
+
+					<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="17-18"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+						
+
+				</code></pre>
+				
+			
+		</section>
+
+
+
+							<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="25-27"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+						
+
+				</code></pre>
+				
+			
+		</section>
+
+		<section id="zd-graph">
+			<canvas id="zdgraph" width="1200" height="900"></canvas>
+			<script src="zdgraph.js"></script>
+		</section>
+
+		<section>
+		<section style="text-align: left;">
+			<h2>Cosmology Review <span style="color:#888888;">(1 of 3)</span></h2>
+			<hr>
+			<ul>
+				<li class="fragment">$\Lambda$ is "Lambda"</li>
+				<li class="fragment">$\Omega$ is "Omega"</li>
+				<li class="fragment">Standard model of cosmology is called $\Lambda$CDM</li>
+				<li class="fragment">Expansion rate is <span style="font-style: italic;">not</span> constant</li>
+				<li class="fragment">Its parameters:</li>
+				<ul>
+					<li class="fragment">$H$, Hubble's parameter, the expansion rate</li>
+					<li class="fragment">$H_0$, Hubble's constant, the current expansion rate</li>
+					<li class="fragment">$\Omega_\Lambda$, how much of the universe is dark energy</li>
+					<li class="fragment">$\Omega_m$, how much of the universe is matter</li>
+				
+				</ul>
+				<!--
+				<li class="fragment">Their values:</li>
+				<ul class="fragment">
+					<li>$H_0 = 70 \text{ km s}^{-1} \text{ Mpc}^{-1}$</li>
+					<li class="fragment highlight-blue">$\Omega_\Lambda = 0.7$</li>
+					<li>$\Omega_m = 0.3$</li>
+				
+				</ul>
+				-->
+			</ul>
+		</section>
+
+		<section id="density">
+			<h2 style="text-align: left;" >Cosmology Review <span style="color:#888888;">(2 of 3)</span></h2>
+			<hr>
+			<table>
+				<tr style="border: none !important;">
+					<td style="border: none !important;">
+						<canvas id="matterdemo" width="500" height="500"></canvas>
+					</td>
+					<td style="border: none !important;">
+						<canvas id="dedemo" width="500" height="500"></canvas>
+					</td>
+				</tr>
+				<tr style="border: none !important;">
+					<div class="fragment" id="matterDemo"></div>
+					<td class="fragment" style="text-align: center;">Volume goes &uarr;<sup>3</sup>
+						<br>
+						<span class="fragment">Density goes &darr;<sup>-3</sup>
+						</span></td>
+					
+					<td id="deDemo" class="fragment" style="text-align: center;">
+						$\Lambda$ doesn't change
+						<span class="fragment"><br>Cuz Dark Energy is cool like that</span>
+					</td>
+				</tr>
+			</table>
+			
+			<br>
+			<p class="fragment" style="font-size: 125%;">$\Omega_m (1+z)^3 + \Omega_\Lambda$</p>
+			<script src="../ep2/density.js"></script>
+	
+		</section>
+
+
+
+		<section>
+			<h2 style="text-align: left;">Cosmology Review <span style="color:#888888;">(3 of 3)</span></h2>
+			<hr>
+			<p style="color: #888888;">Expansion rate is:</p>
+			<p style="text-align: center; font-size: 140%;">$H = H_0 \sqrt{ \Omega_m (1+z)^3 + \Omega_\Lambda }$</p>
+			<br>
+			<div style="display: flex; justify-content:space-evenly; ">
+				<div>
+					<p class="fragment"  style="color: #888888;">Constant expansion rate:</p>
+			
+					<p class="fragment">$H = H_0$</p>
+					<p class="fragment">$\Omega_m (1+z)^3 + \Omega_\Lambda = 1$</p>				
+					<p class="fragment">$\Omega_m = 0.0$</p>
+					<p class="fragment">$\Omega_\Lambda = 1.0$</p>
+		
+				</div>
+
+				<div>
+					<p class="fragment" style="color: #888888;">Aliases:</p>
+					<ul>
+						<li class="fragment">pure dark energy universe</li>
+						<li class="fragment">exponentially expanding universe</li>
+						<li class="fragment">de Sitter universe</li>
+					</ul>
+	
+				</div>
+			</div>
+
+			<br>
+			<p class="fragment">Useful model for explanations, but inaccurate.</p>
+
+		</section>
+	</section>
+
+		<section data-auto-animate class="backtocode">
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+						
+
+				</code></pre>
+				
+			
+		</section>
+
+		<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="29"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				
+			
+		</section>
+
+
+		<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="6-7"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's parameter
+H = 0.0007
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				
+			
+		</section>
+
+		<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="6-10"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = 0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				
+				<div id="withM" class="fragment"></div>
+			
+		</section>
+
+		<section data-auto-animate>
+				<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="32"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = 0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				
+			
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="7"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				
+				<div id="rev" class="fragment"></div>
+			
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="14,20"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = (c + H * p) / c - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+							
+		</section>
+
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="14,20,23"># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+							
+		</section>
+
+
+		<section data-auto-animate id="with2">
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers=""># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+						
+				<div id="showBB" class="fragment"></div>
+				<div id="showTurnaround" class="fragment"></div>
+				
+		</section>
+
+		<section id="review2">
+			<h2 style="text-align: left;">Cosmology Review <span style="color:#888888;">(again)</span></h2>
+			<hr>
+			<p style="text-align: left; color:#888888; font-size: 80%;">$\lambda$ is lowercase "lambda", represents wavelength here</p>
+			<div style="position: relative;">
+				<canvas id="threedistances" height="400" width="1800"></canvas>
+				<div id="distemit">distance at \(t_{emit}\)</div>
+				<div id="distobserve">distance at \(t_{now}\)</div>
+				<div id="disttravel" style="color:yellow;">\( c t \)</div>
+			</div>
+
+			<br>
+			<p class="fragment">$1 + z = \frac{\lambda_{now}}{\lambda_{emit}} = \frac{d_{now}}{d_{emit}}$</p>
+			<script src="threedistances.js"></script>
+		</section>
+
+		<section id="distancegraph">
+			<div style="position: relative;">
+				<canvas width="1200" height="920" style="background-color: black;" id="contracting2"></canvas>
+				<div id="distemit2">distance at \(t_{emit}\)</div>
+				<div id="distobserve2">distance at \(t_{now}\)</div>
+				<div id="disttravel2" style="color:yellow;">\( c t \)</div>
+			</div>
+			<div id="showdemit" class="fragment"></div>
+			<div id="showdnow" class="fragment"></div>
+			<div id="showdlight" class="fragment"></div>
+				<script src="contracting2.js"></script>
+		</section>
+
+
+		<section data-auto-animate>
+			<p>Distances using CosmoloPy</p>
+			<div style="display: flex;">
+			
+			<pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+			import cosmolopy.distance as cd
+			cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 'h' : 0.70}
+			cosmo = cd.set_omega_k_0(cosmo)
+			
+			pc2ly = 3.261564
+			
+			data = []
+			z = 0
+			while z &lt; 10:
+
+				# distance at t_now
+				d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+				
+				# distance at t_emit
+				d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+				
+				# travel time, for ct
+				d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+				
+				data.append([z, d_T, d_A, d_C])
+				
+				z += 0.1
+			</code></pre>
+			<img src="cp1.png" style="opacity:0;">
+			</div>
+		</section>
+		<section data-auto-animate>
+			<p>Distances using CosmoloPy</p>
+			<div style="display: flex;">
+			
+			<pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="8,9,22">
+			import cosmolopy.distance as cd
+			cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 'h' : 0.70}
+			cosmo = cd.set_omega_k_0(cosmo)
+			
+			pc2ly = 3.261564
+			
+			data = []
+			z = 0
+			while z &lt; 10:
+
+				# distance at t_now
+				d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+				
+				# distance at t_emit
+				d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+				
+				# travel time, for ct
+				d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+				
+				data.append([z, d_T, d_A, d_C])
+				
+				z += 0.1
+			</code></pre>
+			<img src="cp1.png" style="opacity:0;">
+			</div>
+		</section>
+		<section data-auto-animate>
+			<p>Distances using CosmoloPy</p>
+			<div style="display: flex;">
+			
+			<pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="11,12">
+			import cosmolopy.distance as cd
+			cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 'h' : 0.70}
+			cosmo = cd.set_omega_k_0(cosmo)
+			
+			pc2ly = 3.261564
+			
+			data = []
+			z = 0
+			while z &lt; 10:
+
+				# distance at t_now
+				d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+				
+				# distance at t_emit
+				d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+				
+				# travel time, for ct
+				d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+				
+				data.append([z, d_T, d_A, d_C])
+				
+				z += 0.1
+			</code></pre>
+			<img src="cp1.png">
+			</div>
+		</section>
+		<section data-auto-animate>
+			<p>Distances using CosmoloPy</p>
+			<div style="display: flex;">
+			
+			<pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="14,15">
+			import cosmolopy.distance as cd
+			cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 'h' : 0.70}
+			cosmo = cd.set_omega_k_0(cosmo)
+			
+			pc2ly = 3.261564
+			
+			data = []
+			z = 0
+			while z &lt; 10:
+
+				# distance at t_now
+				d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+				
+				# distance at t_emit
+				d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+				
+				# travel time, for ct
+				d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+				
+				data.append([z, d_T, d_A, d_C])
+				
+				z += 0.1
+			</code></pre>
+			<img src="cp2.png">
+			</div>
+		</section>
+		<section data-auto-animate>
+			<p>Distances using CosmoloPy</p>
+			<div style="display: flex;">
+			
+			<pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="17,18">
+			import cosmolopy.distance as cd
+			cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 'h' : 0.70}
+			cosmo = cd.set_omega_k_0(cosmo)
+			
+			pc2ly = 3.261564
+			
+			data = []
+			z = 0
+			while z &lt; 10:
+
+				# distance at t_now
+				d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+				
+				# distance at t_emit
+				d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+				
+				# travel time, for ct
+				d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+				
+				data.append([z, d_T, d_A, d_C])
+				
+				z += 0.1
+			</code></pre>
+			<img src="cp3.png">
+			</div>
+		</section>
+
+
+		<section data-auto-animate data-auto-animate-restart class="backtocode">
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers=""># make galaxies 1 billion light years apart
+objs = []
+for n in range(30):
+	objs.append({"x": n * 1000})
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	for obj in objs:
+
+		# Hubble's law, v = Hd
+		obj["x"] += H * obj["x"]
+
+		if p >= obj["x"] and "z" not in obj:
+			obj["z"] = z
+			obj["d"] = obj["x"]
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+				<div class="fragment" id="noGs"></div>
+										
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers=""># Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+				</code></pre>
+										
+		</section>
+
+
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="1,24-26">data = []
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+	})
+
+				</code></pre>
+										
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="26">data = []
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+while True:
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+	})
+
+				</code></pre>
+										
+		</section>
+
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="13,16,30">data = []
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while True:
+	t += -1 # million years
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+
+				</code></pre>
+										
+		</section>
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="4">data = []
+
+# Hubble's constant
+H0 = -0.0007
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while True:
+	t += -1 # million years
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+
+				</code></pre>
+										
+		</section>
+
+
+
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="3,4,5">data = []
+
+# Hubble's constant
+H0 = 70 # km/s/Mpc
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while True:
+	t += -1 # million years
+
+	# photon speed is v = c + Hd
+	p += c + H * p
+	p2 += c + H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+
+				</code></pre>
+										
+		</section>
+
+
+		
+		<section data-auto-animate>
+			<pre class="mainpre" data-id="code-animation"><code class="hljs python" data-line-numbers="19,20,21">data = []
+
+# Hubble's constant
+H0 = 70 # km/s/Mpc
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while True:
+	t += -1 # million years
+
+	# photon speed is v = c - Hd
+	p += c - H * p
+	p2 += c - H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+
+				</code></pre>
+										
+		</section>
+
+
+		<section id="compare">
+			<div style="display: flex; align-items: center;">
+			<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">data = []
+
+# Hubble's constant
+H0 = 70 # km/s/Mpc
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while True:
+	t += -1 # million years
+
+	# photon speed is v = c - Hd
+	p += c - H * p
+	p2 += c - H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+				</code></pre>
+				<img src="cp4.png" height="913px" width="1093px">
+			</div>
+		</section>
+
+		<section data-auto-animate>
+			<h3>Looking for something?</h3>
+			<pre data-id="code-animation"><code class="hljs python" data-line-numbers="" data-trim="">
+				p = 0
+				t = 0
+				z = 0
+			
+				# never ending loop, don't use!
+				while True:
+			</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3>Looking for something?</h3>
+			<pre data-id="code-animation"><code class="hljs python" data-line-numbers="" data-trim="">
+				p = 0
+				t = 0
+				z = 0
+			
+				# find distances given a redshift
+				while z < 10:
+			</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3>Looking for something?</h3>
+			<pre data-id="code-animation"><code class="hljs python" data-line-numbers="" data-trim="">
+				p = 0
+				t = 0
+				z = 0
+			
+				# find redshift given a distance 
+				while p * (1 + z) < 5000: # 5 billion light years
+			</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3>Looking for something?</h3>
+			<pre data-id="code-animation"><code class="hljs python" data-line-numbers="" data-trim="">
+				p = 0
+				t = 0
+				z = 0
+			
+				# find a lookback time
+				while t > -13800: # 13.8 billion years ago
+			</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3>Looking for something?</h3>
+			<pre data-id="code-animation"><code class="hljs python" data-line-numbers="" data-trim="">
+				p = 0
+				t = 0
+				z = 0
+			
+				# find the cosmic turnaround
+				while H * p < c:
+			</code></pre>
+		</section>
+
+		<section>
+			<h3>Jupyter Notebooks</h3>
+
+			<img height="250px" src="worldlines.png">
+			
+			<p>github/<a href="asdsad">lcdmworldlines.ipynb</a></p>
+
+			<img height="250px" src="nb1.png">
+			
+			<p>github/<a href="asdsad">cosmodistance.ipynb</a></p>
+
+			<p style="color: #888888;"><small>(Links in the description)</small></p>
+		</section>
+	</div>
+
+		</div>
+
+		<style>
+			#distemit, #distobserve, #disttravel,
+			#distemit2, #distobserve2, #disttravel2 {position: absolute; display:none;}
+        
+		</style>
+		
+		<img style="display: none;" id="galaxy" src="../ep2/galaxy.png">
+		<div id="maincanvas">
+			<canvas width="1100" height="100" style="background-color: black;" id="contractingtop"></canvas>
+			<br>
+			<canvas width="1100" height="820" style="background-color: black;" id="contractingbottom"></canvas>
+			<script src="contracting1.js"></script>
+				
+		</div>
+		
+		
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				center: true,
+				hash: true,
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+
+
+			var c1 = demoContracting1()
+			var matterDemo, deDemo
+
+			var distances 
+			
+			Reveal.on( 'fragmentshown', event => {
+				if (event.fragment.classList.contains("drawc1")) {
+					c1.draw()
+				}
+				if (event.fragment.id === "withPhoton") {
+					c1.withPhoton()
+				}
+				if (event.fragment.id === "withPhotonH") {
+					c1.withPhotonH()
+				}
+
+				if (event.fragment.id === "matterDemo") {
+					matterDemo()
+				}
+				if (event.fragment.id === "deDemo") {
+					deDemo()
+				}
+
+				if (event.fragment.id === "withM") {
+					c1.withM()
+				}
+
+				if (event.fragment.id === "rev") {
+					c1.rev()
+				}
+
+				if (event.fragment.id === "showBB") {
+					c1.showBB()
+				}
+				if (event.fragment.id === "showTurnaround") {
+					c1.showTurnaround()
+				}
+
+				if (event.fragment.id === "noGs") {
+					c1.noGs()
+				}
+
+				if (event.fragment.id === "showdemit") {
+					c2.showDemit()
+				}
+				if (event.fragment.id === "showdnow") {
+					c2.showDnow()
+				}
+				if (event.fragment.id === "showdlight") {
+					c2.showDlight()
+				}
+
+			} );
+
+			Reveal.on( 'ready', event => {
+				
+			} );
+
+			Reveal.on( 'slidechanged', event => {
+				if (event.currentSlide.id === "intro") {
+					maincanvas.style.opacity = "0"
+					maincanvas.style.display = "block"
+					c1.size()
+					fadeIn(maincanvas)
+					
+					
+				}
+				if (event.currentSlide.id === "whileloop") {
+					c1.go()
+				}
+				
+				if (event.currentSlide.id === "zd-graph") {
+					var zdG = zdGraph(zdgraph)
+					maincanvas.style.display = "none"
+				}
+
+				if (event.currentSlide.id === "density") {
+					matterDemo = setupMatterDemo()				
+					deDemo = setupdeDemo()				
+					console.log("density")
+				}
+
+				if (event.currentSlide.classList.contains("backtocode")) {
+					maincanvas.style.opacity = "0"
+					maincanvas.style.display = "block"
+					c1.draw()
+					fadeIn(maincanvas)
+					
+					
+				}
+
+				if (event.currentSlide.id === "with2") {
+					c1.with2()
+				}
+
+				if (event.currentSlide.id === "review2") {
+					fadeOut(maincanvas)
+					distances = threeDistances()
+					setTimeout(distances.go, 1000)
+				}
+
+
+				if (event.currentSlide.id === "distancegraph") {
+					c2 = demoContracting2()
+					c2.go()
+				}
+
+
+				if (event.currentSlide.id === "compare") {
+					fadeOut(maincanvas)
+				}
+			})
+
+			function fadeOut(div) {
+				var start = Date.now()
+				let h = setInterval(() => {
+					div.style.opacity = "" + Math.max(0, 1 - (Date.now() - start) / 1000)
+					if (div.style.opacity === "0") {
+						clearInterval(h)
+					}
+					
+				})
+				
+			}
+
+			function fadeIn(div) {
+				var start = Date.now()
+				let h = setInterval(() => {
+					div.style.opacity = "" + Math.min(1, (Date.now() - start) / 1000)
+					if (div.style.opacity === "1") {
+						clearInterval(h)
+					}
+					
+				})
+				
+			}
+
+		</script>
+
+	</body>
+</html>
