@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="main" width="800" height="800"></canvas>
+    
+</body>
+<script>
+
+var canvas = document.getElementById("main")
+var ctx = canvas.getContext("2d")
+var w2 = canvas.width / 2
+
+var H = 1/14
+
+var zoom = Math.floor(w2/14)
+
+var p = 0
+
+var iY
+var rY
+var Y = (x, y) => {
+    //return y
+    //return 1/H * Math.log(H * y + 1)
+    //return y / (1 - H * Math.abs(x)) 
+    return (x - H * x**2 / 2)
+    rY = 0
+    for (iY = 0; iY < Math.abs(y); iY++) {
+        rY += 1 - H * Math.abs(x)
+    }
+    return 1/H * 1 / (y > 0 ? -rY : rY)
+    
+    
+}
+
+var Y2 = (x, y) => {
+    //return -1/H * (Math.exp(H * -y) - 1)
+    //return -1/H * Math.log(H * y + 1)
+}
+
+var dx = 0.1
+var x, y
+draw()
+
+function draw() {
+
+    ctx.fillStyle = "black"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.translate(canvas.width / 2, canvas.height / 8)
+    ctx.scale(1, -1)
+
+
+    ctx.strokeStyle = "blue"
+    ctx.lineWidth = 5
+    ctx.beginPath()
+    ctx.moveTo(-13 * zoom, Y(-13, -13) * zoom) 
+    for (x = -14; x <= 13; x+=0.1) {
+        ctx.lineTo(x * zoom, Y(x, x) * zoom) 
+    }
+    ctx.stroke()
+    
+    
+
+
+    ctx.globalAlpha = 0.8
+    ctx.strokeStyle = "red"
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(0, 0) 
+    p = 0
+    y = 0
+    while (p < 12) {
+        p += (1 - H * p) * dx
+        y-=dx
+        ctx.lineTo(-p * zoom, y * zoom) 
+        
+    }
+    ctx.stroke()
+    ctx.globalAlpha = 1
+
+    ctx.lineWidth = 0.5
+    ctx.strokeStyle = "#444"
+    for (x = -15; x <= 15; x++) {
+        ctx.beginPath()
+        ctx.moveTo(x * zoom, w2)
+        ctx.lineTo(x * zoom, -w2 * 8)
+        ctx.stroke()
+        
+    }
+
+    ctx.lineWidth = 0.5
+    ctx.strokeStyle = "#888"
+    for (y = -30; y <= 14; y++) {
+        //ctx.beginPath()
+        //ctx.moveTo(-w2, i * zoom)
+        //ctx.lineTo(w2, i * zoom)
+        //ctx.moveTo(-w2, -1/H * Math.log(H * i + 1) * zoom)
+        //ctx.lineTo(w2, -1/H * Math.log(H * i + 1) * zoom)
+        //ctx.stroke()
+
+        ctx.beginPath()
+        ctx.moveTo(-14 * zoom, Y(-14, y) * zoom) //-j * (1 - H * Math.abs(j)) * zoom)            
+        for (x = -13; x <= 13; x+=0.1) {
+            ctx.lineTo(x * zoom, Y(x, y) * zoom) //(1 - H * Math.abs(j)) * zoom)
+        }
+        ctx.stroke()
+        
+        
+    }
+
+    ctx.strokeStyle = "white"
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(-w2, 0)
+    ctx.lineTo(w2, 0)
+    ctx.stroke()
+
+    ctx.strokeStyle = "white"
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(0, w2)
+    ctx.lineTo(0, -w2 * 8)
+    ctx.stroke()
+
+}
+
+
+</script>
+</html>

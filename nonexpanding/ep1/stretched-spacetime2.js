@@ -114,6 +114,7 @@ function stretchedSpacetime2() {
             ctxG.fillText(dgi, offsetX + dgi * 1000 * zoomG - 3, offset)    
         }
         
+        /*
         ctxG.fillStyle = "yellow"
         ctxG.strokeStyle = "yellow"
         ctxG.lineWidth = 1
@@ -129,6 +130,7 @@ function stretchedSpacetime2() {
                 ctxG.stroke()
             }
         })
+        */
     }
 
     function drawTimedilated() {

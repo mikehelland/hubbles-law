@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="main" width="800" height="800"></canvas>
+    
+</body>
+<script>
+
+var canvas = document.getElementById("main")
+var ctx = canvas.getContext("2d")
+var w2 = canvas.width / 2
+
+var H = 1/14
+
+var zoom = Math.floor(w2/8)
+
+var p = 0
+
+var iY
+var rY
+var Y = (x, y, lastY) => {
+    //return y
+    //return 1/H * Math.log(H * y + 1)
+    return lastY - 1/(1 - H * Math.abs(x)) * dx  
+    
+    //long
+    //return lastY - (1 - H * -x) * dx
+    //return  (-x - H * (x**2) / 2) 
+    //return lastY + (H * y - 1) * dx 
+
+    //short
+    //return y / (1 - H * Math.abs(x))
+    
+    
+}
+
+var X = (x, y, lastX) => {
+    return x
+
+    //return lastX + 1/H * (Math.exp(H * y))
+    //return x * (Math.exp(H * y))
+
+
+    //right blue line, no x lines
+    return -1/H * (Math.exp(H * y) - 1)
+}
+
+var dx = 0.01
+var x, y
+var lastY = 0
+var lastX = 0
+draw()
+
+function draw() {
+
+    ctx.fillStyle = "black"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.translate(zoom, zoom)
+    ctx.scale(1, -1)
+
+
+    ctx.globalAlpha = 0.8
+    ctx.strokeStyle = "blue"
+    ctx.lineWidth = 5
+    ctx.beginPath()
+    lastY = 0
+    ctx.moveTo(0, 0) 
+    for (x = 0; x <= 13; x+=dx) {
+        lastY = Y(x, -x, lastY)
+        lastX = X(x, -x, lastX)
+        ctx.lineTo(lastX * zoom, lastY * zoom)
+        //console.log( x, Y(x, -x))
+    }
+    ctx.stroke()
+    
+
+    ctx.strokeStyle = "red"
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(0, 0) 
+    p = 0
+    y = 0
+    while (p < 12) {
+        p += (1 - H * p) * dx
+        y-=dx
+        ctx.lineTo(p * zoom, y * zoom) 
+        
+    }
+    ctx.stroke()
+    ctx.globalAlpha = 1
+
+    ctx.lineWidth = 0.5
+    ctx.strokeStyle = "#444"
+    for (x = 1; x <= 30; x++) {
+
+        ctx.beginPath()
+        ctx.moveTo(X(x, 0) * zoom, 0)
+        for (y = 0; y > -15; y--) {
+            ctx.lineTo(X(x, y) * zoom, y * zoom)
+        }
+        ctx.stroke()
+
+        
+    }
+
+    ctx.lineWidth = 0.5
+    ctx.strokeStyle = "#888"
+    for (y = -30; y <= 13; y++) {
+
+        lastY = y
+        ctx.beginPath()
+        ctx.moveTo(0, Y(0, y, lastY) * zoom) //-j * (1 - H * Math.abs(j)) * zoom)            
+        for (x = 0; x <= 13; x+=dx) {
+            lastY = Y(x, y, lastY)
+            ctx.lineTo(x * zoom, lastY * zoom) //(1 - H * Math.abs(j)) * zoom)
+        }
+        ctx.stroke()
+        
+        
+    }
+
+    ctx.strokeStyle = "white"
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(-w2, 0)
+    ctx.lineTo(w2 * 4, 0)
+    ctx.stroke()
+
+    ctx.strokeStyle = "white"
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(0, w2)
+    ctx.lineTo(0, -w2 * 4)
+    ctx.stroke()
+
+}
+
+
+</script>
+</html>
