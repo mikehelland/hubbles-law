@@ -295,16 +295,18 @@
                 })
                 ctx.globalAlpha = 0.4
                 ctx.stroke()
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
             }
 
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-
-            data2.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
 
 
 
