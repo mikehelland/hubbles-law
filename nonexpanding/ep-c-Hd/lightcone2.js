@@ -243,8 +243,8 @@ function demoLightcone2() {
     var moveG = function () {
         anim((now) => {
             
-            pointT = 550 + 240 * Math.min(1, now/2000)
-            return now > 2000
+            pointT = 550 + 240 * Math.min(1, now/1000)
+            return now > 1000
         })
     }
 
