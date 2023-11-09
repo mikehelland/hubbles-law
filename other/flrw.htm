@@ -33,7 +33,12 @@
     
     <br>
     <br>
-    <input type="checkbox" checked="checked" id="flat"> Flat (link inputs)
+    <input type="checkbox" checked="checked" id="wright"> Ned Wright (blue)
+    <br>
+    <input type="checkbox"  id="cappi"> Alberto Cappi (red)
+
+    <br>
+    <input type="checkbox"  id="flat"> Flat (link inputs)
 
     <br>
     <input type="checkbox" id="screenshot"> Screenshot mode
@@ -111,6 +116,9 @@ while (z < findZ) {
                 form.Omega_L.value = 1 - form.Omega_M.value
             run()
         }
+
+        wright.onchange = e => run()
+        cappi.onchange = e => run()
         
         run()
 
@@ -120,15 +128,20 @@ while (z < findZ) {
             var OmegaM = parseFloat(form.Omega_M.value)
 
             data = []
+            data2 = []
+            data3 = []
             
             for (var i = 0; i <= maxZ; i=i+0.1) {
-                data.push(FLRW(H0, OmegaL, OmegaM, i))
+                
+                if (cappi.checked) {
+                    data.push(FLRW(H0, OmegaL, OmegaM, i))
+                }
+                if (wright.checked) {
+                    data2.push(nwFLRW(H0, OmegaL, OmegaM, i))
+                }
             }
             
-            //data2 = flrw(H0, OmegaL, OmegaM, maxZ)
-            if (OmegaL + OmegaM === 1) {
-                data2 = flrw2(H0, OmegaL, maxZ)
-            }
+            data3 = flrw2(H0, OmegaL, OmegaM, maxZ)
             
             drawCanvas()
 
@@ -198,6 +211,43 @@ while (z < findZ) {
             ctx.globalAlpha = 0.4
             ctx.stroke()
 
+
+
+
+            ctx.lineWidth = 10
+            ctx.strokeStyle = "blue"
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            data2.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
+            })
+            ctx.globalAlpha = 0.4
+            ctx.stroke()
+
+
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            data2.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
+            })
+            ctx.globalAlpha = 0.4
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            data2.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
+            })
+            ctx.globalAlpha = 0.4
+            ctx.stroke()
+
+
+
+
+
             ctx.globalAlpha = 1
             ctx.lineWidth = 6
             ctx.strokeStyle = "black"
@@ -206,7 +256,7 @@ while (z < findZ) {
             ctx.beginPath()
             ctx.moveTo(0, h)
 
-            data2.forEach(dp => {
+            data3.forEach(dp => {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_T / zoomY)
             })
             ctx.stroke()
@@ -217,9 +267,9 @@ while (z < findZ) {
             ctx.moveTo(0, h)
 
             var dp
-            for (i = 0; i < data2.length; i++) {
-                dp = data2[i]
-                if (dp.z) {
+            for (i = 0; i < data3.length; i++) {
+                dp = data3[i]
+                if (dp.z && dp.d_A < 10000000) {
                     ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_A / zoomY)
                 }
             }
@@ -229,7 +279,7 @@ while (z < findZ) {
             ctx.beginPath()
             ctx.moveTo(0, h)
 
-            data2.forEach(dp => {
+            data3.forEach(dp => {
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_C / zoomY)
             })
             ctx.stroke()

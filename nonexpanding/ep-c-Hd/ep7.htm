@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/monokai.css">
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Previous Episode</h3>
+					<p>Episode 6: Coding the Big Bang in Python</p>
+										
+					<img src="ep6.png">
+					
+					<p class="fragment">Light coming from one direction</p>
+				</section>
+
+				<section>
+					<p>Observer
+						<br>
+						&darr;
+					</p>
+					<img src="lightcone1.png">
+					<p class="fragment">Light cone in the expanding universe</p>
+					
+				</section>
+
+				<section id="basiclightcone">
+					<h2>Light cone basics</h2>
+					<div style="display: flex;">
+						<canvas id="lightcone1" width="900" height="800"></canvas>
+						<div style="text-align: left; padding-left: 20px;">
+							<p>On a spacetime diagram each point is an event </p>
+							<p id="lc1event" class="fragment" style="color:lightblue">Events have coordinates (t, x) </p>
+							<p id="lc1observer" class="fragment" style="color:gray;">Observer at the origin (0, 0) </p>
+							<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
+							<p class="fragment">Something happening a light year away...<br> is observed a year later</p>
+							<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>
+							<p id="lc1showcones" class="fragment">Events in the <span style="color:red;">past cone</span> can affect the present</p>
+							<p id="lc1showconef" class="fragment">The present can affect events in the <span style="color:blue;">future cone</span></p>
+							<p id="lc1hidecones" class="fragment"><br>Space was smaller in the past and is bigger in the future</p>
+						</div>
+					</div>
+					<script src="lightcone1.js"></script>
+				</section>
+
+				<section id="lcspeed">
+					<p>Speed of light in expanding space?</p>
+							
+					<div style="display: flex; justify-content: center;">
+						<div style="width:48%; padding-right: 20px; text-align: left;">
+							
+							<div id="lc2chunk1">
+								<p class="fragment" id="lc2hidecurve">Straight line is <span style="color: yellow; ">$v = c$</span></p>
+								<p class="fragment" id="lc2galaxy">Objects in expanding space move at <span style="color: lightblue; ">$v = Hd$</span></p>
+								<p class="fragment">
+									<span style="color: yellow; ">&rarr;</span> $+$ <span style="color: lightblue; ">&larr;</span>
+									relative velocity is
+									<span style="color: yellow; ">$c~$</span><span style="color: lightblue; ">$+ Hd$</span>
+								</p>
+								<p class="fragment">Light has to be moving at <span style="color: yellow; ">$c$</span> relative to <em>all</em> observers!
+	
+							</div>
+							
+							<div id="lc2showcurve" class="fragment">
+							</div>
+							
+							<p class="fragment">Curved line is <span style="color: yellow; ">$v = c - Hd$</span></p>							
+							
+							<p class="fragment" >
+								<span style="color: yellow; ">&rarr;</span> $+$ <span style="color: lightblue; ">&larr;</span>
+								relative velocity is
+								<span style="color: yellow; ">$c - Hd~$</span><span style="color: lightblue; ">$+ Hd$</span>
+							</p>
+							<p class="fragment">Light <em>is</em> moving at <span style="color: yellow; ">$c$</span> relative to <em>all</em> observers!</p>
+							<p class="fragment" id="lc2moveg">This galaxy is observed farther back in time</p>
+						</div>
+						<canvas id="lightcone2" width="900" height="800"></canvas>
+					
+					</div>
+					<script src="lightcone2.js"></script>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+
+			var lc1 = demoLightcone1()
+			var lc2 = demoLightcone2()
+
+			Reveal.on('fragmentshown', event => {
+				console.log(event.fragment.id)
+				if (event.fragment.id === "lc1event") {
+					lc1.showEvent()
+				}
+				if (event.fragment.id === "lc1observer") {
+					lc1.showObserver()
+				}
+				if (event.fragment.id === "lc1vc") {
+					lc1.showVC()
+				}
+				if (event.fragment.id === "lc1vnc") {
+					lc1.showVnC()
+				}
+				if (event.fragment.id === "lc1showcones") {
+					lc1.showCones()
+				}
+				if (event.fragment.id === "lc1showconef") {
+					lc1.showFutureCone()
+				}
+				if (event.fragment.id === "lc1hidecones") {
+					lc1.zoomOut()
+				}
+
+				if (event.fragment.id === "lc2galaxy") {
+					lc2.showGalaxy()
+				}
+				if (event.fragment.id === "lc2hidecurve") {
+					lc2.hideCurve()
+				}
+				if (event.fragment.id === "lc2showarrow") {
+					lc2.showArrow()
+				}
+				if (event.fragment.id === "lc2showcurve") {
+					lc2.showCurve()
+					lc2chunk1.style.display = "none"
+				}
+				if (event.fragment.id === "lc2moveg") {
+					lc2.moveG()
+				}
+			});
+
+			Reveal.on('slidechanged', event => {
+				if (event.currentSlide.id === "basiclightcone") {
+					lc1.draw()
+				}		
+
+				if (event.currentSlide.id === "lcspeed") {
+					lc2.draw()
+				}		
+			});
+
+
+		</script>
+
+	</body>
+</html>

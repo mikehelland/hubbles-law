@@ -1,0 +1,279 @@
+In the previous episode we made this diagram
+
+[img }
+
+using python  
+
+(c0de)
+
+This shows an observer at the origin recieving light and all the places that light could have come from back to the big bang
+
+But this is only half the picture.
+
+The observer can receive light from either direction, like this:
+
+
+(light cone)
+
+Now we can start to see this for what it really is, a light cone.
+
+Hopefully you're familiar with the idea of a light cone.
+
+A light cone shows, among other things, where the light reaching you right now may have come from.
+
+Normally it would look like this.
+
+(regular light cone)
+
+Light travels at the speed of light, of course, which is 'c'. So the cone is defined pretty simply, with v = c, on one side and v = -c.
+
+If you're watching something happen from 1 light year away, it actually happened 1 year in the past.
+
+
+But because the universe started off with a big bang, the cone gets warped, and everything gets smaller until its all squished together.
+
+(animate in)
+
+In the expanding universe, the speed o  f light is no longer c.
+
+To be clear, the light is trying to go at c. It wants to go at c. 
+
+It's just that the expansion of the universe has other plans.
+
+So it's change in position over it's change in time is not c. 
+
+That means it's velocity is not c. 
+
+So what is it?
+
+Well if you've watched some of the previous videos where we made this diagram, you'll know thats it's c - Hd.
+
+H is Hubble's parameter, it's the expansion rate.
+
+d is the light's distance from the observer. 
+
+The basic idea is that due to the expansion of the universe, a galaxy out in space is going to be moving away at the speed Hd.
+
+The light from that galaxy should be moving at c relative to the galaxy. 
+
+If light's moving at c in one direction, and the galaxy's moving at HD in the other direction, their relative velocity would be c + Hd.
+
+That's too much.
+
+We can fix it by saying the speed of light is c - Hd. Now (c - Hd) + Hd = c.
+
+That's just right.
+
+
+So the speed of light is v = c - Hd. 
+
+That's pretty simple right.
+
+Well, not really. The thing is, Hubble's parameter, H, is changing all the time. 
+
+ I'm going to show some math here, don't worry if you don't get it. 
+
+The purpose is just to show you how complicated v = c - Hd can actually be.
+
+
+An equation we can use for the Hubble parameter is:
+
+H = H_0 * E(z)
+
+Where E(z) = [OM + OL]**1/2
+
+If you havent' seen that before check out episode 2, on dark energy. It's not as scary as it looks.
+
+So:
+
+v = c - (H_0 * E(z)) d
+
+What about d?
+
+The distance is going to be given by this function
+
+c/H_0 * \frac{1}{1+z} \int_0^z \frac{dz'}{E(z')}
+
+So now we've got:
+
+v = c - (H_0 * E(z)) \frac{1}{1+z} c/H_0 \int_0^z \frac{dz'}{E(z')}
+
+With this you can find out the speed of light for a given redshift z. 
+
+It's actually a bunch of work, and it only tells you a tiny little bit of information: the galaxy's velocity at that specific z.
+
+Most likely you'll want to know the photon's path over a large range of z's, probably from z=0, and to get the full light cone it should be calculated up to z=infinity, which is the big bang. 
+
+That means you have to keep track of redshift, and well, that's a whole lot harder.
+
+So v = c - Hd isn't a very friendly equation, unless... it turns out, you put it in an algorithm.
+
+Then it has super powers.
+
+Here is the equation in the algorithm from the beginning of the video:
+
+   python code
+
+This isn't complicated at all. And it has benefit of being able to find distances for a given redshift, or in reverse, redshift and other properties for a given distance. Any of different elements of data it contains can be used as the target to meet. 
+
+So this calculates the light cone in a universe with a big bang.
+
+With a big bang, the light always has this turn around point. This is where Hd = c so c - Hd = 0. The photon isn't moving in space ,just time. It has gone "vertical" in the graph
+
+To learn more about this interesting feature of the universe check out episde 5. It's called  the angular diameter turn around, and we can see here, the direction the photon is changing position changes here. Hd becomes greater than c and c - Hd < 0 is negative.
+
+We can experiment with different values for the model parameters, H_0, and OM, OL, to find different ages of the universe, and different places for the turnaround point, except in one special case.
+
+If we set OL to 1 and OM to 0, then E(z) always equals 1. This means H = H_0 * 1, then H never changes.
+
+Here's what it's light cone looks like when the expansion rate is constant.
+
+
+This is known as an exponentially expanding universe, and while its different from our universe, it is very useful to reference in many occasions.
+
+In this universe, c - Hd never reaches zero. It keeps getting closer and closer but never quite gets there.
+
+The light cone never goes vertical, so the light never goes back to a big bang.
+
+It makes sense if you think about it. If the universe is experiencing exponential growth, then in reverse it exponentially decays.
+
+If you were to go back in time and the universe gets half the size, then half the size, then half the size, it will never actually reach a zero size.
+
+
+Let's take that complicated speed of light formula, and see what happens when we set it to an exponentially expanding universe
+
+
+
+
+
+
+
+
+
+
+
+Cunningham's Law "the best way to get the right answer on the internet is not to ask a question; it's to post the wrong answer." 
+
+
+
+In the previous video we made this diagram of the expanding universe:
+
+(ep 6 diagrams)
+
+There's nothing special about that diagram. It represents half the light cone of an observer in expanding universe.
+
+You can find more like it by searching for images of light cone and proper distance.
+
+
+http://pubs.sciepub.com/ijp/6/2/3/figure/4
+https://websites.utdallas.edu/nsm/texas2013/proceedings/4/1/Ellis.pdf
+https://arxiv.org/pdf/1802.02444.pdf
+
+
+What seems to be unique is how we made it. We used a simple algorithm that says the speed of light is:
+
+v = c - Hd
+
+Let's dive into that on this episode of Nonexpanding.
+
+
+part 1 standard technique
+
+For some context, let's take a quick look at how we would reproduce that diagram the standard way.
+
+How could we do it?
+
+First, let's identify what's in the diagram.
+
+Recall from previous episodes there are multiple distances in the expanding universe. 
+
+We're getting light from a galaxy now, we'll call t_now, and the galaxy's distance to us now is the first distanace.
+
+In the past, the expanding universe was smaller. The galaxy that emited the light was actually closer then than it is now. 
+
+That's the second distance, the distance of the galaxy at t_emit.
+
+There's a third distance, and that's the distance the light actually traveled, which is somewhere in between the distance at t_now and the distance at t_emit.
+
+
+In our diagram, the distance at t_now is up at the top, the distance at t_emit is shown here  
+
+The distance the light travels is shown here. That's just ct, the speed of light times time.
+
+
+To remake the diagram, we need the distance the light has traveled, and the time it takes to get there.
+
+I'll show you the standard equations we would use to find those answers.
+
+Don't worry if they look complicated or intimidating, we discovered a much easier way to calculate to this stuff.
+
+I'm just showing you so you can appreciate how simple our algorithm is by comparison.
+
+
+The first thing we're going to do, is pick a redshift, let's say z=1.
+
+Of the three distances, we need the distance the light was emitted from, and the distance the light traveled. So it might sound strange, but the first distance we're going to calculate is is the distance the source galaxy is now.
+
+That's comoving distance, and that's given by:
+
+d_C = c/H \int_0^z \frac{dz'}{E(z')}
+
+Where E(z) = [OmegaM**3 + OmegaL]**1/2
+
+
+Here's some code to calculate that:
+
+
+Now we take this distance, the distance the galaxy is at now, and divide it by 1+z and we get the distance it was when it emitted the light we're getting today.
+
+To equation for the light travel time is:
+
+t = 1/H \int_0^z 1\(1+'z) E(z')
+
+The code to solve that is right here:
+
+
+So we have our t and our x, and we can plot that. Now we just need to do the same thing for a lot values of z, lower and and higher than z=1.
+
+When we do that, we get this:
+
+
+
+part 2
+
+How else could you do it?
+
+So here's how I did it.
+
+You can see more details in Episode 3 or Episode 5 about the different steps to make this model. But here's the recapp.
+
+As the universe expands things move away from us at a speed of v = Hd. 
+
+Light leaves our galaxy at the speed of light, c.
+
+Since things at distance d are moving at Hd, light should be moving at c relataive to them, so light has to move at c + Hd.
+
+H is Hubble's parameter, and that's calculated by redshift z using Hubble's constant times E(z), like this:
+
+Since this describes the history of the universe's expansion, we'll compute it by starting with light being observed at the present, then go backwards in time.
+
+
+
+
+
+
+
+We say everything is moving away at v = Hd, Hubble's law. 
+
+We saw in episode 4 that when Hd = c, that's the angular diameter distance turnaround. Check out that episode so learn more about that interesting feature of our universe.
+
+And while the galaxy is moving at c
+
+
+Let's say light leaves our galaxy at d=0, and winds up meeting a galaxy moving at 0.5 the speed of light.
+
+
+The equations are:
+
+d_C
+

@@ -21,6 +21,9 @@ var rY
 var Y = (x, y, lastY) => {
     //return y
     //return 1/H * Math.log(H * y + 1)
+    
+    return 1/H * Math.log(H * -x + 1)
+
     return lastY - 1/(1 - H * Math.abs(x)) * dx  
     
     //long
