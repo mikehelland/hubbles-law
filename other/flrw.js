@@ -54,7 +54,6 @@ function flrw2(H0, OmegaL, OmegaM, maxZ) {
     var OmegaK = 1 - OmegaL - OmegaM + 1 - 1
     var curv = Math.sqrt(Math.abs(OmegaK))
 
-    console.log(OmegaK)
     // convert km/s/Mpc  to  Mly/My/Mly
     H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
     var H = H0 
