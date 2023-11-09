@@ -17,15 +17,19 @@
 <body>
 
 
-    <form name="form">
-    &Lambda;CDM - 
-    &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
-    &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
-    H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
-    </form>
 
-    
-    <canvas id="canvas" width="1000" height="600"></canvas>
+    <div style="position: relative;">
+        <canvas id="canvas" width="1000" height="600"></canvas>
+        <canvas id="canvasz" width="1000" height="600" style="position: absolute; left:0; top:0; "></canvas>
+
+        <form name="form">
+            &Lambda;CDM - 
+            &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+            &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+            H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
+        </form>
+        
+    </div>
     <br>
     <p style="text-align: center; width: 1000px;">
         comoving distance (dotted), light travel time distance (dashed), angular diameter distance (solid)
@@ -116,6 +120,9 @@
         
         var maxZ = 10
 
+        var h = canvas.height
+        var w = canvas.width
+            
         screenshot.onchange = e => {
             var cls = screenshot.checked ? "sshot" : ""
             form.H0.className = cls
@@ -139,7 +146,20 @@
         wright.onchange = e => run()
         cappi.onchange = e => run()
         
+        var mmz
+        var mmx
+        var ctx2 = canvasz.getContext("2d")
+        canvasz.onmousemove = e => {
+            mmx = e.clientX - canvas.parentElement.offsetLeft 
+
+            drawCanvas2()
+        }
+        canvasz.onmouseout = e => {
+            mmx = 0
+            drawCanvas2()
+        }
         run()
+
 
         function run() {
             var H0 = parseFloat(form.H0.value)
@@ -163,18 +183,44 @@
             data3 = flrw2(H0, OmegaL, OmegaM, maxZ)
             
             drawCanvas()
+            drawCanvas2()
+            
 
+        }
+
+        function drawCanvas2() {
+            canvasz.width = canvasz.width
+            if (!mmx) return
+
+            mmz = (mmx - 20) / maxZ / 10
+
+            ctx2.font = "italic 14pt serif"
+            ctx2.beginPath()
+            ctx2.moveTo(mmx, 0)
+            ctx2.lineTo(mmx, canvas.height)
+            ctx2.stroke()
+
+            for (mmi = 0; mmi < data3.length; mmi++) {
+                if (data3[mmi].z >= mmz) break   
+            }
+            
+            //ctx2.fillText(mmz.toFixed(2), mmx, canvasz.height / 2)
+            ctx2.fillText((data3[mmi].d_C / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_C / zoomY)
+            ctx2.fillText((data3[mmi].d_T / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_T / zoomY )
+            ctx2.fillText((data3[mmi].d_A / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_A / zoomY )
+            ctx2.textAlign = "right"
+            ctx2.fillText("z = " + data3[mmi].z.toFixed(2),   mmx - 10, canvasz.height - 30)
+            
         }
 
         function drawCanvas() {
 
             var ctx = canvas.getContext("2d")
-            var h = canvas.height
-            var w = canvas.width
             canvas.width = w
 
             ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
+            ctx.textAlign = "center"
             for (var i = 0; i <= maxZ; i=i+1) {
                 ctx.fillText(i, 20 + i / maxZ * w, h)
             }
@@ -182,7 +228,6 @@
             ctx.textAlign = "right"
             ctx.fillText("redshift z", w - 10, h - 25)
 
-            
             for (var i = 0; i <= zoomY; i=i+2000) {
                 ctx.fillText(i / 1000, 18, h - 20 - h * i / zoomY)
             }
@@ -194,6 +239,7 @@
 
             ctx.lineWidth = 1
             ctx.strokeRect(0, 0, canvas.width, canvas.height)
+
             
             /*ctx.fillStyle = "black"
             data2.forEach(dp => {
