@@ -19,7 +19,8 @@
 		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="../reveal/plugin/highlight/monokai.css">
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
 	</head>
 
 	<body>
@@ -102,6 +103,47 @@
 					</div>
 					<script src="lightcone2.js"></script>
 				</section>
+
+
+				<section id="compare">
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="19-21">data = []
+		
+# Hubble's constant
+H0 = 70 # km/s/Mpc
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
+
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while z < 10:
+	t += -1 # million years
+
+	# photon speed is v = c - Hd
+	p += c - H * p
+	p2 += c - H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+						</code></pre>
+						<img src="ep6.png" height="913px" width="1093px">
+					</div>
+				</section>
+		
 
 			</div>
 

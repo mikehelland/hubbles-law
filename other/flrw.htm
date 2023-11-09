@@ -40,7 +40,7 @@
     <input type="checkbox" checked="checked" id="wright"> <a href="https://www.astro.ucla.edu/~wright/CosmoCalc.html">Ned Wright's Javascript Cosmological Calculator</a> 
     (<span style="color:blue;">blue</span>)
     <br>
-    <input type="checkbox"  id="cappi"> <a href="http://www.bo.astro.it/~cappi/cosmotools">Alberto Cappi's Javascript Cosmological Calculator</a> 
+    <input type="checkbox" checked="checked" id="cappi"> <a href="http://www.bo.astro.it/~cappi/cosmotools">Alberto Cappi's Javascript Cosmological Calculator</a> 
     (<span style="color:red;">red</span>)
 
     <br>
@@ -120,8 +120,7 @@
         
         var maxZ = 10
 
-        var h = canvas.height
-        var w = canvas.width
+        var canvas = document.getElementById("canvas")
             
         screenshot.onchange = e => {
             var cls = screenshot.checked ? "sshot" : ""
@@ -143,11 +142,12 @@
             run()
         }
 
-        wright.onchange = e => run()
-        cappi.onchange = e => run()
+        wright.onchange = e => drawCanvas()
+        cappi.onchange = e => drawCanvas()
         
         var mmz
         var mmx
+        var canvasz = document.getElementById("canvasz")
         var ctx2 = canvasz.getContext("2d")
         canvasz.onmousemove = e => {
             mmx = e.clientX - canvas.parentElement.offsetLeft 
@@ -172,12 +172,9 @@
             
             for (var i = 0; i <= maxZ; i=i+0.1) {
                 
-                if (cappi.checked) {
-                    data.push(FLRW(H0, OmegaL, OmegaM, i))
-                }
-                if (wright.checked) {
-                    data2.push(nwFLRW(H0, OmegaL, OmegaM, i))
-                }
+                data.push(FLRW(H0, OmegaL, OmegaM, i))
+                data2.push(nwFLRW(H0, OmegaL, OmegaM, i))
+                
             }
             
             data3 = flrw2(H0, OmegaL, OmegaM, maxZ)
@@ -216,7 +213,11 @@
         function drawCanvas() {
 
             var ctx = canvas.getContext("2d")
+            var w = canvas.width
+            var h = canvas.height
+        
             canvas.width = w
+            console.log(w, h)
 
             ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
@@ -234,71 +235,67 @@
             ctx.textAlign = "left"
             ctx.fillText("billion light years", 28, 18)
 
-            
             ctx.translate(20, -20)
 
             ctx.lineWidth = 1
             ctx.strokeRect(0, 0, canvas.width, canvas.height)
 
-            
-            /*ctx.fillStyle = "black"
-            data2.forEach(dp => {
-                ctx.fillRect(w * dp.z / maxZ, h / 2, 1, 1)
-            })*/
 
-            ctx.lineWidth = 10
-            ctx.strokeStyle = "red"
-            ctx.beginPath()
-            ctx.moveTo(0, h)
+            if (cappi.checked) {
+                ctx.lineWidth = 10
+                ctx.strokeStyle = "red"
+                ctx.beginPath()
+                ctx.moveTo(0, h)
 
-            data.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
 
 
-            ctx.beginPath()
-            ctx.moveTo(0, h)
+                ctx.beginPath()
+                ctx.moveTo(0, h)
 
-            data.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
 
-            ctx.beginPath()
-            ctx.moveTo(0, h)
+                ctx.beginPath()
+                ctx.moveTo(0, h)
 
-            data.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
-
-
-
-
-            ctx.lineWidth = 10
-            ctx.strokeStyle = "blue"
-            ctx.beginPath()
-            ctx.moveTo(0, h)
-
-            data2.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+            }
 
 
-            ctx.beginPath()
-            ctx.moveTo(0, h)
+            if (wright.checked) {
+                ctx.lineWidth = 10
+                ctx.strokeStyle = "blue"
+                ctx.beginPath()
+                ctx.moveTo(0, h)
 
-            data2.forEach(dp => {
-                ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
-            })
-            ctx.globalAlpha = 0.4
-            ctx.stroke()
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+            }
 
             ctx.beginPath()
             ctx.moveTo(0, h)
@@ -348,6 +345,7 @@
                 ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_C / zoomY)
             })
             ctx.stroke()
+            
 
         }
 
