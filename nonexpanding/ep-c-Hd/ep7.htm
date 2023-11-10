@@ -53,12 +53,15 @@
 					<div style="display: flex;">
 						<canvas id="lightcone1" width="900" height="800"></canvas>
 						<div style="text-align: left; padding-left: 20px;">
-							<p>On a spacetime diagram each point is an event </p>
-							<p id="lc1event" class="fragment" style="color:lightblue">Events have coordinates (t, x) </p>
-							<p id="lc1observer" class="fragment" style="color:gray;">Observer at the origin (0, 0) </p>
-							<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
-							<p class="fragment">Something happening a light year away...<br> is observed a year later</p>
-							<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>
+							<div id="lc1chunk1">
+								<p class="fragment">On a spacetime diagram each point is an event </p>
+								<p id="lc1event" class="fragment" style="color:lightblue">Events have coordinates (t, x) </p>
+								<p id="lc1observer" class="fragment" style="color:gray;">Observer at the origin (0, 0) </p>
+								<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
+								<p class="fragment">Something happening a light year away...<br> is observed a year later</p>
+								<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>	
+							</div>
+							<div class="fragment" id="lc1hidechunk1"></div>
 							<p id="lc1showcones" class="fragment">Events in the <span style="color:red;">past cone</span> can affect the present</p>
 							<p id="lc1showconef" class="fragment">The present can affect events in the <span style="color:blue;">future cone</span></p>
 							<p id="lc1hidecones" class="fragment"><br>Space was smaller in the past and is bigger in the future</p>
@@ -183,6 +186,32 @@ while z < 10:
 					</div>
 				</section>
 
+
+				<section>
+					<h3>Why isn't this equation more well known?</h3>
+					<p>$v = c - Hd$</p>
+					<ul>
+						<li class="fragment">It's not as simple as it looks</li>
+						<li class="fragment">$H$ is not constant</li>
+						<li class="fragment">$H = H_0 [\Omega_m (1+z)^3 + \Omega_\Lambda]^{1/2}$</li>
+						<li class="fragment" style="color:gray;">Technically, that's simplified too (missing $\Omega_k$ and $\Omega_r$)</li>
+						<li class="fragment">You might want to use $v$ to find $d$... but you need $d$ to find $v$</li>
+						<li class="fragment">Other equations that are easier to work with</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h3>Why this equation should be more well known:</h3>
+					<p>$v = c - Hd$</p>
+					<ul>
+						<li class="fragment">It's pretty easy to understand</li>
+						<li class="fragment">It's super simple to implement in an algorithm</li>
+						<li class="fragment">You use $v$ to update $d$, and $d$ to update $v$</li>
+					</ul>
+				</section>
+
+
 			</div>
 
 		</div>
@@ -237,6 +266,12 @@ while z < 10:
 				if (event.fragment.id === "lc1hidecones") {
 					lc1.zoomOut()
 				}
+				if (event.fragment.id === "lc1hidechunk1") {
+					lc1chunk1.style.display = "none"
+					Reveal.next()
+				}
+				
+
 
 				if (event.fragment.id === "lc2galaxy") {
 					lc2.showGalaxy()
@@ -250,10 +285,13 @@ while z < 10:
 				if (event.fragment.id === "lc2showcurve") {
 					lc2.showCurve()
 					lc2chunk1.style.display = "none"
+					Reveal.next()
 				}
 				if (event.fragment.id === "lc2moveg") {
 					lc2.moveG()
 				}
+
+
 			});
 
 			Reveal.on('slidechanged', event => {
