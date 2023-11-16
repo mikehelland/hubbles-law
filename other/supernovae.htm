@@ -130,7 +130,8 @@
 
 <div id="hypothesiseq">
     <!--\[  d = \frac{c}{H_{0}} log(1 + z)  \]-->
-    \[  H = 70~\text{km s}^{-1}~\text{Mpc}^{-1}  \]
+    <!--\[  H = 70~\text{km s}^{-1}~\text{Mpc}^{-1}  \]-->
+    \[ \Omega_m = 1, \Omega_\Lambda = 0 \]
 </div>
 
 
@@ -261,9 +262,29 @@ var black = false
         
 
 
-
         setLCDM()
-        ctxB.lineWidth = 1
+        ctxB.lineWidth = 2
+        ctxB.strokeStyle = "blue"
+        ctxB.beginPath()
+        ctxB.moveTo(offset, graph.height - offset)
+
+        zs.forEach(z => {
+            d = zToD(z)  
+            if (yAxis.selectedIndex === 2) {
+                d = d * (1 + z) //* 1000000
+                d = (5 * Math.log10(d) + 25 - 28) * 1000
+            }
+            else {
+                d = d * pc2ly
+            }
+            ctxB.lineTo( offset + z * zZoom * zoomG, 
+                        -offset + graph.height - d * zoomGY)
+        })
+        ctxB.stroke()
+
+
+        H0 = 55 * 1
+        ctxB.lineWidth = 2
         ctxB.strokeStyle = "green"
         ctxB.beginPath()
         ctxB.moveTo(offset, graph.height - offset)
