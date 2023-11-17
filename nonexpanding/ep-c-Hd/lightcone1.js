@@ -1,6 +1,5 @@
-function demoLightcone1() {
+function demoLightcone1(canvas) {
 
-    var canvas = lightcone1
     var ctx = canvas.getContext("2d")
     
     var ly0 = 150
@@ -63,6 +62,8 @@ function demoLightcone1() {
 
     var alphaVC_C = 0
     var alphaVnC_C = 0
+
+    var alphaQuad = 0
     
     var draw = function () {
         canvas.width = canvas.width
@@ -245,6 +246,12 @@ function demoLightcone1() {
         }
         ctx.globalAlpha = 1
 
+        if (alphaQuad) {
+            ctx.globalAlpha = alphaQuad
+            ctx.lineWidth = 8
+            ctx.strokeStyle = "red"
+            ctx.strokeRect(0, 0, -canvas.width / 2 + 8, canvas.height / 2 - 8)
+        }
     }
 
     var lyE = 0.28
@@ -259,11 +266,11 @@ function demoLightcone1() {
                 now = 2000
             }
 
-            alphaVC_C = 1 - Math.min(1, now/1000)
-            alphaVnC_C = 1 - Math.min(1, now/1000)
+            //alphaVC_C = 1 - Math.min(1, now/1000)
+            //alphaVnC_C = 1 - Math.min(1, now/1000)
 
-            alphaPast = 1 - Math.min(1, now/1000)
-            alphaFuture = 1 - Math.min(1, now/1000)
+            //alphaPast = 1 - Math.min(1, now/1000)
+            //alphaFuture = 1 - Math.min(1, now/1000)
             
             alphaPoint = 1 - Math.min(1, now/1000)
             ly = (ly0 - lyE) * (1 - now / 2000)**6 + lyE
@@ -337,5 +344,25 @@ function demoLightcone1() {
         })
     }
 
-    return {draw, zoomOut, showEvent, showObserver, showVC, showVnC, showCones, showFutureCone, hideCones}
+    var showQuad = function () {
+        anim((now) => {
+            alphaQuad = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+    var expanding = function () {
+        alphaPast = 0
+        alphaFuture = 0
+        alphaPastC = 1
+        alphaFutureC = 1
+        alphaVC = 1
+        alphaVnC = 1
+        alphaObserver = 1
+        alphaPoint = 1
+        alphaVC_C = 0
+        alphaVnC_C = 0
+    }    
+
+    return {draw, zoomOut, showEvent, showObserver, showVC, showVnC, showCones, showFutureCone, hideCones, expanding, showQuad}
 }

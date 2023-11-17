@@ -59,23 +59,40 @@
 								<p id="lc1observer" class="fragment" style="color:gray;">Observer at the origin (0, 0) </p>
 								<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
 								<p class="fragment">Something happening a light year away...<br> is observed a year later</p>
-								<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>	
 							</div>
 							<div class="fragment" id="lc1hidechunk1"></div>
+							<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>	
 							<p id="lc1showcones" class="fragment">Events in the <span style="color:red;">past cone</span> can affect the present</p>
 							<p id="lc1showconef" class="fragment">The present can affect events in the <span style="color:blue;">future cone</span></p>
-							<p id="lc1hidecones" class="fragment"><br>Space was smaller in the past and is bigger in the future</p>
+							
 						</div>
 					</div>
 					<script src="lightcone1.js"></script>
+				</section>
+
+
+				<section id="expandinglightcone">
+					<h2>Light cone in an expanding universe</h2>
+					<div style="display: flex;">
+						<canvas id="lightcone1ex" width="900" height="800"></canvas>
+						<div style="text-align: left; padding-left: 20px;">
+							<p id="lc1hidecones" class="fragment"><br>Zoom waaaay out</p>
+								
+							<p class="fragment">Space was smaller in the past </p>
+							<p class="fragment">... and gets bigger in the future</p>
+
+							<p class="fragment" id="lc1showquad"></p>
+						</div>
+					</div>
 				</section>
 
 				<section id="lcspeed">
 					<p>Speed of light in expanding space?</p>
 							
 					<div style="display: flex; justify-content: center;">
-						<div style="width:48%; padding-right: 20px; text-align: left;">
-							
+						<canvas id="lightcone2" width="900" height="800"></canvas>
+						<div style="width:48%; padding-left: 20px; text-align: left;">
+						
 							<div id="lc2chunk1">
 								<p class="fragment" id="lc2hidecurve">Straight line is <span style="color: yellow; ">$v = c$</span></p>
 								<p class="fragment" id="lc2galaxy">Objects in expanding space move at <span style="color: lightblue; ">$v = Hd$</span></p>
@@ -99,10 +116,9 @@
 								<span style="color: yellow; ">$c - Hd~$</span><span style="color: lightblue; ">$+ Hd$</span>
 							</p>
 							<p class="fragment">Light <em>is</em> moving at <span style="color: yellow; ">$c$</span> relative to <em>all</em> observers!</p>
-							<p class="fragment" id="lc2moveg">This galaxy is observed farther back in time</p>
+							<p class="fragment" id="lc2moveg">This distance is observed farther back in time</p>
 						</div>
-						<canvas id="lightcone2" width="900" height="800"></canvas>
-					
+						
 					</div>
 					<script src="lightcone2.js"></script>
 				</section>
@@ -195,8 +211,8 @@ while z < 10:
 						<li class="fragment">$H$ is not constant</li>
 						<li class="fragment">$H = H_0 [\Omega_m (1+z)^3 + \Omega_\Lambda]^{1/2}$</li>
 						<li class="fragment" style="color:gray;">Technically, that's simplified too (missing $\Omega_k$ and $\Omega_r$)</li>
-						<li class="fragment">You might want to use $v$ to find $d$... but you need $d$ to find $v$</li>
-						<li class="fragment">Other equations that are easier to work with</li>
+						<li class="fragment">Other equations</li>
+						<li class="fragment">Makes it seem like light isn't moving at $c$</li>
 					</ul>
 				</section>
 
@@ -205,13 +221,149 @@ while z < 10:
 					<h3>Why this equation should be more well known:</h3>
 					<p>$v = c - Hd$</p>
 					<ul>
-						<li class="fragment">It's pretty easy to understand</li>
+						<li class="fragment">Light <em>is</em> moving at $c$ for <em>all</em> observers</li>
+						<li class="fragment">It's just special relativity and Hubble's law combined</li>
 						<li class="fragment">It's super simple to implement in an algorithm</li>
-						<li class="fragment">You use $v$ to update $d$, and $d$ to update $v$</li>
+						<li class="fragment">Calculates all observables <span style="color: gray;">(distance, time, redshift)</span> for FLRW</li>
 					</ul>
 				</section>
 
+				<section>
+					<p>The algorithm compared to CosmoloPy</p>
+					<div style="display: flex; align-items: center;">
+					<pre  class="fragment" style="height:886px;"><code class="hljs python" >data = []
+		
+# Hubble's constant
+H0 = 70 # km/s/Mpc
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+OmegaM = 0.3
+OmegaL = 0.7
 
+c = 1  # the speed of light
+p = 0  # a photon's distance
+p2 = 0.1
+
+t = 0
+
+while z < 10:
+	t += -1 # million years
+
+	# photon speed is v = c - Hd
+	p += c - H * p
+	p2 += c - H * p2
+
+	# calculate redshift
+	z = 0.1 / (p2 - p) - 1
+
+	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+
+	data.append({
+		"z": z, "dEmit": p,
+		"dNow": p * (1 + z),
+		"dLight": c * -t
+	})
+						</code></pre>
+						<div  style="padding: 30px;">vs</div>
+						
+					<pre class="fragment" style="height:886px;"><code class="hljs python" >import cosmolopy.distance as cd
+
+cosmo = {
+	'omega_M_0' : OmegaM, 
+	'omega_lambda_0' : OmegaL, 
+	'h' : H0km/100
+}
+cosmo = cd.set_omega_k_0(cosmo)
+
+data2 = []
+
+# Parsec to lightyear
+pc2ly = 3.261564
+
+z = 0
+
+while z < 10:
+    d_C = cd.comoving_distance(z, **cosmo)  * pc2ly
+    d_A = cd.angular_diameter_distance(z, **cosmo)  * pc2ly
+    d_T = cd.lookback_time(z, **cosmo) / 60 / 60 / 24 / 365 / 1e6
+    
+    data2.append([z, d_T, d_A, d_C])
+    
+    z += 0.1
+						</code></pre>
+
+						
+					</div>
+				</section>
+
+				<section>
+					<p>The algorithm is shockingly accurate</p>
+					
+					<img src="../../other/python/cp4.png" height="913px" width="1093px">
+				</section>
+
+				<section>
+					<h2>FLRW</h2>
+					<p>Friedmann–Lemaître–Robertson–Walker metric</p>
+					<p class="fragment" style="color: gray;">(simplified)</p>
+					<ul>
+						<li class="fragment">$\Omega_m$, how much of the universe is matter</li>
+						<li class="fragment">$\Omega_\Lambda$, how much of the universe is dark energy</li>
+						<li class="fragment">When $\Omega_m + \Omega_\Lambda = 1$, it's "flat"</li>
+						<li class="fragment">That means triangles have 180 degrees </li>
+						<li class="fragment">If $\Omega_m + \Omega_\Lambda \neq 1$, it's "open" or "closed"</li>
+						
+					</ul>
+					
+				</section>
+			
+				<section data-auto-animate>
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">import math
+data = []
+
+H0km = 79
+OmegaL = 0.7
+OmegaM = 0.3
+OmegaK = 1 - OmegaL - OmegaM
+
+H0 = H0km / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (OmegaM * (1+z)**3 + OmegaL + OmegaK * (1+z)**2)**0.5
+
+    xx = abs(OmegaK)**0.5 * x2 * (1+z)
+    if OmegaK == 0:
+        x = x2
+    elif OmegaK < 0:
+        x = 1/H0 * math.sin(xx * H0) / xx * x2 
+    else:
+        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
+
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<img src="ep6.png" height="913px" width="1093px">
+					</div>
+				</section>
+
+			
+			
+			
+			
+			
+			
 			</div>
 
 		</div>
@@ -240,7 +392,8 @@ while z < 10:
 				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
 			});
 
-			var lc1 = demoLightcone1()
+			var lc1 = demoLightcone1(lightcone1)
+			var lc1ex = demoLightcone1(lightcone1ex)
 			var lc2 = demoLightcone2()
 
 			Reveal.on('fragmentshown', event => {
@@ -263,15 +416,19 @@ while z < 10:
 				if (event.fragment.id === "lc1showconef") {
 					lc1.showFutureCone()
 				}
-				if (event.fragment.id === "lc1hidecones") {
-					lc1.zoomOut()
-				}
 				if (event.fragment.id === "lc1hidechunk1") {
 					lc1chunk1.style.display = "none"
 					Reveal.next()
 				}
 				
 
+				if (event.fragment.id === "lc1hidecones") {
+					lc1ex.zoomOut()
+				}
+				if (event.fragment.id === "lc1showquad") {
+					lc1ex.showQuad()
+				}
+				
 
 				if (event.fragment.id === "lc2galaxy") {
 					lc2.showGalaxy()
@@ -297,6 +454,10 @@ while z < 10:
 			Reveal.on('slidechanged', event => {
 				if (event.currentSlide.id === "basiclightcone") {
 					lc1.draw()
+				}		
+				if (event.currentSlide.id === "expandinglightcone") {
+					lc1ex.expanding()
+					lc1ex.draw()
 				}		
 
 				if (event.currentSlide.id === "lcspeed") {

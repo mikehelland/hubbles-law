@@ -36,7 +36,7 @@ function demoLightcone2() {
         H = H0 * Math.sqrt(0.3 * (1+z)**3 + 0.7)
     }
 
-    var alphaLine = 1
+    var alphaLine = 0
     var alphaCurve = 1
     var alphaGalaxy = 0
     var alphaLightArrow = 0
@@ -220,6 +220,7 @@ function demoLightcone2() {
         anim((now) => {
             alphaCurve = 1 - Math.min(1, now/1000)
             alphaLightArrow = Math.min(1, now/1000)
+            alphaLine = Math.min(1, now/1000)
             return now > 1000
         })
     }
