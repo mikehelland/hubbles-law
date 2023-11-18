@@ -94,41 +94,35 @@ function demoLightcone2() {
         if (alphaLine) {
             ctx.globalAlpha = alphaLine
             
+        /*
             ctx.beginPath()
             ctx.moveTo(-1000, 1000)
             ctx.lineTo(0, 0)
             ctx.setLineDash([30, 10])
             ctx.stroke()
             ctx.setLineDash([])
-
+        */
             ctx.fillStyle = "white"
             ctx.fillText("v = c", -670, 580)
         }
 
         ctx.globalAlpha = 1
 
-
-        if (alphaCurve) {
-            ctx.globalAlpha = alphaCurve
-            ctx.lineWidth = 4
-            ctx.strokeStyle = "yellow"
-            ctx.beginPath()
-            for (di = 0; di < line1.length; di++) {
-                ctx.lineTo(line1[di] * ly, di * ly)
-            }
-            ctx.stroke()
-
-            if (alphaGalaxy) {
-                ctx.fillText("v = c - Hd", -220, 580)
-            }
-            else {
-                ctx.fillText("v = ?", -220, 580)
-            }
+        ctx.lineWidth = 4
+        ctx.strokeStyle = "yellow"
+        ctx.beginPath()
+        for (di = 0; di < line1.length; di++) {
+            ctx.lineTo((1-alphaCurve) * -di * ly + alphaCurve * line1[di] * ly, di * ly)
         }
-        ctx.globalAlpha = 1
+        ctx.stroke()
 
-
-
+        ctx.globalAlpha = alphaCurve
+        if (alphaGalaxy) {
+            ctx.fillText("v = c - Hd", -220, 580)
+        }
+        else {
+            ctx.fillText("v = ?", -220, 580)
+        }
 
         ctx.globalAlpha = alphaGalaxy
 

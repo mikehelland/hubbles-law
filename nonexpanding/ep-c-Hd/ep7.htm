@@ -132,8 +132,8 @@
 H0 = 70 # km/s/Mpc
 H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
 H = H0
-OmegaM = 0.3
-OmegaL = 0.7
+Ωm = 0.3
+ΩΛ = 0.7
 
 c = 1  # the speed of light
 p = 0  # a photon's distance
@@ -151,7 +151,7 @@ while z < 10:
 	# calculate redshift
 	z = 0.1 / (p2 - p) - 1
 
-	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
 	data.append({
 		"z": z, "dEmit": p,
@@ -171,8 +171,8 @@ while z < 10:
 H0 = 70 # km/s/Mpc
 H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
 H = H0
-OmegaM = 0.3
-OmegaL = 0.7
+Ωm = 0.3
+ΩΛ = 0.7
 
 c = 1  # the speed of light
 p = 0  # a photon's distance
@@ -190,7 +190,7 @@ while z < 10:
 	# calculate redshift
 	z = 0.1 / (p2 - p) - 1
 
-	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
 	data.append({
 		"z": z, "dEmit": p,
@@ -218,31 +218,231 @@ while z < 10:
 
 
 				<section>
-					<h3>Why this equation should be more well known:</h3>
+					<h3>On the other hand:</h3>
 					<p>$v = c - Hd$</p>
 					<ul>
-						<li class="fragment">Light <em>is</em> moving at $c$ for <em>all</em> observers</li>
-						<li class="fragment">It's just special relativity and Hubble's law combined</li>
+						<li class="fragment">If light is $c$ for all observers...</li>
+						<li class="fragment">its speed <em>has</em> to be 
+							<span style="color: yellow; "> $~c - Hd~$ </span> since all observers move at 
+							<span style="color: lightblue; "> $~Hd~$ </span>
+						</li>
 						<li class="fragment">It's super simple to implement in an algorithm</li>
 						<li class="fragment">Calculates all observables <span style="color: gray;">(distance, time, redshift)</span> for FLRW</li>
 					</ul>
 				</section>
 
+
+
 				<section>
-					<p>The algorithm compared to CosmoloPy</p>
+					<h2>FLRW</h2>
+					<p>Friedmann–Lemaître–Robertson–Walker metric</p>
+					<p class="fragment" style="color: gray;">(simplified)</p>
+					<ul>
+						<li class="fragment">$\Omega_m$, how much of the universe is matter</li>
+						<li class="fragment">$\Omega_\Lambda$, how much of the universe is dark energy</li>
+						<li class="fragment">When $\Omega_m + \Omega_\Lambda = 1$, it's "flat"</li>
+						<li class="fragment">That means triangles have 180 degrees </li>
+						<li class="fragment">If $\Omega_m + \Omega_\Lambda \neq 1$, it's "open" or "closed"</li>
+						
+					</ul>
+					
+				</section>
+
+				<section data-auto-animate>
 					<div style="display: flex; align-items: center;">
-					<pre  class="fragment" style="height:886px;"><code class="hljs python" >data = []
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">data = []
+
+H0 = 70
+ΩΛ = 0.7
+Ωm = 0.3
+
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (Ωm * (1+z)**3 + ΩΛ)**0.5
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<p style="width: 50%;">Flat Only</p>
+					</div>
+				</section>
+
+				<section data-auto-animate>
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="6">data = []
+
+H0 = 70
+ΩΛ = 0.7
+Ωm = 0.3
+Ωk = 1 - ΩΛ - Ωm
+
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (Ωm * (1+z)**3 + ΩΛ)**0.5
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<p style="width: 50%;">$\Omega_k$ is the curvature parameter</p>
+					</div>
+				</section>
+				
+				<section data-auto-animate>
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="21">data = []
+
+H0 = 70
+ΩΛ = 0.7
+Ωm = 0.3
+Ωk = 1 - ΩΛ - Ωm
+
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<p style="width: 50%;">$\Omega_k (1+z)^2$</p>
+					</div>
+				</section>
+
+				<section data-auto-animate>
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="24-30">import math
+data = []
+
+H0 = 70
+ΩΛ = 0.7
+Ωm = 0.3
+Ωk = 1 - ΩΛ - Ωm
+
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
+
+    xx = abs(Ωk)**0.5 * x2 * (1+z)
+    if Ωk == 0:
+        x = x2
+    elif Ωk < 0:
+        x = 1/H0 * math.sin(xx * H0) / xx * x2 
+    else:
+        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
+
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<p style="width: 50%;">Flat, Open, and Closed</p>
+					</div>
+				</section>
+
+			
+			
+
+				<section data-auto-animate>
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="19-20">import math
+data = []
+
+H0 = 70
+ΩΛ = 0.7
+Ωm = 0.3
+Ωk = 1 - ΩΛ - Ωm
+
+H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+H = H0
+c = 1
+z = 0
+t = 0
+x1 = 0.1
+x2 = 0
+
+while z < 10:
+    t -= 1
+    x1 += c - H * x1
+    x2 += c - H * x2
+    z = 0.1 / (x1 - x2) - 1
+    H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
+
+    xx = abs(Ωk)**0.5 * x2 * (1+z)
+    if Ωk == 0:
+        x = x2
+    elif Ωk < 0:
+        x = 1/H0 * math.sin(xx * H0) / xx * x2 
+    else:
+        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
+
+    
+    data.append([z, -t, x, x2 * (1 + z)])
+
+						</code></pre>
+						<p style="width: 50%;">$v=c-Hd$</p>
+					</div>
+				</section>			
+	
+
+
+				<section>
+					<p>Calculating distances with CosmoloPy</p>
+					<!--
+					<div style="display: flex; align-items: center;">
+					<pre style="height:886px;"><code class="hljs python" >data = []
 		
 # Hubble's constant
 H0 = 70 # km/s/Mpc
 H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
 H = H0
-OmegaM = 0.3
-OmegaL = 0.7
+Ωm = 0.3
+ΩΛ = 0.7
 
-c = 1  # the speed of light
-p = 0  # a photon's distance
-p2 = 0.1
+c = 1     # the speed of light
+x1 = 0.1  # a photon's wavelength
+x2 = 0    # a photon's distance
 
 t = 0
 
@@ -250,27 +450,23 @@ while z < 10:
 	t += -1 # million years
 
 	# photon speed is v = c - Hd
-	p += c - H * p
-	p2 += c - H * p2
+	x1 += c - H * x1
+	x2 += c - H * x2
 
 	# calculate redshift
-	z = 0.1 / (p2 - p) - 1
+	z = 0.1 / (x1 - x2) - 1
 
-	H = H0 * (OmegaM * (1 + z)**3 + OmegaL)**(1/2)
+	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
-	data.append({
-		"z": z, "dEmit": p,
-		"dNow": p * (1 + z),
-		"dLight": c * -t
-	})
+	data.append([z, -t, x2, x2 * (1 + z)])
 						</code></pre>
-						<div  style="padding: 30px;">vs</div>
-						
-					<pre class="fragment" style="height:886px;"><code class="hljs python" >import cosmolopy.distance as cd
+						<div class="fragment" style="padding: 30px;">vs</div>
+					-->
+					<pre style="height:746px; width:1000px;"><code class="hljs python" data-line-numbers="">import cosmolopy.distance as cd
 
 cosmo = {
-	'omega_M_0' : OmegaM, 
-	'omega_lambda_0' : OmegaL, 
+	'omega_M_0' : Ωm, 
+	'omega_lambda_0' : ΩΛ, 
 	'h' : H0km/100
 }
 cosmo = cd.set_omega_k_0(cosmo)
@@ -293,77 +489,39 @@ while z < 10:
 						</code></pre>
 
 						
-					</div>
+					<!--</div>-->
 				</section>
 
 				<section>
-					<p>The algorithm is shockingly accurate</p>
+					<p>The algorithm compared to CosmoloPy</p>
 					
 					<img src="../../other/python/cp4.png" height="913px" width="1093px">
 				</section>
-
+		
+			
 				<section>
-					<h2>FLRW</h2>
-					<p>Friedmann–Lemaître–Robertson–Walker metric</p>
-					<p class="fragment" style="color: gray;">(simplified)</p>
+					<h3>Did I discover the <em>REAL</em> speed of light?</h3>
 					<ul>
-						<li class="fragment">$\Omega_m$, how much of the universe is matter</li>
-						<li class="fragment">$\Omega_\Lambda$, how much of the universe is dark energy</li>
-						<li class="fragment">When $\Omega_m + \Omega_\Lambda = 1$, it's "flat"</li>
-						<li class="fragment">That means triangles have 180 degrees </li>
-						<li class="fragment">If $\Omega_m + \Omega_\Lambda \neq 1$, it's "open" or "closed"</li>
+						<li class="fragment"><span style="color:gray;">Argument:</span>: This is the coordinate speed of light, not the real speed of light</li>
+						<li class="fragment">These coordinates are proper distance and cosmic time, which are considered physical time and space</li><br>						
+						<li class="fragment"><span style="color:gray;">Argument:</span>: This assumes no "peculiar velocity," the only motion is due to the expansion of space</li>
+						<li class="fragment">Pretty much</li><br>						
+						<li class="fragment"><span style="color:gray;">Argument:</span>: Obviously someone else has pointed out photons move at $v=c-Hd$.</li>
+						<li class="fragment">Not that I know of.</li>
 						
 					</ul>
+				</section>
+
+				<section>
+					<p style="background-color: black;">$\lambda_{obs} - \lambda_{emit}$ </p>
+					<img src="cunningham.png">
+
+					<p class="fragment">Know of any examples of the useful equation/algorithm?</p>
+
+					<p class="fragment">Got a problem with something I just said?</p>
+					<p class="fragment">Leave a comment!</p>
 					
 				</section>
-			
-				<section data-auto-animate>
-					<div style="display: flex; align-items: center;">
-					<pre style="height:886px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">import math
-data = []
-
-H0km = 79
-OmegaL = 0.7
-OmegaM = 0.3
-OmegaK = 1 - OmegaL - OmegaM
-
-H0 = H0km / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
-H = H0
-c = 1
-z = 0
-t = 0
-x1 = 0.1
-x2 = 0
-
-while z < 10:
-    t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
-    H = H0 * (OmegaM * (1+z)**3 + OmegaL + OmegaK * (1+z)**2)**0.5
-
-    xx = abs(OmegaK)**0.5 * x2 * (1+z)
-    if OmegaK == 0:
-        x = x2
-    elif OmegaK < 0:
-        x = 1/H0 * math.sin(xx * H0) / xx * x2 
-    else:
-        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
-
-    
-    data.append([z, -t, x, x2 * (1 + z)])
-
-						</code></pre>
-						<img src="ep6.png" height="913px" width="1093px">
-					</div>
-				</section>
-
-			
-			
-			
-			
-			
-			
 			</div>
 
 		</div>
