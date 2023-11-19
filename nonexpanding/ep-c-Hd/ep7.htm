@@ -202,6 +202,56 @@ while z < 10:
 					</div>
 				</section>
 
+				<section>
+					<p>There's an important part of the algorithm I haven't fully explained...</p>
+				</section>
+
+				<section id="wl1">
+					<p>Forward in time, expanding, $v = c + Hd$</p>
+					<div style="display: flex; align-items: center;">
+						<canvas id="wavelengths1" width="900" height="800"></canvas>
+					<pre style="height:800px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">λemit = 0.1
+
+x  = 0
+xλ = x + λemit
+
+while z < 10:
+
+	# photon speed is v = c + Hx
+	x  += c + H * x
+	xλ += c + H * xλ
+
+	# calculate redshift
+	z = (xλ - x) / λemit  - 1
+
+						</code></pre>
+					</div>
+				</section>
+				<script src="wavelengths1.js"></script>
+
+				<section id="wl2">
+					<p>In reverse, $v = c - Hd$</p>
+					<div style="display: flex; align-items: center;">
+						<canvas id="wavelengths2" width="900" height="800"></canvas>
+					<pre style="height:800px;" data-id="code-animation"><code class="hljs python" data-line-numbers="">λobs = 0.1
+
+x  = 0
+xλ = x + λobs
+
+while z < 10:
+
+	# photon speed is v = c - Hx
+	x  += c - H * x
+	xλ += c - H * xλ
+
+	# calculate redshift
+	z = λobs / (xλ - x)  - 1
+
+						</code></pre>
+					</div>
+				</section>
+				
+
 
 				<section>
 					<h3>Why isn't this equation more well known?</h3>
@@ -513,7 +563,6 @@ while z < 10:
 				</section>
 
 				<section>
-					<p style="background-color: black;">$\lambda_{obs} - \lambda_{emit}$ </p>
 					<img src="cunningham.png">
 
 					<p class="fragment">Know of any examples of the useful equation/algorithm?</p>
@@ -553,6 +602,8 @@ while z < 10:
 			var lc1 = demoLightcone1(lightcone1)
 			var lc1ex = demoLightcone1(lightcone1ex)
 			var lc2 = demoLightcone2()
+			var wl1 = demoWavelengths1(wavelengths1, 1)
+			var wl2 = demoWavelengths1(wavelengths2, -1)
 
 			Reveal.on('fragmentshown', event => {
 				console.log(event.fragment.id)
@@ -620,7 +671,14 @@ while z < 10:
 
 				if (event.currentSlide.id === "lcspeed") {
 					lc2.draw()
-				}		
+				}
+				
+				if (event.currentSlide.id === "wl1") {
+					wl1.draw()
+				}
+				if (event.currentSlide.id === "wl2") {
+					wl2.draw()
+				}
 			});
 
 
