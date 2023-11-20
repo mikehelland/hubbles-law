@@ -44,7 +44,7 @@
 						&darr;
 					</p>
 					<img src="lightcone1.png">
-					<p class="fragment">Light cone in the expanding universe</p>
+					<p class="fragment">Light coming from two directions</p>
 					
 				</section>
 
@@ -63,6 +63,7 @@
 							<div class="fragment" id="lc1hidechunk1"></div>
 							<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>	
 							<p id="lc1showcones" class="fragment">Events in the <span style="color:red;">past cone</span> can affect the present</p>
+							<p id="lc1showconeout" class="fragment">Unlike this point here</p>
 							<p id="lc1showconef" class="fragment">The present can affect events in the <span style="color:blue;">future cone</span></p>
 							
 						</div>
@@ -226,6 +227,9 @@ while z < 10:
 
 						</code></pre>
 					</div>
+					<div class="fragment" id="wlpoint2"></div>
+					<div class="fragment" id="wlpoint3"></div>
+
 				</section>
 				<script src="wavelengths1.js"></script>
 
@@ -249,6 +253,8 @@ while z < 10:
 
 						</code></pre>
 					</div>
+					<div class="fragment" id="wl2point2"></div>
+					<div class="fragment" id="wl2point3"></div>
 				</section>
 				
 
@@ -259,9 +265,10 @@ while z < 10:
 					<ul>
 						<li class="fragment">It's not as simple as it looks</li>
 						<li class="fragment">$H$ is not constant</li>
+						<li class="fragment" style="color: gray;">It was in the examples, that still works</li>
+						<li class="fragment">But our universe is more complex </li>
 						<li class="fragment">$H = H_0 [\Omega_m (1+z)^3 + \Omega_\Lambda]^{1/2}$</li>
 						<li class="fragment" style="color:gray;">Technically, that's simplified too (missing $\Omega_k$ and $\Omega_r$)</li>
-						<li class="fragment">Other equations</li>
 						<li class="fragment">Makes it seem like light isn't moving at $c$</li>
 					</ul>
 				</section>
@@ -277,6 +284,8 @@ while z < 10:
 							<span style="color: lightblue; "> $~Hd~$ </span>
 						</li>
 						<li class="fragment">It's super simple to implement in an algorithm</li>
+						<li class="fragment" style="color: gray; ">Even for our changing expansion rate universe</li>
+						
 						<li class="fragment">Calculates all observables <span style="color: gray;">(distance, time, redshift)</span> for FLRW</li>
 					</ul>
 				</section>
@@ -286,12 +295,12 @@ while z < 10:
 				<section>
 					<h2>FLRW</h2>
 					<p>Friedmann–Lemaître–Robertson–Walker metric</p>
-					<p class="fragment" style="color: gray;">(simplified)</p>
+					<p class="fragment" style="color: gray;">(simplified, see Episode 2)</p>
 					<ul>
 						<li class="fragment">$\Omega_m$, how much of the universe is matter</li>
 						<li class="fragment">$\Omega_\Lambda$, how much of the universe is dark energy</li>
 						<li class="fragment">When $\Omega_m + \Omega_\Lambda = 1$, it's "flat"</li>
-						<li class="fragment">That means triangles have 180 degrees </li>
+						<li class="fragment" style="color:gray;">That means triangles have 180 degrees </li>
 						<li class="fragment">If $\Omega_m + \Omega_\Lambda \neq 1$, it's "open" or "closed"</li>
 						
 					</ul>
@@ -427,7 +436,7 @@ while z < 10:
     data.append([z, -t, x, x2 * (1 + z)])
 
 						</code></pre>
-						<p style="width: 50%;">Flat, Open, and Closed</p>
+						<p style="width: 50%;">Flat, Closed, or Open</p>
 					</div>
 				</section>
 
@@ -478,7 +487,7 @@ while z < 10:
 
 
 				<section>
-					<p>Calculating distances with CosmoloPy</p>
+					<p>Test the algorithm's accuracy against CosmoloPy</p>
 					<!--
 					<div style="display: flex; align-items: center;">
 					<pre style="height:886px;"><code class="hljs python" >data = []
@@ -512,7 +521,7 @@ while z < 10:
 						</code></pre>
 						<div class="fragment" style="padding: 30px;">vs</div>
 					-->
-					<pre style="height:746px; width:1000px;"><code class="hljs python" data-line-numbers="">import cosmolopy.distance as cd
+					<pre style="height:746px; width:1000px;"><code class="hljs python" data-line-numbers="18-20">import cosmolopy.distance as cd
 
 cosmo = {
 	'omega_M_0' : Ωm, 
@@ -546,6 +555,7 @@ while z < 10:
 					<p>The algorithm compared to CosmoloPy</p>
 					
 					<img src="../../other/python/cp4.png" height="913px" width="1093px">
+					<p class="fragment">(Link to notebook in the description.)</p>
 				</section>
 		
 			
@@ -625,6 +635,10 @@ while z < 10:
 				if (event.fragment.id === "lc1showconef") {
 					lc1.showFutureCone()
 				}
+				if (event.fragment.id === "lc1showconeout") {
+					lc1.showOutPoint()
+				}
+
 				if (event.fragment.id === "lc1hidechunk1") {
 					lc1chunk1.style.display = "none"
 					Reveal.next()
@@ -657,7 +671,13 @@ while z < 10:
 					lc2.moveG()
 				}
 
+				if (event.fragment.id.startsWith("wlpoint")) {
+					wl1.next()
+				}
 
+				if (event.fragment.id.startsWith("wl2point")) {
+					wl2.next()
+				}
 			});
 
 			Reveal.on('slidechanged', event => {

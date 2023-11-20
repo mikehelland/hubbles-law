@@ -59,6 +59,7 @@ function demoLightcone1(canvas) {
     var alphaVnC = 0
     var alphaObserver = 0
     var alphaPoint = 0
+    var alphaOutPoint = 0
 
     var alphaVC_C = 0
     var alphaVnC_C = 0
@@ -246,6 +247,32 @@ function demoLightcone1(canvas) {
         }
         ctx.globalAlpha = 1
 
+        if (alphaOutPoint) {
+            ctx.globalAlpha = alphaOutPoint
+
+            ctx.beginPath()
+            ctx.moveTo(ly * 1.5, ly / 2)
+            ctx.lineTo(0, - 1 * ly)
+            ctx.setLineDash([20, 20])
+            ctx.strokeStyle = "yellow"
+            ctx.stroke()
+            ctx.setLineDash([])
+
+
+            ctx.lineWidth = 4
+            ctx.strokeStyle = "white"
+            ctx.fillStyle = "lightblue"
+            ctx.beginPath()
+            ctx.arc(ly * 1.5, ly / 2, 14, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.stroke()
+
+            
+
+        }
+        ctx.globalAlpha = 1
+
+
         if (alphaQuad) {
             ctx.globalAlpha = alphaQuad
             ctx.lineWidth = 8
@@ -332,6 +359,7 @@ function demoLightcone1(canvas) {
         anim((now) => {
             alphaFuture = Math.min(1, now/1000)
             alphaFutureC = Math.min(1, now/1000)
+            alphaOutPoint = 1 - alphaFutureC
             return now > 1000
         })
     }
@@ -351,6 +379,13 @@ function demoLightcone1(canvas) {
         })
     }
 
+    var showOutPoint = function () {
+        anim((now) => {
+            alphaOutPoint = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
     var expanding = function () {
         alphaPast = 0
         alphaFuture = 0
@@ -364,5 +399,5 @@ function demoLightcone1(canvas) {
         alphaVnC_C = 0
     }    
 
-    return {draw, zoomOut, showEvent, showObserver, showVC, showVnC, showCones, showFutureCone, hideCones, expanding, showQuad}
+    return {draw, zoomOut, showEvent, showObserver, showVC, showVnC, showCones, showFutureCone, hideCones, expanding, showQuad, showOutPoint}
 }

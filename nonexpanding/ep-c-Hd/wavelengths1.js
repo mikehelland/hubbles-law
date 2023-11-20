@@ -21,7 +21,7 @@ function demoWavelengths1(canvas, t) {
 
     var d2 = 1
 
-    var points = 3
+    var points = 1
     var point0 = []
     point0.push([0, 0])
 
@@ -40,10 +40,7 @@ function demoWavelengths1(canvas, t) {
 
     }
 
-    var alphaLine = 0
-    var alphaCurve = 1
-    var alphaGalaxy = 0
-    var alphaLightArrow = 0
+    var alphaPoints = 1
 
     var dtext
 
@@ -91,7 +88,6 @@ function demoWavelengths1(canvas, t) {
         ctx.textAlign = "right"
         ctx.fillText("space", canvas.width - 25, 25)
         
-        console.log(point0, point1)
 
         if (t > 0) {
             ctx.font = "italic 20pt serif"
@@ -102,13 +98,16 @@ function demoWavelengths1(canvas, t) {
             ctx.font = "italic 16pt serif"
             ctx.fillText("emit", 25 + dtext, 60)
 
-            ctx.font = "italic 20pt serif"
-            ctx.textAlign = "left"
-            ctx.fillText("λ", point0[2][0] * ly + 200, -t * point0[2][0] * ly)
-            dtext = ctx.measureText("λ").width
-            
-            ctx.font = "italic 16pt serif"
-            ctx.fillText("obs", point0[2][0] * ly + 200 + dtext, -t * point0[2][0] * ly + 10)
+            if (points == 3) {
+                ctx.globalAlpha = alphaPoints
+                ctx.font = "italic 20pt serif"
+                ctx.textAlign = "left"
+                ctx.fillText("λ", point0[2][0] * ly + 200, -t * point0[2][0] * ly)
+                dtext = ctx.measureText("λ").width
+                
+                ctx.font = "italic 16pt serif"
+                ctx.fillText("obs", point0[2][0] * ly + 200 + dtext, -t * point0[2][0] * ly + 10)
+            }
         }
         else {
             ctx.font = "italic 20pt serif"
@@ -128,6 +127,7 @@ function demoWavelengths1(canvas, t) {
             ctx.fillText("emit", 220 + dtext, 350 + 10)
         }
 
+        ctx.globalAlpha = 1
         ctx.strokeStyle = "yellow"
             
         ctx.beginPath()
@@ -137,16 +137,19 @@ function demoWavelengths1(canvas, t) {
         }
         ctx.stroke()
 
-        ctx.beginPath()
-        ctx.moveTo(point1[0][1] * ly, point1[0][0] * ly)
         for (di = 1; di < points; di++) {
+            ctx.beginPath()
+            ctx.moveTo(point1[di-1][1] * ly, -point1[di-1][0] * ly)
             ctx.lineTo(point1[di][1] * ly, -point1[di][0] * ly )
+            ctx.globalAlpha = points > di ? 1 : alphaPoints
+            ctx.stroke()
         }
-        ctx.stroke()
 
         ctx.fillStyle = "yellow"
             
-        for (di = 0; di < point0.length; di++) {
+        for (di = 0; di < points; di++) {
+            ctx.globalAlpha = di + 1 === points ? alphaPoints : 1 
+            
             ctx.beginPath()
             ctx.arc(ly * point0[di][1], ly * -point0[di][0], 14, 0, Math.PI * 2)
             ctx.fill()
@@ -176,13 +179,14 @@ function demoWavelengths1(canvas, t) {
         }, 1000/60)
     }
 
-    var showGalaxy = function () {
+    var next = function () {
+        points++
         anim((now) => {
-            alphaGalaxy = Math.min(1, now/1000)
-            return now > 1000
+            alphaPoints = Math.min(1, now/2000)
+            return now > 2000
         })
     }
 
 
-    return {draw, showGalaxy}
+    return {draw, next}
 }
