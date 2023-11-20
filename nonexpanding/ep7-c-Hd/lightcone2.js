@@ -118,7 +118,7 @@ function demoLightcone2() {
 
         ctx.globalAlpha = alphaCurve
         if (alphaGalaxy) {
-            ctx.fillText("v = c - Hd", -220, 580)
+            ctx.fillText("v = c - Hd", -200, 580)
         }
         else {
             ctx.fillText("v = ?", -220, 580)

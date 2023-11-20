@@ -317,7 +317,7 @@ function demoLightcone1(canvas) {
             }
             
             draw()
-        }, 1000/60)
+        }, 1000/30)
     }
 
     var showEvent = function () {

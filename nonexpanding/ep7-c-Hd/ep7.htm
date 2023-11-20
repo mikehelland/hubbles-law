@@ -57,8 +57,9 @@
 								<p class="fragment">On a spacetime diagram each point is an event </p>
 								<p id="lc1event" class="fragment" style="color:lightblue">Events have coordinates (t, x) </p>
 								<p id="lc1observer" class="fragment" style="color:gray;">Observer at the origin (0, 0) </p>
-								<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
 								<p class="fragment">Something happening a light year away...<br> is observed a year later</p>
+								<p id="lc1vc" class="fragment" style="color:yellow;">Light travels in straight lines at 45 degree angles </p>
+								
 							</div>
 							<div class="fragment" id="lc1hidechunk1"></div>
 							<p class="fragment" id="lc1vnc" style="color:yellow;">Light from both directions</p>	
@@ -136,9 +137,9 @@ H = H0
 Ωm = 0.3
 ΩΛ = 0.7
 
-c = 1  # the speed of light
-p = 0  # a photon's distance
-p2 = 0.1
+c = 1     # the speed of light
+x = 0     # a photon's distance
+xλ = 0.1  # a wavelength
 
 t = 0
 
@@ -146,19 +147,15 @@ while z < 10:
 	t += -1 # million years
 
 	# photon speed is v = c - Hd
-	p += c - H * p
-	p2 += c - H * p2
+	x  += c - H * x
+	xλ += c - H * xλ
 
 	# calculate redshift
-	z = 0.1 / (p2 - p) - 1
+	z = 0.1 / (xλ - x) - 1
 
 	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
-	data.append({
-		"z": z, "dEmit": p,
-		"dNow": p * (1 + z),
-		"dLight": c * -t
-	})
+	data.append([z, -t, x, x * (1 + z)])
 						</code></pre>
 						<img src="ep6.png" height="913px" width="1093px">
 					</div>
@@ -175,9 +172,9 @@ H = H0
 Ωm = 0.3
 ΩΛ = 0.7
 
-c = 1  # the speed of light
-p = 0  # a photon's distance
-p2 = 0.1
+c = 1     # the speed of light
+x = 0     # a photon's distance
+xλ = 0.1  # a wavelength
 
 t = 0
 
@@ -185,26 +182,22 @@ while z < 10:
 	t += -1 # million years
 
 	# photon speed is v = c - Hd
-	p += c - H * p
-	p2 += c - H * p2
+	x  += c - H * x
+	xλ += c - H * xλ
 
 	# calculate redshift
-	z = 0.1 / (p2 - p) - 1
+	z = 0.1 / (xλ - x) - 1
 
 	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
-	data.append({
-		"z": z, "dEmit": p,
-		"dNow": p * (1 + z),
-		"dLight": c * -t
-	})
+	data.append([z, -t, x, x * (1 + z)])
 						</code></pre>
 						<img src="ep6.png" height="913px" width="1093px">
 					</div>
 				</section>
 
 				<section>
-					<p>There's an important part of the algorithm I haven't fully explained...</p>
+					<p>How does this actually work?</p>
 				</section>
 
 				<section id="wl1">
@@ -320,17 +313,17 @@ H = H0
 c = 1
 z = 0
 t = 0
-x1 = 0.1
-x2 = 0
+xλ = 0.1
+x = 0
 
 while z < 10:
     t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
+    x  += c - H * x
+    xλ += c - H * xλ
+    z = 0.1 / (xλ - x) - 1
     H = H0 * (Ωm * (1+z)**3 + ΩΛ)**0.5
     
-    data.append([z, -t, x, x2 * (1 + z)])
+    data.append([z, -t, x, x * (1 + z)])
 
 						</code></pre>
 						<p style="width: 50%;">Flat Only</p>
@@ -351,17 +344,17 @@ H = H0
 c = 1
 z = 0
 t = 0
-x1 = 0.1
-x2 = 0
+xλ = 0.1
+x = 0
 
 while z < 10:
     t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
+    x  += c - H * x
+    xλ += c - H * xλ
+    z = 0.1 / (xλ - x) - 1
     H = H0 * (Ωm * (1+z)**3 + ΩΛ)**0.5
     
-    data.append([z, -t, x, x2 * (1 + z)])
+    data.append([z, -t, x, x * (1 + z)])
 
 						</code></pre>
 						<p style="width: 50%;">$\Omega_k$ is the curvature parameter</p>
@@ -382,17 +375,17 @@ H = H0
 c = 1
 z = 0
 t = 0
-x1 = 0.1
-x2 = 0
+xλ = 0.1
+x = 0
 
 while z < 10:
     t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
+    x  += c - H * x
+    xλ += c - H * xλ
+    z = 0.1 / (xλ - x) - 1
     H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
     
-    data.append([z, -t, x, x2 * (1 + z)])
+    data.append([z, -t, x, x * (1 + z)])
 
 						</code></pre>
 						<p style="width: 50%;">$\Omega_k (1+z)^2$</p>
@@ -414,26 +407,26 @@ H = H0
 c = 1
 z = 0
 t = 0
-x1 = 0.1
-x2 = 0
+xλ = 0.1
+x = 0
 
 while z < 10:
     t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
+    x  += c - H * x
+    xλ += c - H * xλ
+    z = 0.1 / (xλ - x) - 1
     H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
 
-    xx = abs(Ωk)**0.5 * x2 * (1+z)
+    xx = abs(Ωk)**0.5 * x * (1+z)
     if Ωk == 0:
-        x = x2
+        x2 = x
     elif Ωk < 0:
-        x = 1/H0 * math.sin(xx * H0) / xx * x2 
+        x2 = 1/H0 * math.sin(xx * H0) / xx * x 
     else:
-        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
+        x2 = 1/H0 * math.sinh(xx * H0) / xx * x 
 
     
-    data.append([z, -t, x, x2 * (1 + z)])
+    data.append([z, -t, x2, x * (1 + z)])
 
 						</code></pre>
 						<p style="width: 50%;">Flat, Closed, or Open</p>
@@ -458,26 +451,26 @@ H = H0
 c = 1
 z = 0
 t = 0
-x1 = 0.1
-x2 = 0
+xλ = 0.1
+x = 0
 
 while z < 10:
     t -= 1
-    x1 += c - H * x1
-    x2 += c - H * x2
-    z = 0.1 / (x1 - x2) - 1
+    x  += c - H * x
+    xλ += c - H * xλ
+    z = 0.1 / (xλ - x) - 1
     H = H0 * (Ωm * (1+z)**3 + ΩΛ + Ωk * (1+z)**2)**0.5
 
-    xx = abs(Ωk)**0.5 * x2 * (1+z)
+    xx = abs(Ωk)**0.5 * x * (1+z)
     if Ωk == 0:
-        x = x2
+        x2 = x
     elif Ωk < 0:
-        x = 1/H0 * math.sin(xx * H0) / xx * x2 
+        x2 = 1/H0 * math.sin(xx * H0) / xx * x 
     else:
-        x = 1/H0 * math.sinh(xx * H0) / xx * x2 
+        x2 = 1/H0 * math.sinh(xx * H0) / xx * x 
 
     
-    data.append([z, -t, x, x2 * (1 + z)])
+    data.append([z, -t, x2, x * (1 + z)])
 
 						</code></pre>
 						<p style="width: 50%;">$v=c-Hd$</p>
@@ -500,8 +493,8 @@ H = H0
 ΩΛ = 0.7
 
 c = 1     # the speed of light
-x1 = 0.1  # a photon's wavelength
-x2 = 0    # a photon's distance
+xλ = 0.1  # a photon's wavelength
+x = 0    # a photon's distance
 
 t = 0
 
@@ -509,15 +502,15 @@ while z < 10:
 	t += -1 # million years
 
 	# photon speed is v = c - Hd
-	x1 += c - H * x1
-	x2 += c - H * x2
+	xλ += c - H * xλ
+	x += c - H * x
 
 	# calculate redshift
-	z = 0.1 / (x1 - x2) - 1
+	z = 0.1 / (xλ - x) - 1
 
 	H = H0 * (Ωm * (1 + z)**3 + ΩΛ)**(1/2)
 
-	data.append([z, -t, x2, x2 * (1 + z)])
+	data.append([z, -t, x, x * (1 + z)])
 						</code></pre>
 						<div class="fragment" style="padding: 30px;">vs</div>
 					-->
@@ -554,7 +547,7 @@ while z < 10:
 				<section>
 					<p>The algorithm compared to CosmoloPy</p>
 					
-					<img src="../../other/python/cp4.png" height="913px" width="1093px">
+					<img src="../../other/python/cp4.png">
 					<p class="fragment">(Link to notebook in the description.)</p>
 				</section>
 		
@@ -562,12 +555,12 @@ while z < 10:
 				<section>
 					<h3>Did I discover the <em>REAL</em> speed of light?</h3>
 					<ul>
-						<li class="fragment"><span style="color:gray;">Argument:</span>: This is the coordinate speed of light, not the real speed of light</li>
+						<li class="fragment"><span style="color:gray;">Argument:</span> This is the coordinate speed of light, not the real speed of light</li>
 						<li class="fragment">These coordinates are proper distance and cosmic time, which are considered physical time and space</li><br>						
-						<li class="fragment"><span style="color:gray;">Argument:</span>: This assumes no "peculiar velocity," the only motion is due to the expansion of space</li>
+						<li class="fragment"><span style="color:gray;">Argument:</span> This assumes no "peculiar velocity," the only motion is due to the expansion of space</li>
 						<li class="fragment">Pretty much</li><br>						
-						<li class="fragment"><span style="color:gray;">Argument:</span>: Obviously someone else has pointed out photons move at $v=c-Hd$.</li>
-						<li class="fragment">Not that I know of.</li>
+						<li class="fragment"><span style="color:gray;">Argument:</span> Obviously someone else has pointed out photons move at $v=c-Hd$.</li>
+						<li class="fragment">No one seems to have written it as an equation and solved it.</li>
 						
 					</ul>
 				</section>
@@ -597,7 +590,7 @@ while z < 10:
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
 			Reveal.initialize({
-				controls: true,
+				controls: false,
 				progress: true,
 				center: true,
 				hash: true,
@@ -609,6 +602,12 @@ while z < 10:
 				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
 			});
 
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+			
 			var lc1 = demoLightcone1(lightcone1)
 			var lc1ex = demoLightcone1(lightcone1ex)
 			var lc2 = demoLightcone2()

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head><style>
+        body {background-color: #808080;}
+    </style></head>
+
+<body>
+
+    <span id="dxCaption">10</span>
+    <input id="dxInput" type="range"  min="1" value="20">
+    
+    <input id="rInput" type="range"  min="0" value="0">
+    
+    <br>
+    <canvas height="900" width="900" id="canvas"></canvas>
+
+<script>
+
+    const pi = Math.PI
+    const sin = Math.sin
+    const cos = Math.cos
+    var canvas = document.getElementById("canvas")
+    var ctx = canvas.getContext("2d")
+
+    var w = canvas.width
+    var h = canvas.height
+
+    var R = w/8
+    var r = 8
+
+
+    // incremental change in radius to test
+    var dr = 10
+    var dx = 10
+
+    var boxes0 = fillCircle(0, 0) 
+
+    rInput.maxValue = boxes0.length
+
+    rInput.onchange = () => {
+        update()
+    }
+
+
+    dxInput.onchange = () => {
+        dx = parseFloat(dxInput.value)
+        dxCaption.innerHTML = dx
+        update()
+    
+    }
+
+    update()
+
+    function update() {
+        drawCircle(0, 0)
+
+        var testCircle = fillCircle(boxes0.data[rInput.value * 1][0].x, boxes0.data[0][0].y)
+        drawBoxes(testCircle)
+            
+
+        for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
+            break
+        }
+    }
+
+    function drawCircle(x, y) {
+        canvas.width = canvas.width
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, w, h)
+
+        ctx.translate(w / 2, h / 2)
+
+        ctx.fillStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(0, 0, r, 0, Math.PI * 2)
+        ctx.fill()
+
+        ctx.lineWidth = 3
+        ctx.strokeStyle = "blue"
+        ctx.beginPath()
+        ctx.arc(0, 0, R, 0, Math.PI * 2)
+        ctx.stroke()
+
+    }
+
+    var dbi, dbj
+    function drawBoxes(circle) {
+
+        ctx.translate(circle.x, circle.y)
+        ctx.fillStyle = "white"
+
+        for (dbi = 0; dbi < circle.data.length; dbi++) {
+            for (dbj = 0; dbj < circle.data[dbi].length; dbj++) {
+                
+                ctx.fillStyle = circle.data[dbi][dbj].in ? "white" : "red"
+                ctx.globalAlpha = circle.data[dbi][dbj].alpha
+                ctx.fillRect(
+                    circle.data[dbi][dbj].x - dx/2, 
+                    circle.data[dbi][dbj].y - dx/2,
+                    dx, dx)
+            }
+        } 
+
+        ctx.translate(-circle.x, -circle.y)
+    }
+
+    function fillCircle(x, y) {
+        var ir = R
+
+        var x0 = -x
+        var y0 = -y
+
+        var ia
+        var output = {x, y, data: []}
+        
+        while (ir >= 0) {
+
+            var boxes = []
+
+            // find the circumfrence
+            var line = 2 * pi * ir
+
+            // find how many boxes fit in the cirucumference
+            boxCount = line / dx
+            boxAngle = 2 * pi / boxCount
+
+            // place boxes along the circumference
+            var angle = 0
+            
+            for (ia = 0; ia < boxCount; ia++) {
+                var box = {
+                    r: ir, 
+                    angle: ia * boxAngle, 
+                    alpha: 1 - ir / R, 
+                    x: x + ir * cos(ia * boxAngle),
+                    y: y + ir * sin(ia * boxAngle),
+                    
+                }
+                boxes.push(box)
+
+                box.in = ((box.x + x)**2 + (box.y + y)**2)**0.5 < R
+            }
+             
+            ir -= dx
+
+            output.data.push(boxes)
+        }
+
+        return output
+
+    }
+
+    function testCircle(x, y) {
+
+
+    }
+
+
+</script>
+
+</body>
+
+
+</html>

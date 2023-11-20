@@ -66,6 +66,11 @@
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
 			});
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
 			
 			Reveal.on( 'fragmentshown', event => {
 			  console.log(event.fragment.id)
