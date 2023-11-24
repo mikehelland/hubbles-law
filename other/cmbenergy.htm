@@ -25,7 +25,7 @@
     var w = canvas.width
     var h = canvas.height
 
-    var R = w/8
+    var R = w/4
     var r = 8
 
 
@@ -33,9 +33,10 @@
     var dr = 10
     var dx = 10
 
+    var testCircle
     var boxes0 = fillCircle(0, 0) 
 
-    rInput.maxValue = boxes0.length
+    rInput.max = boxes0.data.length
 
     rInput.onchange = () => {
         update()
@@ -52,15 +53,46 @@
     update()
 
     function update() {
+
+        var inBoxes = 0
+        var outBoxes = 0
+        var inGradient = 0
+        var outGradient = 0
+
         drawCircle(0, 0)
+        
+        //return
 
-        var testCircle = fillCircle(boxes0.data[rInput.value * 1][0].x, boxes0.data[0][0].y)
-        drawBoxes(testCircle)
-            
-
-        for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
-            break
+        //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
+        for (var ib = 0; ib < boxes0.data.length; ib++) {
+            for (var jb = 0; jb < boxes0.data[ib].length; jb++) {
+                testCircle = fillCircle(boxes0.data[ib][jb].x, boxes0.data[0][jb].y)
+                
+                inBoxes += testCircle.inBoxes 
+                outBoxes += testCircle.outBoxes 
+                inGradient += testCircle.inGradient 
+                outGradient += testCircle.outGradient 
+                
+                // don't draw if we're tiny
+                if (dx >= 1) {
+                    drawBoxes(testCircle)
+                }
+            }
         }
+
+        ctx.font = "20pt Courier"
+        ctx.fillText("inBoxes: " + inBoxes, 
+            -300, -canvas.height / 2 + 20)
+        ctx.fillText("outBoxes: " + outBoxes, 
+            -300, -canvas.height / 2 + 50)
+        ctx.fillText("%: " + (outBoxes / (outBoxes + inBoxes)), 
+            -300, -canvas.height / 2 + 80)
+
+        ctx.fillText("inGradient: " + inGradient.toFixed(3), 
+            0, -canvas.height / 2 + 20)
+        ctx.fillText("outGradient: " + outGradient.toFixed(3), 
+            0, -canvas.height / 2 + 50)
+
     }
 
     function drawCircle(x, y) {
@@ -85,10 +117,10 @@
 
     var dbi, dbj
     function drawBoxes(circle) {
-
-        ctx.translate(circle.x, circle.y)
         ctx.fillStyle = "white"
-
+        
+        //ctx.translate(circle.x, circle.y)
+        
         for (dbi = 0; dbi < circle.data.length; dbi++) {
             for (dbj = 0; dbj < circle.data[dbi].length; dbj++) {
                 
@@ -101,7 +133,7 @@
             }
         } 
 
-        ctx.translate(-circle.x, -circle.y)
+        //ctx.translate(-circle.x, -circle.y)
     }
 
     function fillCircle(x, y) {
@@ -112,7 +144,13 @@
 
         var ia
         var output = {x, y, data: []}
-        
+
+        output.inBoxes = 0
+        output.outBoxes = 0
+        output.inGradient = 0
+        output.outGradient = 0
+
+
         while (ir >= 0) {
 
             var boxes = []
@@ -138,7 +176,15 @@
                 }
                 boxes.push(box)
 
-                box.in = ((box.x + x)**2 + (box.y + y)**2)**0.5 < R
+                box.in = ((box.x)**2 + (box.y)**2)**0.5 < R
+                if (box.in) {
+                    output.inBoxes++
+                    output.inGradient += box.alpha
+                }
+                else {
+                    output.outBoxes++
+                    output.outGradient += box.alpha
+                }
             }
              
             ir -= dx
