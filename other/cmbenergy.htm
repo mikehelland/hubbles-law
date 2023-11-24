@@ -6,8 +6,8 @@
 
 <body>
 
-    <span id="dxCaption">10</span>
-    <input id="dxInput" type="range"  min="1" value="20">
+    <span id="dxCaption">50</span>
+    <input id="dxInput" type="range"  min="1" value="50">
     
     <input id="rInput" type="range"  min="0" value="0">
     
@@ -31,7 +31,7 @@
 
     // incremental change in radius to test
     var dr = 10
-    var dx = 10
+    var dx = 50
 
     var testCircle
     var boxes0 = fillCircle(0, 0) 
@@ -39,7 +39,7 @@
     rInput.max = boxes0.data.length
 
     rInput.onchange = () => {
-        update()
+        //update()
     }
 
 
