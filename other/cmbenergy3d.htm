@@ -160,26 +160,7 @@
                 dx, dx)
 
         }
-        
-
-
-        ctx.fillStyle = "green"
-        ctx.strokeStyle = "yellow"
-        ctx.globalAlpha = 1
-        for (dbi = 0; dbi < sphere.circles.length; dbi++) {
-            ctx.fillRect(
-                -R - sphere.circles[dbi][1], 
-                R + sphere.circles[dbi][0] ,
-                sphere.circles[dbi][1] * 2, 4)
-
-
-            ctx.beginPath()
-            ctx.moveTo(-R, R)
-            ctx.lineTo(-R + sphere.circles[dbi][1], 
-                            R + sphere.circles[dbi][0])
-            ctx.stroke()
-        }
-        
+                
         //ctx.translate(-circle.x, -circle.y)
     }
 
@@ -188,31 +169,20 @@
         var output = {x, y, z, data: boxes, circles: []}
         var origin = {x, y, z}
 
-        var ir = dx
-        ir = 0
-
         var line = 2 * pi * R
         var boxCount = Math.floor(R - dx/2) / dx //line / dx
-        var boxAngle =  boxCount / pi / 2 
-        console.log("boxcount", boxCount)
+        
+        fillCircle(x, y, 0, R, origin, boxes)
 
-        console.log("boxangle", boxAngle)
-
-        //fillCircle(x, y, 0, R, origin, boxes)
-
+        var ir = dx
 
         while (ir <  R) {
 
-            var angle = ir/dx * boxAngle //+ boxAngle * 0.5 
+            var angle = Math.asin(ir / R)
             line = R * cos(angle)
-            output.circles.push([ir, line, angle])
 
-            //console.log(R - ir)
-            //fillCircle(x, y, ir, R - ir, origin, boxes)
-
-            //
-            console.log(ir, line, angle)
             fillCircle(x, y, ir, line, origin, boxes)
+            fillCircle(x, y, -ir, line, origin, boxes)
             
             ir += dx
         }
