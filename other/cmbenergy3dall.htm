@@ -7,9 +7,7 @@
 <body>
 
     <span id="dxCaption">50</span>
-    <input id="dxInput" type="range"  min="1" max="250" value="50">
-    
-    <input id="rInput" type="range"  min="0" value="0">
+    <input id="dxInput" type="range"  min="10" max="250" value="50">
     
     <br>
     <canvas height="700" width="900" id="canvas"></canvas>
@@ -26,7 +24,6 @@
     var h = canvas.height
 
     var R = 140
-    var r = 8
 
 
     // incremental change in radius to test
@@ -35,17 +32,12 @@
     var testCircle
     var boxes0 = fillSphere(0, 0, 0, R) 
 
-    rInput.onchange = () => {
-        boxes0 = fillSphere(parseFloat(rInput.value), 0, 0, R) 
-    
-        update()
-    }
 
     dxInput.onchange = () => {
         dx = parseFloat(dxInput.value)
         dxCaption.innerHTML = dx
     
-        boxes0 = fillSphere(parseFloat(rInput.value), 0, 0, R) 
+        boxes0 = fillSphere(0, 0, 0, R) 
 
         update()
     
@@ -58,30 +50,19 @@
         ctx.fillStyle = "black"
         ctx.fillRect(0, 0, w, h)
 
-        ctx.font = "20pt Courier"
-        ctx.fillStyle = "white"
-        ctx.fillText("inBoxes: " + boxes0.inBoxes, 
-            30, 20)
-        ctx.fillText("outBoxes: " + boxes0.outBoxes, 
-            30, 50)
-        ctx.fillText("%: " + (boxes0.outBoxes / (boxes0.outBoxes + boxes0.inBoxes) * 100), 
-            30, 80)
-        ctx.fillText("onBoxes: " + (boxes0.onBoxes), 
-            30, 110)
-
-
         ctx.translate(w / 2, h / 2)
 
         var inBoxes = 0
         var outBoxes = 0
         var inGradient = 0
         var outGradient = 0
+        var onBoxes = 0
 
         drawCircle(0, -R)
         drawCircle(-R*1.5, R)
         drawCircle(R*1.5, R)
 
-        drawBoxes(boxes0)
+        //drawBoxes(boxes0)
 
 
         /*
@@ -91,18 +72,20 @@
             0, -canvas.height / 2 + 50)
 
         */
-
-        return
         
         //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
         for (var ib = 0; ib < boxes0.data.length; ib++) {
+            testCircle = fillSphere(boxes0.data[ib].x, boxes0.data[ib].y, 0, R)
+            
+            inBoxes += testCircle.inBoxes
+            outBoxes += testCircle.outBoxes
+            onBoxes += testCircle.onBoxes
+            
+            drawBoxes(testCircle)
+
+            continue
             for (var jb = 0; jb < boxes0.data[ib].length; jb++) {
-                testCircle = fillCircle(boxes0.data[ib][jb].x, boxes0.data[0][jb].y, 0, R)
-                
-                inBoxes += testCircle.inBoxes 
-                outBoxes += testCircle.outBoxes 
-                inGradient += testCircle.inGradient 
-                outGradient += testCircle.outGradient 
+                testCircle = fillSphere(boxes0.data[ib][jb].x, boxes0.data[0][jb].y, 0, R)
                 
                 // don't draw if we're tiny
                 if (dx >= 1) {
@@ -111,15 +94,26 @@
             }
         }
 
+        ctx.translate(-w / 2, -h / 2)
+
+        ctx.fillStyle = "white"
+        ctx.globalAlpha = 1
+        ctx.font = "20pt Courier"
+        ctx.fillStyle = "white"
+        ctx.fillText("inBoxes: " + inBoxes, 
+            30, 20)
+        ctx.fillText("outBoxes: " + outBoxes, 
+            30, 50)
+        ctx.fillText("%: " + (outBoxes / (outBoxes + inBoxes) * 100), 
+            30, 80)
+        ctx.fillText("onBoxes: " + (onBoxes), 
+            30, 110)
+
+
 
     }
 
     function drawCircle(x, y) {
-
-        ctx.fillStyle = "blue"
-        ctx.beginPath()
-        ctx.arc(x, y, r, 0, Math.PI * 2)
-        ctx.fill()
 
         ctx.lineWidth = 3
         ctx.strokeStyle = "blue"
@@ -190,7 +184,7 @@
 
         var ir = dx
 
-        while (ir <  R) {
+        while (ir <=  R) {
 
             var angle = Math.asin(ir / R)
             line = R * cos(angle)
@@ -252,12 +246,11 @@
                     y: y + ir * sin(ia * boxAngle),
                     z
                 }
-                output.data.push(box)
-
+                
                 var rr = ((box.x - origin.x)**2 +
                         (box.y - origin.y)**2 +
                         (box.z - origin.z)**2)**0.5
-                box.alpha = 1 - rr/R
+                box.alpha = (1 - rr/R) ** 2
 
                 var l = ((box.x)**2 + (box.y)**2 + (box.z)**2)**0.5
                 box.in = l <= R
@@ -265,7 +258,11 @@
 
                 if (box.in) output.inBoxes++
                 else output.outBoxes++
-                if (box.on) output.onBoxes += box.alpha
+                
+                if (box.on) {
+                    output.onBoxes += box.alpha
+                    output.data.push(box)
+                }
             }
              
             ir -= dx
