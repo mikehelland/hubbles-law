@@ -6,6 +6,7 @@
 
 <body>
 
+    Show all circles: <input type="checkbox" id="showAll">
     <span id="dxCaption">50</span>
     <input id="dxInput" type="range"  min="1" value="50">
     
@@ -35,12 +36,15 @@
     var testCircle
     var boxes0 = fillCircle(0, 0) 
 
-    rInput.max = boxes0.data.length
+    rInput.max = 200
 
     rInput.onchange = () => {
-        //update()
+        update()
     }
 
+    showAll.onchange = () => {
+        update()
+    }
 
     dxInput.onchange = () => {
         dx = parseFloat(dxInput.value)
@@ -60,7 +64,12 @@
 
         drawCircle(0, 0)
         
-        //return
+        if (!showAll.checked) {
+            testCircle = fillCircle(parseFloat(rInput.value), 0)
+            drawBoxes(testCircle)
+            return
+
+        }
 
         //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
         for (var ib = 0; ib < boxes0.data.length; ib++) {

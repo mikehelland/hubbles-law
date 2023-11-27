@@ -23,7 +23,23 @@
     var w = canvas.width
     var h = canvas.height
 
+    const pc2ly = 3.261564
+    const pc2km = 3.08e19
+
+    var L // Luminosity of a box
+    var Lsol = 3.846e26
+    var suns = 2e11 // 200 billion suns in a galaxy
+
     var R = 140
+
+    // in meters
+    var Rm = R/10 / pc2ly * pc2km * 1000 * 1000
+
+    const sbc = 5.67e-8 //Stefan-Boltzman constant
+
+    var temp = () => {
+        return (L / (4 * pi * sbc * Rm**2))**(1/4)
+    }
 
 
     // incremental change in radius to test
@@ -62,16 +78,6 @@
         drawCircle(-R*1.5, R)
         drawCircle(R*1.5, R)
 
-        //drawBoxes(boxes0)
-
-
-        /*
-        ctx.fillText("inGradient: " + inGradient.toFixed(3), 
-            0, -canvas.height / 2 + 20)
-        ctx.fillText("outGradient: " + outGradient.toFixed(3), 
-            0, -canvas.height / 2 + 50)
-
-        */
         
         //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
         for (var ib = 0; ib < boxes0.data.length; ib++) {
@@ -110,6 +116,8 @@
             30, 110)
 
 
+        L = onBoxes
+
 
     }
 
@@ -129,19 +137,6 @@
         
         //ctx.translate(circle.x, circle.y)
         
-        /*
-        for (dbi = 0; dbi < circle.data.length; dbi++) {
-            for (dbj = 0; dbj < circle.data[dbi].length; dbj++) {
-                
-                ctx.fillStyle = circle.data[dbi][dbj].in ? "white" : "red"
-                ctx.globalAlpha = circle.data[dbi][dbj].alpha
-                ctx.fillRect(
-                    circle.data[dbi][dbj].x - dx/2, 
-                    circle.data[dbi][dbj].z - dx/2,
-                    dx, dx)
-            }
-        } 
-        */
         for (dbi = 0; dbi < sphere.data.length; dbi++) {
             //continue            
             ctx.fillStyle = sphere.data[dbi].on ? "green" : sphere.data[dbi].in ? "white" : "red"
@@ -199,22 +194,6 @@
         return output
     }
 
-    /*
-    output.inBoxes = 0
-    output.outBoxes = 0
-    output.inGradient = 0
-    output.outGradient = 0
-    if (box.in) {
-        output.inBoxes++
-        output.inGradient += box.alpha
-    }
-    else {
-        output.outBoxes++
-        output.outGradient += box.alpha
-    }
-    */
-
-
     function fillCircle(x, y, z, r, origin, output) {
         var ir = r
 
@@ -250,7 +229,8 @@
                 var rr = ((box.x - origin.x)**2 +
                         (box.y - origin.y)**2 +
                         (box.z - origin.z)**2)**0.5
-                box.alpha = (1 - rr/R) ** 2
+                
+                box.alpha = 1 * (1 - rr/R) ** 2 // (4 * pi * rr*2)
 
                 var l = ((box.x)**2 + (box.y)**2 + (box.z)**2)**0.5
                 box.in = l <= R
@@ -268,11 +248,6 @@
             ir -= dx
 
         }
-
-    }
-
-    function testCircle(x, y) {
-
 
     }
 

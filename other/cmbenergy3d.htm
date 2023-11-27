@@ -72,25 +72,11 @@
 
         ctx.translate(w / 2, h / 2)
 
-        var inBoxes = 0
-        var outBoxes = 0
-        var inGradient = 0
-        var outGradient = 0
-
         drawCircle(0, -R)
         drawCircle(-R*1.5, R)
         drawCircle(R*1.5, R)
 
         drawBoxes(boxes0)
-
-
-        /*
-        ctx.fillText("inGradient: " + inGradient.toFixed(3), 
-            0, -canvas.height / 2 + 20)
-        ctx.fillText("outGradient: " + outGradient.toFixed(3), 
-            0, -canvas.height / 2 + 50)
-
-        */
 
         return
         
@@ -98,11 +84,6 @@
         for (var ib = 0; ib < boxes0.data.length; ib++) {
             for (var jb = 0; jb < boxes0.data[ib].length; jb++) {
                 testCircle = fillCircle(boxes0.data[ib][jb].x, boxes0.data[0][jb].y, 0, R)
-                
-                inBoxes += testCircle.inBoxes 
-                outBoxes += testCircle.outBoxes 
-                inGradient += testCircle.inGradient 
-                outGradient += testCircle.outGradient 
                 
                 // don't draw if we're tiny
                 if (dx >= 1) {
@@ -135,21 +116,8 @@
         
         //ctx.translate(circle.x, circle.y)
         
-        /*
-        for (dbi = 0; dbi < circle.data.length; dbi++) {
-            for (dbj = 0; dbj < circle.data[dbi].length; dbj++) {
-                
-                ctx.fillStyle = circle.data[dbi][dbj].in ? "white" : "red"
-                ctx.globalAlpha = circle.data[dbi][dbj].alpha
-                ctx.fillRect(
-                    circle.data[dbi][dbj].x - dx/2, 
-                    circle.data[dbi][dbj].z - dx/2,
-                    dx, dx)
-            }
-        } 
-        */
         for (dbi = 0; dbi < sphere.data.length; dbi++) {
-            //continue            
+        
             ctx.fillStyle = sphere.data[dbi].on ? "green" : sphere.data[dbi].in ? "white" : "red"
             ctx.globalAlpha = sphere.data[dbi].alpha
             ctx.fillRect(
@@ -205,22 +173,6 @@
         return output
     }
 
-    /*
-    output.inBoxes = 0
-    output.outBoxes = 0
-    output.inGradient = 0
-    output.outGradient = 0
-    if (box.in) {
-        output.inBoxes++
-        output.inGradient += box.alpha
-    }
-    else {
-        output.outBoxes++
-        output.outGradient += box.alpha
-    }
-    */
-
-
     function fillCircle(x, y, z, r, origin, output) {
         var ir = r
 
@@ -274,10 +226,6 @@
 
     }
 
-    function testCircle(x, y) {
-
-
-    }
 
 
 </script>
