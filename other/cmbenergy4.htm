@@ -6,7 +6,7 @@
 
 <body>
 
-    <input id="dxInput" type="range" min="10" max="100" value="50">
+    <input id="dxInput" type="number" min="1" max="10" value="1">
     dx=<span id="dxCaption">50</span>
     
     <br>
@@ -31,10 +31,12 @@
     var w = canvas.width
     var h = canvas.height
 
+    var zoom = 10
+
     const pc2ly = 3.261564
     const pc2km = 3.08e19
 
-    var R = 140
+    var R = 14
 
     var L 
     var Lsol = 3.846e26
@@ -69,6 +71,7 @@
         dxCaption.innerHTML = dx
     
         boxes0 = fillSphere(0, 0, 0, R) 
+        box0 = boxes0.data[0]
 
 
         canvas.width = canvas.width
@@ -83,21 +86,17 @@
         var outGradient = 0
         var onBoxes = 0
 
-        drawCircle(0, -R)
-        drawCircle(-R*1.5, R)
-        drawCircle(R*1.5, R)
+        drawCircle(0, 0)
 
+        drawBoxes(boxes0)
         
         //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
-        for (var ib = 0; ib < boxes0.data.length; ib++) {
-            testCircle = fillSphere(boxes0.data[ib].x, boxes0.data[ib].y, 0, R)
-            
-            inBoxes += testCircle.inBoxes
-            outBoxes += testCircle.outBoxes
-            onBoxes += testCircle.onBoxes
-            
-            drawBoxes(testCircle)
+        for (var ib = 1; ib < boxes0.data.length; ib++) {
 
+            var boxn = boxes0.data[ib]
+            var l = (box0.x - boxn.x)**2 + (box0.y - boxn.y)**2 + (box0.z - boxn.z)**2
+            l = l**0.5
+            
         }
 
         ctx.translate(-w / 2, -h / 2)
@@ -114,9 +113,9 @@
         ctx.globalAlpha = 1
         ctx.font = "20pt Courier"
         ctx.fillStyle = "white"
-        ctx.fillText("Volume: " + Math.round((boxes0.outBoxes + boxes0.inBoxes) * (dx)**3) + " Gly^3", 
+        ctx.fillText("Volume: " + Math.round((boxes0.data.length) * (dx)**3) + " Gly^3", 
             30, 20)
-        ctx.fillText("Watts: " + (boxWatts).toFixed(0), 
+        ctx.fillText("Total: " + (boxes0.total * (dx)**3).toFixed(0), 
             30, 50)
         ctx.fillText("Temp: " + temp().toFixed(5) + " K", 
             30, 80)
@@ -131,7 +130,7 @@
         ctx.lineWidth = 3
         ctx.strokeStyle = "blue"
         ctx.beginPath()
-        ctx.arc(x, y, R, 0, Math.PI * 2)
+        ctx.arc(x, y, R * zoom, 0, Math.PI * 2)
         ctx.stroke()
 
     }
@@ -147,19 +146,10 @@
             ctx.fillStyle = sphere.data[dbi].on ? "green" : sphere.data[dbi].in ? "white" : "red"
             ctx.globalAlpha = sphere.data[dbi].alpha
             ctx.fillRect(
-                sphere.data[dbi].x - dx/2, 
-                -R + sphere.data[dbi].y - dx/2,
-                dx, dx)
+                zoom * (sphere.data[dbi].x - dx/2), 
+                zoom * (sphere.data[dbi].y - dx/2),
+                zoom * dx, zoom * dx)
 
-            ctx.fillRect(
-                R*1.5 + sphere.data[dbi].x - dx/2, 
-                R + sphere.data[dbi].z - dx/2,
-                dx, dx)
-
-            ctx.fillRect(
-                -R*1.5 + sphere.data[dbi].y - dx/2, 
-                R + sphere.data[dbi].z - dx/2,
-                dx, dx)
 
         }
                 
@@ -170,7 +160,7 @@
         var boxes = []
         var origin = {x, y, z}
     
-        var output = {x, y, z, data: boxes, circles: []}
+        var output = {x, y, z, data: boxes, circles: [], total: 0}
     
         output.inBoxes = 0
         output.outBoxes = 0
@@ -231,23 +221,31 @@
                     z
                 }
                 
-                var rr = ((box.x - origin.x)**2 +
-                        (box.y - origin.y)**2 +
-                        (box.z - origin.z)**2)**0.5
+                var rr = ((box.x - R)**2 +
+                        (box.y)**2 +
+                        (box.z)**2)**0.5
                 
-                box.alpha = 1 * (1 - rr/R) ** 2 // (4 * pi * rr*2)
+                // find distance from box0, at (R, 0, 0)
+                if (output.data.length > 0) {
+                    
+                    //box.in = l <= R
+                    //box.on = Math.abs(l - R) < dx / 2
+                
+                    box.alpha = (rr > R ? 0 : 1 * (1 - rr/R) ** 2) / (4 * pi * rr*2)
 
-                var l = ((box.x)**2 + (box.y)**2 + (box.z)**2)**0.5
-                box.in = l <= R
-                box.on = Math.abs(l - R) < dx / 2
+                    output.total += box.alpha
+                
+                }
 
                 if (box.in) output.inBoxes++
                 else output.outBoxes++
                 
                 if (box.on) {
                     output.onBoxes += box.alpha
-                    output.data.push(box)
                 }
+                
+                output.data.push(box)
+
             }
              
             ir -= dx
