@@ -9,20 +9,20 @@
 var canvas = lightcone1
 var ctx = canvas.getContext("2d")
 
-var ly0 = 1
+var ly0 = 150
 var ly = ly0
 var yzoom =3
 
 var di
 
-//var circle = {color:"blue", t: 0.4}
-//var circle2 = {color:"red", t: 1.2}
-var circle = {color:"blue", t: 50, scale: 1.15}
-var circle2 = {color:"red", t: 150, scale: 1.4}
+var circle = {color:"blue", t: 0.4, scale: 1}
+var circle2 = {color:"red", t: 1.2, scale: 1}
+//var circle = {color:"blue", t: 50, scale: 1.15}
+//var circle2 = {color:"red", t: 150, scale: 1.4}
 
 var ticks = []
 for (di = -6; di <= 6; di++) {
-    //ticks.push(di)
+    ticks.push(di)
 }
 
 for (di = -1800; di <= 1800; di+=100) {
