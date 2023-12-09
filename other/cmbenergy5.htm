@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head><style>
+        body {background-color: #888888;}
+    </style></head>
+
+<body>
+
+    
+    <canvas height="700" width="900" id="canvas"></canvas>
+    
+    <br>
+    <canvas style="display: none;" height="25" width="750" id="colorsCanvas"></canvas>
+    <br>
+    <img style="display: none;" src="../img/colors.png" id="colorsImg">
+<script>
+
+    const pi = Math.PI
+    const sin = Math.sin
+    const cos = Math.cos
+    var canvas = document.getElementById("canvas")
+    var ctx = canvas.getContext("2d")
+
+    var w = canvas.width
+    var h = canvas.height
+
+    var zoom = 8
+
+
+    var dx = 1
+
+    //Stefan-Boltzman constant
+    const sbc = 5.67e-8 
+
+    const mly2mpc = 1 / 3.261564
+    const mpc2km = 3.08e19
+    const gly2m = 1000 * mly2mpc * mpc2km * 1000
+
+    var Lsol = 3.846e26
+    var suns = 2e11 // 200 billion suns in a galaxy
+
+    var highestT = 0
+    var lowestT = 100
+
+    var R = 14
+    var L = Lsol * suns
+    var N = 1e6
+
+    var sphere0 = fillSphere()
+
+    window.onload = () => {
+        cctx = colorsCanvas.getContext("2d")
+        cctx.drawImage(colorsImg, 0, 0)
+
+        calculate()
+
+        draw()
+    }
+
+    function getColor(temp) {
+        var imgD = cctx.getImageData(Math.round(temp/2 * colorsCanvas.width), 1, 1, 1)
+
+        return color = "rgb(" + imgD.data[0] + "," + imgD.data[1] +"," + imgD.data[2] + ")"        
+    }
+
+
+    function draw() {
+        canvas.width = w
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, w, h)
+
+        var rangeT = highestT - lowestT
+
+        ctx.globalAlpha = 0.5
+        for (var i = 0; i < sphere0.all.length; i++) {
+            var box = sphere0.all[i]
+
+            if (!box.surface) continue
+
+            ctx.fillStyle = getColor((box.temp - lowestT) / rangeT)
+
+            ctx.fillRect(
+                w/6 + box.x * zoom, 
+                h/4 + box.y * zoom, 
+                dx * zoom, dx * zoom)
+
+            ctx.fillRect(
+                3 * w/6 + box.x * zoom, 
+                h/4 + box.z * zoom, 
+                dx * zoom, dx * zoom)
+
+            ctx.fillRect(
+                5 * w/6 + box.y * zoom, 
+                h/4 + box.z * zoom, 
+                dx * zoom, dx * zoom)
+
+        }
+
+    }
+
+    function calculate() {
+        highestT = 0
+        lowestT = 100
+
+        for (var ib = 0; ib < sphere0.surface.length; ib++) {
+
+            var temp = calcBox(sphere0.surface[ib])
+            if (temp === 0) console.log(sphere0.surface[ib])
+            if (lowestT > temp) lowestT = temp
+            if (highestT < temp) highestT = temp
+
+        }
+    }
+
+    function calcBox(box) {
+        
+        var r
+        var boxn
+        var total = 0
+        var boxes = 0
+        for (var ib = 0; ib < sphere0.all.length; ib++) {
+
+            boxn = sphere0.all[ib]
+            if (boxn === box) continue
+
+            r = Math.sqrt((box.x - boxn.x)**2 + (box.y - boxn.y)**2 + (box.z - boxn.z)**2)
+            if (r === 0 || isNaN(r) || r > R) continue
+            
+            boxes++
+
+            //(Math.random()/2 + 0.5) * 
+            total += N * L * (1 - r/R) ** 2 / (4 * pi * (r * gly2m) **2)
+        }
+        total = (total/sbc)**0.25
+
+        box.temp = total
+        console.log(boxes, total)
+        return total
+    }
+
+
+    function fillSphere() {
+        var output = {all: [], surface: []}
+        var z = 0
+
+        fillCircle(z, R, output)
+
+        z = dx
+        while (z <= R) {
+            
+            var angle = Math.asin(z / R)
+            line = R * cos(angle)
+            
+            console.log(line)
+            if (line <= 0) break
+
+            fillCircle(z, line, output)
+            fillCircle(-z, line, output)
+
+            //if (z > R) break
+            z += dx
+
+        }
+
+        return output
+    }
+
+    function fillCircle(z, r, output) {
+
+        var y  = dx / 2
+        
+        while (true) {
+            var x = dx / 2
+            
+            while (true) {
+                var l = (x**2 + y**2 + z**2)**0.5
+                //var l = (x**2 + y**2)**0.5
+
+                var box0 = {x, y, z}
+                var box1 = {x: -x, y, z}
+                var box2 = {x, y: -y, z}
+                var box3 = {x: -x, y: -y, z}
+                
+                output.all.push(box0)
+                output.all.push(box1)
+                output.all.push(box2)
+                output.all.push(box3)
+                
+                if (l > R) {
+                    box0.surface = true
+                    box1.surface = true
+                    box2.surface = true
+                    box3.surface = true
+                    output.surface.push(box0)
+                    output.surface.push(box1)
+                    output.surface.push(box2)
+                    output.surface.push(box3)
+                    break
+                }
+
+                x += dx
+            }
+
+            if (y > r) break
+
+            y += dx
+
+        }
+
+    }
+    
+
+</script>
+
+</body>
+
+
+</html>

@@ -10,17 +10,19 @@
     dx=<span id="dxCaption">50</span>
     
     <br>
-    <input id="Nsources" type="number" value="1">
+    <input id="Nsources" type="number" value="1000000">
     N light sources per Gly<sup>3</sup>:
-    <br>
-    <input id="Lsources" type="number" value="1">
-    L light sources average luminosity (watts)
-    <br>
     
-    <br>
+    <p>L = 7.7e+37 (solar luminosity &times; 2 billion)</p>
+    
+    
     <canvas height="700" width="900" id="canvas"></canvas>
-
+    <br>
+    <canvas style="display: none;" height="25" width="750" id="colorsCanvas"></canvas>
+    <br>
+    <img style="display: none;" src="../img/colors.png" id="colorsImg">
 <script>
+    var cctx 
 
     const pi = Math.PI
     const sin = Math.sin
@@ -33,42 +35,90 @@
 
     var zoom = 10
 
-    const pc2ly = 3.261564
-    const pc2km = 3.08e19
+    //Stefan-Boltzman constant
+    const sbc = 5.67e-8 
 
-    var R = 14
+    const mly2mpc = 1 / 3.261564
+    const mpc2km = 3.08e19
+    const gly2m = 1000 * mly2mpc * mpc2km * 1000
 
-    var L 
     var Lsol = 3.846e26
     var suns = 2e11 // 200 billion suns in a galaxy
-    const sbc = 5.67e-8 //Stefan-Boltzman constant
 
-    var temp = () => {
-        // in meters
-        var Rm = R/10 / pc2ly * pc2km * 1000 * 1000
-
-        return (L * Lsol * suns / (4 * pi * sbc * Rm**2))**(1/4)
-    }
-
+    // these three values should produce a temperature T
+    var R = 14
+    var N = 50000
+    var L = Lsol * suns
 
     // incremental change in radius to test
-    var dx = 2
+    var dx
 
     var testCircle
-    var boxes0 = fillSphere(0, 0, 0, R) 
+    //var boxes0 = fillSphere(0, 0, 0, R) 
 
 
-    dxInput.onchange = () => {
-
+    Nsources.onchange = () => {
         update()
-    
+    }
+    dxInput.onchange = () => {
+        update()
     }
 
-    update()
+    var mapz = 8
+
+    var highestT, lowestT, rangeT
+
+    window.onload = () => {
+        cctx = colorsCanvas.getContext("2d")
+        cctx.drawImage(colorsImg, 0, 0)
+
+        update()
+    }
+
+    function getColor(temp) {
+        var imgD = cctx.getImageData(Math.max(0, Math.round((temp - lowestT) / rangeT * colorsCanvas.width)), 1, 1, 1)
+
+        return color = "rgb(" + imgD.data[0] + "," + imgD.data[1] +"," + imgD.data[2] + ")"
+        
+    }
+
+    function calcBox(box, x, y, w, h) {
+        
+        var r
+        var boxn
+        var total = 0
+        for (var ib = 0; ib < boxes0.data.length; ib++) {
+
+            boxn = boxes0.data[ib]
+            if (boxn === box) continue
+
+            r = Math.sqrt(box.x - boxn.x)**2 + (box.y - boxn.y)**2 + (box.z - boxn.z)**2
+            if (r === 0 || isNaN(r) || r > R) continue
+            
+            total += (Math.random()/2 + 0.5) * N * L * (1 - r/R) ** 2 / (4 * pi * (r * gly2m) **2)
+        }
+        total = (total/sbc)**0.25
+
+        if (lowestT > total) lowestT = total
+        if (highestT < total) highestT = total
+
+        box.temp = total
+        ctx.globalAlpha=1
+        show = total
+        var color = "rgb(" + Math.round((1-show)*255) + ",0," + Math.round(show*255) + ")"
+        ctx.fillStyle = color
+        //console.log(total, color)
+        ctx.fillRect(x, y, w, h)
+
+    }
 
     function update() {
+        lowestT = 1000
+        highestT = 0
         dx = parseFloat(dxInput.value)
         dxCaption.innerHTML = dx
+
+        N = parseFloat(Nsources.value)
     
         boxes0 = fillSphere(0, 0, 0, R) 
         box0 = boxes0.data[0]
@@ -77,8 +127,18 @@
         canvas.width = canvas.width
         ctx.fillStyle = "black"
         ctx.fillRect(0, 0, w, h)
+        
+        ctx.fillStyle = "white"
+        ctx.globalAlpha = 1
+        ctx.font = "20pt Courier"
+        ctx.fillStyle = "white"
+        ctx.fillText("Volume: " + Math.round((boxes0.data.length) * (dx)**3) + " Gly^3", 
+            30, 20)
+        ctx.fillText("Temp: " + ((dx**3 * boxes0.total/sbc)**0.25).toFixed(5) + " K", 
+            30, 50)
 
-        ctx.translate(w / 2, h / 2)
+
+        ctx.translate(w / 2, h / 4)
 
         var inBoxes = 0
         var outBoxes = 0
@@ -88,39 +148,47 @@
 
         drawCircle(0, 0)
 
-        drawBoxes(boxes0)
-        
-        //for (var ib = boxes0.data.length - 1; ib >= 0; ib--) {
-        for (var ib = 1; ib < boxes0.data.length; ib++) {
+        //drawBoxes(boxes0)
+        ctx.globalAlpha = 1
 
-            var boxn = boxes0.data[ib]
-            var l = (box0.x - boxn.x)**2 + (box0.y - boxn.y)**2 + (box0.z - boxn.z)**2
-            l = l**0.5
-            
+        ctx.fillStyle = "gray"
+        //ctx.translate(0, h / 2)
+        
+        
+        for (var iz = 0; iz < boxes0.surface.length; iz++) {
+
+            for (ib = 0; ib < boxes0.surface[iz].length; ib++) {
+                var boxn = boxes0.surface[iz][ib]
+                
+                calcBox(boxn,
+                    ib * mapz - boxes0.surface[iz].length / 2 * mapz, 
+                    h/2 + boxes0.surface[iz][0].z * mapz, mapz, mapz)
+                
+            }
         }
 
-        ctx.translate(-w / 2, -h / 2)
+        highestT = 1.6
+        lowestT = 1
+        rangeT = highestT - lowestT
 
+        for (iz = 0; iz < boxes0.surface.length; iz++) {
 
-        L = onBoxes
+            for (ib = 0; ib < boxes0.surface[iz].length; ib++) {
+                boxn = boxes0.surface[iz][ib]
 
-        console.log(onBoxes, (onBoxes * (dx)**3), (onBoxes * (dx)**2))
-        var boxWatts =  onBoxes * dx**3//(onBoxes * (dx/10)**3) - (onBoxes * (dx/10 - 1)**3)
-        //var areaWatts = (dx/10 - 10) 
+                ctx.fillStyle = getColor(boxn.temp)
 
+                ctx.fillRect(
+                    ib * mapz - boxes0.surface[iz].length / 2 * mapz, 
+                    h/2 + boxes0.surface[iz][0].z * mapz, mapz, mapz)
+                
+                ctx.fillRect(
+                    zoom * (boxn.x - dx/2), 
+                    zoom * (boxn.z - dx/2),
+                    zoom * dx, zoom * dx)
 
-        ctx.fillStyle = "white"
-        ctx.globalAlpha = 1
-        ctx.font = "20pt Courier"
-        ctx.fillStyle = "white"
-        ctx.fillText("Volume: " + Math.round((boxes0.data.length) * (dx)**3) + " Gly^3", 
-            30, 20)
-        ctx.fillText("Total: " + (boxes0.total * (dx)**3).toFixed(0), 
-            30, 50)
-        ctx.fillText("Temp: " + temp().toFixed(5) + " K", 
-            30, 80)
-
-
+            }
+        }
 
 
     }
@@ -160,7 +228,7 @@
         var boxes = []
         var origin = {x, y, z}
     
-        var output = {x, y, z, data: boxes, circles: [], total: 0}
+        var output = {x, y, z, data: boxes, circles: [], surface: [], total: 0}
     
         output.inBoxes = 0
         output.outBoxes = 0
@@ -195,6 +263,7 @@
         var x0 = -x
         var y0 = -y
 
+        var surface = []
         var ia
         
         while (ir >= 0) {
@@ -205,8 +274,8 @@
             var line = 2 * pi * ir
 
             // find how many boxes fit in the cirucumference
-            boxCount = line / dx
-            boxAngle = 2 * pi / boxCount
+            boxCount = (line )  / dx 
+            boxAngle = 2 * pi / boxCount 
 
             // place boxes along the circumference
             var angle = 0
@@ -215,25 +284,27 @@
                 var box = {
                     r: ir, 
                     angle: ia * boxAngle, 
-                    alpha: 1 - ir / R, 
+                    alpha: 0,
+                    flux: 0, 
                     x: x + ir * cos(ia * boxAngle),
                     y: y + ir * sin(ia * boxAngle),
                     z
                 }
                 
-                var rr = ((box.x - R)**2 +
+                var rr = ((box.x)**2 +
                         (box.y)**2 +
                         (box.z)**2)**0.5
                 
                 // find distance from box0, at (R, 0, 0)
-                if (output.data.length > 0) {
+                if (output.data.length > 0 && rr > dx/2) {
                     
                     //box.in = l <= R
                     //box.on = Math.abs(l - R) < dx / 2
                 
-                    box.alpha = (rr > R ? 0 : 1 * (1 - rr/R) ** 2) / (4 * pi * rr*2)
+                    box.alpha = (rr > R ? 0 : 1 * (1 - rr/R) ** 2) // (4 * pi * rr*2)
+                    box.flux = (N * L * (1 - rr/R) ** 2) / (4 * pi * (rr * gly2m) **2)
 
-                    output.total += box.alpha
+                    output.total += box.flux
                 
                 }
 
@@ -245,12 +316,17 @@
                 }
                 
                 output.data.push(box)
+                if (ir === r) {
+                    box.surface = true
+                    surface.push(box)
+                }
 
             }
              
             ir -= dx
 
         }
+        output.surface.push(surface)
 
     }
 
