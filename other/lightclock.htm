@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<canvas id="canvas" width="1600" height="400"></canvas>
+
+
+
+
+<script>
+
+
+var lc = lightclockDemo2(canvas)
+lc.z0()
+lc.draw()
+
+lc.alt()
+lc.fire()
+
+function lightclockDemo2(canvas, rate) {
+
+
+    var distance = canvas.width / 2
+
+    var ctx = canvas.getContext("2d")
+
+
+    var mirror = canvas.height / 2
+    var alts = []
+    var alt = false
+
+    var i 
+    var now0, now1
+    var photon0, photon1
+    var z0 = 0 
+        
+    var ret = {source: 0, mirror: 0, dist: 0, pulse: 0, alts}
+
+    ret.draw = function () {
+        canvas.width = canvas.width
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.translate(canvas.width / 4 * 3, canvas.height / 4)
+
+        ctx.globalAlpha = z0
+
+        ret.drawLC(1, photon1)
+
+        ctx.translate(-canvas.width / 2, 0)
+
+        ctx.globalAlpha = 1
+        ret.drawLC(0 , photon0)
+
+        ctx.font = "italic 18pt serif"
+        ctx.fillStyle = "white"
+
+        ctx.textAlign = "center"
+
+        ctx.translate(0, -80)
+
+        
+        ctx.fillText("z =", -60, 340)
+        ctx.fillText("v =", -60, 30)
+        
+        for (i = 0; i <= 10; i++) {
+
+            ctx.font = "18pt serif"
+            ctx.fillText((i/10).toFixed(1), canvas.width / 2 / 10 * i, 340)
+            ctx.fillText((1 + i/10).toFixed(1), canvas.width / 2 / 10 * i, 50)
+
+            ctx.fillRect(canvas.width / 2 / 10 * i - 18, 22, 36, 1)
+
+            ctx.font = "italic 18pt serif"
+            ctx.fillText("c", canvas.width / 2 / 10 * i, 10)
+            
+        }
+
+
+    }
+
+    ret.drawLC = function (z, photon) {
+        
+        ctx.font = "italic 18pt serif"
+        ctx.fillStyle = "white"
+
+        ctx.textAlign = "center"
+
+        
+        //ctx.fillText("z = " + z, 0, -50)
+
+        ctx.fillStyle = "red"
+        ctx.fillRect(-20, -20, 20, 20)
+        ctx.fillStyle = "blue"
+        ctx.fillRect(0, -20, 20, 20)
+
+        
+        ctx.fillStyle = "#888888"
+        ctx.fillRect(-40, mirror, 80, 20)
+
+        ctx.fillStyle = "white"
+
+        //ctx.fillText(z === 0 ? "present" : "past", 0, mirror + 60)
+
+
+        
+        ctx.strokeStyle = "white"
+        ctx.beginPath()
+        ctx.moveTo(-30, canvas.height / 2)
+        ctx.lineTo(30, canvas.height / 2 + 20)
+        ctx.stroke()
+
+
+        ctx.fillStyle = "white"
+
+
+        if (photon) {
+            ctx.fillStyle = "yellow"
+            ctx.fillRect(-10, photon, 20, 10)
+        }
+
+        if (z < 1) return 
+
+        for (i = 0; i < alts.length; i++) {
+
+            if (alts[i].x < canvas.width / 2)
+            ctx.fillRect(-10 - (alts[i].x) , -20, 20, 20)
+
+            if (now1 - alts[i] < 1980) {
+                //ctx.fillRect(-10 + (now1 - alts[i]) / -500 * (canvas.height / 2), -20, 20, 20)
+            }
+        }
+    }
+
+    var anim = function (callback) {
+        var start = Date.now()
+        var now
+        var h = setInterval(() => {
+            now = Date.now() - start
+
+            if (callback(now)) {
+                clearInterval(h)
+            }
+            
+            ret.draw()
+        }, 1000/30)
+    }
+
+    ret.showSource = function () {
+        anim((now) => {
+            ret.source = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+    ret.showMirror = function () {
+        anim((now) => {
+            ret.mirror = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+    ret.showDist = function () {
+        anim((now) => {
+            ret.dist = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+
+    var h
+    ret.fire = function () {
+        var start = Date.now()
+        var loop1, loop0
+        var next = 1000
+        var i 
+        var ls = canvas.height // 2
+        var last = start
+        var since
+        var z
+        h = setInterval(() => {
+            now0 = (Date.now() - start) 
+            now1 = (Date.now() - start) / 2
+
+            loop0 = now0 % 1000
+            loop1 = now1 % 1000
+
+            since = Date.now() - last
+            last = Date.now()
+
+            for (i = 0; i < alts.length; i++) {
+                z = (distance - alts[i].x) / distance
+                if (z > 0)
+                alts[i].x += since/1000 * ls / (1 + z) 
+            }
+
+
+            if (next <= now1) {
+                next += 1000
+
+                if (alt) {
+                    alts.push({t: now1, x: 0})
+                }
+            }
+
+            if (loop0 < 500) {
+                photon0 = loop0 / 500 * canvas.height / 2
+            }
+            else {
+                photon0 = (1 - (loop0 - 500) / 500) * canvas.height / 2
+            }
+
+            if (loop1 < 500) {
+                photon1 = loop1 / 500 * canvas.height / 2
+            }
+            else {
+                photon1 = (1 - (loop1 - 500) / 500) * canvas.height / 2
+            }
+
+            ret.draw()
+        }, 1000/30)
+    }
+
+    ret.alt = function () {
+        alt = true
+    }
+
+    ret.stop = function () {
+        clearInterval(h)
+    }
+
+    ret.show = function () {
+        ret.mirror = 1
+        ret.source = 1
+        ret.draw()
+    }
+
+    ret.z0 = function () {
+        z0 = 1
+
+    }
+
+    return ret
+}
+
+
+
+
+
+function lightspeedDemo(canvas, rate) {
+
+    var ctx = canvas.getContext("2d")
+
+
+    var source = canvas.width / 2
+    var alts = []
+    
+    
+    var i 
+    var now
+        
+    var ret = {alts}
+
+    ret.draw = function () {
+        canvas.width = canvas.width
+
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.translate(canvas.width / 4, canvas.height / 2)
+
+        ret.drawLC(1)
+
+        //ctx.translate(-canvas.width / 2, 0)
+
+        for (i = 0; i < alts.length; i++) {
+
+            //if (now - alts[i] < 1980) {
+                //ctx.fillRect((canvas.height / 2) - (1 - (now - alts[i]) / -500) , -20, 20, 20)
+                ctx.fillRect(alts[i].x, -10, 20, 20)
+            //}
+        }
+
+
+    }
+
+    ret.drawLC = function (z) {
+        
+        ctx.font = "italic 18pt serif"
+        ctx.fillStyle = "white"
+
+        ctx.textAlign = "center"
+
+        
+        ctx.fillText("z", -60, -100)
+        ctx.fillText("v", -60, 130)
+        
+        for (i = 0; i <= 10; i++) {
+
+            ctx.font = "18pt serif"
+            ctx.fillText((i/10).toFixed(1), canvas.width / 2 / 10 * i, -100)
+            ctx.fillText((1 + i/10).toFixed(1), canvas.width / 2 / 10 * i, 150)
+
+            ctx.fillRect(canvas.width / 2 / 10 * i - 18, 122, 36, 1)
+
+            ctx.font = "italic 18pt serif"
+            ctx.fillText("c", canvas.width / 2 / 10 * i, 110)
+            
+        }
+
+
+        ctx.fillStyle = "orange"
+        ctx.beginPath()
+        ctx.arc(0, 0, 20, 0, Math.PI * 2)
+        ctx.fill()
+        
+
+        ctx.beginPath()
+        ctx.arc(canvas.width / 2, 0, 20, 0, Math.PI * 2)
+        ctx.fill()
+
+
+
+    }
+
+    var anim = function (callback) {
+        var start = Date.now()
+        var now
+        var h = setInterval(() => {
+            now = Date.now() - start
+
+            if (callback(now)) {
+                clearInterval(h)
+            }
+            
+            ret.draw()
+        }, 1000/30)
+    }
+
+    ret.showSource = function () {
+        anim((now) => {
+            ret.source = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+    ret.showMirror = function () {
+        anim((now) => {
+            ret.mirror = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+    ret.showDist = function () {
+        anim((now) => {
+            ret.dist = Math.min(1, now/1000)
+            return now > 1000
+        })
+    }
+
+
+    var h
+    ret.fire = function () {
+        var start = Date.now()
+        var loop, i
+        var next = 1000
+        h = setInterval(() => {
+            now = (Date.now() - start) 
+            
+            loop = now % 1000
+            
+            if (next <= now) {
+                next += 1000
+
+                alts.push({start:now, x: source})
+            }
+
+            for (i = 0; i < alts.length; i++) {
+                if (alts[i].x > 0)
+                alts[i].x -= 10 / (1 + alts[i].x / source)
+
+            }
+        
+            ret.draw()
+        }, 1000/30)
+    }
+
+
+    ret.stop = function () {
+        clearInterval(h)
+    }
+
+   
+
+
+    return ret
+}
+</script>
+
+</body>
+</html>
