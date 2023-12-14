@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    input[type=number] {font-size: 125%; width: 100px;}
+    body {font-size: 125%;}
+    #zparams {
+        position:absolute;
+        top:520px;
+        left:350px;
+    }
+</style>
+</head>
+<body>
+
+    <div id="graphs">
+        <canvas id="canvas" width="800" height="400"></canvas>
+    </div>
+
+    <script src="flrw.js"></script>
+    
+    <script>
+        var data
+        const c = 299792.458
+        const pc2ly = 3.261564
+
+        var zoomY = 0.5
+        var maxZ = 10
+        var maxD = 80
+
+        var models = []
+
+        var h = 400
+
+        var ctx = canvas.getContext("2d")
+        var w = canvas.width
+        var h = canvas.height
+
+
+        drawCanvas0()
+        
+        //var model = {H0: 0, OL: 1, OM: 0, data: [{z:0, d_C: 0}, {z: 0, d_C: maxD * 1000}], color: "blue"}
+        //models.push(model)
+        //drawModel(model)
+
+        //addModel("orange", 20, 1, 0)
+        //addModel("red", 70, 1, 0)
+        //addModel("green", 100, 1, 0)
+
+        addModel("red", 70, 1, 0)
+
+        addModel("blue", 70, 0.7, 0.3)
+        addModel("green", 70, 0, 1)
+        
+        ctx.font = "bold 18px sans-serif"
+
+        for (var i = 0; i < models.length; i++) {
+            var caption = "Ho = " + models[i].H0 + ", Ωm = " + models[i].OM.toFixed(1) + ", ΩΔ = " + models[i].OL.toFixed(1)
+        
+            ctx.fillStyle = models[i].color
+            //ctx.fillText(caption, 20, -h + 250 - 20 * i)
+            ctx.fillText(caption, 320, -h + 150 - 20 * i)
+        }
+
+        function addModel(color, H0, OL, OM) {
+
+
+            var data = flrw2(H0, OL, OM, maxZ)
+            var model = {H0, OL, OM, data, color}
+
+            models.push(model)
+
+            drawModel(model)
+
+        }
+
+
+        function drawCanvas0(model) {
+            //var canvas = model.g0
+
+        
+            canvas.width = w
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            ctx.textAlign = "right"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, 18, h - 20 - h  * i / maxZ )
+            }
+            
+            ctx.textAlign = "right"
+            ctx.fillText("comoving distance", w - 10, h - 25)
+
+            ctx.textAlign = "center"
+            for (var i = 0; i <= maxD; i=i+10) {
+                ctx.fillText(i, 20 + i / maxD * w, h)
+            }
+            ctx.textAlign = "left"
+            ctx.fillText("z redshift", 28, 18)
+
+            ctx.translate(20, h-20)
+
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, -canvas.height)
+
+        }
+
+        function drawModel(model) {
+            ctx.globalAlpha = 1
+            ctx.lineWidth = 6
+            ctx.strokeStyle = model.color
+
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+
+            for (var i = 0; i < model.data.length; i++) {
+                ctx.lineTo(w * (model.data[i].d_C / 1000) / maxD, -model.data[i].z / maxZ * h) //- h / maxD *  * zoomY)
+            }
+            ctx.stroke()
+            
+        }
+
+
+
+
+
+
+
+    </script>

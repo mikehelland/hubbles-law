@@ -43,18 +43,23 @@
 					
 				</section>
 
+				<section>
+					<h1>Is the big bang wrong?</h1>
+					<h2 class="fragment">Maybe.</h2>
+				</section>
 
 				<section style="text-align: left;">
 					<a href="https://skdfjldsfjklsfj.com">But here's the thing....</a> <br>
 					<p style="font-size: 60pt;">
-						<span class='fragment'>There</span>
-					
-						<span class='fragment'>is</span>
+						<span class='fragment'>There is</span>
 						<span class='fragment'>no</span>
-						<span class='fragment'>better</span>
-						<span class='fragment'>theory</span>
+						<span class='fragment'>better theory</span>
 					</p>
 					
+				</section>
+
+				<section>
+					<p>The big bang theory ain't goin' nowhere unless a better theory comes along.</p>
 				</section>
 
 				<section>
@@ -263,8 +268,9 @@
 
 					<div style="display: flex; justify-content: center; gap: 30px;">
 						<div>
+							<br>
 							<ul>
-								<li class="fragment" id="lcsource">Light source and detecor</li>
+								<li id="lcsource">Light source and detecor</li>
 								<li class="fragment" id="lcmirror">Mirror ½ light-second away</li>
 								<li class="fragment" id="lcdist"><span style="color: gray;">~150,000 km</span></li>
 								<li class="fragment" id="lcfire">A light pulse is sent </li>
@@ -285,23 +291,23 @@
 					<canvas width="1600" height="400" id="space1"></canvas>
 					<br>
 					<ul id="spacez1">
-						<li>Light clock at $z=1$, in the past</li>
+						<li>We're at $z=0$, in the present</li>
+						<li class="fragment" id="lcz0">Light clock at $z=1$, in the past</li>
 						<li class="fragment">Pulses are sent 1 second apart on the past clock</li>
-						<li class="fragment" id="lcz0">We're at $z=0$, in the present</li>
 						<li class="fragment">We observe the past clock to run at ½ speed</li>
 						<li class="fragment">Our clock runs at 2x speed the past clock</li>
 						<li class="fragment">Our clock counts 2 seconds between pulses</li>
 					</ul>
 
 					<ul id="lc2switch" class="fragment" style="display: none;" >
-						<li>An observer in the past would still count 1 second between pulses</li>
+						<li class="fragment">An observer in the past would still count 1 second between pulses</li>
 						<li class="fragment">That observer would still measure the speed of light to be $c$.</li>
-						<li class="fragment">According to our clock, there are 2 seconds between puleses</li>
-						<li class="fragment">According to our clock, light is traveling at $c/2$ in the $z=1$ light clock</li>
+						<li class="fragment">According to our clock, there are 2 seconds between pulses</li>
+						<li class="fragment">According to our clock, light is traveling at $c/2$ at $z=1$</li>
 	
 					</ul>
 
-					<div class="fragment" id="lcstop"></div>
+					<div class="fragment" id="lc2stop"></div>
 
 				</section>
 
@@ -324,12 +330,13 @@
 					
 					<canvas width="1600" height="400" id="space2"></canvas>
 					<ul>
-						<li>At $z=1$, light is moving at $c/2$</li>
-						<li>At $z=0$, light is moving at $c$ </li>
-						<li>Light traveling from $z=1$ to $z=0$ moves at all speeds in between</li>
+						<li class="fragment" id="lc3fire">At $z=1$, light is moving at $c/2$</li>
+						<li class="fragment">At $z=0$, light is moving at $c$ </li>
+						<li class="fragment">Light traveling from $z=1$ to $z=0$ moves at all speeds in between</li>
 					</ul>
-					<br>
-					<p>0.1 \frac{c}{1+1} + 0.1 \frac{c}{1+0.9} + 0.1 \frac{c}{1+0.8} + ... + 0.1 \frac{c}{1+0} </p>
+					<br><br>
+					<p class="fragment">$0.1 \frac{c}{2.0} + 0.1 \frac{c}{1.9} + 0.1 \frac{c}{1.8} + ... + 0.1 \frac{c}{1.0} $</p>
+					<div class="fragment" id="lc3stop"></div>	
 				</section>
 
 				<section id="spacetime">
@@ -340,15 +347,22 @@
 							<br>
 							<br>
 							<ul>
-								<li>Without time dilation, <span style="color:blue;">Minkowski time</span></li>
-								<li>With time dilation, <span style="color:red;">expanded time</span></li>
-								<hr>
-								<li><span style="color:blue;">Minkowski time</span>, $\tau$</li>
-								<li><span style="color:red;">expanded time</span>, $t$</li>
-
-								<hr>
-								<li>Distance $d = -c \tau$</li>
-								<li>Minus sign because $t$ and $\tau < 0$ in the past</li>
+								<li class="fragment" id="stblue">Without time dilation, <span style="color:blue;">Minkowski time</span></li>
+								<li class="fragment" id="stred">With time dilation, <span style="color:red;">expanded time</span></li>
+								
+								<div class="fragment">
+									<hr>
+									<li><span style="color:blue;">Minkowski time</span>, $\tau$</li>
+	
+								</div>
+								<li class="fragment"><span style="color:red;">expanded time</span>, $t$</li>
+								
+								<div class="fragment">
+									<hr>
+									<li>Distance $d = -c \tau$</li>
+	
+								</div>
+								<li class="fragment">Minus sign because $t$ and $\tau < 0$ in the past</li>
 								<!--
 								<li>$\tau = \frac{1}{H} (e^{Ht} - 1)$</li>
 								<li>$t = \frac{1}{H} \log (H\tau + 1)$</li>
@@ -377,7 +391,8 @@
 					<p>Exponentially Expanding universe </p>
 					<canvas id="lightcone2ex" height="800" width="800"></canvas>
 					<div class="fragment" id="lc2zoom"></div>
-					<p id="lc1quad" class="fragment">$v=c-Hd = \frac{c}{1+z}$</p>
+					<p id="lc1quad" class="fragment">$v=c-Hd $</p>
+					<p id="lc1quad" class="fragment">$v= \frac{c}{1+z}$</p>
 				</section>
 				<script src="lightcone2.js"></script>
 
@@ -387,7 +402,7 @@
 				</section>
 
 				<section>
-					<p style="font-size: 54pt;">$c - Hd = \frac{c}{1+z}$</p>
+					<p style="font-size: 54pt;">$v= \frac{c}{1+z}$</p>
 					<br>
 					<hr style="width: 30%;">
 					<br>
@@ -460,7 +475,7 @@
 
 							<div class="fragment">
 								<p class="gray">Luminosity distance:</p>
-								<p>$d_L = (1+z) \frac{c}{H} \log (1+z)$</p>
+								<p>$d_L = \frac{c}{H} (1+z) \log (1+z)$</p>
 							</div>
 		
 						</div>
@@ -468,11 +483,89 @@
 				</section>
 
 				<section>
-					<h2>$H$ - Hubble's constant</h2>
+
+					<p>In the standard model of cosmology:</p>
+					<ul>
+						<li class="fragment">$H$ is Hubble's parameter</li>
+						<li class="fragment">$H_0$ is Hubble's constant</li>
+					</ul>
+
+					<p class="fragment"><span style="color:gray;">(see Episode 2 for more details)</span></p>
+					
+
+				</section>
+
+				<section>
+					<p>This is <em>not</em> the standard model of cosmology!</p>
+					<ul>
+						<li class="fragment">$H$ is Hubble's constant</li>
+						<li class="fragment">$H$ is actually constant</li>
+						<li class="fragment">$H$ is <em>not</em> an expansion rate</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<p>Determining $H$ from supernovae data</p>
+					<img src="sndata.png">
+
+					<p class="fragment">No problem there.</p>
 				</section>
 
 
+				<section>
+					<p style="color: gray;">Upcoming video:</p>
+					<p>Calculate the CMB temperature from $H$ and the average number of galaxies in the universe:</p>
+					
+					<img src="cmbtest.png">
 
+					<p class="fragment">Shouldn't be a problem.</p>
+					<p class="fragment" style="color: gray;">Needs work.</p>
+				</section>
+
+				<section>
+					<p>CMB anomalies, like the cold spot?</p>
+					<img src="coldspot.png">
+					<p class="fragment" style="color: gray;">Also needs work.</p>
+					<p class="fragment">I think it'll work</p>
+					
+				</section>
+
+
+				<section>
+					<h1>Review:</h1>
+					<hr>
+					<table>
+						<tr style=" color: gray;">
+							<td>interpretation</td>
+							<td>directly observed</td>
+							<td>problems</td>
+						</tr>
+					
+					
+						<tr>
+							<td>tired light</td>
+							<td class="fragment">No</td>
+							<td class="fragment">No associated effects or time dilation</td>
+						</tr>
+						<tr>
+							<td>expanding space</td>
+							<td class="fragment">No</td>
+							<td class="fragment">Hubble tension, CMB cold spot</td>
+						</tr>
+						<tr>
+							<td class="fragment">expanding time</td>
+							<td class="fragment"><a href="asd">Yes</a></td>
+							<td class="fragment">?</td>
+						</tr>
+					</table>
+
+					<br><br><br>
+					<p class="fragment">What do you think?</p>
+					<h2 class="fragment">Comment!</h2>
+					<h2 class="fragment">Subscribe!</h2>
+					
+				</section>
 
 
 
@@ -504,7 +597,7 @@
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
 			Reveal.initialize({
-				controls: true,
+				controls: false,
 				progress: true,
 				center: true,
 				hash: true,
@@ -563,7 +656,6 @@
 				
 
 				if (event.fragment.id === "lcsource") {
-					lc.showSource()
 				}
 				if (event.fragment.id === "lcmirror") {
 					lc.showMirror()
@@ -594,8 +686,29 @@
 					Reveal.next()	
 				}
 
+				if (event.fragment.id === "lc3fire") {
+					lc3.fire()
+				}
+
+				if (event.fragment.id === "lc3stop") {
+					lc3.stop()
+					Reveal.next()	
+				}
+
+				if (event.fragment.id === "stblue") {
+					st.blue()
+				}
+				if (event.fragment.id === "stred") {
+					st.red()
+				}
+
+				if (event.fragment.id === "lc3stop") {
+					lc3.stop()
+				}
+
 			} );
 
+			var fired
 
 			Reveal.on( 'slidechanged', event => {
 				if (event.currentSlide.id === "spacetime") {
@@ -624,12 +737,17 @@
 
 				if (event.currentSlide.id === "light-clock") {
 					lc.draw()
+					lc.showSource()
+
 				}		
 
 				if (event.currentSlide.id === "spacez") {
-					lc2.show()
-					lc2.fire()
-					lc2.alt()
+					if (!fired) {
+						lc2.show()
+						lc2.fire()
+						lc2.alt()
+						fired = true
+					}
 				}		
 
 				if (event.currentSlide.id === "light-speed") {

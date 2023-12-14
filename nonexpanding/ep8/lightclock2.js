@@ -21,11 +21,13 @@ function lightclockDemo2(canvas, rate) {
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.translate(canvas.width / 4 * 3, canvas.height / 4)
 
+        ctx.globalAlpha = z0
+
         ret.drawLC(1, photon1)
 
         ctx.translate(-canvas.width / 2, 0)
 
-        ctx.globalAlpha = z0
+        ctx.globalAlpha = 1
         ret.drawLC(0 , photon0)
 
 
@@ -52,7 +54,7 @@ function lightclockDemo2(canvas, rate) {
 
         ctx.fillStyle = "white"
 
-        ctx.fillText("mirror", 0, mirror + 60)
+        ctx.fillText(z === 0 ? "present" : "past", 0, mirror + 60)
 
 
         
@@ -76,7 +78,7 @@ function lightclockDemo2(canvas, rate) {
         for (i = 0; i < alts.length; i++) {
 
             if (now1 - alts[i] < 1980) {
-                ctx.fillRect(-30 + (now1 - alts[i]) / -500 * (canvas.height / 2), -20, 20, 20)
+                ctx.fillRect(-10 + (now1 - alts[i]) / -500 * (canvas.height / 2), -20, 20, 20)
             }
         }
     }

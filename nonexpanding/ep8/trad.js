@@ -22,11 +22,14 @@ function animTrad(canvas) {
 
         ctx.translate(canvas.width / 6, canvas.height / 2)
 
+        ctx.globalAlpha = 0.6
 
         ctx.drawImage(imgGalaxy, startX - imgGalaxy.width / 2, -imgGalaxy.height / 2)
 
 
         ctx.drawImage(imgGalaxy, canvas.width / 6 * 4 - imgGalaxy.width / 2, -imgGalaxy.height / 2)
+
+        ctx.globalAlpha = 1
 
         ctx.lineWidth = 4
         ctx.strokeStyle = "darkyellow"

@@ -31,7 +31,8 @@ function stretchedSpacetime(st1, st2) {
     }
 
 
-    var step = 10
+    var step = 0
+    var stepR = 0
     var stepWidth = 50
 
     var segs1 = []
@@ -39,7 +40,7 @@ function stretchedSpacetime(st1, st2) {
 
     var x0
     var x = 0
-    for (dgi = 0; dgi < step; dgi++) {
+    for (dgi = 0; dgi < 10; dgi++) {
 
         x0 = x * stepWidth 
         var z = dgi / 10
@@ -59,16 +60,20 @@ function stretchedSpacetime(st1, st2) {
         ctx.fillRect(0, 0, st1.width, st1.height)
 
         ctx.translate(20, st1.height / 2)
-        ctx.fillStyle = "blue"
-        ctx.beginPath()
-        ctx.arc(0, -20, 10, 0, Math.PI * 2)
-        ctx.fill()
 
-        ctx.fillStyle = "red"
-        ctx.beginPath()
-        ctx.arc(0, 20, 10, 0, Math.PI * 2)
-        ctx.fill()
+        if (step) {
+            ctx.fillStyle = "blue"
+            ctx.beginPath()
+            ctx.arc(0, -20, 10, 0, Math.PI * 2)
+            ctx.fill()
+        }
 
+        if (stepR) {
+            ctx.fillStyle = "red"
+            ctx.beginPath()
+            ctx.arc(0, 20, 10, 0, Math.PI * 2)
+            ctx.fill()
+        }
         
         ctx.strokeStyle = "blue"
         ctx.lineWidth = 10
@@ -82,7 +87,7 @@ function stretchedSpacetime(st1, st2) {
 
         var x = 0
         ctx.strokeStyle = "red"
-        for (dgi = 0; dgi < step; dgi++) {
+        for (dgi = 0; dgi < stepR; dgi++) {
             ctx.beginPath()
             ctx.moveTo(segs2[dgi][0] + 5, 20)
             ctx.lineTo(segs2[dgi][1] - 5, 20)                
@@ -92,14 +97,19 @@ function stretchedSpacetime(st1, st2) {
         ctx.font = "italic 20pt serif"
         ctx.fillStyle = "white"
         ctx.textAlign = "center"
-        ctx.fillText("Without time dilation", st1.width / 2, - 50)
-        ctx.fillText("With time dilation", st1.width / 2,  70)
+
+        if (step)
+            ctx.fillText("Without time dilation", st1.width / 2, - 50)
+
+        if (stepR)
+            ctx.fillText("With time dilation", st1.width / 2,  70)
 
     }
 
 
     var draw = function () {
-        
+        st2.width = st2.width
+
         ctxG.lineWidth = 1
         ctxG.fillStyle = black ? "black" : "white"
         ctxG.fillRect(0, 0, graph.width, graph.height)
@@ -179,7 +189,7 @@ function stretchedSpacetime(st1, st2) {
         }
 
         ctxG.strokeStyle = "red"
-        for (dgi = 0; dgi < step; dgi++) {
+        for (dgi = 0; dgi < stepR; dgi++) {
             ctxG.beginPath()
             ctxG.moveTo(dgi * stepWidth, segs2[dgi][0])
             ctxG.lineTo((dgi + 1) * stepWidth, segs2[dgi][1])
@@ -225,6 +235,40 @@ function stretchedSpacetime(st1, st2) {
                 ctxG.stroke()
             //}
 
+        },
+        blue: function () {
+            var h = setInterval(() => {
+                step++
+                if (step === 10) {
+                    clearInterval(h)
+                    clearInterval(h2)
+                    draw()
+                    drawTop()
+
+                }
+            }, 300)
+            var h2 = setInterval(() => {
+                draw()
+                drawTop()
+
+            }, 1000/30)
+        },
+        red: function () {
+            var h = setInterval(() => {
+                stepR++
+                if (stepR === 10) {
+                    clearInterval(h)
+                    clearInterval(h2)
+                    draw()
+                    drawTop()
+                }
+            }, 300)
+            var h2 = setInterval(() => {
+                draw()
+                drawTop()
+
+            }, 1000/30)
         }
+ 
     }
 }

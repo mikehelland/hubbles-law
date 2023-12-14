@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+        <canvas id="canvas" width="800" height="800"></canvas>
+
+
+        <script>
+            const pi = Math.PI
+            const kpi = 4 / 3 * pi
+
+            var R = 13.8
+
+            var zoom = 380 / R
+
+            var V = kpi * R**3
+
+            var N = 10
+
+            var Vs = []
+
+            var ctx = canvas.getContext("2d")
+
+            ctx.fillText(Math.round(V), 20, 20) 
+
+            ctx.translate(canvas.width / 2, canvas.height / 2)
+
+            ctx.beginPath()
+            ctx.arc(0, 0, zoom * R, 0, pi * 2)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.arc(0, 0, 1, 0, pi * 2)
+            ctx.stroke()
+
+            var lastr = 0
+
+            for (var i = 0; i < N; i++) {
+                let Vn = V/N * (1 + i)
+                let r = (Vn / kpi)**(1/3)
+
+                let z = 1 / (1-r/R) - 1
+
+                if (z > 1e12) {
+                    z = Infinity
+                }
+                                
+                Vs.push({Vn: V/N, r, z})
+
+                ctx.beginPath()
+                ctx.arc(0, 0, zoom * r, 0, pi * 2)
+                ctx.stroke()
+
+                ctx.fillText(z.toFixed(2), 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
+
+                lastr = r
+            }
+
+            console.log(Vs)
+        </script>
+
+
+    </body>
+</html>
