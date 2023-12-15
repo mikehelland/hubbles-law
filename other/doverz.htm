@@ -3,7 +3,7 @@
 <head>
 <style>
     input[type=number] {font-size: 125%; width: 100px;}
-    body {font-size: 125%;}
+    body {font-size: 125%; background-color: #444;}
     #zparams {
         position:absolute;
         top:520px;
@@ -29,8 +29,8 @@
         const pc2ly = 3.261564
 
         var zoomY = 0.5
-        var maxZ = 10
-        var maxD = 80
+        var maxZ = 3.5
+        var maxD = 30
 
         var models = []
 
@@ -43,18 +43,20 @@
         var h = canvas.height
 
 
-        drawCanvas0(canvas)
-        drawCanvas0(canvas2)
-        drawCanvas0(canvas3)
+        drawCanvas0(canvas, 1)
+        drawCanvas0(canvas2, 2)
+        drawCanvas3(canvas3, 3)
         
         //var model = {H0: 0, OL: 1, OM: 0, data: [{z:0, d_C: 0}, {z: 0, d_C: maxD * 1000}], color: "blue"}
         //models.push(model)
         //drawModel(model)
+
         //addModel("orange", 20, 1, 0)
         //addModel("red", 70, 1, 0)
         //addModel("green", 100, 1, 0)
 
         addModel("red", 70, 1, 0)
+
         addModel("blue", 70, 0.7, 0.3)
         addModel("green", 70, 0, 1)
         
@@ -65,26 +67,30 @@
         
             ctx.fillStyle = models[i].color
             //ctx.fillText(caption, 20, -h + 250 - 20 * i)
-            ctx.fillText(caption, 320, -h + 150 - 20 * i)
+            ctx.fillText(caption, 390, -h + 290 + 20 * i)
         }
 
         function addModel(color, H0, OL, OM) {
 
-
-            var data = flrw2(H0, OL, OM, maxZ)
+            var data = []
+            for (var i = 0; i < maxZ * 100; i++) {
+                data.push({z: i/100, 
+                    d_C: FLRW(H0, OL, OM, i / 100).DC * pc2ly})
+            }
 
             var slopes = []
-            for (var i = 1; i < data.length; i++) {
-                var slope = (data[i].z - data[i - 1].z ) / (data[i].d_C - data[i - 1].d_C )
-                slopes.push({z: slope, d_C: data[i - 1].d_C})
-            }
-
             var slopes2 = []
-            for (i = 1; i < slopes.length; i++) {
-                slope = (slopes[i].z - slopes[i - 1].z ) / (slopes[i].d_C - slopes[i - 1].d_C )
-                slopes2.push({z: slope, d_C: slopes[i - 1].d_C})
+            
+            for (i = 1; i < data.length; i++) {
+                var slope = (data[i].d_C - data[i - 1].d_C ) / (data[i].z - data[i - 1].z ) 
+                slopes.push({z: data[i - 1].z, d_C: slope})
             }
 
+            for (i = 1; i < slopes.length; i++) {
+                slope = (slopes[i].d_C - slopes[i - 1].d_C ) / (slopes[i].z - slopes[i - 1].z )
+                slopes2.push({z: slopes[i - 1].z, d_C: slope})
+            }
+            
 
             var model = {H0, OL, OM, data, slopes, slopes2, color}
 
@@ -97,26 +103,30 @@
         }
 
 
-        function drawCanvas0(canvas) {
+        function drawCanvas0(canvas, mode) {
             
             canvas.width = w
             var ctx = canvas.getContext("2d")
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, 0, w, h)
+            
             ctx.fillStyle = "black"
             ctx.font = "16px sans-serif"
-            ctx.textAlign = "right"
+            ctx.textAlign = "center"
             for (var i = 0; i <= maxZ; i=i+1) {
-                ctx.fillText(i, 18, h - 20 - h  * i / maxZ )
+                ctx.fillText(i, 20 + i / maxZ * w, h - 4) 
             }
             
             ctx.textAlign = "right"
-            ctx.fillText("comoving distance", w - 10, h - 25)
+            ctx.fillText("z redshift", w - 10, h - 25)
 
-            ctx.textAlign = "center"
+            ctx.textAlign = "right"
             for (var i = 0; i <= maxD; i=i+10) {
-                ctx.fillText(i, 20 + i / maxD * w, h)
+                ctx.fillText(i, 18, h - 16 - h  * i / maxD)
             }
             ctx.textAlign = "left"
-            ctx.fillText("z redshift", 28, 18)
+            var caption = mode === 1 ? "comoving distance (Gly)" : "Slope" 
+            ctx.fillText(caption, 28, 18)
 
             ctx.translate(20, h-20)
 
@@ -124,6 +134,43 @@
             ctx.strokeRect(0, 0, canvas.width, -canvas.height)
 
         }
+
+        function drawCanvas3(canvas) {
+            
+            canvas.width = w
+            var ctx = canvas.getContext("2d")
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, 0, w, h)
+
+            ctx.textAlign = "left"
+            var caption = "Slope of slope" 
+            ctx.fillText(caption, 28, 18)
+
+
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            ctx.textAlign = "center"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, 20 + i / maxZ * w, 14) 
+            }
+
+            
+            ctx.translate(20, 20)
+
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, canvas.height)
+            
+            ctx.textAlign = "right"
+            ctx.fillText("z redshift", w - 10, h - 25)
+
+            ctx.textAlign = "right"
+            for (var i = 0; i <= maxD; i=i+10) {
+                ctx.fillText(i, -3, 3 + h  * i / maxD * 10)
+            }
+
+
+        }
+
 
         function drawModel(model) {
             ctx.globalAlpha = 1
@@ -134,7 +181,7 @@
             ctx.moveTo(0, 0)
 
             for (var i = 0; i < model.data.length; i++) {
-                ctx.lineTo(w * (model.data[i].d_C / 1000) / maxD, -model.data[i].z / maxZ * h) //- h / maxD *  * zoomY)
+                ctx.lineTo(w * (model.data[i].z) / maxZ, -model.data[i].d_C / 1000 / maxD * h) //- h / maxD *  * zoomY)
             }
             
             ctx.stroke()
@@ -148,10 +195,10 @@
             ctx2.strokeStyle = model.color
 
             ctx2.beginPath()
-            ctx2.moveTo(0, 0)
+            ctx2.moveTo(0, -model.slopes[0].d_C / 1000 / maxD * h)
 
             for (var i = 0; i < model.slopes.length; i++) {
-                ctx2.lineTo(w * (model.slopes[i].d_C / 1000) / maxD, -model.slopes[i].z * h * 1000) //- h / maxD *  * zoomY)
+                ctx2.lineTo(w * (model.slopes[i].z) / maxZ, -model.slopes[i].d_C / 1000 / maxD * h) //- h / maxD *  * zoomY)
             }
             ctx2.stroke()
             
@@ -164,10 +211,10 @@
             ctx3.strokeStyle = model.color
 
             ctx3.beginPath()
-            ctx3.moveTo(0, 0)
+            ctx3.moveTo(0, -model.slopes2[0].d_C / 10000 * h)
 
             for (var i = 0; i < model.slopes2.length; i++) {
-                ctx3.lineTo(w * (model.slopes2[i].d_C / 1000) / maxD, -model.slopes2[i].z * h * 1000 * 5000) //- h / maxD *  * zoomY)
+                ctx3.lineTo(w * (model.slopes2[i].z) / maxZ, -model.slopes2[i].d_C / 10000 * h) //- h / maxD *  * zoomY)
             }
             ctx3.stroke()
             

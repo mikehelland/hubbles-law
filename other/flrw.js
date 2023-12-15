@@ -171,7 +171,7 @@ function flrw(H0, OmegaL, OmegaM, maxZ) {
 //http://www.bo.astro.it/~cappi/cosmotools
 
 var FLRW = (function() {
-    var H0, Omega_L, Omega_M, Omega_k
+    var H0, Omega_L, Omega_M, Omega_k, h
 
     function fun(v1, Omega_M, Omega_L, Omega_k) {
         v2 = v1 * v1
