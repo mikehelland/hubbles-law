@@ -69,16 +69,19 @@
 <canvas id="background" height="300" width="1000"></canvas>
 <canvas id="graph" height="400" width="700"></canvas>
 
+<script src="flrw.js"></script>
 
 <script>
     const black = false
     var graph = document.getElementById("background")
     var ctxB = graph.getContext("2d")
 
+    var metallicity  //= true
+
     var offset = 20
     var height = graph.height - offset
     var zoom = 1
-    var zoomGY = height * 0.75
+    var zoomGY = height * 0.5
     var zoomG = zoom * 6.9
 
 
@@ -88,8 +91,15 @@
     var H0 = 68
     var zs = [];
     [0.5, 1, 2, 3, 4, 5, 10, 20].forEach(z => {
-        zs.push({z, t: zToD(z)})
+        zs.push({z, t: FLRW(H0, Omega_L, Omega_M, z).lookback})
     })
+
+    var z226 = FLRW(H0, Omega_L, Omega_M, 2.26).lookback
+    var z426 = FLRW(H0, Omega_L, Omega_M, 4.26).lookback
+
+    var z128 = FLRW(H0, Omega_L, Omega_M, 12.8).lookback
+
+
     //zs.push({z: "BB", t: 13.81781132270681})
     var bb = 13.8178
 
@@ -119,8 +129,8 @@
         {color: "green", tm: 
         [
             {t: 0, m: 1},
-            {t: zToD(3.3), m: 0.2},
-            {t: zToD(8), m: 0.1}
+            {t: FLRW(H0, Omega_L, Omega_M, 3.3).DT, m: 0.2},
+            {t: FLRW(H0, Omega_L, Omega_M, 8).DT, m: 0.1}
         ]
         }
     ]
@@ -145,23 +155,84 @@
         ctxB.textAlign = "left"
         //ctxB.fillText("SSE to Pantheon+SH0ES", offset + 5, offset)
 
+        if (metallicity) {
+            ctxB.textAlign = "left"
+            ctxB.fillText("Metallicity", 4 + offset, 34)
+
+            ctxB.globalAlpha = 0.2
+            ctxB.beginPath()
+            ctxB.moveTo(offset, (graph.height - offset)/2)
+            ctxB.lineTo(graph.width, (graph.height - offset)/2)
+            ctxB.setLineDash([20, 10])
+            ctxB.stroke()
+            ctxB.globalAlpha = 1
+            ctxB.setLineDash([])
+
+            ctxB.fillStyle = "#eeee88"
+            ctxB.globalAlpha = 0.4
+            ctxB.fillRect(offset, offset, z128 * 10 * zoomG, graph.height - 2*offset)
+            ctxB.globalAlpha = 1
+
+            ctxB.font = "bold 28pt serif" 
+            ctxB.fillStyle = !black ? "black" : "white"
+            ctxB.fillText('"Today"', graph.width/2.5, graph.height/2)
+
+            ctxB.fillRect(offset - 5, (graph.height - offset)/2 - 5, 10, 10)
+
+            ctxB.fillRect(offset + z426 * 10 * zoomG - 5, (graph.height - offset)/2 + 40, 10, 10)
+
+            ctxB.fillRect(offset + z426 * 10 * zoomG - 5, (graph.height - offset)/2 - 10, 10, 10)
+
+            ctxB.fillRect(offset + z128 * 10 * zoomG - 5, (graph.height - offset)/2 - 5, 10, 10)
+
+            ctxB.font = "14px sans-serif"
+
+            ctxB.fillText("Solar", offset + 10, (graph.height - offset)/2 + 5)
+
+            ctxB.textAlign = "center"
+
+            ctxB.fillText("850.2", offset + z426 * 10 * zoomG, (graph.height - offset)/2 + 35)
+            ctxB.fillText("850.1", offset + z426 * 10 * zoomG, (graph.height - offset)/2 - 15)
+            ctxB.fillText("GNz-13", offset + z128 * 10 * zoomG, (graph.height - offset)/2 - 15)
+
+        }
+        else {
+            ctxB.fillStyle = "#eeee88"
+            ctxB.globalAlpha = 0.4
+            ctxB.fillRect(offset, offset, z226 * 10 * zoomG, graph.height - 2*offset)
+            ctxB.globalAlpha = 1
+
+            ctxB.textAlign = "center"
+
+            ctxB.font = "bold 28pt serif" 
+            ctxB.fillStyle = !black ? "black" : "white"
+            ctxB.fillText('"Local"', graph.width/2.5, graph.height/2 - 20)
+
+            ctxB.font = "italic 18pt serif" 
+            ctxB.fillText('(range of Pantheon+SH0ES Type Ia SNe data)', graph.width/2.5, graph.height/2 + 10)
+        }
+
+        ctxB.font = "14px sans-serif"
+
         ctxB.textAlign = "left"
-        ctxB.fillText("Metallicity", 4 + offset, 34)
-        
+        ctxB.fillText('ΛCDM', offset, 12)
+
         ctxB.textAlign = "center"
-        ctxB.fillText("Lookback Time", graph.width / 2 + offset, graph.height - 30)
-        ctxB.fillText("Redshift", graph.width / 2 + offset, 34)
+        ctxB.fillText("Lookback Time (billion years)", graph.width / 2 + offset, graph.height - 30)
+        ctxB.fillText("Redshift z", graph.width / 2 + offset, 34)
         
         ctxB.fillStyle = "red"
         ctxB.globalAlpha = 0.2
         ctxB.fillRect(offset + bb * 10 * zoomG, offset, 100, graph.height - 2*offset)
         ctxB.globalAlpha = 1
         
+
+
         var dgi
         ctxB.font = "10px sans-serif"
         ctxB.fillStyle = "black"
         for (dgi = 0; dgi <= 1.5; dgi+=0.5) {
-            ctxB.fillText(dgi, 10, -offset + graph.height - dgi * zoomGY + 4)    
+            ctxB.fillText(dgi, 8, -offset + graph.height - dgi * zoomGY + 4)    
         }
         
         for (dgi = 0; dgi <= 140; dgi+=10) {
@@ -191,142 +262,6 @@
 
     drawGraph()
 
-
-
-
-
-    function fun(v1, Omega_M, Omega_L, Omega_k) {
-        v2 = v1 * v1
-        v3 = v1 * v1 * v1
-        f = Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
-        return 1. / f
-    };
-
-    function simpson(x0, x2) {
-        h = (x2 - x0) / 2.
-        x1 = x0 + h
-        igr = h * (fun(x0, Omega_M, Omega_L, Omega_k) + 4. * fun(x1, Omega_M, Omega_L, Omega_k) + fun(x2, Omega_M, Omega_L, Omega_k)) / 3.
-        return igr
-    };
-
-    function sumint(z1) {
-        integrale = 0, zone = 1, deltaz = 0.001
-        while (zone <= (z1 - deltaz)) {
-            zini = zone
-            zfin = zone + deltaz
-            integrale += simpson(zini, zfin);
-            zone += deltaz
-        }
-        return integrale
-    };
-
-    // -------------------------------------------- 
-
-
-    function lookfun(v1, Omega_M, Omega_L, Omega_k) {
-        v2 = v1 * v1
-        v3 = v1 * v1 * v1
-        f = v1 * Math.sqrt(Omega_M * v3 + Omega_k * v2 + Omega_L)
-        return 1. / f
-    };
-
-    function timeint(z1start, z1end) {
-        s = 0, a = z1start, b = z1end
-        s = 0.5 * (b - a) * (lookfun(a, Omega_M, Omega_L, Omega_k) + lookfun(b, Omega_M, Omega_L, Omega_k))
-        n = 2
-        while (n <= 11) {
-            n2 = n - 2
-            it = Math.pow(2, n2)
-            tnm = it
-            del = (b - a) / tnm
-            x = a + 0.5 * del
-            sum = 0.
-            j = 1
-            while (j <= it) {
-                sum = sum + lookfun(x, Omega_M, Omega_L, Omega_k)
-                x = x + del
-                j += 1
-            }
-            s = 0.5 * (s + (b - a) * sum / tnm)
-            n += 1
-        }
-        return s
-    };
-
-    // --------------------------------------------
-
-    function sinh(x) {
-        s = (Math.exp(x) - Math.exp(-x)) / 2.
-        return s
-    };
-
-
-    function zToD(z) {
-        // From redshift to distance
-        
-
-        z1 = 1. + z;
-        var h = H0 / 100.;
-        Tnorm = 9.77810945 / h;
-        cvel = 299792.458
-        ch0 = cvel / H0;
-        pig = 3.1415926536;
-        rad = pig / 180.;
-        q0 = Omega_M / 2. - Omega_L;
-        Omega_k = 1. - Omega_M - Omega_L;
-
-        age = (timeint(1., 50.)) * Tnorm;
-        console.log(Omega_L, Omega_M, Omega_k)
-        if (Omega_L > 0. && Omega_k == 0.) {
-            DC = ch0 * sumint(z1);
-            DL = DC * z1
-        }
-        if (Omega_L > 0. && Omega_k < 0.) {
-            curv = Math.sqrt(-Omega_k)
-            r = sumint(z1);
-            DC = ch0 * Math.sin(r * curv) / curv
-            DL = DC * z1
-        }
-        if (Omega_L > 0. && Omega_k > 0.) {
-            curv = Math.sqrt(Omega_k)
-            r = sumint(z1);
-            DC = ch0 * sinh(r * curv) / curv
-            DL = DC * z1
-        }
-        if (Omega_L == 0. && q0 > 0) {
-            q0sq = q0 * q0
-            a = 1. - q0 + q0 * z + (q0 - 1.) * (Math.sqrt(2. * q0 * z + 1.))
-            DL = ch0 * a / q0sq
-            DC = DL / z1
-        }
-        if (Omega_L == 0. && q0 == 0) {
-            DL = ch0 * z * (1. + z / 2.)
-            DC = DL / z1
-        }
-        // Lookback time
-        lookback = timeint(1., z1) * Tnorm
-        // Angular distance
-        DA = DL / (z1 * z1)
-        // Lunghezza in primi corrispondente a 1 Mpc.
-        angle = (60. / rad) * z1 * z1 / DL;
-        // Length in Mpc corresponding to 1 degree on the sky
-        R = rad * DL / (z1 * z1);
-        console.log(age)
-
-        // Display result in the form.
-        /*
-        form.q0.value = q0.toFixed(2);
-        form.Omega_k.value = Omega_k.toFixed(2);
-        form.dlum.value = DL.toFixed(1);
-        form.dcom.value = DC.toFixed(1);
-        form.dang.value = DA.toFixed(1);
-        form.lsep.value = R.toFixed(1);
-        form.asep.value = angle.toFixed(1);
-        form.look.value = lookback.toFixed(1);
-        form.age.value = age.toFixed(1);
-        */
-       return lookback
-    }
 
 
 </script>

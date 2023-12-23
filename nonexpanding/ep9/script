@@ -1,0 +1,174 @@
+In this episode I'll show you how to use Python to measure the expansion rate of the universe, aka, Hubble's constant.
+
+Here's the first "secret".
+
+Nobody's "measured" the expansion rate.
+
+In reality, some other aspect of the universe is measured, and then we compare to that a model of the universe, and determine the models parameters for a best fit to the data.
+
+Sound hard?
+
+It's super easy! Not a problem.
+
+There's a link in t:he description to the notebook for everything covered. 
+
+Hubble's constant relates redshift to distance.
+
+The best data we have of redshift and distance are in the Pantheon+SH0ES data set.
+
+It's located here:
+
+https://github.com/PantheonPlusSH0ES/DataRelease/blob/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat
+
+The columns we want are 3 and 11.
+
+So we can downlad that like this:
+
+from urllib.request import urlopen
+
+data = []
+url = "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat"
+for line in urlopen(url):
+    vals = line.split(b" ")
+    
+    # skip the headers
+    if vals[0] == b"CID": continue 
+    
+    data.append({"z": float(vals[2]), "mu": float(vals[10])})
+
+Now we have an array of supernovas... supernovae. Each supernova has redshift represented by the letter z, and its distance modulus, which is given the greek letter mu.
+
+The redshift isn't actually redshift though. And the dsitance modulus isn't actually a distance.
+
+Let's take one at a time. We don't measure the redshift of a supernova, per se. We measure how time dilated it is.
+
+Although it is true that a supernova will be redshifted and time dilated by the same factor, 1+z. 
+
+To be totally clear, imagine three identical Type Ia supernovae appear in our telescopes at the same time. The difference between them is where they occurred. One of them happens in our galaxy, so at z=0, one of them happens in a galaxy at z=1, and the third happens in a galaxy at z=3.
+
+The time between the supernova's peak brightness and when its dimming starts to slow down will take 20 days.
+
+But they will be stretched in time by a factor of 1+z.
+
+Except for the supernova takes place in our galaxy at z=0. Since 1+z is just 1 when z=0, there is no time dilation. 
+
+The time we're interested in still takes 20.
+
+The galaxy at z=1 takes 1+1=2 times as long, so it will be observed to unfold over 40 days.
+
+And at z=3, 1+3=4, so it will take 4 times longer, or 80 days.
+
+
+The distance modulus isn't a real distance, like one in meters or light years or anything like that.
+
+It's a number that comes from the difference of two other numbers, called magnitudes. One of these numbers represents how bright the supernova appears, and the other reprsents how bright it would look from 10 parsecs away.
+
+
+So those are our two columns of data. 
+
+z redshift and mu distance modulus
+
+What we'll do is take each redshift from the data, and use the model to predict its distance modulus.
+
+Then we'll compare the model's distance modulus with the data's.
+
+def sse():
+    totalErrors = 0
+    for sn in data:
+        
+        error = calculateMu(sn["z"]) - sn["mu"]
+        totalErrors = totalErrors + error**2
+
+    return totalErrors
+
+We subtract the model's value from the measured value.
+
+Or the other way around. Either we square the difference so we get the same value.
+
+Those errors are all added together. 
+
+And the result is the "sum of squared errors", or sse.
+
+We haven't defined calculateMu
+
+
+To generate a distance modulus from the model, we'll just do this:
+
+import cosmolopy.magnitudes as cm
+
+# calculates Lambda-CDM
+cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 
+         'h' : H0 / 100, 'omega_k_0': 0}
+
+def calculateMu(z):
+    return cm.distance_modulus(z, **cosmo)
+
+If you've watched some of the previous episodes, like the episode 3 for Javascript or episosde 6 for python, you know we can recrate the model pretty simply. 
+
+But here we just use CosmoloPy and cut right to the chase.
+
+If you've seen episode 2, you'll know that the standard model of cosmology is called Lambda-CDM, which has three parameters
+
+OmegaM how much of the universe is matter
+OmegaLambda, how much of the universe is dark energy
+And Hubble's constant, the current expansion rate of the universe. So how much it is expanding, right now
+
+
+We want to find Hubble's constant. So what we'll do is set OmegaM and OmegaL to their commonly accepted values, approximately 30% matter and 70% dark energy.
+
+OmegaM = 0.3
+OmegaL = 0.7
+
+Then we're literally going to check a bunch of values for H0. We'll start with H0 = 65, call the sse() function, store the reults, then do the same thing for 65.1, 65.2, up to 75.
+
+The value that leads to the lowest amount of errors, is the winner. 
+
+lowestSSE = {"sse": -1}
+
+for i in range(100):
+    H0 = 65 + i/10
+    cosmo["h"] = H0 / 100
+    
+    SSE = sse()
+    
+    if lowestSSE["sse"] == -1 or SSE < lowestSSE["sse"]:
+        lowestSSE = {"H0": H0, "sse": SSE}
+
+print(lowestSSE)
+
+This gives 73.2
+
+We've measured Hubble's constant.
+
+That's the lowest number of errors, so that's the best fit.
+
+That's basically it.
+
+There are some error bars to take into consideration.
+
+The code to calculate the SSE represnts this equation:
+
+$\Chi^2 = \Sigma (\mu_{model} - \mu_{data})^2$
+
+Usually you'll see it like this, dividng by the error of margin:
+
+$\Chi^2 = \Sigma \frac{(\mu_{model} - \mu_{data})^2}{\sigma^2}$
+
+There is a column in the data we can use, it comes with this warning:
+
+MU_SH0ES_ERR_DIAG - Uncertainty on MU_SH0ES as determined from the diagonal of the covariance matrix. **WARNING, DO NOT FIT COSMOLOGICAL PARAMETERS WITH THESE UNCERTAINTIES. YOU MUST USE THE FULL COVARIANCE. THIS IS ONLY FOR PLOTTING/VISUAL PURPOSES**
+
+If you include this in the calculations, it doesn't make much of a difference. But the uncertainties are taken into account in more robust best calculations.
+
+Finally, in the last episode, I proposed an alternative to the expanding universe. In this alternative, there is still a constant relating redshift to distance, and it's still called Hubble's constant and has the same units. 
+
+We can find the best fit for this model using the same technique. We just have to change calculateMu() to return a value from this model, instead of the standard model.
+
+We can get the distance modulus from the alternative model using what's called the "luminosity distance." I've covered other types of distances in cosmology before, but not this one. let me know if you'd like to see a video about that. 
+
+We can get the luminosity distance from the redshift z with:
+
+$d_L = \frac{c}{H} (1+z) \log (1+z) $
+
+And then the distance modulus, mu, is just:
+

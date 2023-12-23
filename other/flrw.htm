@@ -35,6 +35,7 @@
         comoving distance (dotted), light travel time distance (dashed), angular diameter distance (solid)
     </p>
     
+    <div id="output"></div>
     <br>
     <br>
     <input type="checkbox" checked="checked" id="wright"> <a href="https://www.astro.ucla.edu/~wright/CosmoCalc.html">Ned Wright's Javascript Cosmological Calculator</a> 
@@ -118,7 +119,7 @@
         const pc2ly = 3.261564
         var zoomY = 35 * 1000
         
-        var maxZ = 10
+        var maxZ = 15
 
         var canvas = document.getElementById("canvas")
             
@@ -149,6 +150,12 @@
         var mmx
         var canvasz = document.getElementById("canvasz")
         var ctx2 = canvasz.getContext("2d")
+        canvasz.onclick = e => {
+            var div = document.createElement("div")
+            div.innerHTML = `z = ${(currentZ.z).toFixed(2)}, dC = ${(currentZ.d_C / 1000).toFixed(2)}, dT = ${(currentZ.d_T / 1000).toFixed(2)}, dA = ${(currentZ.d_A / 1000).toFixed(2)}`
+            output.appendChild(div)
+
+        }
         canvasz.onmousemove = e => {
             mmx = e.clientX - canvas.parentElement.offsetLeft 
 
@@ -185,12 +192,13 @@
 
         }
 
+        var currentZ 
         function drawCanvas2() {
             canvasz.width = canvasz.width
             var h = canvasz.height
             if (!mmx) return
 
-            mmz = (mmx - 20) / maxZ / 10
+            mmz = (mmx - 20) / canvasz.width * maxZ
 
             ctx2.font = "italic 14pt serif"
             ctx2.beginPath()
@@ -202,10 +210,12 @@
                 if (data3[mmi].z >= mmz) break   
             }
             
+            currentZ = data3[mmi]
+
             //ctx2.fillText(mmz.toFixed(2), mmx, canvasz.height / 2)
             ctx2.fillText((data3[mmi].d_C / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_C / zoomY)
             ctx2.fillText((data3[mmi].d_T / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_T / zoomY )
-            ctx2.fillText((data3[mmi].d_A / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_A / zoomY )
+            ctx2.fillText((data3[mmi].d_A / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_A / zoomY + 5)
             ctx2.textAlign = "right"
             ctx2.fillText("z = " + data3[mmi].z.toFixed(2),   mmx - 10, canvasz.height - 30)
             
