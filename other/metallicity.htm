@@ -67,8 +67,30 @@
 <h3>Metallicity</h3>
 
 <canvas id="background" height="300" width="1000"></canvas>
-<canvas id="graph" height="400" width="700"></canvas>
 
+<div>
+
+    <ul>
+        <li>850.1<sup>[1]</sup>, z=4.26, Z ≥ 1 </li>
+        <li>850.2<sup>[1]</sup>, z=4.26, Z < 1 </li>
+        <li>GS-z12<sup>[2]</sup>, z = 12.479, Z ≈ 1</li>
+        <li>LLS1723<sup>[3]</sup>, z = 4.391, log(Z/Z<sub>sol</sub>) < −4.14</li>
+    </ul>
+    
+    <p>
+        [1] <a href="https://arxiv.org/abs/2306.16039">https://arxiv.org/abs/2306.16039</a>
+    <b>Hidden giants in JWST's PEARLS: An ultra-massive z=4.26 sub-millimeter galaxy that is invisible to HST</b>
+
+    <br>
+    [2] <a href="https://arxiv.org/abs/2311.09908">https://arxiv.org/abs/2311.09908</a>
+    <b>JADES: Carbon enrichment 350 Myr after the Big Bang in a gas-rich galaxy</b>
+
+    <br>
+
+    [3] <a href="https://arxiv.org/abs/1812.05098">https://arxiv.org/abs/1812.05098</a>
+    <b>Exploring the origins of a new, apparently metal-free gas cloud at
+        z = 4.4</b>
+</div>
 <script src="flrw.js"></script>
 
 <script>
@@ -76,7 +98,7 @@
     var graph = document.getElementById("background")
     var ctxB = graph.getContext("2d")
 
-    var metallicity  //= true
+    var metallicity  = true
 
     var offset = 20
     var height = graph.height - offset
@@ -84,11 +106,25 @@
     var zoomGY = height * 0.5
     var zoomG = zoom * 6.9
 
-
     var Omega_M = 0.3 
     var Omega_L = 0.7
     var Omega_k = 0
     var H0 = 68
+
+    var points = []
+    points.push({name: "solar", z: 0, Z: 1, x:0})
+    points.push({name: "SMC", z: 0, Z: 0.25, x:0})
+    points.push({name: "LLS1723", z: 4.391, Z: 0.001})
+    points.push({name: "850.1", z: 4.26, Z: 1.05})
+    points.push({name: "850.2", z: 4.26, Z: 0.5})
+    points.push({name: "GS z12", z: 12.479, Z: 1.01})
+    points.forEach(point => {
+        if (point.z === 0) return 
+        point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback
+    })
+
+    var mid = (graph.height - offset)/2
+
     var zs = [];
     [0.5, 1, 2, 3, 4, 5, 10, 20].forEach(z => {
         zs.push({z, t: FLRW(H0, Omega_L, Omega_M, z).lookback})
@@ -177,23 +213,15 @@
             ctxB.fillStyle = !black ? "black" : "white"
             ctxB.fillText('"Today"', graph.width/2.5, graph.height/2)
 
-            ctxB.fillRect(offset - 5, (graph.height - offset)/2 - 5, 10, 10)
-
-            ctxB.fillRect(offset + z426 * 10 * zoomG - 5, (graph.height - offset)/2 + 40, 10, 10)
-
-            ctxB.fillRect(offset + z426 * 10 * zoomG - 5, (graph.height - offset)/2 - 10, 10, 10)
-
-            ctxB.fillRect(offset + z128 * 10 * zoomG - 5, (graph.height - offset)/2 - 5, 10, 10)
-
             ctxB.font = "14px sans-serif"
+            
+            for (var i = 0; i < points.length; i++) {
+                
+                ctxB.fillRect(offset - 5 + points[i].x * 10 * zoomG, graph.height - offset - mid * points[i].Z - 5, 10, 10)
 
-            ctxB.fillText("Solar", offset + 10, (graph.height - offset)/2 + 5)
+                ctxB.fillText(points[i].name, offset + points[i].x * 10 * zoomG, graph.height - offset - mid * points[i].Z - 10)
 
-            ctxB.textAlign = "center"
-
-            ctxB.fillText("850.2", offset + z426 * 10 * zoomG, (graph.height - offset)/2 + 35)
-            ctxB.fillText("850.1", offset + z426 * 10 * zoomG, (graph.height - offset)/2 - 15)
-            ctxB.fillText("GNz-13", offset + z128 * 10 * zoomG, (graph.height - offset)/2 - 15)
+            }
 
         }
         else {
