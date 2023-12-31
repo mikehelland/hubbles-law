@@ -29,15 +29,311 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
+				
 				<section>
-					<h3>From Ep. 1</h3>
-										
-					<canvas id="timedilation1" width="800" height="800"></canvas>
-					
-					<p id="aaa" class="fragment"></p>
+					<h3>From Ep. 8</h3>
 
+					<img style="border: 2px solid white; padding: 20px;" src="../../img/tdptimes.png">
+					
+					<p>A theory to replace the big bang</p>
 					
 				</section>
+
+
+				<section>
+					<div style="display: flex; align-items: center; justify-content: center;" >
+						<img style="padding-right: 20px;" width="100px" src="../logo1.png" > 
+						<div style="text-align: left;">
+							<h3>Nonexpanding</h3>
+						Episode 9</div>
+					</div>
+
+					<br>
+					<p style="font-size: 164px;">Fixing redshift</p>
+				</section>
+
+				<section>
+					<p>Is redshift broken?</p>
+					<p class="fragment" style="color: gray;">Well. Not exactly.</p>
+					<p class="fragment">We use $z$ to represent redshift and ...</p>
+					<p class="fragment" style="color: gray;">I'll just show you</p>
+					
+					
+				</section>
+
+				<section id="timeline1">
+					<p>Standard Model of Cosmology</p>
+
+					<div class="fragment" id="showBB"></div>
+
+					<canvas id="timeline" width="1800" height=500"></canvas>
+							
+					<div style="display: flex; align-items: center; justify-content: center;" >
+						<p class="fragment" ><span style="color:gray;">redshift</span><br>
+							$1+z = \frac{\text{wavelength}_{now}}{\text{wavelength}_{then}}$</p>
+						<div style="width: 190px;">
+							&nbsp;
+							<div class="fragment" id="showZ0"></div>
+							<div class="fragment" id="showZ"></div>
+							<div class="fragment" id="showHalf"></div>
+						</div>
+						<p class="fragment">
+							<span style="color:gray;">"scale factor"</span><br>
+							$a= \frac{1}{1+z} = \frac{\text{wavelength}_{then}}{\text{wavelength}_{now}}$</p>
+
+					</div>
+					<div class="fragment" id="showA"></div>
+
+				</section>
+				<script src="timeline.js"></script>
+				<script src="../../other/flrw.js"></script>
+
+
+				<section>
+					<p>$a = 0.5$ and the half way point don't line up exactly </p>
+						<p class="fragment">	
+						because <u>gravity and dark energy</u> play <em>"tug-of-war"</em> with the expansion rate.</p>
+					<p class="fragment" style="color: gray;">You can't avoid that...</p>
+					<p class="fragment">... in the standard model of cosmology.</p>
+				</section>
+
+
+				<section id="timeline2">
+					<p>Alternative Model of Cosmology <span style="color: gray;">(from Ep. 8)</span></p>
+
+					<div class="fragment" id="showBB2"></div>
+
+					<canvas id="timelined" width="1800" height=400"></canvas>
+
+					<p class="fragment">
+						<span style="color:gray;">redshift and radius</span><br>
+							$1-r = a = \frac{1}{1+z} = \frac{\text{wavelength}_{then}}{\text{wavelength}_{now}}$<br>
+							
+					</p>
+
+
+					<div class="fragment" id="showZ2"></div>
+					<div class="fragment" id="showHalf2"></div>
+					
+				</section>
+
+				<script src="timeline2.js"></script>
+
+				<section>
+
+					<h3><a href="asd">Remember</a></h3>
+					<p class="fragment">Light has wavelength <em>and</em> frequency. </p>
+					<p class="fragment"><em>And</em> energy.</p>
+					<br>
+
+					<table class="fragment">
+						<tr style="color: gray;">
+							<td></td>
+							<td>Wavelength</td>
+							<td>Frequency</td>
+							<td>Energy</td>
+						</tr>
+
+						<tr>
+							<td style="color: gray;">as redshift goes up</td>
+							<td class="fragment">goes up</td>
+							<td class="fragment">goes down</td>
+							<td class="fragment">goes down</td>
+						</tr>
+					</table>
+
+				</section>
+
+				<section>
+					<p style="text-align: left;">When wavelength is "favored"</p>
+					<img src="spectrum1.png">
+					<div class="fragment">
+						<p style="text-align: left;">When energy is "favored"</p>
+						<img src="spectrum2.png">
+	
+					</div>
+
+				</section>
+
+				<section>
+					<br>
+
+					<h2><a href="asd">Question</a></h2>
+
+					<p class="fragment">What does it mean, physically, for a wavelength to go to infinity?
+						<br>
+						<img width="700" src="spectrum1.png">
+					</p>
+					
+					
+					<p class="fragment">Doesn't it make more sense to say the energy is going to zero?
+						<br>
+						<img width="700" src="spectrum2.png">
+					</p>
+					
+
+					<br>
+					<p class="fragment"><u>Leave a comment</u> on what you think about that.</p>
+
+				</section>
+
+				<section>
+					<div>
+						<span style=" padding: 50px; border: 1px solid white;">$r = 1 - a = \frac{z}{1+z}$</span>
+					</div>
+
+					<br><br>
+					<h3 class="fragment"><a href="asd">Examples</a></h3>
+					<div style="display: flex; align-items: center; justify-content: center; gap: 280px;" >
+
+						<ul>
+							<li class="fragment">$z = 0.5$</li>
+							<li class="fragment">$a = 0.667$</li>
+							<li class="fragment">$r = 33\%$</li>
+							
+							<p class="fragment" style="color:gray">which means:</p>
+							<li class="fragment">Light is 33% redshifted</li>
+							<li class="fragment" style="color:gray"> (missing $\frac{1}{3}$ of its energy)</li>
+							<li class="fragment">Distance is 33% of $\frac{c}{H}$</li>
+						</ul>
+
+
+						<ul>
+							<li class="fragment">$z = 3$</li>
+							<li class="fragment">$a = 0.25$</li>
+							<li class="fragment">$r = 75\%$</li>
+							<p class="fragment" style="color:gray">which means:</p>
+							<li class="fragment">Light is 75% redshifted</li>
+							<li class="fragment" style="color:gray"> (missing $\frac{3}{4}$ of its energy)</li>
+							<li class="fragment">Distance is 75% of $\frac{c}{H}$</li>
+						</ul>
+							
+
+					</div>
+					<br>
+					<p class="fragment">Isn't $r$ much clearer? <u>Vote for your favorite in the comments.</u></p>
+					
+				</section>
+
+
+				<section>
+
+				<section>
+					<h3><a href="asd">Cosmological models compared</a></h3>
+					<table>
+						<tr>
+							<td style="color:gray;"></td>
+							<td style="color:gray;">Standard Model</td>
+							<td style="color:gray;">de Sitter universe</td>
+							<td style="color:gray;">Alternative Model</td>
+						</tr>
+
+						<tr>
+							<td style="color:gray;">$z$</td>
+							<td class="fragment">approx. distance</td>
+							<td class="fragment">exact distance <span style="color:rgb(206, 214, 128);">*</span></td>
+							<td class="fragment"><span style="color:rgb(221, 96, 96);">nope</span></td>
+						</tr>
+
+						<!--<tr>
+							<td style="color:gray;">$a$</td>
+							<td class="fragment">scale factor</td>
+							<td class="fragment">scale factor</td>
+							<td class="fragment">clock rate</td>
+						</tr>-->
+
+						<tr>
+							<td style="color:gray;">$r$</td>
+							<td class="fragment">approx. time</td>
+							<td class="fragment">exact distance <span style="color:rgb(206, 214, 128);">**</span></td>
+							<td class="fragment">exact distance</td>
+						</tr>
+
+
+					</table>
+					<br>
+					<div class="fragment" style="text-align: left; padding-left: 400px; font-size: 28px;">
+						<p><span style="color:rgb(206, 214, 128);">* </span> $~~d_{now} = z\frac{c}{H_0}$, comoving distance</p>
+						<p><span style="color:rgb(206, 214, 128);">**</span>$~d_{then} = r\frac{c}{H_0}$, angular diameter distance</p>
+					</div>
+				</section>
+
+
+				<section data-transition="slide">
+					<div style="display: flex; justify-content: center; align-items: center;">
+						<div style="position: relative;;">
+							de Sitter universe<br>
+							<img width="1000" src="deSitter1.png">
+							<p style="font-size: 30px; top: 160px; left: 420px; color:black; position: absolute;">$d_{now} = z \frac{c}{H_0}$</p>
+							<p style="font-size: 30px; top: 350px; left: 500px; color:black; position: absolute;">$d_{then} = r \frac{c}{H_0}$</p>
+							<br>
+							<small>Distances change</small>
+						</div>
+						<div style="position: relative;" class="fragment">
+							Alternative model<br>
+							<img width="1000" src="deSitter2.png">
+							<p style="font-size: 30px; top: 350px; left: 500px; color:black; position: absolute;">$d = r \frac{c}{H}$</p>
+							
+							<br>
+							<small>Distances don't change</small>
+						</div>
+					</div>
+
+				</section>
+
+				</section>
+
+
+				<section>
+					<h2><a href="ASD">Summary</a></h2>
+					<hr>
+					<ul>
+						<li class="fragment">Redshift given by $z$, $a$, or $r$</li>
+						<li class="fragment">All are valid. The choice doesn't change anything</li>
+						<li class="fragment" style="color:gray;">Standard Model</li>
+						<ul class="fragment">
+							<li>the scale factor $a$ is the most natural</li>
+						</ul>
+						<li class="fragment" style="color:gray;">de Sitter universe</li>
+						<ul class="fragment">
+							<li>$z$ and $r$ give exact distances</li>
+						</ul>
+						<li class="fragment" style="color:gray;">Alternative model</li>
+						<ul class="fragment">
+							<li>Only $r$ gives the exact distance</li>
+						</ul>
+					</ul>
+				</section>
+
+
+				<section>
+					<h2><a href="ASD">Conclusion</a></h2>
+					<hr>
+					<ul>
+						<li class="fragment"><em>If</em> we do switch from the standard model to the alternative...</li>
+						<li class="fragment">... it would be convenient to switch from $z$ to $r$ too. </li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h2><a href="ASD">What next?</a></h2>
+					
+					<br>
+					<br>
+					<p>Have a topic you'd like to me cover? </p>
+					<p><u>Leave a comment</u>!</p>
+					<p>Subscribe!</p>
+					<br>
+					<br>
+					<h3 >Thanks for watching!</h3>
+					<p style="text-align: left; ">video by Mike Helland</p>
+				</section>
+
+
+
+
+
 
 			</div>
 
@@ -55,10 +351,11 @@
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
 			Reveal.initialize({
-				controls: true,
-				progress: true,
+				controls: false,
+				progress: false,
 				center: true,
 				hash: true,
+				transition: "fade",
 
 				width: 1920,
   				height: 1080,
@@ -72,8 +369,51 @@
 				}
 			})
 			
+			var tl = timelineDemo(timeline)
+			var tl2 = timeline2Demo(timelined)
+
 			Reveal.on( 'fragmentshown', event => {
-			  console.log(event.fragment.id)
+				console.log(event.fragment.id)
+				if (event.fragment.id === "showZ") {
+					tl.showZ()
+				}
+				if (event.fragment.id === "showZ0") {
+					tl.showZ0()
+				}
+				if (event.fragment.id === "showBB") {
+					tl.showBB()
+				}
+				if (event.fragment.id === "showA") {
+					tl.showA()
+				}
+				if (event.fragment.id === "showHalf") {
+					tl.showHalf()
+				}
+	
+				if (event.fragment.id === "showZ2") {
+					tl2.showZ()
+				}
+				if (event.fragment.id === "showHalf2") {
+					tl2.showHalf()
+				}
+				if (event.fragment.id === "showBB2") {
+					tl2.showBB()
+				}
+				if (event.fragment.id === "showA") {
+					tl.showA()
+				}
+			})
+
+			Reveal.on( 'slidechanged', event => {
+
+			  if (event.currentSlide.id === "timeline1") {
+				tl.draw()
+			  }
+
+			  if (event.currentSlide.id === "timeline2") {
+				tl2.draw()
+			  }
+
 			} );
 
 		</script>
