@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
     <body>
+        <p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
+        <hr>
 
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
 
         <hr>
-        <div style="display: flex;">
+        <div style="display: flex;  max-height: 800px;">
             <canvas id="canvas" width="800" height="800"></canvas>
-            <pre style="padding-left: 80px; max-height: 800px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
+            <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
         </div>
 
         
@@ -57,18 +59,19 @@
                 var lastr = 0
                 var lastz = 0
 
-                ctx.textAlign = "center"
+                ctx.textAlign = "right"
 
                 var output = ""
 
                 for (var i = 0; i < N; i++) {
-                    let Vn = V/N * (1 + i)
-                    let r = (Vn / kpi)**(1/3)
+                    var Vn = V/N * (1 + i)
+                    var r = (Vn / kpi)**(1/3)
+                    var z = 1 / (1-r/R) - 1
 
-                    let z = 1 / (1-r/R) - 1
-
+                    var cap = z.toFixed(2)
                     if (z > 1e12) {
                         z = Infinity
+                        cap = "∞"
                     }
                                     
                     Vs.push({Vn: V/N, r, z})
@@ -77,9 +80,9 @@
                     ctx.arc(0, 0, zoom * r, 0, pi * 2)
                     ctx.stroke()
 
-                    ctx.fillText(z.toFixed(2), 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
+                    ctx.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
 
-                    output += "\n" + lastz.toFixed(2) + " < z < " + z.toFixed(2) 
+                    output += "\n" + lastz.toFixed(2) + " < z < " + cap 
 
                     lastr = r
                     lastz = z
