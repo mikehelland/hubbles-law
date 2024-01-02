@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <style>
+            #canvas {height:400px; width: 400px;}
+        </style>
+    </head>
     <body>
         <p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
         <hr>
@@ -8,18 +13,46 @@
         <input type="range" min="1" max="200" id="divideBy">
 
         <hr>
-        <div style="display: flex;  max-height: 800px;">
+        <canvas id="graph" width="800" height="400"></canvas>
+
+        <hr>
+        <div style="display: flex;  max-height: 400px;">
             <canvas id="canvas" width="800" height="800"></canvas>
             <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
         </div>
 
+
         
         <script>
+            var agn = []
+            var qso = []
+
+            var maz = 1
+
+            fetch("https://mikehelland.github.io/hubbles-law/data/agn.csv").then(res => res.text()).then(res => {
+                agn = res.split("\n")
+                for (var i = 0; i < agn.length; i++) {
+                    agn[i] = parseFloat(agn[i])
+                }
+
+                fetch("https://mikehelland.github.io/hubbles-law/data/qso.csv").then(res => res.text()).then(res => {
+                    qso = res.split("\n")
+                    for (var i = 0; i < qso.length; i++) {
+                        qso[i] = parseFloat(qso[i])
+                    }
+
+                    maxZ = qso[i - 1]
+                    binData()
+                })
+
+            })
+
 
             divideBy.onchange = () => {
                 N = 1 * divideBy.value
                 divideByCap.innerHTML = N
-                draw()
+                drawV()
+                binData()
             }
 
 
@@ -38,29 +71,30 @@
 
             var Vs = []
 
-            var ctx = canvas.getContext("2d")
+            var ctxc = canvas.getContext("2d")
 
-            var draw = function () {
+            var drawV = function () {
                 canvas.width = canvas.width
-                ctx.font = "bold 20pt Arial"
+                ctxc.font = "bold 20pt Arial"
 
                 //ctx.fillText(Math.round(V), 20, 20) 
 
-                ctx.translate(canvas.width / 2, canvas.height)
+                ctxc.translate(canvas.width / 2, canvas.height)
 
-                ctx.beginPath()
-                ctx.arc(0, 0, zoom * R, 0, pi * 2)
-                ctx.stroke()
+                ctxc.beginPath()
+                ctxc.arc(0, 0, zoom * R, 0, pi * 2)
+                ctxc.stroke()
 
-                ctx.beginPath()
-                ctx.arc(0, 0, 1, 0, pi * 2)
-                ctx.stroke()
+                ctxc.beginPath()
+                ctxc.arc(0, 0, 1, 0, pi * 2)
+                ctxc.stroke()
 
                 var lastr = 0
                 var lastz = 0
 
-                ctx.textAlign = "right"
+                ctxc.textAlign = "right"
 
+                Vs = []
                 var output = ""
 
                 for (var i = 0; i < N; i++) {
@@ -74,15 +108,15 @@
                         cap = "∞"
                     }
                                     
-                    Vs.push({Vn: V/N, r, z})
+                    Vs.push({Vn: V/N, r, z, agn: 0, qso: 0})
 
-                    ctx.beginPath()
-                    ctx.arc(0, 0, zoom * r, 0, pi * 2)
-                    ctx.stroke()
+                    ctxc.beginPath()
+                    ctxc.arc(0, 0, zoom * r, 0, pi * 2)
+                    ctxc.stroke()
 
-                    ctx.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
+                    ctxc.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
 
-                    output += "\n" + lastz.toFixed(2) + " < z < " + cap 
+                    output += lastz.toFixed(2) + " < z < " + cap  + "\n" 
 
                     lastr = r
                     lastz = z
@@ -94,8 +128,57 @@
                 outputDiv.innerHTML = output
             }
 
+            var binData = function () {
+                for (var i = 0; i < agn.length; i++) {
+                    for (var iz = 0; iz < Vs.length; iz++) {
+                        if (Vs[iz].z >= agn[i]) {
+                            Vs[iz].agn++
+                            break
+                        }
+                    }
+                }
 
-            draw()
+                for (i = 0; i < qso.length; i++) {
+                    for (iz = 0; iz < Vs.length; iz++) {
+                        if (Vs[iz].z >= qso[i]) {
+                            Vs[iz].qso++
+                            break
+                        }
+                    }
+                }
+
+                drawG()
+
+            }
+
+            drawV()
+            drawG()
+
+
+            function drawG() {
+                var ctx = graph.getContext("2d")
+
+                graph.width = graph.width
+                ctx.textAlign = "center"
+                ctx.translate(20, graph.height - 20)
+                var xz = (graph.width - 20) / (Vs.length + 1)
+                var yz = 0.006
+
+                ctx.strokeRect(0, 0, graph.width, -graph.height)
+
+                for (var i = 0; i < Vs.length; i++) {
+                    ctx.fillStyle = "black"
+                    ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 18)
+
+                    var h = 
+                    ctx.fillStyle = "red"
+                    ctx.fillRect(i * xz + 2, 0, xz - 4, (Vs[i].qso + Vs[i].agn) * -yz)
+
+                    ctx.fillStyle = "blue"
+                    ctx.fillRect(i * xz + 2, 0, xz - 4, -Vs[i].qso * yz)
+                }
+
+            }
         </script>
 
 
