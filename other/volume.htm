@@ -8,7 +8,16 @@
     <body>
         <p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
         <hr>
+        
+        <select id="catalog">
+            <option value="select">Select a quasar/AGN catalog...</option>
+            <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
+            <option value="1996">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
+        </select>
 
+        <p>
+            <a href="https://cdsarc.cds.unistra.fr/ftp/VII/258/">Quasars and Active Galactic Nuclei</a> (13th Ed.)  (Veron+ 2010)
+        </p>
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
 
@@ -27,25 +36,47 @@
             var agn = []
             var qso = []
 
-            var maz = 1
+            var maxZ = 1
 
-            fetch("https://mikehelland.github.io/hubbles-law/data/agn.csv").then(res => res.text()).then(res => {
-                agn = res.split("\n")
-                for (var i = 0; i < agn.length; i++) {
-                    agn[i] = parseFloat(agn[i])
+            catalog.onchange = () => {
+                if (catalog.value !== "select") {
+
+                    if (!ctlgs[catalog.value]) {
+                        download(catalog.value)
+                    }
+                    else {
+                        binData(catalog.value)
+                    }
                 }
+            }
 
-                fetch("https://mikehelland.github.io/hubbles-law/data/qso.csv").then(res => res.text()).then(res => {
-                    qso = res.split("\n")
-                    for (var i = 0; i < qso.length; i++) {
-                        qso[i] = parseFloat(qso[i])
+            var ctlgs = {}
+
+            function download(ctlg) {
+                
+                fetch("https://mikehelland.github.io/hubbles-law/data/agn" + ctlg).then(res => res.text()).then(res => {
+                    agn = res.split("\n")
+                    for (var i = 0; i < agn.length; i++) {
+                        agn[i] = parseFloat(agn[i])
                     }
 
-                    maxZ = qso[i - 1]
-                    binData()
+                    fetch("https://mikehelland.github.io/hubbles-law/data/qso" + ctlg).then(res => res.text()).then(res => {
+                        qso = res.split("\n")
+                        for (var i = 0; i < qso.length; i++) {
+                            qso[i] = parseFloat(qso[i])
+                            if (qso[i] > maxZ) {
+                                maxZ = qso[i]
+                            }
+                        }
+
+                        ctlgs[ctlg] = {agn, qso}
+
+                        binData(ctlg)
+                    })
+
                 })
 
-            })
+            }
 
 
             divideBy.onchange = () => {
@@ -128,7 +159,7 @@
                 outputDiv.innerHTML = output
             }
 
-            var binData = function () {
+            var binData = function (ctlg) {
                 for (var i = 0; i < agn.length; i++) {
                     for (var iz = 0; iz < Vs.length; iz++) {
                         if (Vs[iz].z >= agn[i]) {
@@ -161,12 +192,22 @@
                 graph.width = graph.width
                 ctx.textAlign = "center"
                 ctx.translate(20, graph.height - 20)
-                var xz = (graph.width - 20) / (Vs.length + 1)
-                var yz = 0.006
+
+                var maxBin = 0
+                for (var i = 0; i < Vs.length; i++) {
+                    if (Vs[i].z > maxZ) {
+                        maxBin = i + 1
+                        break
+                    }
+                }
+                console.log(maxBin)
+
+                var xz = (graph.width - 20) / (maxBin + 1)
+                var yz = (graph.height - 50) / (Vs[0].agn + Vs[0].qso)
 
                 ctx.strokeRect(0, 0, graph.width, -graph.height)
 
-                for (var i = 0; i < Vs.length; i++) {
+                for (var i = 0; i < maxBin; i++) {
                     ctx.fillStyle = "black"
                     ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 18)
 
