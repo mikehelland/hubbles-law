@@ -9,18 +9,22 @@
         <p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
         <hr>
         
-        <select id="catalog">
-            <option value="select">Select a quasar/AGN catalog...</option>
-            <option value="1996">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
-            <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
-            <option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>
-        </select>
 
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
 
         <hr>
-        <canvas id="graph" width="800" height="400"></canvas>
+        <div style="position: relative;">
+            <select id="catalog" style="position: absolute; top:10px; left: 60px;">
+                <option value="select">Select a quasar/AGN catalog...</option>
+                <option value="1996">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
+                <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
+                <option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>
+            </select>
+
+            <canvas id="graph" width="1200" height="400"></canvas>
+
+        </div>
 
         <hr>
         <div style="display: flex;  max-height: 400px;">
@@ -68,17 +72,24 @@
             function download(ctlg) {
                 
                 fetch("https://mikehelland.github.io/hubbles-law/data/agn" + ctlg).then(res => res.text()).then(res => {
-                    agn = res.split("\n")
-                    for (var i = 0; i < agn.length; i++) {
-                        agn[i] = parseFloat(agn[i])
+                    var agn = []
+                    var _agn = res.split("\n")
+                    for (var i = 0; i < _agn.length; i++) {
+                        if (_agn[i].trim()) {
+                            agn.push(parseFloat(_agn[i]))
+                        }
                     }
 
                     fetch("https://mikehelland.github.io/hubbles-law/data/qso" + ctlg).then(res => res.text()).then(res => {
-                        qso = res.split("\n")
-                        for (var i = 0; i < qso.length; i++) {
-                            qso[i] = parseFloat(qso[i])
-                            if (qso[i] > maxZ) {
-                                maxZ = qso[i]
+                        var qso = []
+                        var _qso = res.split("\n")
+                        for (var i = 0; i < _qso.length; i++) {
+                            if (_qso[i].trim()) {
+                                qso.push(parseFloat(_qso[i]))
+                                
+                                if (_qso[i] > maxZ) {
+                                    maxZ = _qso[i]
+                                }
                             }
                         }
 
@@ -112,8 +123,8 @@
 
             var V = kpi * R**3
 
-            var N = 10
-            divideBy.value = 10
+            var N = 100
+            divideBy.value = N
             divideByCap.innerHTML = N
 
             var Vs = []
@@ -182,7 +193,7 @@
                 var qso = ctlgs[ctlg].qso
                 for (var i = 0; i < agn.length; i++) {
                     for (var iz = 0; iz < Vs.length; iz++) {
-                        if (Vs[iz].z >= agn[i]) {
+                        if (agn[i] && Vs[iz].z >= agn[i]) {
                             Vs[iz].agn++
                             break
                         }
@@ -191,7 +202,7 @@
 
                 for (i = 0; i < qso.length; i++) {
                     for (iz = 0; iz < Vs.length; iz++) {
-                        if (Vs[iz].z >= qso[i]) {
+                        if (qso[i] && Vs[iz].z >= qso[i]) {
                             Vs[iz].qso++
                             break
                         }
@@ -210,8 +221,7 @@
                 var ctx = graph.getContext("2d")
 
                 graph.width = graph.width
-                ctx.textAlign = "center"
-                ctx.translate(20, graph.height - 20)
+                ctx.translate(40, graph.height - 20)
 
                 var maxBin = 0
                 for (var i = 0; i < Vs.length; i++) {
@@ -224,12 +234,25 @@
 
                 var xz = (graph.width - 20) / (maxBin + 1)
                 var yz = (graph.height - 50) / (Vs[0].agn + Vs[0].qso)
+                console.log(yz)
+                if (isNaN(yz) || yz === Infinity) yz = 0
 
                 ctx.strokeRect(0, 0, graph.width, -graph.height)
 
-                for (var i = 0; i < maxBin; i++) {
+                ctx.textAlign = "right"
+                ctx.fillText("Redshift z", graph.width - 60, -2)
+
+                for (var i = 0; i < (Vs[0].agn + Vs[0].qso); i += 2000) {
+                    ctx.fillText(Math.round(i/1000) +"K", -4, 4 + i * -yz)
+                }
+
+                ctx.textAlign = "center"
+                
+                for (i = 0; i < maxBin; i++) {
                     ctx.fillStyle = "black"
-                    ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 18)
+                    if (xz > 40 || i%2 === 0) {
+                        ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 18)
+                    }
 
                     var h = 
                     ctx.fillStyle = "red"
