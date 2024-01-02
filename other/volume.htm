@@ -11,13 +11,11 @@
         
         <select id="catalog">
             <option value="select">Select a quasar/AGN catalog...</option>
-            <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
             <option value="1996">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
+            <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
+            <option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>
         </select>
 
-        <p>
-            <a href="https://cdsarc.cds.unistra.fr/ftp/VII/258/">Quasars and Active Galactic Nuclei</a> (13th Ed.)  (Veron+ 2010)
-        </p>
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
 
@@ -30,6 +28,20 @@
             <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
         </div>
 
+        <hr>
+
+        <ul>
+            <li>
+                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/188/">Quasars and Active Galactic Nuclei</a> 7th Ed.  (Veron+ 1996)
+            </li>
+            <li>
+                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/258/">Quasars and Active Galactic Nuclei</a> 13th Ed.  (Veron+ 2010)
+            </li>
+            <li>
+                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/294/">The Million Quasars (Milliquas) catalogue</a> version 8 (Flesch, 2023)
+            </li>
+            
+        </ul>
 
         
         <script>
@@ -40,6 +52,7 @@
 
             catalog.onchange = () => {
                 if (catalog.value !== "select") {
+                    drawV()
 
                     if (!ctlgs[catalog.value]) {
                         download(catalog.value)
@@ -83,7 +96,10 @@
                 N = 1 * divideBy.value
                 divideByCap.innerHTML = N
                 drawV()
-                binData()
+
+                if (catalog.value !== "select") {
+                    binData(catalog.value)
+                }
             }
 
 
@@ -160,6 +176,10 @@
             }
 
             var binData = function (ctlg) {
+                if (!ctlgs[ctlg]) return 
+
+                var agn = ctlgs[ctlg].agn
+                var qso = ctlgs[ctlg].qso
                 for (var i = 0; i < agn.length; i++) {
                     for (var iz = 0; iz < Vs.length; iz++) {
                         if (Vs[iz].z >= agn[i]) {
