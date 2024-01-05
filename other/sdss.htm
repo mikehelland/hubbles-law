@@ -13,10 +13,7 @@
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
 
-        <br>
-        Absolute magnitude threshold <span id="magnitudeCap"></span>
-        <input type="range" min="20" max="30" id="magnitudeInput">
-
+        
 
         <hr>
         <div style="position: relative;">
@@ -29,11 +26,16 @@
             </select>
 
             <select id="cosmology" style="position: absolute; top:10px; left: 290px;">
-                <option value="LCDM676">LCDM H<sub>0</sub> = 67.6</option>
-                <option value="LCDM73">LCDM H<sub>0</sub> = 73.0</option>
+                <option value="LCDM676">LCDM H0 = 67.6</option>
+                <option value="LCDM73">LCDM H0 = 73.0</option>
+                <option value="alt">TDP H = 70.5</option>
                 
             </select>
 
+            <div style="position: absolute; top:30px; left: 60px;">
+                Absolute magnitude &lt; <span id="magnitudeCap"></span>
+                <input type="range" min="20" max="30" id="magnitudeInput">
+            </div>
 
             <canvas id="graph" width="1200" height="400"></canvas>
 
@@ -111,7 +113,8 @@
                             var z = parseFloat(rows[0])
                             var M67 = parseFloat(rows[1])
                             var M73 = parseFloat(rows[2])
-                            qso.push([z, M67, M73])
+                            var MH = parseFloat(rows[3])
+                            qso.push([z, M67, M73, MH])
                             
                             if (z > maxZ) {
                                 maxZ = z
@@ -221,7 +224,8 @@
 
                 for (i = 0; i < qso.length; i++) {
                     
-                    if (qso[i][0] >= 2.1 || qso[i][iM] > magnitude) continue
+                    //qso[i][0] >= 2.1 || 
+                    if (qso[i][iM] > magnitude) continue
 
                     for (iz = 0; iz < Vs.length; iz++) {
                         if (qso[i] && Vs[iz].z >= qso[i][0]) {
@@ -272,8 +276,15 @@
                 ctx.textAlign = "right"
                 ctx.fillText("Redshift z", graph.width - 60, -2)
 
-                for (var i = 0; i < maxY; i += 2000) {
-                    ctx.fillText(Math.round(i/1000) +"K", -4, 4 + i * -yz)
+                if (yz > 0.1) {
+                    for (var i = 0; i < maxY; i += 100) {
+                        ctx.fillText(Math.round(i), -4, 4 + i * -yz)
+                    }
+                }
+                else {
+                    for (var i = 0; i < maxY; i += 2000) {
+                        ctx.fillText(Math.round(i/1000) +"K", -4, 4 + i * -yz)
+                    }
                 }
 
                 ctx.textAlign = "center"
