@@ -20,6 +20,7 @@
             <select id="catalog" style="position: absolute; top:10px; left: 60px;">
                 <option value="select">Select a quasar/AGN catalog...</option>
                 <option value="sdss">SDSS DR16Q_v4</option>
+                <option value="sdss12">SDSS DR12Q</option>
                 <option value="qso1996M">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
                 <option value="qso2010M">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
                 <!--<option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
@@ -277,7 +278,12 @@
                 ctx.textAlign = "right"
                 ctx.fillText("Redshift z", graph.width - 60, -2)
 
-                if (yz > 0.1) {
+                if (yz > 1) {
+                    for (var i = 0; i < maxY; i += 5) {
+                        ctx.fillText(Math.round(i), -4, 4 + i * -yz)
+                    }
+                }
+                else if (yz > 0.1) {
                     for (var i = 0; i < maxY; i += 100) {
                         ctx.fillText(Math.round(i), -4, 4 + i * -yz)
                     }
