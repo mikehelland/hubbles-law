@@ -19,13 +19,13 @@
         <div style="position: relative;">
             <select id="catalog" style="position: absolute; top:10px; left: 60px;">
                 <option value="select">Select a quasar/AGN catalog...</option>
-                <option value="qso1996M">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
-                <!--<option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
-                <option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
                 <option value="sdss">SDSS DR16Q_v4</option>
+                <option value="qso1996M">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
+                <option value="qso2010M">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
+                <!--<option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
             </select>
 
-            <select id="cosmology" style="position: absolute; top:10px; left: 390px;">
+            <select id="cosmology" style="position: absolute; top:10px; left: 420px;">
                 <option value="LCDM676">LCDM H0 = 67.6</option>
                 <option value="LCDM73">LCDM H0 = 73.0</option>
                 <option value="alt">TDP H = 70.5</option>
@@ -91,12 +91,12 @@
                 magnitudeCap.innerHTML = magnitude
 
                 drawV()
-                binData("sdss")
+                binData(catalog.value)
             }
 
             cosmology.onchange = () => {
                 drawV()
-                binData("sdss")
+                binData(catalog.value)
 
             }
 
@@ -215,6 +215,7 @@
 
             var total
             var binData = function (ctlg) {
+
                 if (!ctlgs[ctlg]) return 
 
                 total = 0
