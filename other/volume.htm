@@ -82,7 +82,7 @@
 
             function download(ctlg) {
                 
-                fetch("https://mikehelland.github.io/hubbles-law/data/agn" + ctlg).then(res => res.text()).then(res => {
+                fetch("https://mikehelland.github.io/hubbles-law/data/qso/agn" + ctlg).then(res => res.text()).then(res => {
                     var agn = []
                     var _agn = res.split("\n")
                     for (var i = 0; i < _agn.length; i++) {
@@ -91,7 +91,7 @@
                         }
                     }
 
-                    fetch("https://mikehelland.github.io/hubbles-law/data/qso" + ctlg).then(res => res.text()).then(res => {
+                    fetch("https://mikehelland.github.io/hubbles-law/data/qso/qso" + ctlg).then(res => res.text()).then(res => {
                         var qso = []
                         var _qso = res.split("\n")
                         for (var i = 0; i < _qso.length; i++) {
