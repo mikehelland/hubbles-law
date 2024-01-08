@@ -10,27 +10,19 @@
         <hr>
         
 
-        Divide the volume by <span id="divideByCap"></span>
+        Divide the area by <span id="divideByCap"></span>
         <input type="range" min="1" max="500" id="divideBy">
 
 
 
         <br>
         Distance between dots <span id="distanceBetweenCap"></span>
-        <input type="range" min="1" max="500" id="distanceBetween">
+        <input type="range" min="1" max="500" value="64"  id="distanceBetween">
 
 
         <hr>
         <div style="position: relative;">
-            <select id="catalog" style="position: absolute; top:10px; left: 60px;">
-                <option value="select">Select a quasar/AGN catalog...</option>
-                <option value="1996">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
-                <option value="2010">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
-                <option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>
-                <option value="sdss">SDSS DR16Q_v4</option>
-                <option value="siena">Siena Galaxy Atlas</option>
-            </select>
-
+            
             <canvas id="graph" width="1200" height="400"></canvas>
 
         </div>
@@ -41,20 +33,6 @@
 
         <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
 
-        <hr>
-
-        <ul>
-            <li>
-                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/188/">Quasars and Active Galactic Nuclei</a> 7th Ed.  (Veron+ 1996)
-            </li>
-            <li>
-                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/258/">Quasars and Active Galactic Nuclei</a> 13th Ed.  (Veron+ 2010)
-            </li>
-            <li>
-                <a href="https://cdsarc.cds.unistra.fr/ftp/VII/294/">The Million Quasars (Milliquas) catalogue</a> version 8 (Flesch, 2023)
-            </li>
-            
-        </ul>
 
         
         <script>
@@ -64,21 +42,6 @@
             var maxZ = 1
             var maxY
 
-            catalog.onchange = () => {
-                if (catalog.value !== "select") {
-                    drawV()
-
-                    if (!ctlgs[catalog.value]) {
-                        download(catalog.value)
-                    }
-                    else {
-                        binData(catalog.value)
-                    }
-                }
-            }
-
-
-            var ctlgs = {}
 
             var dots = []
             makeDots()
@@ -164,7 +127,7 @@
                     ctxc.arc(0, 0, zoom * r, 0, pi * 2)
                     ctxc.stroke()
 
-                    ctxc.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
+                    ctxc.fillText(Math.round(r), 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
 
                     output += lastz.toFixed(2) + " < z < " + cap  + "\n" 
 
@@ -250,7 +213,7 @@
                 for (i = 0; i < maxBin; i++) {
                     ctx.fillStyle = "black"
                     if (xz > 40 || i%2 === 0) {
-                        ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 14)
+                        ctx.fillText(Vs[i].r.toFixed(0), (i + 1) * xz, 14)
                     }
 
                     var h = 
