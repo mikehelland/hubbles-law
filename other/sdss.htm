@@ -34,8 +34,9 @@
             </select>
 
             <div style="position: absolute; top:30px; left: 60px;">
-                Absolute magnitude &lt; <span id="magnitudeCap"></span>
+                Absolute magnitude <span id="magnitudeCap"></span>
                 <input type="range" min="20" max="30" id="magnitudeInput">
+                <input type="checkbox" id="plusminus"> ±0.5
             </div>
 
             <canvas id="graph" width="1200" height="400"></canvas>
@@ -48,6 +49,7 @@
             <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
         </div>
 
+        <script src="flrw.js"></script>
         <hr>
 
         <!--<ul>
@@ -82,6 +84,10 @@
                         binData(catalog.value)
                     }
                 }
+            }
+
+            plusminus.onchange = () => {
+                binData(catalog.value)
             }
 
             var magnitude = -parseFloat(magnitudeInput.value)
@@ -145,7 +151,7 @@
             const pi = Math.PI
             const kpi = 4 / 3 * pi
 
-            var R = 13.8
+            var R = 299792 / 70.5
 
             var zoom = 760 / R
 
@@ -188,13 +194,19 @@
                     var r = (Vn / kpi)**(1/3)
                     var z = 1 / (1-r/R) - 1
 
+                    var dC
                     var cap = z.toFixed(2)
                     if (z > 1e12) {
                         z = Infinity
                         cap = "∞"
+                        dC = 13800
                     }
+                    else {
+                        dC = nwFLRW(67.6, 0.69, 0.31, z).DC
+                    }
+
                                     
-                    Vs.push({Vn: V/N, r, z, agn: 0, qso: 0})
+                    Vs.push({Vn: V/N, r, z, agn: 0, qso: 0, dC})
 
                     ctxc.beginPath()
                     ctxc.arc(0, 0, zoom * r, 0, pi * 2)
@@ -219,6 +231,8 @@
 
                 if (!ctlgs[ctlg]) return 
 
+                var pm = plusminus.checked
+
                 total = 0
                 var qso = ctlgs[ctlg].qso
 
@@ -226,8 +240,15 @@
 
                 for (i = 0; i < qso.length; i++) {
                     
-                    //qso[i][0] >= 2.1 || 
-                    if (qso[i][iM] > magnitude) continue
+                    var pass = qso[i][iM] < magnitude
+
+                    if (pm) {
+                        pass = qso[i][iM] > magnitude - 0.5 &&  qso[i][iM] < magnitude + 0.5
+                    }
+
+                    if (!pass) continue
+
+                    //console.log(qso[i][iM])
 
                     for (iz = 0; iz < Vs.length; iz++) {
                         if (qso[i] && Vs[iz].z >= qso[i][0]) {
@@ -249,8 +270,9 @@
             function drawG() {
                 var ctx = graph.getContext("2d")
 
+                var h = graph.height - 20
                 graph.width = graph.width
-                ctx.translate(40, graph.height - 20)
+                ctx.translate(40, h)
 
                 var maxBin = 0
                 for (var i = 0; i < Vs.length; i++) {
@@ -302,13 +324,26 @@
                         ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 14)
                     }
 
-                    var h = 
-                    ctx.fillStyle = "red"
-                    ctx.fillRect(i * xz + 2, 0, xz - 4, (Vs[i].qso + Vs[i].agn) * -yz)
-
                     ctx.fillStyle = "blue"
                     ctx.fillRect(i * xz + 2, 0, xz - 4, -Vs[i].qso * yz)
                 }
+
+                ctx.beginPath()
+                ctx.moveTo(0, -h/2)
+
+                for (i = 0; i < maxBin; i++) {
+                    ctx.lineTo((i+1) * xz, -h/2 * (Vs[i].dC / Vs[i].r))
+                }
+                ctx.strokeStyle = "black"
+                //ctx.stroke()
+
+
+
+                ctx.font = "14pt serif"
+                ctx.fillStyle = "black"
+                ctx.textAlign = "right"
+                ctx.fillText("Total: " + (total || 0), graph.width - 50, -graph.height + 50)
+
 
             }
         </script>
