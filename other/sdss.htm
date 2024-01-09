@@ -12,6 +12,11 @@
 
         Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
+        <br>
+        Absolute magnitude threshold:
+        <input type="range" min="20" max="30" id="magnitudeInput">
+                <input type="checkbox" id="plusminus"> ±0.5
+                
 
         
 
@@ -33,10 +38,9 @@
                 
             </select>
 
-            <div style="position: absolute; top:30px; left: 60px;">
+            <div style="position: absolute; top:36px; left: 60px;">
                 Absolute magnitude <span id="magnitudeCap"></span>
-                <input type="range" min="20" max="30" id="magnitudeInput">
-                <input type="checkbox" id="plusminus"> ±0.5
+                
             </div>
 
             <canvas id="graph" width="1200" height="400"></canvas>
@@ -86,16 +90,26 @@
                 }
             }
 
+            var setMagCap = function() {
+                if (plusminus.checked) {
+                    magnitudeCap.innerHTML = "= " + magnitude + " ± 0.5"
+                }
+                else {
+                    magnitudeCap.innerHTML = "&lt; " + magnitude 
+                }
+            }
+
             plusminus.onchange = () => {
                 binData(catalog.value)
+                setMagCap()
             }
 
             var magnitude = -parseFloat(magnitudeInput.value)
-            magnitudeCap.innerHTML = magnitude
+            setMagCap()
 
             magnitudeInput.onchange = () => {
                 magnitude = -parseFloat(magnitudeInput.value)
-                magnitudeCap.innerHTML = magnitude
+                setMagCap()
 
                 drawV()
                 binData(catalog.value)
