@@ -7,7 +7,7 @@
             font-size: 115%;
             width: 50px;
             appearance: textfield;
-            border: 0;
+            border: 1;
         }
 
         body {
@@ -23,6 +23,8 @@
 </head>
 
 <body>
+    zCMB <input type="number" id="zcmb" value="1092"> has a radius of <span id="radiusCap"></span>
+    <br>
 
     <form name="form">
         <!--\( \frac{H}{H_0} = [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)-->
@@ -37,6 +39,8 @@
 
 
     <canvas id="canvas" width="1000" height="600"></canvas>
+
+    <script src="../flrw.js"></script>
     
     <script>
         var data
@@ -62,10 +66,14 @@
         run()
 
         function run() {
+            var z = parseFloat(zcmb.value)
             var H0 = parseFloat(form.H0.value)
             var OmegaL = parseFloat(form.Omega_L.value)
             var OmegaM = parseFloat(form.Omega_M.value)
 
+            var R0 = nwFLRW(H0, OmegaL, OmegaM, z).DC * pc2ly
+            radiusCap.innerHTML = R0.toFixed(2) + " Gly"
+            //var R = 46000
 
             data = []
 
@@ -75,7 +83,7 @@
             var a = 1
             var x = 0
             var t = 0
-            var R = 46000
+            var R = R0
 
             while (x >= 0 && t > -25000) {
                 t--
@@ -93,8 +101,7 @@
             a = 1
             x = 0
             t = 0
-            R = 46500
-
+            var R = R0
 
             while (t < 15000) {
                 t++
