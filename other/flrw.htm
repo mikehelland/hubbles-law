@@ -12,12 +12,18 @@
         left:50px;
         top:50px;
     }
+
+    #output {
+        font-family: 'Courier New', Courier, monospace;
+    }
 </style>
 </head>
 <body>
 
 
+    Max z (redshift) <input type="number" id="maxZInput" value="15" min="1">
 
+    <hr>
     <div style="position: relative;">
         <canvas id="canvas" width="1000" height="600"></canvas>
         <canvas id="canvasz" width="1000" height="600" style="position: absolute; left:0; top:0; "></canvas>
@@ -119,7 +125,14 @@
         const pc2ly = 3.261564
         var zoomY = 35 * 1000
         
-        var maxZ = 15
+        var maxZ = maxZInput.value * 1
+
+        maxZInput.onchange = () => {
+            maxZ = maxZInput.value * 1
+            run()
+        }
+
+        var printParameters = true
 
         var canvas = document.getElementById("canvas")
             
@@ -131,13 +144,18 @@
         }
 
 
-        form.H0.onchange = e => run()
+        form.H0.onchange = e => {
+            run()
+            printParameters = true
+        }
         form.Omega_L.onchange = e => {
+            printParameters = true
             if (flat.checked) 
                 form.Omega_M.value = 1 - form.Omega_L.value
             run()
         }
         form.Omega_M.onchange = e => {
+            printParameters = true
             if (flat.checked) 
                 form.Omega_L.value = 1 - form.Omega_M.value
             run()
@@ -151,7 +169,16 @@
         var canvasz = document.getElementById("canvasz")
         var ctx2 = canvasz.getContext("2d")
         canvasz.onclick = e => {
-            var div = document.createElement("div")
+
+            var div
+            if (printParameters) {
+                div = document.createElement("div")
+                div.innerHTML = `<br>ΩΛ = ${(form.Omega_L.value * 1).toFixed(2)}, Ωm = ${(form.Omega_M.value * 1).toFixed(2)}, H0 = ${(form.H0.value * 1).toFixed(2)}`
+                output.appendChild(div)
+                printParameters = false
+            }
+
+            div = document.createElement("div")
             div.innerHTML = `z = ${(currentZ.z).toFixed(2)}, dC = ${(currentZ.d_C / 1000).toFixed(2)}, dT = ${(currentZ.d_T / 1000).toFixed(2)}, dA = ${(currentZ.d_A / 1000).toFixed(2)}`
             output.appendChild(div)
 

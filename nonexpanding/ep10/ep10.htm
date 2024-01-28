@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
+        <style>
+            .blue {color:#42affa !important;}
+            .gray {color:#888888;}
+            .yellow {color:#e6f1a2;}
+            .left {text-align: left;}
+
+            #carImg {
+                position: absolute;
+                top: 70%;
+                left:10%;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <section >
+
+                    <p>New Racing "Game"!</p>
+
+                    <div style="display: flex; ">
+                        <table style="width: 40%;">
+                            <tr>
+                                <td class="blue">The Cars</td>
+                            </tr>
+    
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li id="topspeed" class="fragment">300 mph top speed!</li>
+                                        <li class="fragment">Instant acceleration!</li>
+                                        <li class="fragment">Perfect traction and handling</li>
+                                    </ul>
+                                </td>
+                            </tr>
+    
+                        </table>
+    
+    
+                        <table style="width: 40%;">
+                            <tr>
+                                <td class="blue">The Tracks</td>
+                            </tr>
+    
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li id="onetrack" class="fragment">Only 1 track!</li>
+                                        <li id="finishline" class="fragment">It's 100 feet long!</li>
+                                        <li id="race" class="fragment">Milliseconds of fun!</li>
+                                    </ul>
+                                </td>
+                            </tr>
+    
+                        </table>
+
+    
+                    </div>
+
+                    <br>
+                    <img src="car.png" width="400px" id="carImg" style="display: none;">
+                    <canvas id="road" width="1600" height="400"></canvas>
+
+                    
+                </section>
+                    
+                <section>
+                    <p>How does this relate to the big bang?</p>
+
+                </section>
+
+                <section>
+                    <p class="blue" style="text-align: left;">Theory:</p>
+
+                    <p class="fragment fade-in-then-semi-out">Light can travel to infinity... </p>
+
+                    <div class="fragment">
+                        <p>That's like...</p>
+
+                        <p>&gt; 10<sup id="exponent">10</sup></p>
+                        <div id="blowexp" class="fragment"></div>
+    
+                        <p>light years!</p>
+    
+                    </div>
+                    
+                    <p style="text-align: left;"  class="fragment blue">Reality:</p>
+                    <p class="fragment">&lt; 14 &times 10<sup>9</sup> <br> light years</p>
+                    
+                </section>
+
+
+                <section>
+
+                    <p class="gray">No light has ever traveled farther than:</p> 
+                    <p >14 billion light years</p>
+                    <div class="fragment">
+                        <p class="gray">Because reality itself has only been around for:</p>
+                        <p>14 billion years</p>
+    
+                    </div>
+
+                    <br>
+                    <p class="gray fragment">(Note, galaxies can be farther away than that, today, 
+                        <br>but the light we're getting, today, has only traveled that far)</p>
+                </section>
+
+                <section style="text-align: left;">
+                    <p class="blue">That's not all...</p>
+
+                    <p class="fragment">If we consider the future  ...</p>
+
+                    <img class="fragment" src="heatdeath.png">
+
+                    <p class="fragment">"Heat death" will make the universe totally useless in 10<sup>106</sup> years</p>
+
+                </section>
+
+                <section>
+                    10<sup>106</sup> years is still a long time
+
+                    <p class="fragment">But it's a long way from <em class="yellow">infinity</em></p>
+
+                    <p id="blowexp2" class="fragment">Or even <br> 10<sup id="exponent2">10</sup></p>
+                        <div ></div>
+    
+
+                </section>
+
+
+                <section>
+                    <p>Why would such a decidedly <em class="yellow">finite</em> universe...</p>
+
+
+                    <p class="fragment">even have something <em class="yellow">infinite</em>, <span class="fragment highlight-blue">like light</span>, inside it?</p>
+
+
+
+                    <div class="fragment fade-in-then-semi-out">
+                        <hr style="width: 50%;">
+                    
+                        <p>
+                            
+                            Are we thinking about the universe.... 
+                            <em>inside out?</em></p>
+                                                    
+                    </div>
+
+
+                    <p class="fragment fade-in-then-out">
+                        
+                        That's not a very scientific argument. 
+                    </p>
+
+                    <p class="fragment fade-in-then-out">
+                        But...
+                    </p>
+
+                    <p class="fragment">Doesn't it kind of seem that way?</p>
+
+                    <p class="fragment blue">Leave a comment</p>
+
+                </section>
+
+                <section id="race2">
+                    Light in the expanding universe is like <br>
+                    the game with the cool car on a lame track.
+                
+                    <br>
+                    <br>
+                    <br>
+                    <div id="race2" class="fragment"></div>
+                    <canvas id="road2" width="1600" height="400"></canvas>
+                </section>
+
+
+                <section>But what's the alternative?</section>
+
+                <!--
+                <section>
+                    <div style="display: flex;">
+                    
+                        <div><a href="adf">Assume:</a>
+                            <ul>
+                                <li class="fragment fade-in-then-semi-out">In "normal" space...</li>
+                                <li class="fragment fade-in-then-semi-out">Light travels for an infinite distance</li>
+                                <li class="fragment fade-in-then-semi-out">And never loses energy</li>
+                            </ul>
+                        </div>
+                    
+                        <div><a href="adf" class="fragment">Observe:</a>
+                            <ul>
+                                <li class="fragment fade-in-then-semi-out">Light traveleing from a finite distance...</li>
+                                <li class="fragment fade-in-then-semi-out">Has redshifted</li>
+                                <li class="fragment fade-in-then-semi-out">So it lost energy</li>
+                            </ul>
+                        </div>
+
+                        <div><a href="adf" class="fragment">Therefore:</a>
+                            <ul>
+                                <li class="fragment fade-in-then-semi-out">Space isn't normal</li>
+                                <li class="fragment fade-in-then-semi-out">Space is expanding</li>
+                                <li class="fragment">Or...</li>
+                            </ul>
+
+                        </div>
+                    
+                    </div>
+                </section>
+-->
+
+                <section>
+                    <p class="blue">The Time Dilated Past hypothesis</p>
+                    <p class="fragment fade-in-then-semi-out">Instead of space getting bigger...</p>
+                    <p class="fragment">Time is getting faster</p>
+                    <div class="fragment" style="display: flex;">
+                    
+                        <div  style="border:1px solid #808080; margin:8px;">
+                            <img src="ep1.png" >
+                            <p>Episode 1: The real reason for redshift</p>
+                        </div>
+                        <div   style="border:1px solid #808080; margin:8px;">
+                            <img src="ep8.png">
+                            <p>Episode 8: The theory to replace the big bang</p>
+    
+                        </div>
+                        
+                    </div>
+                    
+                </section>
+
+
+
+                <section class="left" style="font-size: 120%;">
+
+                    <ul>
+                        <li class=""><span class="fragment strike">What happened before the big bang?</span>
+                            
+                        </li>
+                        
+                        <li class=""><span class="fragment strike">What's the universe expanding into?</span>
+                            
+                        </li>
+                        </ul>
+
+                        <p class="left gray fragment">Those questions never bothered me.</p>
+
+                        <p class="fragment gray">But these ones did:</p>
+                        
+                        <ul>
+                        <li class="fragment">Why is the universe "inside out"?</li>
+                        <li class="fragment">Why does such a <span class="yellow">limited</span> universe have such <span class="yellow">unlimited</span> light?</li>
+                    </ul>
+
+					
+                    <br>
+                    <br>
+                    <p class="fragment blue" style="text-align: center;">What do you think?</p>
+                    <p class="fragment blue" style="text-align: center;">Leave a comment!</p>
+                    <p class="fragment" style="text-align: center;">Subscribe!</p>
+
+                    <p class="fragment gray" style="font-size: 80%;">Video by Mike Helland</p>
+				</section>
+
+                <!--
+                    <span class="fragment gray">Probably nothing</span>
+                            <span class="fragment gray">Math</span>
+                -->
+
+			</div>
+
+		</div>
+
+        <script src="road.js"></script>
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+            var rd = roadDemo(road)
+            var rd2 = roadDemo(road2)
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				center: true,
+				hash: true,
+                transition: "fade",
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+			
+			Reveal.on( 'fragmentshown', event => {
+                console.log(event.fragment.id)
+                if (event.fragment.id === "blowexp") {
+                    for (var i = 0; i < 100; i++) {
+                        setTimeout(() => {
+                            exponent.innerHTML += "0"
+                        }, i * 10)
+                    }
+
+                }
+
+                if (event.fragment.id === "blowexp2") {
+                    for (var i = 0; i < 100; i++) {
+                        setTimeout(() => {
+                            exponent2.innerHTML += "0"
+                        }, i * 10)
+                    }
+
+                }
+
+                if (event.fragment.id === "topspeed") {
+                    rd.drawCar()
+                }
+
+
+                if (event.fragment.id === "race") {
+                    rd.move()
+                }
+                if (event.fragment.id === "finishline") {
+                    rd.showFinish()
+                }
+
+                if (event.fragment.id === "onetrack") {
+                    rd.drawRoad()
+                    rd.drawCar()
+                }
+
+
+                if (event.fragment.id === "race2") {
+                    rd2.move()
+                }
+
+
+			} );
+
+            Reveal.on("slidechanged", event => {
+                if (event.currentSlide.id === "race2") {
+                    rd2.showFinish()
+                }
+            })
+		</script>
+
+	</body>
+</html>
