@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
+        <style>
+            .blue {color:#42affa !important;}
+            .gray {color:#888888;}
+            .yellow {color:#e6f1a2;}
+            .left {text-align: left;}
+
+            #carImg {
+                position: absolute;
+                top: 70%;
+                left:10%;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <section>
+                    <p>Measuring Hubble's Constant, $H_0$</p>
+
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div class="fragment">
+                            <p class="gray">Method 1.</p>
+                            <img src="sne.png" height="450">
+                            <p>Supernovae data</p>
+                        </div>
+                        
+                        <div class="fragment">
+                            <p class="gray">Method 2.</p>
+                            <img src="../../img/cmb.jpg" height="450">
+                            <p>Cosmic Microwave Background data</p>    
+                        </div>
+                    </div>
+                    
+                </section>
+
+                <section>
+                    <p>Let's use the supernovae data!</p>
+                    <img src="../ep1/pantheonsh0es.png">
+                    <p class="fragment">Text file, separated by spaces...</p>
+                </section>
+
+                <section data-auto-animate>
+                    <p>Download the supernovae data</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    from urllib.request import urlopen
+
+                    data = []
+                    url = "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat"
+                    for line in urlopen(url):
+                    </code></pre>
+                    </div>
+                </section>
+                <section data-auto-animate>
+                    <p>Parse the data</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="6,8,9">
+                    from urllib.request import urlopen
+
+                    data = []
+                    url = "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat"
+                    for line in urlopen(url):
+                        vals = line.split(b" ")
+                        
+                        # skip the headers
+                        if vals[0] == b"CID": continue 
+                    </code></pre>
+                    </div>
+                </section>
+                <section data-auto-animate>
+                    <p>Fill the data array</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="11">
+                    from urllib.request import urlopen
+
+                    data = []
+                    url = "https://raw.githubusercontent.com/PantheonPlusSH0ES/DataRelease/main/Pantheon%2B_Data/4_DISTANCES_AND_COVAR/Pantheon%2BSH0ES.dat"
+                    for line in urlopen(url):
+                        vals = line.split(b" ")
+                        
+                        # skip the headers
+                        if vals[0] == b"CID": continue 
+                        
+                        data.append({"z": float(vals[2]), "mu": float(vals[10])})
+                    </code></pre>
+                    </div>
+                </section>
+        
+
+                <section>
+                    <p>Plot the data:</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    import matplotlib.pyplot as plt
+    
+                    dataz = [row["z"] for row in data] 
+                    datamu = [row["mu"] for row in data] 
+                    plt.plot(dataz, datamu, "r+", label = "Type Ia supernovae")
+                    
+                    plt.title("Pantheon+SH0ES")
+                    plt.xlabel("Redshift (z)")
+                    plt.ylabel("Distance modulus")
+                    plt.legend()
+                    
+                    plt.show()
+                        
+                    </code></pre>
+                    </div>
+                    <img class="fragment" src="sne.png">
+                </section>
+        
+                <section >
+
+                    <p>
+                        There's a link to a notebook in the description!
+                    </p>
+                    
+                    <p class="blue">https://github.com/mikehelland/hubbles-law/blob/master/other/python/sse.ipynb</p>
+                    
+                </section>
+
+                <section>
+                    <p>How do we use this to measure Hubble's constant?</p>
+                </section>
+
+                <section id="sample-demo">
+                    <p class="blue">Example data</p>
+                    <div style="display: flex;justify-content: center;">
+                        <ul style="padding-right: 10px;">
+                            <li class="fragment fade-in-then-semi-out">Let's say $y = Ax$</li>
+                            <li class="fragment fade-in-then-semi-out">Let's find the best fit for $A$</li>
+                            <li class="fragment fade-in-then-semi-out" id="pickA">Pick some value for $A$</li>
+                            <li class="fragment fade-in-then-semi-out">For each data point...</li>
+                            <li class="fragment fade-in-then-semi-out" id="showerror">Subtract actual $y$ from $Ax$</li>
+                            <li class="fragment fade-in-then-semi-out" id="showsquare">Square them</li>
+                            <li class="fragment fade-in-then-semi-out" id="showsum">And add them all together</li>
+                            <li class="fragment fade-in-then-semi-out" id="nexta">Now do that for more values of $A$</li>
+                            <li class="fragment fade-in-then-semi-out">The value of $A$ with the lowest sum<br> is the best fit!</li>
+                            
+                        </ul>
+                        <canvas id="sampledata" width="800" height="600"></canvas>
+                    
+                    </div>
+                </section>
+
+                <section >
+                    <p class="blue">Supernovae data</p>
+                    <div style="display: flex;justify-content: center;">
+                        <ul style="padding-right: 10px;">
+                            <li class="fragment fade-in-then-semi-out">Instead of $x$ we have $z$, redshift</li>
+                            <li class="fragment fade-in-then-semi-out">Instead of $y$ we mave "mu", distance modulus</li>
+                            <li class="fragment fade-in-then-semi-out">Pick some value for $H_0$</li>
+                            <li class="fragment fade-in-then-semi-out">For each data point...</li>
+                            <li class="fragment fade-in-then-semi-out">Calculate "mu" from $H_0$ and $z$</li>
+                            <li class="fragment fade-in-then-semi-out">Square them</li>
+                            <li class="fragment fade-in-then-semi-out">And add them all together</li>
+                            <li class="fragment fade-in-then-semi-out">Now do that for more values of $H_0$</li>
+                            <li class="fragment fade-in-then-semi-out">The value of $H_0$ with the lowest sum<br> is the measurement!</li>
+                            
+                        </ul>
+                        <img src="sne.png">
+                    
+                    </div>
+                </section>
+
+            
+                <section data-auto-animate>
+                    <p>Sum of Squared Errors (SSE)</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    def sse():
+                        totalErrors = 0
+                        for sn in data:
+                            
+                            mu = calculateMu(sn["z"])
+                            error = mu - sn["mu"]
+                            totalErrors = totalErrors + error**2
+
+                        return totalErrors
+                    </code></pre>
+                    </div>
+                </section>
+                
+                <section data-auto-animate>
+                    <p>Sum of Squared Errors (SSE)</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="5">
+                    def sse():
+                        totalErrors = 0
+                        for sn in data:
+                            
+                            mu = calculateMu(sn["z"])
+                            error = mu - sn["mu"]
+                            totalErrors = totalErrors + error**2
+
+                        return totalErrors
+                    </code></pre>
+                    </div>
+                </section>
+
+                <section data-auto-animate>
+                    <p>Sum of Squared Errors (SSE)</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="6">
+                    def sse():
+                        totalErrors = 0
+                        for sn in data:
+                            
+                            mu = calculateMu(sn["z"])
+                            error = mu - sn["mu"]
+                            totalErrors = totalErrors + error**2
+
+                        return totalErrors
+                    </code></pre>
+                    </div>
+                </section>
+
+                <section data-auto-animate>
+                    <p>Sum of Squared Errors (SSE)</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="7">
+                    def sse():
+                        totalErrors = 0
+                        for sn in data:
+                            
+                            mu = calculateMu(sn["z"])
+                            error = mu - sn["mu"]
+                            totalErrors = totalErrors + error**2
+
+                        return totalErrors
+                    </code></pre>
+                    </div>
+                </section>
+
+
+
+                <section >
+                    <p>Calculate Distance Modulus using CosmoloPy</p>
+                    <div style="display: flex;">
+                    
+                    <pre data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    import cosmolopy.magnitudes as cm
+
+                    # calculates Lambda-CDM
+                    cosmo = {'omega_M_0' : 0.3, 'omega_lambda_0' : 0.7, 
+                                'h' : 0.70, 'omega_k_0': 0}
+                    
+                    def calculateMu(z):
+                        return cm.distance_modulus(z, **cosmo)
+                    
+                    </code></pre>
+                    </div>
+                </section>
+
+                
+                <section >
+                    <p>Calculate SSE for values of $H_0$ between 65 and 75</p>
+                    
+                    
+                    <pre  data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    lowestSSE = {"sse": -1}
+                    
+                    for i in range(100):
+                        H0 = 65 + i/10
+                        cosmo["h"] = H0 / 100
+                        
+                        SSE = sse()
+                        
+                        if lowestSSE["sse"] == -1 or SSE < lowestSSE["sse"]:
+                            lowestSSE = {"H0": H0, "sse": SSE}
+                    
+                    print(lowestSSE)
+                    </code></pre>
+
+                    <p style="text-align: left; font-size: 80%; padding-left: 94px;" class="fragment">Outputs:</p>
+                    <pre class="fragment" data-id="code-animation"><code class="hljs python" data-trim >
+                        {'H0': 73.2, 'sse': 50.92631840035607}
+                    </code></pre>
+
+                    <p class="fragment">We just measured Hubble's constant! It's 73.2!</p>
+                
+                </section>
+
+                <section>
+                    <p>The sum of squared errors over a range of $H_0$ 65 to 75.</p>
+                    <img src="sse1.png">
+                </section>
+
+                <section>
+                    <h3>Notes</h3>
+                    <hr>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">This is for the Standard Model of Cosmology, &Lambda;CDM</li>
+                        <li class="fragment fade-in-then-semi-out">We're using the parameters $\Omega_\Lambda = 0.7, \Omega_m = 0.3$</li>
+                        <li class="fragment fade-in-then-semi-out">We're not using error bars or uncertainties</li><br>
+                        <li class="fragment fade-in-then-semi-out">Without error bars: <br>$ \chi^2= \Sigma_i (\mu_{i}^d - \mu_{i}^m)^2  $</li><br>
+                        <li class="fragment fade-in-then-semi-out">With error bars:<br>$ \chi^2= \Sigma_i \frac{(\mu_{i}^d - \mu_{i}^m)^2}{\sigma^2_i} $</li><br>
+                        <li class="fragment "> MU_SH0ES_ERR_DIAG - Uncertainty on MU_SH0ES as determined from the diagonal of the covariance matrix. 
+                            <span class="fragment highlight-blue">**WARNING, DO NOT FIT COSMOLOGICAL PARAMETERS WITH THESE UNCERTAINTIES. </span> YOU MUST USE THE FULL COVARIANCE. THIS IS ONLY FOR PLOTTING/VISUAL PURPOSES**</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <p>Hubble tension, $H_0$</p>
+
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div class="fragment">
+                            <p class="gray">Supernovae data</p>
+                            <img src="sne.png" height="450">
+                            <p>73.2 km/s/Mpc</p>
+                        </div>
+                        
+                        <div class="fragment">
+                            <p class="gray">Cosmic Microwave Background data</p>
+                            <img src="../../img/cmb.jpg" height="450">
+                            <p>67.4 km/s/Mpc</p>    
+                        </div>
+                    </div>
+                    
+                    <p class="fragment gray">(The standard model of cosmology, &Lambda;CDM.)</p>
+                </section>
+
+                <section>
+                    <p class="blue">Episode 8</p>
+                    <img src="../ep10/ep8.png">
+                    <p>The Time Dilated Past hypothesis</p>
+                </section>                
+
+                <section>
+                    <p>In this alternative model...</p>
+                    <hr>
+                    <p class="fragment">$\mu$ is "mu", distance modulus</p>
+                    <p class="fragment">$ \mu =  5 \log_{10}d_L + 25 $</p>
+
+                    <p class="fragment">$ d_L =  \frac{c}{H_0} (1+z) \log (1+z) $</p>
+                
+
+                    <div class="fragment">
+                        <hr>
+                        <pre  data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                        import math
+    
+                        def calculateMu(z):
+                            d_L = 299792/H0 * (1+z) * math.log(1+z)
+                            mu = 5 * math.log10(d_L) + 25
+                            return mu
+                        </code></pre>
+    
+                    </div>
+    
+                </section>
+
+                <section>
+                    <p>Rereun the calculations using: </p>
+                    <pre  data-id="code-animation"><code class="hljs python" data-trim data-line-numbers="">
+                    import math
+
+                    def calculateMu(z):
+                        d_L = 299792/H0 * (1+z) * math.log(1+z)
+                        mu = 5 * math.log10(d_L) + 25
+                        return mu
+                    </code></pre>
+    
+                    <p style="text-align: left; font-size: 80%; padding-left: 94px;" class="fragment">Outputs:</p>
+                    <pre class="fragment" data-id="code-animation"><code class="hljs python" data-trim >
+                        {'H0': 70.4, 'sse': 55.0103290254877}
+                    </code></pre>
+
+                    <p class="fragment">Hubble's constant is now measured to be 70.4 km/s/Mpc!</p>
+
+                </section>
+
+
+                <section>
+                    <p>The sum of squared errors over a range of $H_0$ 65 to 75.</p>
+                    
+                    <img src="sse2.png">
+                </section>
+
+                <!--
+                <section>
+                    <h3>Notes</h3>
+                    <hr>
+                    <ul>
+                        <li class="fragment fade-in-then-semi-out">&Lambda;CDM is lower, so a slightly better fit than the alternative</li>
+                        <li class="fragment fade-in-then-semi-out">&Lambda;CDM has $H_0$ as Hubble's constant, and $H$ as Hubble's parameter</li>
+                        <li class="fragment fade-in-then-semi-out">The alternative model only has $H$ as Hubble's constant</li>
+                        <li class="fragment fade-in-then-semi-out">I used $H_0$ for both, because I was lazy and didn't change the code</li>
+                        <li class="fragment fade-in-then-semi-out">The alternative uses the same units as the standard model out of convenience</li>
+                        <li class="fragment fade-in-then-semi-out">That their values are at all similar is something of a coincidence</li>
+                        
+                    </ul>
+                </section>
+            -->
+                <section>
+                    <p style="text-align: left;">What do you think?</p>
+
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <div class="fragment">
+                            <p class="gray">Supernovae data</p>
+                            <img src="sne.png" height="400">
+                            <p>73.2 km/s/Mpc</p>
+                        </div>
+                        
+                        <div class="fragment">
+                            <p class="gray">Cosmic Microwave Background data</p>
+                            <img src="../../img/cmb.jpg" height="400">
+                            <p>67.4 km/s/Mpc</p>    
+                        </div>
+
+                        <div class="fragment">
+                            <p class="gray">Time Dilated Past</p>
+                            <img src="../ep10/ep1.png" height="400">
+                            <p>70.4 km/s/Mpc</p>    
+                        </div>
+                    </div>
+                    
+                    <p class="fragment blue">Leave a comment! Subscribe!</p>
+                </section>
+
+
+
+
+			</div>
+
+		</div>
+
+        <script src="sample.js"></script>
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+
+            var samp = sampleDemo(sampledata)
+            //var samp2 = sampleDemo(sampledata2)
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				center: true,
+				hash: true,
+                transition: "fade",
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+			
+			Reveal.on( 'fragmentshown', event => {
+                console.log(event.fragment.id)
+                
+                if (event.fragment.id === "pickA") {
+                    samp.pickA()
+                }
+                
+                if (event.fragment.id === "showerror") {
+                    samp.showError()
+                }
+
+                if (event.fragment.id === "showsquare") {
+                    samp.showSquare()
+                }
+
+                if (event.fragment.id === "showsum") {
+                    samp.showSum()
+                }
+
+                if (event.fragment.id === "nexta") {
+                    samp.nextA()
+                }
+			} );
+
+            Reveal.on("slidechanged", event => {
+                if (event.currentSlide.id === "sample-demo") {
+                    samp.draw()
+                }
+                if (event.currentSlide.id === "sample-demo2") {
+                    samp2.draw()
+                }
+                
+            })
+		</script>
+
+	</body>
+</html>
