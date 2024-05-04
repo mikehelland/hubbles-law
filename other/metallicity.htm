@@ -80,6 +80,14 @@
 
 <h3>Metallicity</h3>
 
+<p>
+    <em>Background:</em> According to the big bang theory the first galaxies wouldn't have any "metals" (elements other than hydrogen and helium)
+    in them. Metals would slowly build up over time in the universe. 
+    Alternatively, a nonexpanding universe wouldln't show any correlation between redshift and metallicity. 
+</p>
+
+<hr>
+
 <canvas id="background" height="300" width="1000"></canvas>
 
 <div>
@@ -99,6 +107,18 @@
         
     </ol>
 
+    <hr>
+
+    <p>
+        <em>See Also:</em>
+        <ul>
+            <li>
+                The integrated metallicity profile of the Milky Way
+                <a href="https://www.nature.com/articles/s41550-023-01977-z">https://www.nature.com/articles/s41550-023-01977-z</a>
+                
+            </li>
+        </ul>
+    </p>
 
     <!--
         [1] <a href="https://arxiv.org/abs/2306.16039">https://arxiv.org/abs/2306.16039</a>
@@ -150,7 +170,7 @@
                 url = refs[point.ref].url
 
                 li = document.createElement("li")
-                li.innerHTML = `<b>${refs[point.ref].title}</b><a href="${url}">${url}</a>`
+                li.innerHTML = `<b>${refs[point.ref].title}</b> <a href="${url}">${url}</a>`
                 ol.appendChild(li)
 
                 if (point.data) {
