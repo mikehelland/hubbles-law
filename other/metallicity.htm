@@ -183,7 +183,15 @@
     var Omega_k = 0
     var H0 = 68
 
+    var json
     var points = []
+    fetch("https://mikehelland.github.io/hubbles-law/data/metallicity.json").then(res => res.json()).then(res => {
+        json = res
+        points = res.data
+
+        drawGraph()
+    })
+    /*
     points.push({name: "Milky Way",   z: 0,       OH: 8.50,       Z: 1, x:0})
     points.push({name: "solar",       z: 0,       OH: 8.69,       Z: 1, x:0})
     points.push({name: "SMC",         z: 0,       OH: 8.01,       Z: 0.25, x:0})
@@ -191,7 +199,7 @@
     points.push({name: "GS z12",      z: 12.479,  OH: 7.9,          Z: 1.01})
     points.push({name: "Pox 186",     z: 0.004,   OH: 7.87,          Z: 1.01})
     points.push({name: "SPT0418",     z: 4.225,   OH: 8.58,          Z: 1.01})
-    
+    */
     points.forEach(point => {
         if (point.z === 0) return 
         point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback

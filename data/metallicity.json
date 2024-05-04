@@ -1,0 +1,29 @@
+{
+    "data": [
+        {"name": "Milky Way",   "z": 0,       "OH": 8.50,       "Z": 1   , "ref": "0"},
+        {"name": "solar",       "z": 0,       "OH": 8.69,       "Z": 1   , "ref": "0"},
+        {"name": "SMC",         "z": 0,       "OH": 8.01,       "Z": 0.25, "ref": "0"},
+        {"name": "LMC",         "z": 0,       "OH": 8.37,       "Z": 0.33, "ref": "0"},
+        {"name": "GS z12",      "z": 12.479,  "OH": 7.9,        "Z": 1.01, "ref": "z12"},
+        {"name": "Pox 186",     "z": 0.004,   "OH": 7.87,       "Z": 1.01, "ref": "pox"},
+        {"name": "SPT0418",     "z": 4.225,   "OH": 8.58,       "Z": 1.01, "ref": "z4"}
+    ],
+    "refs": {
+        "0": {
+            "title": " About Metallicity Variations in the Local Galactic Interstellar Medium" ,
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38"
+        },
+        "pox": {
+            "title": " A study of extreme CIII]1908 & [OIII]88/[CII]157 emission in Pox 186" ,
+            "url": "https://arxiv.org/abs/2307.00059 "
+        },
+        "z12": {
+            "title": " JADES: Carbon enrichment 350 Myr after the Big Bang in a gas-rich galaxy" ,
+            "url": "https://arxiv.org/abs/2311.09908 "
+        },
+        "z4": {
+            "title": " Discovery of a Dusty, Chemically Mature Companion to a z ∼ 4 Starburst Galaxy in JWST ERS Data" ,
+            "url": "https://iopscience.iop.org/article/10.3847/2041-8213/acb59c"
+        }
+    }
+}
