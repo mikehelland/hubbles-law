@@ -81,77 +81,18 @@
 <div>
 
 
-    <table style="margin-left: 20px; border: 1px solid #888888; padding:4px;">
+    <table id="table" style="margin-left: 20px; border: 1px solid #888888; padding:4px;">
         <tr>
             <th>Name</th>
             <th>z (redshift)</th>
             <th>12 + log(O/H)</th>
         </tr>
 
-        <tr>
-            <td>Solar<sup>[1]</sup></td>
-            <td>0</td>
-            <td>8.69</td>
-        </tr>
-
-        <tr>
-            <td>Milky Way<sup>[1]</sup></td>
-            <td>0</td>
-            <td>8.5</td>
-        </tr>
-        
-        <tr>
-            <td>Large Magellanic Cloud (LMC)<sup>[1]</sup></td>
-            <td>0</td>
-            <td>8.37</td>
-        </tr>
-
-        <tr>
-            <td>Small Magellanic Cloud (SMC)<sup>[1]</sup></td>
-            <td>0</td>
-            <td>8.01</td>
-        </tr>
-
-        <tr>
-            <td>Pox 186<sup>[2]</sup></td>
-            <td>0.004</td>
-            <td>7.87 ± 0.04</td>
-        </tr>
-
-        <tr>
-            <td>GS-z12<sup>[3]</sup></td>
-            <td>12.5</td>
-            <td>7.9</td>
-        </tr>
-
-        <tr>
-            <td>SPT0418<sup>[4]</sup></td>
-            <td>4.225</td>
-            <td>8.58</td>
-        </tr>
-
     </table>
 
     
-    <ol>
-        <li>
-            <b>About Metallicity Variations in the Local Galactic Interstellar Medium</b>
-            <a href="https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38">https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38</a>
-        </li>
-
-        <li>
-            <b>A study of extreme CIII]1908 & [OIII]88/[CII]157 emission in Pox 186</b>
-            <a href="https://arxiv.org/abs/2307.00059">https://arxiv.org/abs/2307.00059</a>
-        </li>
-
-        <li>
-            <b>JADES: Carbon enrichment 350 Myr after the Big Bang in a gas-rich galaxy</b>
-            <a href="https://arxiv.org/abs/2311.09908">https://arxiv.org/abs/2311.09908</a>
-        </li>
-        <li>
-            <b>Discovery of a Dusty, Chemically Mature Companion to a z ∼ 4 Starburst Galaxy in JWST ERS Data</b>
-            <a href="https://iopscience.iop.org/article/10.3847/2041-8213/acb59c">https://iopscience.iop.org/article/10.3847/2041-8213/acb59c</a>
-        </li>
+    <ol id="ol">
+        
     </ol>
 
 
@@ -189,22 +130,50 @@
         json = res
         points = res.data
 
+        var refs = {}
+        var i = 0
+        var tr, td, li, url
+
+        points.forEach(point => {
+            if (!refs[point.ref]) {
+                refs[point.ref] = json.refs[point.ref]
+                refs[point.ref].i = i
+                i++
+
+                url = refs[point.ref].url
+
+                li = document.createElement("li")
+                li.innerHTML = `<b>${refs[point.ref].title}</b><a href="${url}">${url}</a>`
+                ol.appendChild(li)
+            }
+
+            tr = document.createElement("tr")    
+            table.appendChild(tr)
+            
+            td = document.createElement("td")
+            td.innerHTML = point.name + "<sup>[" + i + "]</sup>"
+            tr.appendChild(td)
+
+            td = document.createElement("td")
+            td.innerHTML = point.z
+            tr.appendChild(td)
+
+            td = document.createElement("td")
+            td.innerHTML = point.OH
+            tr.appendChild(td)
+
+            if (point.z === 0) {
+                point.x = 0
+            }
+            else { 
+                point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback
+            }
+        })
+
+
         drawGraph()
     })
-    /*
-    points.push({name: "Milky Way",   z: 0,       OH: 8.50,       Z: 1, x:0})
-    points.push({name: "solar",       z: 0,       OH: 8.69,       Z: 1, x:0})
-    points.push({name: "SMC",         z: 0,       OH: 8.01,       Z: 0.25, x:0})
-    points.push({name: "LMC",         z: 0,       OH: 8.37,       Z: 0.33, x:0})
-    points.push({name: "GS z12",      z: 12.479,  OH: 7.9,          Z: 1.01})
-    points.push({name: "Pox 186",     z: 0.004,   OH: 7.87,          Z: 1.01})
-    points.push({name: "SPT0418",     z: 4.225,   OH: 8.58,          Z: 1.01})
-    */
-    points.forEach(point => {
-        if (point.z === 0) return 
-        point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback
-    })
-
+    
     var zs = [];
     [0.5, 1, 2, 3, 4, 5, 10, 20].forEach(z => {
         zs.push({z, t: FLRW(H0, Omega_L, Omega_M, z).lookback})
@@ -253,6 +222,7 @@
 
 
     function drawGraph() {
+        graph.width = graph.width
         sseHypothesis = 0
         
         ctxB.lineWidth = 2
@@ -269,8 +239,7 @@
 
         ctxB.fillStyle = !black ? "black" : "white"
         ctxB.textAlign = "left"
-        //ctxB.fillText("SSE to Pantheon+SH0ES", offset + 5, offset)
-
+        
         ctxB.textAlign = "left"
         ctxB.fillText("12 + log(O/H)", 4 + offset, 34)
 
