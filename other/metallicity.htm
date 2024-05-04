@@ -131,7 +131,7 @@
         points = res.data
 
         var refs = {}
-        var i = 0
+        var i = 1
         var tr, td, li, url
 
         points.forEach(point => {
@@ -151,7 +151,7 @@
             table.appendChild(tr)
             
             td = document.createElement("td")
-            td.innerHTML = point.name + "<sup>[" + i + "]</sup>"
+            td.innerHTML = point.name + "<sup>[" + refs[point.ref].i + "]</sup>"
             tr.appendChild(td)
 
             td = document.createElement("td")
