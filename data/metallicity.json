@@ -170,6 +170,37 @@
             {"z": 0.0331, "OH": 7.550, "OHerr": 0.070},
             {"z": 0.0123, "OH": 7.150, "OHerr": 0.200}
         ]
+    },
+    {"name": "Morelli R, et el", "ref": "Morelli", "data": [
+        {"z": 0.451, "OH": 8.37 , "OHerr" : 0.03},   
+        {"z": 0.408, "OH": 8.63 , "OHerr" : 0.02},   
+        {"z": 0.474, "OH": 7.72 , "OHerr" : 0.06},   
+        {"z": 0.411, "OH": 8.98 , "OHerr" : 0.02},   
+        {"z": 0.372, "OH": 8.75 , "OHerr" : 0.01},   
+        {"z": 0.390, "OH": 8.93 , "OHerr" : 0.02},   
+        {"z": 0.450, "OH": 8.98 , "OHerr" : 0.03},   
+        {"z": 0.425, "OH": 8.99 , "OHerr" : 0.04},   
+        {"z": 0.517, "OH": 8.75 , "OHerr" : 0.06},   
+        {"z": 0.416, "OH": 8.67 , "OHerr" : 0.02},   
+        {"z": 0.414, "OH": 8.64 , "OHerr" : 0.07},   
+        {"z": 0.443, "OH": 8.78 , "OHerr" : 0.05},   
+        {"z": 0.407, "OH": 8.94 , "OHerr" : 0.01},   
+        {"z": 0.458, "OH": 8.90 , "OHerr" : 0.04},   
+        {"z": 0.475, "OH": 8.68 , "OHerr" : 0.03},   
+        {"z": 0.386, "OH": 8.64 , "OHerr" : 0.01},   
+        {"z": 0.358, "OH": 8.68 , "OHerr" : 0.02},   
+        {"z": 0.386, "OH": 8.57 , "OHerr" : 0.03},   
+        {"z": 0.386, "OH": 8.76 , "OHerr" : 0.01},   
+        {"z": 0.441, "OH": 8.83 , "OHerr" : 0.02},   
+        {"z": 0.445, "OH": 8.87 , "OHerr" : 0.01},   
+        {"z": 0.399, "OH": 9.01 , "OHerr" : 0.05},   
+        {"z": 0.440, "OH": 8.87 , "OHerr" : 0.06},   
+        {"z": 0.433, "OH": 8.59 , "OHerr" : 0.02},   
+        {"z": 0.369, "OH": 8.80 , "OHerr" : 0.04},   
+        {"z": 0.351, "OH": 9.11 , "OHerr" : 0.13},   
+        {"z": 0.375, "OH": 8.71 , "OHerr" : 0.01}   
+        
+        ]
     }
     ],
     "refs": {
@@ -196,6 +227,10 @@
         "Nakajima": {
             "title": "EMPRESS. V. Metallicity Diagnostics of Galaxies over 12+log(O/H) ~= 6.9 - 8.9 Established by a Local Galaxy  Census: Preparing for JWST Spectroscopy " ,
             "url": "https://iopscience.iop.org/article/10.3847/1538-4365/ac7710"
+        },
+        "Morelli": {
+            "title": "Gas-phase metallicity of 27 galaxies at intermediate redshift",
+            "url": "https://www.aanda.org/articles/aa/full_html/2012/08/aa19316-12/aa19316-12.html"
         }
     }
 }
