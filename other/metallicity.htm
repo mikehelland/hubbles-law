@@ -109,6 +109,7 @@
 <script src="flrw.js"></script>
 
 <script>
+    var colors = ["red", "blue", "green", "yellow"]
     const black = false
     var graph = document.getElementById("background")
     var ctxB = graph.getContext("2d")
@@ -124,15 +125,17 @@
     var Omega_k = 0
     var H0 = 68
 
+    var refs = {}
+
     var json
     var points = []
     fetch("https://mikehelland.github.io/hubbles-law/data/metallicity.json").then(res => res.json()).then(res => {
         json = res
         points = res.data
 
-        var refs = {}
         var i = 1
         var tr, td, li, url
+        var iNextColor = 0
 
         points.forEach(point => {
             if (!refs[point.ref]) {
@@ -145,6 +148,10 @@
                 li = document.createElement("li")
                 li.innerHTML = `<b>${refs[point.ref].title}</b><a href="${url}">${url}</a>`
                 ol.appendChild(li)
+
+                if (point.data) {
+                    refs[point.ref].color = colors[iNextColor++]
+                }
             }
 
             tr = document.createElement("tr")    
@@ -155,19 +162,27 @@
             tr.appendChild(td)
 
             td = document.createElement("td")
-            td.innerHTML = point.z
+            td.innerHTML = typeof point.z === "number" ? point.z : `<span style="color:${refs[point.ref].color};">■</span>`
             tr.appendChild(td)
 
             td = document.createElement("td")
-            td.innerHTML = point.OH
+            td.innerHTML = point.OH || ""
             tr.appendChild(td)
 
-            if (point.z === 0) {
-                point.x = 0
+            if (point.data) {
+                for (var j = 0; j < point.data.length; j++) {
+                    point.data[j].x = point.data[j].z === 0 ? 0 : FLRW(H0, Omega_L, Omega_M, point.data[j].z).lookback
+                }
             }
-            else { 
-                point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback
+            else {
+                if (point.z === 0) {
+                    point.x = 0
+                }
+                else { 
+                    point.x = FLRW(H0, Omega_L, Omega_M, point.z).lookback
+                }
             }
+            
         })
 
 
@@ -304,6 +319,31 @@
 
         for (var i = 0; i < points.length; i++) {
             
+            if (points[i].data) {
+                ctxB.globalAlpha = 0.3
+                console.log(refs[points[i].ref].color)
+                ctxB.fillStyle = refs[points[i].ref].color
+                for (var j = 0; j < points[i].data.length; j++) {
+                    ctxB.fillRect(
+                        - 5 + points[i].data[j].x * 10 * zoomG, 
+                        - zoomGY * (points[i].data[j].OH - 7) - 10, 
+                        10, 10)
+
+                }
+                continue
+            }
+
+        }
+
+        ctxB.fillStyle = "black"
+
+        for (var i = 0; i < points.length; i++) {
+            
+            if (points[i].data) {
+                continue
+            }
+
+            ctxB.globalAlpha = 1
             ctxB.fillRect(
                 - 5 + points[i].x * 10 * zoomG, 
                 - zoomGY * (points[i].OH - 7) - 10, 
