@@ -665,7 +665,25 @@
         {"z":	0.643,  "OH":	8.56},
         {"z":	1.416,  "OH":	8.90}
     ]
-    }
+    },
+    {"name": "CEERS", "ref": "CEERS", "data": [
+        {"z": 8.679, "OH":  7.78  , "OHerr": 0.11},
+        {"z": 8.175, "OH":  7.82  , "OHerr": 0.18},
+        {"z": 7.819, "OH":  7.62  , "OHerr": 0.13},
+        {"z": 7.470, "OH":  8.04  , "OHerr": 0.23},
+        {"z": 6.257, "OH":  7.48  , "OHerr": 0.12},
+        {"z": 6.000, "OH":  7.98  , "OHerr": 0.10},
+        {"z": 5.033, "OH":  7.48  , "OHerr": 0.15},
+        {"z": 4.631, "OH":  7.72  , "OHerr": 0.12},
+        {"z": 4.560, "OH":  7.95  , "OHerr": 0.14},
+        {"z": 4.482, "OH":  8.27  , "OHerr": 0.15},
+        {"z": 4.471, "OH":  7.88  , "OHerr": 0.16},
+        {"z": 4.375, "OH":  7.77  , "OHerr": 0.21},
+        {"z": 3.869, "OH":  7.46  , "OHerr": 0.12},
+        {"z": 3.302, "OH":  8.33  , "OHerr": 0.14},
+        {"z": 2.295, "OH":  8.23  , "OHerr": 0.14},
+        {"z": 2.162, "OH":  7.12  , "OHerr": 0.11}
+        ]}
     ],
     "refs": {
         "0": {
@@ -686,7 +704,7 @@
         },
         "Graham": {
             "title": "A Surprising Lack of Metallicity Evolution with Redshift in the Long Gamma-Ray Burst Host Galaxy Population" ,
-            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acbfab#apjacbfabt4"
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acbfab"
         },
         "Nakajima": {
             "title": "EMPRESS. V. Metallicity Diagnostics of Galaxies over 12+log(O/H) ~= 6.9 - 8.9 Established by a Local Galaxy  Census: Preparing for JWST Spectroscopy " ,
@@ -699,6 +717,10 @@
         "Dors": {
             "title": "Chemical abundances of Seyfert 2 AGNs – I. Comparing oxygen abundances from distinct methods using SDSS",
             "url": "https://academic.oup.com/mnras/article/492/1/468/5679898?login=false"
+        },
+        "CEERS": {
+            "title": "Direct T_e-based Metallicities of z=2-9 Galaxies with JWST/NIRSpec: Empirical Metallicity Calibrations Applicable from Reionization to Cosmic Noon",
+            "url": "https://arxiv.org/abs/2303.08149"
         }
     }
 }
