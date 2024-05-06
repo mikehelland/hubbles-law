@@ -687,40 +687,49 @@
     ],
     "refs": {
         "0": {
-            "title": " About Metallicity Variations in the Local Galactic Interstellar Medium" ,
-            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38"
+            "title": "About Metallicity Variations in the Local Galactic Interstellar Medium" ,
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38",
+            "year": "2022"
         },
         "pox": {
-            "title": " A study of extreme CIII]1908 & [OIII]88/[CII]157 emission in Pox 186" ,
-            "url": "https://arxiv.org/abs/2307.00059 "
+            "title": "A study of extreme CIII]1908 & [OIII]88/[CII]157 emission in Pox 186" ,
+            "url": "https://arxiv.org/abs/2307.00059",
+            "year": "2023"
         },
         "z12": {
-            "title": " JADES: Carbon enrichment 350 Myr after the Big Bang in a gas-rich galaxy" ,
-            "url": "https://arxiv.org/abs/2311.09908 "
+            "title": "JADES: Carbon enrichment 350 Myr after the Big Bang in a gas-rich galaxy" ,
+            "url": "https://arxiv.org/abs/2311.09908 ",
+            "year": "2023"
         },
         "z4": {
-            "title": " Discovery of a Dusty, Chemically Mature Companion to a z ∼ 4 Starburst Galaxy in JWST ERS Data" ,
-            "url": "https://iopscience.iop.org/article/10.3847/2041-8213/acb59c"
+            "title": "Discovery of a Dusty, Chemically Mature Companion to a z ∼ 4 Starburst Galaxy in JWST ERS Data" ,
+            "url": "https://iopscience.iop.org/article/10.3847/2041-8213/acb59c",
+            "year": "2023"
         },
         "Graham": {
             "title": "A Surprising Lack of Metallicity Evolution with Redshift in the Long Gamma-Ray Burst Host Galaxy Population" ,
-            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acbfab"
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acbfab",
+            "year": "2023"
         },
         "Nakajima": {
             "title": "EMPRESS. V. Metallicity Diagnostics of Galaxies over 12+log(O/H) ~= 6.9 - 8.9 Established by a Local Galaxy  Census: Preparing for JWST Spectroscopy " ,
-            "url": "https://iopscience.iop.org/article/10.3847/1538-4365/ac7710"
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4365/ac7710",
+            "year": "2022"
         },
         "Morelli": {
             "title": "Gas-phase metallicity of 27 galaxies at intermediate redshift",
-            "url": "https://www.aanda.org/articles/aa/full_html/2012/08/aa19316-12/aa19316-12.html"
+            "url": "https://www.aanda.org/articles/aa/full_html/2012/08/aa19316-12/aa19316-12.html",
+            "year": "2012"
         },
         "Dors": {
             "title": "Chemical abundances of Seyfert 2 AGNs – I. Comparing oxygen abundances from distinct methods using SDSS",
-            "url": "https://academic.oup.com/mnras/article/492/1/468/5679898?login=false"
+            "url": "https://academic.oup.com/mnras/article/492/1/468/5679898?login=false",
+            "year": "2019"
         },
         "CEERS": {
             "title": "Direct T_e-based Metallicities of z=2-9 Galaxies with JWST/NIRSpec: Empirical Metallicity Calibrations Applicable from Reionization to Cosmic Noon",
-            "url": "https://arxiv.org/abs/2303.08149"
+            "url": "https://arxiv.org/abs/2303.08149",
+            "year": "2023"
         }
     }
 }
