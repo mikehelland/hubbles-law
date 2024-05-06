@@ -342,7 +342,7 @@ function nwFLRW(tH0, tWV, tWM, tz) {
 
     setValues(tH0, tWM, tWV, tz)
 
-    return {z: tz, DA: DA_Mpc, DC: DCMR_Mpc, DL, lookback: DTT_Gyr}
+    return {z: tz, DA: DA_Mpc, DC: DCMR_Mpc, DL, lookback: DTT_Gyr, age: age_Gyr}
 
     // entry point for the input form to pass values back to this script
     function setValues(tH0,tWM,tWV,tz) {

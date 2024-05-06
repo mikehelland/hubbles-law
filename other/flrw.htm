@@ -121,6 +121,7 @@
     <script>
         var data
         var data2
+        var age
         const c = 299792.458
         const pc2ly = 3.261564
         var zoomY = 35 * 1000
@@ -173,7 +174,7 @@
             var div
             if (printParameters) {
                 div = document.createElement("div")
-                div.innerHTML = `<br>ΩΛ = ${(form.Omega_L.value * 1).toFixed(2)}, Ωm = ${(form.Omega_M.value * 1).toFixed(2)}, H0 = ${(form.H0.value * 1).toFixed(2)}`
+                div.innerHTML = `<br>ΩΛ = ${(form.Omega_L.value * 1).toFixed(2)}, Ωm = ${(form.Omega_M.value * 1).toFixed(2)}, H0 = ${(form.H0.value * 1).toFixed(2)}, age = ${(age).toFixed(2)}`
                 output.appendChild(div)
                 printParameters = false
             }
@@ -212,6 +213,7 @@
             }
             
             data3 = flrw2(H0, OmegaL, OmegaM, maxZ)
+            age = nwFLRW(H0, OmegaL, OmegaM, 1).age
             
             drawCanvas()
             drawCanvas2()
