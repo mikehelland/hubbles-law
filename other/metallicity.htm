@@ -176,7 +176,7 @@
                 url = refs[point.ref].url
 
                 li = document.createElement("li")
-                li.innerHTML = `<b>${refs[point.ref].title}</b> <a href="${url}">${url}</a> (${refs[point.ref].year})`
+                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a href="${url}">${url}</a>`
                 ol.appendChild(li)
 
                 if (point.data) {
