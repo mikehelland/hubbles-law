@@ -201,7 +201,7 @@
             tr.appendChild(td)
 
             td = document.createElement("td")
-            td.innerHTML = typeof point.z === "number" ? point.z : `<span style="color:${refs[point.ref].color};">■</span>`
+            td.innerHTML = typeof point.z === "number" ? point.z : `<span style="opacity: 0.3; color:${refs[point.ref].color};">■</span>`
             tr.appendChild(td)
 
             td = document.createElement("td")
@@ -233,45 +233,9 @@
         zs.push({z, t: FLRW(H0, Omega_L, Omega_M, z).lookback})
     })
 
-    var z226 = FLRW(H0, Omega_L, Omega_M, 2.26).lookback
-    var z426 = FLRW(H0, Omega_L, Omega_M, 4.26).lookback
-
-    var z128 = FLRW(H0, Omega_L, Omega_M, 12.8).lookback
-
     bb = FLRW(H0, Omega_L, Omega_M, 12.8).age
 
-    var data = [
-        /*{color: "blue", tm: 
-        [
-            {t: 0, m: 1},
-            {t: 7, m: 0.75},
-            {t: zs[5].t, m: 0}
-        ]},
-        {color: "green", tm: 
-        [
-            {t: 0, m: 1},
-            {t: 7, m: 0.9},
-            {t: zs[5].t, m: 0.3},
-            {t: zs[6].t, m: 0.0}
-        ]},
-        {color: "purple", tm: 
-        [10 * 
-            {t: 0, m: 1},
-            {t: zs[1].t, m: 0.95},
-            {t: zs[2].t, m: 0.8},
-            {t: zs[6].t - 0.2, m: 0.8},
-            {t: zs[6].t + 0.1, m: 0.0}
-        ]},
-        */
-        {color: "green", tm: 
-        [
-            {t: 0, m: 1},
-            {t: FLRW(H0, Omega_L, Omega_M, 3.3).DT, m: 0.2},
-            {t: FLRW(H0, Omega_L, Omega_M, 8).DT, m: 0.1}
-        ]
-        }
-    ]
-
+    
 
     function drawGraph() {
         graph.width = graph.width
@@ -322,17 +286,6 @@
             ctxB.beginPath()
             ctxB.moveTo(offset + z.t * zoomG, offset)
             ctxB.lineTo(offset + z.t * zoomG, height)
-            ctxB.stroke()
-        })
-
-        data.forEach(line => {
-            console.log(line)
-            ctxB.strokeStyle = line.color
-            ctxB.beginPath()
-            ctxB.moveTo(offset + line.tm[0].t, -offset + graph.height - line.tm[0].m * zoomGY)
-            for (dgi = 1; dgi < line.tm.length; dgi++) {
-                ctxB.lineTo(offset + line.tm[dgi].t * zoomG, -offset + graph.height - line.tm[dgi].m * zoomGY)
-            }
             ctxB.stroke()
         })
 
