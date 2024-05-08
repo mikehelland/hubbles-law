@@ -685,9 +685,18 @@
         {"z": 2.162, "OH":  7.12  , "OHerr": 0.11}
         ]
     },
-    {"name": "Langeroodi D, et al", "ref": "Langeroodi1", "data": [
-        {"z": 8.16, "OH":  7.65  , "OHerr": 0.09},
-        {"z": 8.15, "OH":  7.72 }
+    {"name": "Langeroodi D, et al", "ref": "Langeroodi1", "data": [        
+        {"z": 8.150, "OH": 7.72},  
+        {"z": 8.160, "OH": 7.65, "OHerr_minus": -0.09, "OHerr_plus":  0.09},
+        {"z": 9.510, "OH": 7.48, "OHerr_minus": -0.09, "OHerr_plus":  0.09},
+        {"z": 8.498, "OH": 6.99, "OHerr_minus": -0.11, "OHerr_plus":  0.11},
+        {"z": 7.665, "OH": 8.24, "OHerr_minus": -0.07, "OHerr_plus":  0.07},
+        {"z": 7.663, "OH": 7.73, "OHerr_minus": -0.12, "OHerr_plus":  0.12},
+        {"z": 7.212, "OH": 7.36, "OHerr_minus": -0.23, "OHerr_plus":  0.41},
+        {"z": 7.152, "OH": 7.94, "OHerr_minus": -0.22, "OHerr_plus":  0.21},
+        {"z": 8.312, "OH": 8.03, "OHerr_minus": -0.40, "OHerr_plus":  0.21},
+        {"z": 8.382, "OH": 7.44, "OHerr_minus": -0.26, "OHerr_plus":  0.24},
+        {"z": 9.110, "OH": 7.95, "OHerr_minus": -0.21, "OHerr_plus":  0.21}
     ]}
     ],
     "refs": {
@@ -743,5 +752,4 @@
         }
     }
 }
-
 
