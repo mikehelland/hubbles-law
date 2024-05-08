@@ -356,6 +356,41 @@
 
         for (var i = 0; i < points.length; i++) {
             
+            if (points[i].bins) {
+                ctxB.globalAlpha = 0.2
+                ctxB.fillStyle = refs[points[i].ref].color
+
+                for (var j = 0; j < points[i].bins.length; j++) {
+                    var bin =  points[i].bins[j]
+
+                    var x0 = bin.zstart > 0 ? FLRW(H0, Omega_L, Omega_M, bin.zstart).lookback : 0
+                    var x1 = FLRW(H0, Omega_L, Omega_M, bin.zend).lookback
+                    
+                    var OHmin = - zoomGY * (bin.min - OH0) - 10
+                    var OHmax = - zoomGY * (bin.max - OH0) - 10
+                    
+                    ctxB.fillRect(
+                        x0 * zoomG, 
+                        OHmax, 
+                        (x1 - x0) * zoomG, 
+                        OHmax - OHmin    
+                    )
+                    console.log(
+                        x0 * zoomG, 
+                        OHmax, 
+                        (x1 - x0) * zoomG, 
+                        OHmax - OHmin    
+                    )
+
+                }
+                continue
+            }
+
+        }
+
+
+        for (var i = 0; i < points.length; i++) {
+            
             if (points[i].data) {
                 ctxB.globalAlpha = 0.3
                 console.log(refs[points[i].ref].color)
@@ -376,7 +411,7 @@
 
         for (var i = 0; i < points.length; i++) {
             
-            if (points[i].data) {
+            if (points[i].data || points[i].bins) {
                 continue
             }
 
@@ -396,35 +431,26 @@
 
         return 
 
-        // this data is from https://arxiv.org/pdf/1303.5987 2013
-        //Z0 - Math.log10(1 + (Mstar / M0)**(-gamma))
-        ctxB.fillStyle = "purple"
-        var bins = [
-        [0.08, 9.064660854607585], 
-        [0.29, 9.01903159717459], 
-        [0.78, 8.956317379948715], 
-        [1.40, 8.87678499187798],  
-        [2.26, 8.839710527768794]
-        ]
-        var ib = 0
-        bins.forEach(bin => {
-            var x0 = ib > 0 ? FLRW(H0, Omega_L, Omega_M, ib).lookback : 0
-            var x1 = FLRW(H0, Omega_L, Omega_M, bin[0]).lookback
-            console.log(x0, x1, ib, bin[0])
-            var OH = bin[1]
-
-            ctxB.fillRect(
-                x0 * zoomG, 
-                - zoomGY * (OH - OH0) - 10, 
-                (x1 - x0) * zoomG, 5)
-
-            ib = bin[0]
-        })
     }
 
     drawGraph()
 
 
+    /* code to make Zahid bins
+    https://arxiv.org/pdf/1303.5987 2013
+    
+    data = [
+    {"z": 0.8, "min": oh(9.121, 10**8.99, 0.85, 10**9.5), "max": oh(9.121, 10**8.99, 0.85, 10**10.5)},
+    {"z": 0.29, "min": oh(9.130, 10**9.304, 0.77, 10**9.5), "max": oh(9.130, 10**9.304, 0.77, 10**10.5)},
+    {"z": 0.78, "min": oh(9.161, 10**9.661, 0.65, 10**9.5), "max": oh(9.161, 10**9.661, 0.65, 10**10.5)},
+    {"z": 1.41, "min": oh(9.06, 10**9.6, 0.7, 10**9.5), "max":  oh(9.06, 10**9.6, 0.7, 10**10.5)},
+    {"z": 2.26, "min": oh(9.06, 10**9.7, 0.6, 10**9.5), "max": oh(9.06, 10**9.7, 0.6, 10**10.5)}
+    ]
+
+    function oh(Z0, M0, gamma, Mstar) {
+        return Z0 - Math.log10(1 + (Mstar / M0)**(-gamma))
+    }
+    */
 
 </script>
 
