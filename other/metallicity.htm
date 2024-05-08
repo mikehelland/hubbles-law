@@ -90,7 +90,7 @@
 
 <hr>
 
-<canvas id="background" height="300" width="1000"></canvas>
+<canvas id="background" height="450" width="1000"></canvas>
 
 <div>
 
@@ -147,8 +147,9 @@
     var offset = 20
     var height = graph.height - offset
     var zoom = 1
-    var zoomGY = height * 0.4
+    var zoomGY = height * 0.35
     var zoomG = zoom * 69
+    var OH0 = 6.5
 
     var Omega_M = 0.3 
     var Omega_L = 0.7
@@ -329,8 +330,8 @@
 
         ctxB.translate(offset, graph.height - offset)
 
-        for (dgi = 0; dgi <= 2; dgi+=0.5) {
-            ctxB.fillText(7 + dgi, -12, - dgi * zoomGY)    
+        for (dgi = 0; dgi <= 3; dgi+=0.5) {
+            ctxB.fillText(OH0 + dgi, -12, - dgi * zoomGY)    
         }
 
 
@@ -354,7 +355,7 @@
                 for (var j = 0; j < points[i].data.length; j++) {
                     ctxB.fillRect(
                         - 5 + points[i].data[j].x * zoomG, 
-                        - zoomGY * (points[i].data[j].OH - 7) - 10, 
+                        - zoomGY * (points[i].data[j].OH - OH0) - 10, 
                         10, 10)
 
                 }
@@ -374,14 +375,14 @@
             ctxB.globalAlpha = 1
             ctxB.fillRect(
                 - 5 + points[i].x * zoomG, 
-                - zoomGY * (points[i].OH - 7) - 10, 
+                - zoomGY * (points[i].OH - OH0) - 10, 
                 10, 10)
 
             ctxB.textAlign = points[i].z > 1 ? "right" : "left"
         
             ctxB.fillText(points[i].name, 
                 points[i].x * zoomG + (points[i].z > 1 ? -10 : 10), 
-                - zoomGY * (points[i].OH - 7))
+                - zoomGY * (points[i].OH - OH0))
 
         }
 
@@ -406,7 +407,7 @@
 
             ctxB.fillRect(
                 x0 * zoomG, 
-                - zoomGY * (OH - 7) - 10, 
+                - zoomGY * (OH - OH0) - 10, 
                 (x1 - x0) * zoomG, 5)
 
             ib = bin[0]

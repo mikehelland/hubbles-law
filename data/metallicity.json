@@ -683,7 +683,12 @@
         {"z": 3.302, "OH":  8.33  , "OHerr": 0.14},
         {"z": 2.295, "OH":  8.23  , "OHerr": 0.14},
         {"z": 2.162, "OH":  7.12  , "OHerr": 0.11}
-        ]}
+        ]
+    },
+    {"name": "Langeroodi D, et al", "ref": "Langeroodi1", "data": [
+        {"z": 8.16, "OH":  7.65  , "OHerr": 0.09},
+        {"z": 8.15, "OH":  7.72 }
+    ]}
     ],
     "refs": {
         "0": {
@@ -729,6 +734,11 @@
         "CEERS": {
             "title": "Direct T_e-based Metallicities of z=2-9 Galaxies with JWST/NIRSpec: Empirical Metallicity Calibrations Applicable from Reionization to Cosmic Noon",
             "url": "https://arxiv.org/abs/2303.08149",
+            "year": "2023"
+        },
+        "Langeroodi1": {
+            "title": "Evolution of the Mass–Metallicity Relation from Redshift z ≈ 8 to the Local Universe",
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acdbc1",
             "year": "2023"
         }
     }
