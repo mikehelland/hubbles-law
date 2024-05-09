@@ -149,6 +149,21 @@
         {"OH": 7.43, "z": 6.11},
         {"OH": 7.65, "z": 6.23},
         {"OH": 4.27, "z": 0.02}
+    ]},
+    {"name": "Kojima1 T, et al", "ref": "Kojima", "data": [
+        {"z": 0.010, "OH": 7.58},
+        {"z": 0.022, "OH": 7.69},
+        {"z": 0.003, "OH": 7.45},
+        {"z": 0.013, "OH": 7.44},
+        {"z": 0.009, "OH": 7.50},
+        {"z": 0.021, "OH": 7.43},
+        {"z": 0.014, "OH": 8.05},
+        {"z": 0.005, "OH": 7.97},
+        {"z": 0.011, "OH": 8.34},
+        {"z": 0.023, "OH": 8.08},
+        {"z": 0.003, "OH": 8.14},
+        {"z": 0.022, "OH": 7.77},
+        {"z": 0.002, "OH": 7.94}
     ]}
     ],
     "refs": {
@@ -211,7 +226,13 @@
             "title": "Strong He I Emission Lines in High N/O Galaxies at z~6 Identified in JWST Spectra: High He/H Abundance Ratios or High Electron Densities?",
             "url": "https://arxiv.org/abs/2405.01823",
             "year": "2024"
+        },
+        "Kojima": {
+            "title": "Extremely Metal-poor Representatives Explored by the Subaru Survey (EMPRESS). I...",
+            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/aba047",
+            "year": "2020"
         }
+
     }
 }
 
