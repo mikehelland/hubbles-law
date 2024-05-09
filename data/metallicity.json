@@ -143,6 +143,12 @@
         {"z": 8.312, "OH": 8.03, "OHerr_minus": -0.40, "OHerr_plus":  0.21},
         {"z": 8.382, "OH": 7.44, "OHerr_minus": -0.26, "OHerr_plus":  0.24},
         {"z": 9.110, "OH": 7.95, "OHerr_minus": -0.21, "OHerr_plus":  0.21}
+    ]},
+    {"name": "Yanagisawa H, et al", "ref": "Yanagisawa", "data": [
+        {"OH": 7.59, "z": 5.94},
+        {"OH": 7.43, "z": 6.11},
+        {"OH": 7.65, "z": 6.23},
+        {"OH": 4.27, "z": 0.02}
     ]}
     ],
     "refs": {
@@ -200,6 +206,11 @@
             "title": "Evolution of the Mass–Metallicity Relation from Redshift z ≈ 8 to the Local Universe",
             "url": "https://iopscience.iop.org/article/10.3847/1538-4357/acdbc1",
             "year": "2023"
+        },
+        "Yanagisawa": {
+            "title": "Strong He I Emission Lines in High N/O Galaxies at z~6 Identified in JWST Spectra: High He/H Abundance Ratios or High Electron Densities?",
+            "url": "https://arxiv.org/abs/2405.01823",
+            "year": "2024"
         }
     }
 }
