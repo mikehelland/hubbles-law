@@ -24,11 +24,6 @@
                 margin:18px;
             }
 
-            input {
-                width: 36px;
-                border: 0;
-                font-size: 12pt;
-            }
 
             input[type=number] {
                 appearance:textfield; /* Firefox */
@@ -98,21 +93,24 @@
 </p>
 <hr>
 
-<canvas id="background" height="450" width="1000"></canvas>
+<div style="display: flex;">
 
-<div>
-
-
-    <table id="table" style="margin-left: 20px; border: 1px solid #888888; padding:4px;">
+    <table id="table" style="margin-left: 20px; border: 1px solid #888888; padding:4px; ">
         <tr>
+            <th><input type="checkbox" id="hideall" checked="checked"></th>
+            <th>Year</th>
             <th>Name</th>
             <th>z (redshift)</th>
             <th>12 + log(O/H)</th>
         </tr>
 
     </table>
+    &nbsp;
 
+    <canvas id="background" height="450" width="1000"></canvas>
     
+</div>
+
     <ol id="ol">
         
     </ol>
@@ -143,11 +141,10 @@
     -->
     
 
-</div>
 <script src="flrw.js"></script>
 
 <script>
-    colors = ["fuchsia", "blue", "red", "yellow", "green", "orange", "purple", "cyan", "orangered"]
+    colors = ["pink", "blue", "cyan", "orange", "yellow", "green", "purple", "red", "darkblue", "fuchsia", "orangered"]
     const black = false
     var graph = document.getElementById("background")
     var ctxB = graph.getContext("2d")
@@ -166,6 +163,14 @@
 
     var refs = {}
 
+    var local = [
+        {"name": "solar",       "z": 0,       "OH": 8.69,       "ref": "0"},
+        {"name": "Milky Way",   "z": 0,       "OH": 8.50,       "ref": "0"},
+        {"name": "LMC",         "z": 0,       "OH": 8.37,       "ref": "0"},
+        {"name": "SMC",         "z": 0,       "OH": 8.01,       "ref": "0"}
+    ]
+        
+
     var json
     var points = []
     fetch("https://mikehelland.github.io/hubbles-law/data/metallicity.json").then(res => res.json()).then(res => {
@@ -173,8 +178,10 @@
         points = res.data
 
         var i = 1
-        var tr, td, li, url
+        var tr, td, li, url, hideBox
         var iNextColor = 0
+
+        points.sort((a, b) => res.refs[a.ref].year - res.refs[b.ref].year)
 
         points.forEach(point => {
             if (!refs[point.ref]) {
@@ -185,7 +192,7 @@
                 url = refs[point.ref].url
 
                 li = document.createElement("li")
-                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a href="${url}">${url}</a>`
+                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a href="${url}">${url}</a>`                
                 ol.appendChild(li)
 
                 if (point.data) {
@@ -196,24 +203,34 @@
             tr = document.createElement("tr")    
             table.appendChild(tr)
             
+            let hideBox = document.createElement("input")
+            hideBox.type = "checkbox"
+            hideBox.checked = "checked"
+            hideBox.onchange = e => {
+                point.hide = !hideBox.checked
+                drawGraph()
+            }
             td = document.createElement("td")
-            td.innerHTML = point.name + "<sup>[" + refs[point.ref].i + "]</sup>"
+            td.appendChild(hideBox)
             tr.appendChild(td)
 
-            td = document.createElement("td")
-            td.innerHTML = typeof point.z === "number" ? point.z : `<span style="opacity: 0.3; color:${refs[point.ref].color};">■</span>`
-            tr.appendChild(td)
+            point.hideBox = hideBox
+            
 
-            td = document.createElement("td")
-            td.innerHTML = point.OH || ""
-            tr.appendChild(td)
-
+            var zCap
             if (point.data) {
+                point.data.sort((a, b) => a.z - b.z)
+                zCap = point.data[0].z.toFixed(2) + "&mdash;" + point.data[point.data.length - 1].z.toFixed(2)
+
                 for (var j = 0; j < point.data.length; j++) {
                     point.data[j].x = point.data[j].z === 0 ? 0 : FLRW(H0, Omega_L, Omega_M, point.data[j].z).lookback
                 }
             }
+            else if (point.bins) {
+                zCap = point.bins[0].zstart + "&mdash;" + point.bins[point.bins.length - 1].zstart
+            }
             else {
+                zCap = point.z
                 if (point.z === 0) {
                     point.x = 0
                 }
@@ -222,8 +239,25 @@
                 }
             }
             
+            td = document.createElement("td")
+            td.innerHTML = refs[point.ref].year
+            tr.appendChild(td)
+            
+            td = document.createElement("td")
+            td.innerHTML = point.name + "<sup>[" + refs[point.ref].i + "]</sup>"
+            tr.appendChild(td)
+
+            td = document.createElement("td")
+            td.innerHTML = zCap
+            tr.appendChild(td)
+
+            td = document.createElement("td")
+            td.innerHTML = point.OH || `<span style="opacity: 0.3; color:${refs[point.ref].color};">■</span>`
+            tr.appendChild(td)
+
         })
 
+        points.splice(points.length - 1, 0, ...local)
 
         drawGraph()
     })
@@ -238,7 +272,9 @@
     
 
     function drawGraph() {
-        graph.width = graph.width
+        graph.height = graph.clientHeight
+        height = graph.height - offset
+        zoomGY = height * 0.31
         sseHypothesis = 0
         
         ctxB.lineWidth = 2
@@ -309,6 +345,10 @@
 
         for (var i = 0; i < points.length; i++) {
             
+            if (points[i].hide) {
+                continue 
+            }
+
             if (points[i].bins) {
                 ctxB.globalAlpha = 0.2
                 ctxB.fillStyle = refs[points[i].ref].color
@@ -343,7 +383,10 @@
 
 
         for (var i = 0; i < points.length; i++) {
-            
+            if (points[i].hide) {
+                continue 
+            }
+
             if (points[i].data) {
                 ctxB.globalAlpha = 0.3
                 console.log(refs[points[i].ref].color)
@@ -364,6 +407,10 @@
 
         for (var i = 0; i < points.length; i++) {
             
+            if (points[i].hide) {
+                continue 
+            }
+
             if (points[i].data || points[i].bins) {
                 continue
             }
@@ -388,6 +435,13 @@
 
     drawGraph()
 
+    hideall.onchange = e => {
+        points.forEach(point => {
+            point.hideBox.checked = hideall.checked
+            point.hide = !hideall.checked
+        })
+        drawGraph()
+    }
 
     /* code to make Zahid bins
     https://arxiv.org/pdf/1303.5987 2013
