@@ -76,26 +76,27 @@
 <h3>Metallicity</h3>
 
 <p>
-    <em>Background:</em> According to the big bang theory the first galaxies wouldn't have any "metals" (elements other than hydrogen and helium)
-    in them. Metals would slowly build up over time in the universe. 
-    Alternatively, a nonexpanding universe wouldln't show any correlation between redshift and metallicity. 
+    <em>Background:</em> According to the big bang theory the first galaxies wouldn't have any "metals" 
+    <a target="_blank" href="https://public.nrao.edu/blogs/astronomy-is-metal/">(elements other than hydrogen and helium)</a>
+    in them. Metals would have to build up over time in the universe. 
+    Alternatively, a nonexpanding universe wouldln't show any correlation between redshift and 
+    <a target="_blank" href="https://en.wikipedia.org/wiki/Metallicity">metallicity</a>. 
 </p>
-
-<p>The data file: <a href="../data/metallicity.json">metallicity.json</a> </p>
-
-<hr>
-
 <p>
     <b>Disclaimer:</b> This is a hodge-podge of different studies of different types of objects that I've found through googling.
     I use this page to keep track of the datasets and relevant articles I find, and I add to it when I find more. 
     It's not presented as conclusive evidence for anything in particular.
     If you know of any z and 12+log(O/H) datasets that I can add, send them to mike@mikehelland.com.
 </p>
-<hr>
+
+<p>
+    The data file: <a target="_blank" href="../data/metallicity.json">metallicity.json</a> 
+</p>
+
 
 <div style="display: flex;">
 
-    <table id="table" style="margin-left: 20px; border: 1px solid #888888; padding:4px; ">
+    <table id="table" style="margin-left: 20px; border: 0px solid #888888; padding:4px; ">
         <tr>
             <th><input type="checkbox" id="hideall" checked="checked"></th>
             <th>Year</th>
@@ -105,7 +106,6 @@
         </tr>
 
     </table>
-    &nbsp;
 
     <canvas id="background" height="450" width="1000"></canvas>
     
@@ -121,13 +121,19 @@
         <em>See Also:</em>
         <ul>
             <li>
+                About Metallicity Variations in the Local Galactic Interstellar Medium
+                <a target="_blank" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38">https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38</a>                
+            </li>
+            <li>
                 The integrated metallicity profile of the Milky Way
-                <a href="https://www.nature.com/articles/s41550-023-01977-z">https://www.nature.com/articles/s41550-023-01977-z</a>
+                <a target="_blank" href="https://www.nature.com/articles/s41550-023-01977-z">https://www.nature.com/articles/s41550-023-01977-z</a>
                 
             </li>
             <li>
                 The metal abundances across cosmic time (MACT) survey. II. evolution of the mass–metallicity relation over 8 billion years, using [O iii] λ4363 Å based metallicities
-                <a href="https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67">https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67</a>
+                <a target="_blank" href="https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67">https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67</a>
+
+                <blockquote>The most reliable metallicity measurements are based on the flux ratio of the [O iii] λ4363 line against [O iii] λ5007. The technique is called the Te method, because it determines the electron temperature (Te) of the gas, and hence the gas-phase oxygen-to-hydrogen (O/H) abundance (Aller 1984; Izotov et al. 2006). However, detecting [O iii] λ4363 is difficult, because it is weak and almost undetectable in metal-rich galaxies. For example, only 0.3% of the strongly star-forming galaxies in the Sloan Digital Sky Survey (SDSS) have 2&sigma; or better detections of [O iii] λ4363 (Izotov et al. 2006; Nagao et al. 2006).</blockquote>
             </li>
         </ul>
     </p>
@@ -164,10 +170,10 @@
     var refs = {}
 
     var local = [
-        {"name": "solar",       "z": 0,       "OH": 8.69,       "ref": "0"},
-        {"name": "Milky Way",   "z": 0,       "OH": 8.50,       "ref": "0"},
-        {"name": "LMC",         "z": 0,       "OH": 8.37,       "ref": "0"},
-        {"name": "SMC",         "z": 0,       "OH": 8.01,       "ref": "0"}
+        {"name": "solar",       "z": 0,  "x": 0,     "OH": 8.69,       "ref": "0"},
+        {"name": "Milky Way",   "z": 0,  "x": 0,     "OH": 8.50,       "ref": "0"},
+        {"name": "LMC",         "z": 0,  "x": 0,     "OH": 8.37,       "ref": "0"},
+        {"name": "SMC",         "z": 0,  "x": 0,     "OH": 8.01,       "ref": "0"}
     ]
         
 
@@ -192,7 +198,7 @@
                 url = refs[point.ref].url
 
                 li = document.createElement("li")
-                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a href="${url}">${url}</a>`                
+                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a target="_blank" href="${url}">${url}</a>`                
                 ol.appendChild(li)
 
                 if (point.data) {
@@ -437,8 +443,10 @@
 
     hideall.onchange = e => {
         points.forEach(point => {
-            point.hideBox.checked = hideall.checked
-            point.hide = !hideall.checked
+            if (point.hideBox) {
+                point.hideBox.checked = hideall.checked
+                point.hide = !hideall.checked
+            }
         })
         drawGraph()
     }

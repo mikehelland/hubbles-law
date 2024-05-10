@@ -8,7 +8,7 @@
             {"zstart": 1.41, "zend": 2.26, "min": 8.69483846916449, "max": 8.935779162758541}
         ]},
         {"name": "Pox 186",     "z": 0.004,   "OH": 7.87,       "ref": "pox"},
-        {"name": "GS z12 (beagle)",      "z": 12.479,  "OH": 7.9,        "ref": "z12"},
+        {"name": "GS z12 (beagle)",      "z": 12.6,  "OH": 7.9,        "ref": "z12a"},
         {"name": "GS z12 (DLA)",      "z": 12.479,  "OH": 6.6,        "ref": "z12"},
         {"name": "SPT0418",     "z": 4.225,   "OH": 8.58,       "ref": "z4"}, 
         {"name": "Izotov, YI, et al", "ref": "Izotov", "data": [
@@ -171,14 +171,14 @@
             "url": "https://arxiv.org/abs/1303.5987",
             "year": "2013"
         },
-        "0": {
-            "title": "About Metallicity Variations in the Local Galactic Interstellar Medium" ,
-            "url": "https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38",
-            "year": "2022"
-        },
         "pox": {
             "title": "A study of extreme CIII]1908 & [OIII]88/[CII]157 emission in Pox 186" ,
             "url": "https://arxiv.org/abs/2307.00059",
+            "year": "2023"
+        },
+        "z12a": {
+            "title": "Spectroscopic confirmation of four metal-poor galaxies at z=10.3-13.2" ,
+            "url": "https://arxiv.org/abs/2212.04568 ",
             "year": "2023"
         },
         "z12": {
