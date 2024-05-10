@@ -64,6 +64,7 @@
             th {
                 padding-right:20px;
                 text-align: left;
+                font-size: small;
             }
         </style>
     </head>
@@ -96,13 +97,13 @@
 
 <div style="display: flex;">
 
-    <table id="table" style="margin-left: 20px; border: 0px solid #888888; padding:4px; ">
+    <table id="table" style="margin-left: 20px; border: 0px solid #888888; padding:2px; ">
         <tr>
             <th><input type="checkbox" id="hideall" checked="checked"></th>
             <th>Year</th>
             <th>Name</th>
             <th>z (redshift)</th>
-            <th>12 + log(O/H)</th>
+            <th>12+log(O/H)</th>
         </tr>
 
     </table>
@@ -282,6 +283,8 @@
         height = graph.height - offset
         zoomGY = height * 0.31
         sseHypothesis = 0
+
+        ctxB.translate(8, 0)
         
         ctxB.lineWidth = 2
         ctxB.fillStyle = black ? "black" : "white"
@@ -299,17 +302,14 @@
         ctxB.textAlign = "left"
         
         ctxB.textAlign = "left"
-        ctxB.fillText("12 + log(O/H)", 4 + offset, 34)
-
-        ctxB.textAlign = "left"
         ctxB.fillText('ΛCDM', offset, 12)
 
         ctxB.textAlign = "center"
         ctxB.fillText("Lookback Time (billion years)", graph.width / 2 + offset, graph.height - 30)
         ctxB.fillText("Redshift z", graph.width / 2 + offset, 34)
         
-        ctxB.fillStyle = "red"
-        ctxB.globalAlpha = 0.2
+        ctxB.fillStyle = "#404040"
+        //ctxB.globalAlpha = 0.2
         ctxB.fillRect(offset + bb * zoomG, offset, 100, graph.height - 2*offset)
         ctxB.globalAlpha = 1
         
@@ -435,7 +435,16 @@
 
         }
 
-        return 
+        ctxB.font = "12px sans-serif"
+
+        ctxB.translate(-18, -height / 2)
+        ctxB.rotate(-Math.PI/2)
+        ctxB.textAlign = "center"
+        ctxB.fillText("12 + log(O/H)", 0, 0)
+
+        ctxB.translate(0, 985)
+        ctxB.fillStyle = "white"
+        ctxB.fillText("BIG BANG", 0, 0)
 
     }
 
