@@ -91,7 +91,7 @@
 </p>
 
 <p>
-    The data file: <a target="_blank" href="../data/metallicity.json">metallicity.json</a> 
+    Press Right and Left to toggle checkboxes through time. The data file: <a target="_blank" href="../data/metallicity.json">metallicity.json</a> 
 </p>
 
 
@@ -264,7 +264,7 @@
 
         })
 
-        points.splice(points.length - 1, 0, ...local)
+        //points.splice(points.length, 0, ...local)
 
         drawGraph()
     })
@@ -374,12 +374,6 @@
                         (x1 - x0) * zoomG, 
                         OHmax - OHmin    
                     )
-                    console.log(
-                        x0 * zoomG, 
-                        OHmax, 
-                        (x1 - x0) * zoomG, 
-                        OHmax - OHmin    
-                    )
 
                 }
                 continue
@@ -395,7 +389,6 @@
 
             if (points[i].data) {
                 ctxB.globalAlpha = 0.3
-                console.log(refs[points[i].ref].color)
                 ctxB.fillStyle = refs[points[i].ref].color
                 for (var j = 0; j < points[i].data.length; j++) {
                     ctxB.fillRect(
@@ -435,6 +428,22 @@
 
         }
 
+        for (var i = 0; i < local.length; i++) {
+            
+            ctxB.globalAlpha = 1
+            ctxB.fillRect(
+                - 5 + local[i].x * zoomG, 
+                - zoomGY * (local[i].OH - OH0) - 10, 
+                10, 10)
+
+            ctxB.textAlign = local[i].z > 1 ? "right" : "left"
+        
+            ctxB.fillText(local[i].name, 
+                local[i].x * zoomG + (local[i].z > 1 ? -10 : 10), 
+                - zoomGY * (local[i].OH - OH0))
+
+        }
+
         ctxB.font = "12px sans-serif"
 
         ctxB.translate(-18, -height / 2)
@@ -459,6 +468,47 @@
         })
         drawGraph()
     }
+
+
+    document.body.onkeydown = e => {
+        if (e.keyCode === 37) {
+            goBack()
+        }
+        if (e.keyCode === 39) {
+            goForward()
+        }
+    }
+
+    var iNav = -1
+
+    var goForward = () => {
+        
+        if (iNav === points.length - 1) {
+            return
+        }
+
+        iNav++
+
+        points[iNav].hideBox.checked = !points[iNav].hideBox.checked
+        points[iNav].hide = !points[iNav].hideBox.checked
+        drawGraph()
+
+    }
+
+    var goBack = () => {
+        if (iNav === -1) {
+            return
+        }
+        
+        points[iNav].hideBox.checked = !points[iNav].hideBox.checked
+        points[iNav].hide = !points[iNav].hideBox.checked
+        
+        iNav--
+        
+        drawGraph()
+
+    }
+
 
     /* code to make Zahid bins
     https://arxiv.org/pdf/1303.5987 2013
