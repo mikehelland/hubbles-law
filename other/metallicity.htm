@@ -484,6 +484,12 @@
     var goForward = () => {
         
         if (iNav === points.length - 1) {
+            for (var i = 0; i < points.length - 1; i++) {
+                points[i].hideBox.checked = !points[i].hideBox.checked
+                points[i].hide = !points[i].hideBox.checked
+            }
+            drawGraph()
+            iNav--
             return
         }
 
@@ -497,6 +503,11 @@
 
     var goBack = () => {
         if (iNav === -1) {
+            for (var i = 0; i < points.length; i++) {
+                points[i].hideBox.checked = !points[i].hideBox.checked
+                points[i].hide = !points[i].hideBox.checked
+            }
+            drawGraph()
             return
         }
         
