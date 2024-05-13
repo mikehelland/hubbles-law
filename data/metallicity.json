@@ -181,7 +181,17 @@
     {"z": 0.7944890, "OH": 7.89},
     {"z": 0.7967923, "OH": 7.69},
     {"z": 0.7885643, "OH": 8.06}]
-    }    
+    } ,
+    {"name": "Shapley et al", "ref" : "Shapley", "data": [
+        {"z": 2.4100 , "OH": 8.47}, 
+        {"z": 2.1075 , "OH": 8.47}, 
+        {"z": 2.4224 , "OH": 8.65}, 
+        {"z": 2.1816 , "OH": 8.60}, 
+        {"z": 2.2682 , "OH": 8.49}, 
+        {"z": 2.3304 , "OH": 8.57}, 
+        {"z": 2.4333 , "OH": 8.69}
+    ]
+    }   
     ],
     "refs": {
         "Zahid": {
@@ -269,6 +279,11 @@
             "title": "Derivation of chemical abundances in star-forming galaxies at intermediate redshift",
             "url": "https://ui.adsabs.harvard.edu/abs/2014arXiv1412.3853P/abstract",
             "year": "2014"
+        },
+        "Shapley": {
+            "title": "Evidence for Solar Metallicities in Massive Star-forming Galaxies at z >~ 2",
+            "url": "https://ui.adsabs.harvard.edu/abs/2004ApJ...612..108S/abstract",
+            "year": "2004"
         }
     }
 }
