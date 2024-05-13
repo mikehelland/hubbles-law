@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<p>The universe today has carbon, oxygen, lead, etc</p>
+					<img src="periodicTable.webp">
+
+					
+				</section>
+
+				<section>
+					<p>But before the first stars, only hydrogen and helium existed</p>
+					<img src="hhe.webp">
+
+					
+				</section>
+
+				<section>
+					<p>Anything besides H and He are called "metals"</p>
+					
+					<img src="periodicTable_crossed.webp" style="vertical-align:middle" class="fragment">
+					<span class="fragment">
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 = 
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 "metals"
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+
+					
+				</section>
+
+				<section>
+					<p>Initially the universe didn't have any metal</p>
+					
+					<img src="timeline1.webp" style="vertical-align:middle"> 
+
+					<div style="position: absolute; right:30%; top:20%;" class="fragment">
+						<img src="../ep1/sn1.gif" style="vertical-align:middle">
+
+					</div>
+					
+				</section>
+
+
+				<section>
+					<p>And the universe got metal!</p>
+					
+					<img src="timeline2.webp" style="vertical-align:middle"> 
+
+					
+				</section>
+
+				<section>
+					<p>Origins of this idea go back to the 1940's and 1950's</p>
+
+					<p class="fragment">
+						How does it hold up to modern measurements?
+					</p>
+				</section>
+
+				<section>
+					<canvas width="1200" height="700" id="graph"></canvas>
+				</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+				transition: "fade",
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+			
+			Reveal.on( 'fragmentshown', event => {
+			  console.log(event.fragment.id)
+			} );
+
+		</script>
+
+	</body>
+</html>
