@@ -191,6 +191,10 @@
         {"z": 2.3304 , "OH": 8.57}, 
         {"z": 2.4333 , "OH": 8.69}
     ]
+    },
+    {"name": "Welch B, et al", "ref" : "Welch", "data": [
+        {"z": 2.37 , "OH": 7.97}
+    ]
     }   
     ],
     "refs": {
@@ -284,6 +288,11 @@
             "title": "Evidence for Solar Metallicities in Massive Star-forming Galaxies at z >~ 2",
             "url": "https://ui.adsabs.harvard.edu/abs/2004ApJ...612..108S/abstract",
             "year": "2004"
+        },
+        "Welch": {
+            "title": "The Sunburst Arc with JWST: III. An Abundance of Direct Chemical Abundances",
+            "url": "https://arxiv.org/abs/2405.06631",
+            "year": "2024"
         }
     }
 }
