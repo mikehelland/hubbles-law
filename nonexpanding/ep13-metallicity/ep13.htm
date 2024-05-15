@@ -89,7 +89,7 @@
 					</p>
 				</section>
 
-				<section>
+				<section id="graph-section">
 					<canvas width="1200" height="700" id="graph"></canvas>
 				</section>
 
@@ -97,6 +97,9 @@
 			</div>
 
 		</div>
+
+		<script src="graph.js"></script>
+		<script src="../../other/flrw.js"></script>
 
 		<script src="../reveal/dist/reveal.js"></script>
 		<script src="../reveal/plugin/math/math.js"></script>
@@ -107,11 +110,13 @@
 		<script src="../reveal/plugin/highlight/highlight.js"></script>
 		<script>
 
+			var mGraph = metalGraph(document.getElementById("graph"))
+
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
 			Reveal.initialize({
-				controls: true,
-				progress: true,
+				controls: false,
+				progress: false,
 				center: true,
 				hash: true,
 				transition: "fade",
@@ -130,6 +135,13 @@
 			
 			Reveal.on( 'fragmentshown', event => {
 			  console.log(event.fragment.id)
+			} );
+
+			Reveal.on( 'fragmentshown', event => {
+			  if (event.fragment.id === "graph-section") {
+				mGraph.draw()
+			  }
+
 			} );
 
 		</script>

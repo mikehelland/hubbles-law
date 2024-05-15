@@ -1,172 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Metallicity</title>
-        <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            #graphs {
-                height:400px;
-                width: 700px;
-                position:relative;
-            }
-            #graphs canvas {
-                position:absolute;
-                top: 0;
-                left: 0;
-                height:400px;
-                width: 700px;
-            }
+function metalGraph(graph) {
 
-            hr {
-                opacity: 0.1;
-                margin:18px;
-            }
-
-
-            input[type=number] {
-                appearance:textfield; /* Firefox */
-            }
-
-
-            .caption {
-                /*padding:4px 20px;*/
-                text-align: right;
-            }
-
-
-
-            #sse-hypothesis, #sse-lcdm {
-                text-align: right;
-                font-weight: bold;
-            }
-
-            .MathJax {
-                font-size: 5pt !important;
-            }
-
-            #legend {
-                position: absolute;
-                left: 350px;
-                top:335px;
-            }
-            #y-axis {
-                position: absolute;
-                top: -15px;
-                left: 25px;
-            }
-
-            td {
-                padding-right:20px;
-
-            }
-            th {
-                padding-right:20px;
-                text-align: left;
-                font-size: small;
-            }
-        </style>
-    </head>
-<body>
-
-    <a href="../index.htm">Home</a>
-    <hr>
-
-
-<h3>Metallicity</h3>
-
-<p>
-    <em>Background:</em> According to the big bang theory the first galaxies wouldn't have any "metals" 
-    <a target="_blank" href="https://public.nrao.edu/blogs/astronomy-is-metal/">(elements other than hydrogen and helium)</a>
-    in them. Metals would have to build up over time in the universe. 
-    Alternatively, a nonexpanding universe wouldln't show any correlation between redshift and 
-    <a target="_blank" href="https://en.wikipedia.org/wiki/Metallicity">metallicity</a>. 
-</p>
-<p>
-    <b>Disclaimer:</b> This is a hodge-podge of different studies of different types of objects that I've found through googling.
-    I use this page to keep track of the datasets and relevant articles I find, and I add to it when I find more. 
-    It's not presented as conclusive evidence for anything in particular.
-    If you know of any z and 12+log(O/H) datasets that I can add, send them to mike@mikehelland.com.
-</p>
-
-<p>
-    Press Right and Left to toggle checkboxes through time. 
-</p>
-
-
-<div style="display: flex;">
-
-    <table id="table" style="margin-left: 20px; border: 0px solid #888888; padding:2px; ">
-        <tr>
-            <th><input type="checkbox" id="hideall" checked="checked"></th>
-            <th>Year</th>
-            <th>Name</th>
-            <th>z (redshift)</th>
-            <th>12+log(O/H)</th>
-        </tr>
-
-    </table>
-
-    <canvas id="background" height="450" width="1000"></canvas>
-    
-</div>
-
-    <ol id="ol">
-        
-    </ol>
-
-    <hr>
-
-    <p>
-        <em>More:</em>
-        <ul>
-            <li>
-                The data file: <a target="_blank" href="../data/metallicity.json">metallicity.json</a> 
-            </li>
-            <li>
-                About Metallicity Variations in the Local Galactic Interstellar Medium
-                <a target="_blank" href="https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38">https://iopscience.iop.org/article/10.3847/1538-4357/ac6b38</a>                
-            </li>
-            <li>
-                The integrated metallicity profile of the Milky Way
-                <a target="_blank" href="https://www.nature.com/articles/s41550-023-01977-z">https://www.nature.com/articles/s41550-023-01977-z</a>
-                
-            </li>
-            <li>
-                The metal abundances across cosmic time (MACT) survey. II. evolution of the mass–metallicity relation over 8 billion years, using [O iii] λ4363 Å based metallicities
-                <a target="_blank" href="https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67">https://iopscience.iop.org/article/10.3847/0004-637X/828/2/67</a>
-
-                <blockquote>The most reliable metallicity measurements are based on the flux ratio of the [O iii] λ4363 line against [O iii] λ5007. The technique is called the Te method, because it determines the electron temperature (Te) of the gas, and hence the gas-phase oxygen-to-hydrogen (O/H) abundance (Aller 1984; Izotov et al. 2006). However, detecting [O iii] λ4363 is difficult, because it is weak and almost undetectable in metal-rich galaxies. For example, only 0.3% of the strongly star-forming galaxies in the Sloan Digital Sky Survey (SDSS) have 2&sigma; or better detections of [O iii] λ4363 (Izotov et al. 2006; Nagao et al. 2006).</blockquote>
-            </li>
-            <li>
-                For Morelli et al, a different line is used:
-                <blockquote>We measured the equivalent widths of the [O ii]λ3727, Hβ, and [O iii]λλ4959,5007 emission lines observed in the galaxy spectra obtained with the Visible Multi-Object Spectrograph mounted at the Very Large Telescope. For each galaxy, we derived the metallicity-sensitive emission-line ratio R23, ionization-sensitive emission-line ratio O32, and gas-phase oxygen abundance 12 + log (O/H). </blockquote>
-            </li>
-            <li>
-                For Dors et al, SDSS DR7 was used
-            </li>
-        </ul>
-    </p>
-
-    <hr>
-    <a href="../index.htm">Home</a>
-
-    <!--
-        [1] <a href="https://arxiv.org/abs/2306.16039">https://arxiv.org/abs/2306.16039</a>
-    <b>Hidden giants in JWST's PEARLS: An ultra-massive z=4.26 sub-millimeter galaxy that is invisible to HST</b>
-    [3] <a href="https://arxiv.org/abs/1812.05098">https://arxiv.org/abs/1812.05098</a>
-    <b>Exploring the origins of a new, apparently metal-free gas cloud at
-        z = 4.4</b>
-    -->
-    
-
-<script src="flrw.js"></script>
-
-<script>
     colors = ["gray", "pink", "blue", "goldenrod", "cyan", "orange", "yellow", "green", "red", "purple", "Chartreuse", "darkblue", "fuchsia", "midnightblue"]
     const black = false
-    var graph = document.getElementById("background")
+    
     var ctxB = graph.getContext("2d")
 
     var offset = 20
@@ -281,7 +117,7 @@
 
         drawGraph()
     })
-    
+
     var zs = [];
     [0.5, 1, 2, 3, 4, 5, 10, 20].forEach(z => {
         zs.push({z, t: FLRW(H0, Omega_L, Omega_M, z).lookback})
@@ -289,7 +125,7 @@
 
     bb = FLRW(H0, Omega_L, Omega_M, 12.8).age
 
-    
+
 
     function drawGraph() {
         graph.height = graph.clientHeight
@@ -383,7 +219,7 @@
                     
                     ctxB.fillRect(
                         x0 * zoomG, 
-                        OHmin, 
+                        OHmax, 
                         (x1 - x0) * zoomG, 
                         OHmax - OHmin    
                     )
@@ -472,84 +308,6 @@
 
     drawGraph()
 
-    hideall.onchange = e => {
-        points.forEach(point => {
-            if (point.hideBox) {
-                point.hideBox.checked = hideall.checked
-                point.hide = !hideall.checked
-            }
-        })
-        drawGraph()
-    }
-
-
-    document.body.onkeydown = e => {
-        if (e.keyCode === 37) {
-            goBack()
-        }
-        if (e.keyCode === 39) {
-            goForward()
-        }
-    }
-
-    var iNav = -1
-
-    var goForward = () => {
-        
-        if (iNav === points.length - 1) {
-            for (var i = 0; i < points.length - 1; i++) {
-                points[i].hideBox.checked = !points[i].hideBox.checked
-                points[i].hide = !points[i].hideBox.checked
-            }
-            drawGraph()
-            iNav--
-            return
-        }
-
-        iNav++
-
-        points[iNav].hideBox.checked = !points[iNav].hideBox.checked
-        points[iNav].hide = !points[iNav].hideBox.checked
-        drawGraph()
-
-    }
-
-    var goBack = () => {
-        if (iNav === -1) {
-            for (var i = 0; i < points.length; i++) {
-                points[i].hideBox.checked = !points[i].hideBox.checked
-                points[i].hide = !points[i].hideBox.checked
-            }
-            drawGraph()
-            return
-        }
-        
-        points[iNav].hideBox.checked = !points[iNav].hideBox.checked
-        points[iNav].hide = !points[iNav].hideBox.checked
-        
-        iNav--
-        
-        drawGraph()
-
-    }
-
-
-    /* code to make Zahid bins
-    https://arxiv.org/pdf/1303.5987 2013
     
-    data = [
-    {"z": 0.8, "min": oh(9.121, 10**8.99, 0.85, 10**9.5), "max": oh(9.121, 10**8.99, 0.85, 10**10.5)},
-    {"z": 0.29, "min": oh(9.130, 10**9.304, 0.77, 10**9.5), "max": oh(9.130, 10**9.304, 0.77, 10**10.5)},
-    {"z": 0.78, "min": oh(9.161, 10**9.661, 0.65, 10**9.5), "max": oh(9.161, 10**9.661, 0.65, 10**10.5)},
-    {"z": 1.41, "min": oh(9.06, 10**9.6, 0.7, 10**9.5), "max":  oh(9.06, 10**9.6, 0.7, 10**10.5)},
-    {"z": 2.26, "min": oh(9.06, 10**9.7, 0.6, 10**9.5), "max": oh(9.06, 10**9.7, 0.6, 10**10.5)}
-    ]
-
-    function oh(Z0, M0, gamma, Mstar) {
-        return Z0 - Math.log10(1 + (Mstar / M0)**(-gamma))
-    }
-    */
-
-</script>
-
-<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+    return {draw: drawGraph}
+}

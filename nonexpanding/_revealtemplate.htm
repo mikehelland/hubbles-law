@@ -55,8 +55,8 @@
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
 			Reveal.initialize({
-				controls: true,
-				progress: true,
+				controls: false,
+				progress: false,
 				center: true,
 				hash: true,
 				transition: "fade",
@@ -77,6 +77,12 @@
 			  console.log(event.fragment.id)
 			} );
 
+			Reveal.on("slidechanged", event => {
+                if (event.currentSlide.id === "sample-demo") {
+                    samp.draw()
+                }
+                
+            })
 		</script>
 
 	</body>
