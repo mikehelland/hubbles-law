@@ -347,7 +347,7 @@
         ctxB.translate(offset, graph.height - offset)
 
         for (dgi = 0; dgi <= 3; dgi+=0.5) {
-            ctxB.fillText(OH0 + dgi, -12, - dgi * zoomGY)    
+            ctxB.fillText(OH0 + dgi, -12, - dgi * zoomGY + 5)    
         }
 
 
@@ -378,8 +378,8 @@
                     var x0 = bin.zstart > 0 ? FLRW(H0, Omega_L, Omega_M, bin.zstart).lookback : 0
                     var x1 = FLRW(H0, Omega_L, Omega_M, bin.zend).lookback
                     
-                    var OHmin = - zoomGY * (bin.min - OH0) - 10
-                    var OHmax = - zoomGY * (bin.max - OH0) - 10
+                    var OHmin = - zoomGY * (bin.min - OH0)
+                    var OHmax = - zoomGY * (bin.max - OH0)
                     
                     ctxB.fillRect(
                         x0 * zoomG, 
@@ -406,7 +406,7 @@
                 for (var j = 0; j < points[i].data.length; j++) {
                     ctxB.fillRect(
                         - 5 + points[i].data[j].x * zoomG, 
-                        - zoomGY * (points[i].data[j].OH - OH0) - 10, 
+                        - zoomGY * (points[i].data[j].OH - OH0) - 5, 
                         10, 10)
 
                 }
@@ -430,7 +430,7 @@
             ctxB.globalAlpha = 1
             ctxB.fillRect(
                 - 5 + points[i].x * zoomG, 
-                - zoomGY * (points[i].OH - OH0) - 10, 
+                - zoomGY * (points[i].OH - OH0) - 5, 
                 10, 10)
 
             ctxB.textAlign = points[i].z > 1 ? "right" : "left"
@@ -446,7 +446,7 @@
             ctxB.globalAlpha = 1
             ctxB.fillRect(
                 - 5 + local[i].x * zoomG, 
-                - zoomGY * (local[i].OH - OH0) - 10, 
+                - zoomGY * (local[i].OH - OH0) - 5, 
                 10, 10)
 
             ctxB.textAlign = local[i].z > 1 ? "right" : "left"
