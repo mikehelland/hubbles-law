@@ -71,6 +71,7 @@
 					</div>
 
 					<br>
+					<p class="fragment">Then stars formed, fused H and He into heavier atoms, and blew up.</p>
 					<img src="ozzysad.jpeg" style="vertical-align:middle; height: 300px; top:-120px; left:20px; position: absolute;">
 					
 				</section>
@@ -82,7 +83,7 @@
 					<img src="timeline2.webp" style="vertical-align:middle"> 
 					<br>
 					<img src="ozzyhappy.jpg" style="vertical-align:middle; height: 300px;  top:-120px; left:20px; position: absolute;">
-
+					<p>(And ozzy was happy)</p>
 					
 				</section>
 
@@ -101,12 +102,12 @@
 						<br>
 					<ul>
 						<div id="firstlist">
-							<li id="z12" class="fragment fade-in-then-semi-out">
+							<li >
 								The most distant measure of the ratio of oxygen / hydrogen is at $z=12.6$
 								
 							</li>
-							<li id="solar" class="fragment fade-in-then-semi-out">
-								Compared to the sun's current value ("solar")
+							<li id="solar" class="fragment">
+								Compare to the sun's current value ("solar")
 								<span id="drawLine" class="fragment"></span>
 								<!--
 								<span id="y2006" class="fragment"></span>
@@ -131,9 +132,8 @@
 				</section>
 
 				<section id="graph-section2">
-					<div id="graph_year2" style="position: absolute; left:15%; top:1px; font-size: 128px;"></div>
+					<div id="graph_year2" style="position: absolute; left:15%; top:30%; font-size: 128px;"></div>
 					<canvas width="1880" height="700" id="graph2"></canvas>
-					<div id="drawLine2" class="fragment"></div>
 					<div style="height: 600px; text-align: left;">
 						<br>
 						<img src="surprising.png" id="drawGraham" class="fragment">
@@ -166,7 +166,7 @@
 					<canvas width="1880" height="700" id="graph3"></canvas>
 					<div style="height: 600px; text-align: left;">
 						<br>
-						<p><b>IF</b> the universe is expanding...</p>
+						<p class="fragment"><b>If</b> the universe is expanding...</p>
 						<ul>
 							<li id="drawLine3" class="fragment fade-in-then-semi-out">Metal enrichment happened very fast (~1 billion years)</li>
 							<li id="drawMPG" class="fragment fade-in-then-semi-out">But not everywhere, since there are lots of metal poor galaxies today</li>
@@ -178,6 +178,44 @@
 	
 					</div>
 				</section>
+
+				<section>
+					<p>On the last episode...</p>
+					<img src="ep12.png">
+				</section>
+
+
+				<section id="graph-section4">
+					<div id="graph_year4" style="position: absolute; left:15%; top:1px; font-size: 128px;"></div>
+					<canvas width="1880" height="700" id="graph4"></canvas>
+					<div style="height: 600px; text-align: left;">
+						<br>
+						<div id="nonexpandingList" class="fragment"><b>If</b> the universe is <em><b>not</b></em> expanding...
+							<br>
+							<ul>
+								<li class="fragment fade-in-then-semi-out">It doesn't have an age</li>
+								<li class="fragment fade-in-then-semi-out">And metal enrichment has to be balanced out...</li>
+								<li class="fragment fade-in-then-semi-out">... by some source of fresh hydrogen.</li>
+								
+							</ul>
+							
+						</div>
+						
+						<ul>
+							<li id="hidenonexpanding" class="fragment fade-in-then-semi-out">Which does you think it is?</li>
+							<li class="fragment fade-in-then-semi-out">Make sure to check out the link to <a>metallicity.htm</a></li>
+							<li class="fragment fade-in-then-semi-out">Leave your comments and complaints below!</li>
+							<li class="fragment fade-in-then-semi-out">Subscribe! </li>
+							<li class="fragment fade-in-then-semi-out">Thanks for watching!</li>
+							
+						</ul>
+						
+						
+	
+					</div>
+				</section>
+
+
 
 			</div>
 
@@ -199,6 +237,7 @@
 			var mGraph = metalGraph(document.getElementById("graph"), mData.points, mData.refs)
 			var mGraph2 = metalGraph(document.getElementById("graph2"), mData.points, mData.refs)
 			var mGraph3 = metalGraph(document.getElementById("graph3"), mData.points, mData.refs)
+			var mGraph4 = metalGraph(document.getElementById("graph4"), mData.points, mData.refs)
 
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
@@ -224,11 +263,13 @@
 			Reveal.on( 'slidechanged', event => {
 				if (event.currentSlide.id === "graph-section") {
 					mGraph.draw()
+					mGraph.drawz12()
 				}
 				if (event.currentSlide.id === "graph-section2") {
 					mGraph2.draw()
 					mGraph2.drawLocal()
 					mGraph2.drawz4()
+					mGraph2.drawLine2()
 				}
 				if (event.currentSlide.id === "graph-section3") {
 					mGraph3.draw()
@@ -236,6 +277,43 @@
 					mGraph3.drawz4()
 					mGraph3.drawz12b()
 					mGraph3.drawZahid()
+				}
+
+				if (event.currentSlide.id === "graph-section4") {
+					mGraph4.draw()
+					mGraph4.drawLocal()
+	
+					setTimeout(()=> {
+						mGraph4.drawRefs(["Shapley", "Izotov"])
+						graph_year4.innerHTML = "2006"
+					}, 100)
+					setTimeout(()=> {
+						mGraph4.drawRefs(["Morelli",  "Perez-Martinez"])
+						graph_year4.innerHTML = "2016"
+					}, 600)
+					setTimeout(()=> {
+						mGraph4.drawRefs(["Dors", "Kojima1", "Nakajima"])
+						graph_year4.innerHTML = "2020"
+					}, 1200)
+					setTimeout(()=> {
+						mGraph4.drawRefs(["Kojima1", "Nakajima"])
+						graph_year4.innerHTML = "2022"
+					}, 1800)
+					setTimeout(()=> {
+						mGraph4.drawRefs(["Graham"])
+						graph_year4.innerHTML = "2023"
+					}, 2400)
+					setTimeout(()=> {
+						mGraph4.drawJWST(true)
+						mGraph4.drawz4()
+						mGraph4.drawz12()
+					}, 2800)
+					setTimeout(()=> {
+						mGraph4.drawDESI(true)
+						graph_year4.innerHTML = "2024"
+					}, 3200)
+
+
 				}
 
 			} );
@@ -261,6 +339,9 @@
 			  }
 			  if (event.fragment.id === "drawLine4") {
 				mGraph3.drawLine4()
+			  }
+			  if (event.fragment.id === "drawMPG") {
+				mGraph3.drawRefs(["Kojima1", "Nakajima", "Izotov"])
 			  }
 
 			  if (event.fragment.id === "jwst") {
@@ -295,11 +376,16 @@
 			  }
 
 			  if (event.fragment.id === "z12") {
-				mGraph.drawz12()
+				//mGraph.drawz12()
 			  }
 			  if (event.fragment.id === "z4") {
 				firstlist.style.display = "none"
 				mGraph.drawz4()
+			  }
+
+			  if (event.fragment.id === "hidenonexpanding") {
+				nonexpandingList.style.display = "none"
+				
 			  }
 
 			  if (event.fragment.id === "drawGraham") {

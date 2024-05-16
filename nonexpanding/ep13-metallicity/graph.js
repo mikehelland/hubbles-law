@@ -166,13 +166,15 @@ function metalGraph(graph, points, refs) {
 
     }
 
-    function drawJWST() {
+    function drawJWST(nocap) {
         var jwstRefs = ["CEERS", "Langeroodi1", "Curti", "Yanagisawa", "Welch"]
 
         jwstRefs.forEach(ref => {
             drawRef(ref, 1)
         })
 
+        if (nocap) return
+        
         ctxB.globalAlpha = 1
         ctxB.font = "44px serif"
         ctxB.fillStyle = "white"
@@ -223,7 +225,7 @@ function metalGraph(graph, points, refs) {
 
     }
 
-    function drawDESI() {
+    function drawDESI(nocap) {
         var i = 0
         var data = findRef("DESI1").data
      
@@ -253,6 +255,8 @@ function metalGraph(graph, points, refs) {
 
         //drawRef("DESI1", 0)
         
+        if (nocap) return
+
         ctxB.font = "44px serif"
         ctxB.fillStyle = "white"
         ctxB.fillText("DESI (2024)", 450, -height / 10)
@@ -348,7 +352,7 @@ function metalGraph(graph, points, refs) {
 
     function drawLine4() {
         var x1 = 0
-        var y1 = - zoomGY * (9 - OH0) 
+        var y1 = - zoomGY * (8.85 - OH0) 
         var x2 = points[11].x * zoomG
         var y2 = - zoomGY * (points[11].OH - OH0)  
         
