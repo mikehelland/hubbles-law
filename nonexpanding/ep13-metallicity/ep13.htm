@@ -69,6 +69,9 @@
 						<img src="../ep1/sn1.gif" style="vertical-align:middle">
 
 					</div>
+
+					<br>
+					<img src="ozzysad.jpeg" style="vertical-align:middle; height: 300px; top:-120px; left:20px; position: absolute;">
 					
 				</section>
 
@@ -77,6 +80,8 @@
 					<p>And the universe got metal!</p>
 					
 					<img src="timeline2.webp" style="vertical-align:middle"> 
+					<br>
+					<img src="ozzyhappy.jpg" style="vertical-align:middle; height: 300px;  top:-120px; left:20px; position: absolute;">
 
 					
 				</section>
@@ -90,9 +95,89 @@
 				</section>
 
 				<section id="graph-section">
-					<canvas width="1200" height="700" id="graph"></canvas>
+					<div id="graph_year" style="position: absolute; left:15%; top:1px; font-size: 128px;"></div>
+					<canvas width="1880" height="700" id="graph"></canvas>
+					<div style="height: 600px; text-align: left;">
+						<br>
+					<ul>
+						<div id="firstlist">
+							<li id="z12" class="fragment fade-in-then-semi-out">
+								The most distant measure of the ratio of oxygen / hydrogen is at $z=12.6$
+								
+							</li>
+							<li id="solar" class="fragment fade-in-then-semi-out">
+								Compared to the sun's current value ("solar")
+								<span id="drawLine" class="fragment"></span>
+								<!--
+								<span id="y2006" class="fragment"></span>
+								<span id="y2014" class="fragment"></span>
+								<span id="y2022" class="fragment"></span>
+								-->
+								<span id="jwst" class="fragment"></span>
+								<span id="desi" class="fragment"></span>
+							</li>
+							<li class="fragment">
+								<span id="mw" class="fragment"></span>
+								These are all metal poor galaxies
+							</li>
+						</div>
+						<li id="z4" class="fragment">
+							The highest metallicity at the highest redshift is observed at $z=4.2$
+						</li>
+						
+					</ul>
+					
+					</div>
 				</section>
 
+				<section id="graph-section2">
+					<div id="graph_year2" style="position: absolute; left:15%; top:1px; font-size: 128px;"></div>
+					<canvas width="1880" height="700" id="graph2"></canvas>
+					<div id="drawLine2" class="fragment"></div>
+					<div style="height: 600px; text-align: left;">
+						<br>
+						<img src="surprising.png" id="drawGraham" class="fragment">
+						<img src="zahid.png" id="drawZahid" class="fragment">
+							
+	
+					</div>
+				</section>
+
+				<section>
+					<h1>Notes:</h1>
+					<ul>
+						<li class="fragment fade-in-then-semi-out">These studies targeted different objects with different instruments</li>
+						<li class="fragment fade-in-then-semi-out">They used different ways to measure oxygen abundance</li>
+						<li class="fragment fade-in-then-semi-out">Other metals (C, Ne, Fe, S, etc.) count toward metallicity too</li>
+						<li class="fragment fade-in-then-semi-out">This mash-up of data isn't conclusive evidence of anything</li>
+						<li class="fragment fade-in-then-semi-out">A different paper estimates GS-z12's O/H as 6.6, not 7.9</li>
+					</ul>
+
+					<div class="fragment">
+						<p>View these datasets and more, with references at:</p>
+						<a href="asd">https://mikehelland.github.io/hubbles-law/other/metallicity.htm</a>
+						<p style="color: #808080;">(Links in the description)</p>
+	
+					</div>
+				</section>
+
+				<section id="graph-section3">
+					<div id="graph_year3" style="position: absolute; left:15%; top:1px; font-size: 128px;"></div>
+					<canvas width="1880" height="700" id="graph3"></canvas>
+					<div style="height: 600px; text-align: left;">
+						<br>
+						<p><b>IF</b> the universe is expanding...</p>
+						<ul>
+							<li id="drawLine3" class="fragment fade-in-then-semi-out">Metal enrichment happened very fast (~1 billion years)</li>
+							<li id="drawMPG" class="fragment fade-in-then-semi-out">But not everywhere, since there are lots of metal poor galaxies today</li>
+							<li id="drawLine4" class="fragment fade-in-then-semi-out">Enrichment must have tappered off a lot...</li>
+							<li class="fragment">... or there is a source of hydrogen and helium beside the big bang</li>
+						</ul>
+						
+						
+	
+					</div>
+				</section>
 
 			</div>
 
@@ -110,7 +195,10 @@
 		<script src="../reveal/plugin/highlight/highlight.js"></script>
 		<script>
 
-			var mGraph = metalGraph(document.getElementById("graph"))
+			var mData = getMetal()
+			var mGraph = metalGraph(document.getElementById("graph"), mData.points, mData.refs)
+			var mGraph2 = metalGraph(document.getElementById("graph2"), mData.points, mData.refs)
+			var mGraph3 = metalGraph(document.getElementById("graph3"), mData.points, mData.refs)
 
 			// Also available as an ES module, see:
 			// https://revealjs.com/initialization/
@@ -133,13 +221,94 @@
 				}
 			})
 			
-			Reveal.on( 'fragmentshown', event => {
-			  console.log(event.fragment.id)
+			Reveal.on( 'slidechanged', event => {
+				if (event.currentSlide.id === "graph-section") {
+					mGraph.draw()
+				}
+				if (event.currentSlide.id === "graph-section2") {
+					mGraph2.draw()
+					mGraph2.drawLocal()
+					mGraph2.drawz4()
+				}
+				if (event.currentSlide.id === "graph-section3") {
+					mGraph3.draw()
+					mGraph3.drawLocal()
+					mGraph3.drawz4()
+					mGraph3.drawz12b()
+					mGraph3.drawZahid()
+				}
+
 			} );
 
 			Reveal.on( 'fragmentshown', event => {
-			  if (event.fragment.id === "graph-section") {
-				mGraph.draw()
+
+				if (event.fragment.id === "draw-graph") {
+					mGraph.draw()
+				  }
+
+			  if (event.fragment.id === "solar") {
+				mGraph.drawNextLocal()
+			  }
+
+			  if (event.fragment.id === "drawLine") {
+				mGraph.drawLine()
+			  }
+			  if (event.fragment.id === "drawLine2") {
+				mGraph2.drawLine2()
+			  }
+			  if (event.fragment.id === "drawLine3") {
+				mGraph3.drawLine3()
+			  }
+			  if (event.fragment.id === "drawLine4") {
+				mGraph3.drawLine4()
+			  }
+
+			  if (event.fragment.id === "jwst") {
+				mGraph.drawJWST()
+				//graph_year.innerHTML = "2023"
+			  }
+			  if (event.fragment.id === "desi") {
+				mGraph.drawDESI()
+				//graph_year.innerHTML = "2024"
+			  }
+
+			  if (event.fragment.id === "y2006") {
+				mGraph.drawRefs(["Shapley", "Izotov"])
+				graph_year.innerHTML = "2006"
+
+			  }
+
+			  if (event.fragment.id === "y2014") {
+				mGraph.drawRefs(["Morelli",  "Perez-Martinez"]) //"Zahid",
+				graph_year.innerHTML = "2014"
+			  }
+			  if (event.fragment.id === "y2022") {
+				mGraph.drawRefs(["Dors", "Kojima1", "Nakajima"])
+				graph_year.innerHTML = "2022"
+			  }
+
+
+			  if (event.fragment.id === "mw") {
+				mGraph.drawNextLocal()
+				//setTimeout(() => mGraph.drawNextLocal(), 400)
+				//setTimeout(() => mGraph.drawNextLocal(), 800)
+			  }
+
+			  if (event.fragment.id === "z12") {
+				mGraph.drawz12()
+			  }
+			  if (event.fragment.id === "z4") {
+				firstlist.style.display = "none"
+				mGraph.drawz4()
+			  }
+
+			  if (event.fragment.id === "drawGraham") {
+				mGraph2.drawRefs(["Graham"])
+				graph_year2.innerHTML = "2023"
+			  }
+			  if (event.fragment.id === "drawZahid") {
+				mGraph2.drawZahid()
+				graph_year2.innerHTML = "2013"
 			  }
 
 			} );
