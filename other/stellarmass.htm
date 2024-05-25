@@ -85,7 +85,7 @@
         log(M<sub>*</sub> / M<sub>☉</sub>)
     </p>
     
-    <canvas style="margin-left: 15px;" id="mass_canvas" height="250" width="1000"></canvas>
+    <canvas id="mass_canvas" height="250" width="800"></canvas>
     
     
     
@@ -97,7 +97,7 @@
                 <th>Year</th>
                 <th>Name</th>
                 <th>z (redshift)</th>
-                <th>log M</th>
+                <th>log(M<sub>*</sub> / M<sub>☉</sub>)</th>
             </tr>
     
         </table>
@@ -171,7 +171,7 @@
 
 <script>
 
-    var colors = ["red", "blue", "green", "orange", "purple", "yellow"]
+    var colors = ["red", "yellow", "blue", "orange", "green", "purple"]
     const black = false
     
     var offset = 20
@@ -207,6 +207,8 @@
             g.x = FLRW(H0, Omega_L, Omega_M, g.z).lookback
         }
     })
+
+    sets.sort((a, b) => json.refs[a.ref].year - json.refs[b.ref].year)
 
     var iNextColor = 0
     var ip = 1
@@ -292,14 +294,14 @@
         var ctxB = graph.getContext("2d")
         var height = graph.height - offset
         var zoom = 1
-        var zoomG = zoom * 69
+        var zoomG = zoom * 54
         
         graph.height = graph.clientHeight
         height = graph.height - offset
         var zoomGY = height * 0.15
         sseHypothesis = 0
 
-        ctxB.translate(8, 0)
+        ctxB.translate(offset, 0)
         
         ctxB.lineWidth = 2
         ctxB.fillStyle = black ? "black" : "white"

@@ -191,7 +191,7 @@
     var refs = {}
 
     var local = [
-        //{"name": "solar",       "z": 0,  "x": 0,     "OH": 8.69,       "ref": "0"},
+        {"name": "solar",       "z": 0,  "x": 0,     "OH": 8.69,       "ref": "0"},
         {"name": "Milky Way",   "z": 0,  "x": 0,     "OH": 8.50,       "ref": "0"},
         {"name": "LMC",         "z": 0,  "x": 0,     "OH": 8.37,       "ref": "0"},
         {"name": "SMC",         "z": 0,  "x": 0,     "OH": 8.01,       "ref": "0"}
@@ -220,7 +220,7 @@
                 url = refs[point.ref].url
 
                 li = document.createElement("li")
-                li.innerHTML = `(${refs[point.ref].year}) <b>${refs[point.ref].title}</b> <br> <a target="_blank" href="${url}">${url}</a>`                
+                li.innerHTML = `(${refs[point.ref].year}) ${point.name} <br><b>${refs[point.ref].title}</b> <br> <a target="_blank" href="${url}">${url}</a>`                
                 ol.appendChild(li)
 
                 if (point.data) {
