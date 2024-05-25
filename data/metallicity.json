@@ -7,6 +7,10 @@
             {"zstart": 0.78, "zend": 1.41, "min": 8.722561194972467, "max": 8.96853603669298},
             {"zstart": 1.41, "zend": 2.26, "min": 8.69483846916449, "max": 8.935779162758541}
         ]},
+        {"name": "Sanders R, et al", "ref": "Sanders", "bins": [
+            {"zstart": 2.2, "zend": 2.4, "min": 8.3, "max": 8.64},
+            {"zstart": 3.1, "zend": 3.4, "min": 8.19, "max": 8.54}
+        ]},
         {"name": "Pox 186",     "z": 0.004,   "OH": 7.87,       "ref": "pox"},
         {"name": "GS-z12 (beagle)",      "z": 12.6,  "OH": 7.9,        "ref": "z12a"},
         {"name": "GS-z12 (DLA)",      "z": 12.479,  "OH": 6.6,        "ref": "z12"},
@@ -293,6 +297,11 @@
             "title": "The Sunburst Arc with JWST: III. An Abundance of Direct Chemical Abundances",
             "url": "https://arxiv.org/abs/2405.06631",
             "year": "2024"
+        },
+        "Sanders": {
+            "title": "The MOSDEF Survey: The Evolution of the Mass-Metallicity Relation from z=0 to z∼3.3",
+            "url": "https://arxiv.org/abs/2009.07292",
+            "year": "2021"
         }
     }
 }
