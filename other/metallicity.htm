@@ -94,6 +94,8 @@
     Press Right and Left to toggle checkboxes through time. 
 </p>
 
+<canvas id="background" height="450" width="1000"></canvas>
+
 
 <div style="display: flex;">
 
@@ -108,7 +110,6 @@
 
     </table>
 
-    <canvas id="background" height="450" width="1000"></canvas>
     
 </div>
 
@@ -170,6 +171,7 @@
 
 <script>
     colors = ["gray", "pink", "blue", "goldenrod", "cyan", "orange", "yellow", "green", "red", "purple", "Chartreuse", "darkblue", "fuchsia", "midnightblue"]
+    var bincolors = ["gray", "blue"]
     const black = false
     var graph = document.getElementById("background")
     var ctxB = graph.getContext("2d")
@@ -205,6 +207,7 @@
         var i = 1
         var tr, td, li, url, hideBox
         var iNextColor = 0
+        var iNextBinColor = 0
 
         points.sort((a, b) => res.refs[a.ref].year - res.refs[b.ref].year)
 
@@ -222,6 +225,9 @@
 
                 if (point.data) {
                     refs[point.ref].color = colors[iNextColor++]
+                }
+                if (point.bins) {
+                    refs[point.ref].color = bincolors[iNextBinColor++]
                 }
             }
 
