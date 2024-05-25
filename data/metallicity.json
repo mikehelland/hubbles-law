@@ -8,6 +8,7 @@
             {"zstart": 1.41, "zend": 2.26, "min": 8.69483846916449, "max": 8.935779162758541}
         ]},
         {"name": "Sanders R, et al", "ref": "Sanders", "bins": [
+            {"zstart": 0, "zend": 0.2, "min": 8.5, "max": 8.81},
             {"zstart": 2.2, "zend": 2.4, "min": 8.3, "max": 8.64},
             {"zstart": 3.1, "zend": 3.4, "min": 8.19, "max": 8.54}
         ]},
