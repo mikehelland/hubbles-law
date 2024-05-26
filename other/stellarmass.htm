@@ -70,6 +70,7 @@
         </style>
     </head>
 <body>
+    <img src="../data/desi-tmass_nolabel.png" style="display: none;" id="desi_data">
 
     <a href="../index.htm">Home</a>
     <hr>
@@ -101,9 +102,11 @@
             </tr>
     
         </table>
+
     
         
     </div>
+    <p>Show Zou 1M intensity map: <input type="checkbox" id="ZouBig"></p>
     
 </div>
 
@@ -171,7 +174,7 @@
 
 <script>
 
-    var colors = ["red", "yellow", "blue", "orange", "green", "purple"]
+    var colors = ["green", "orange", "blue", "purple", "red", "fuchsia"]
     const black = false
     
     var offset = 20
@@ -190,6 +193,8 @@
         //{"name": "LMC",         "z": 0,  "x": 0,     "M": 9.431,       "ref": "0"}, 
         //{"name": "SMC",         "z": 0,  "x": 0,     "M": 8,       "ref": "0"}
     ]
+
+    ZouBig.onchange = drawGraph
         
 
     var json = getData()
@@ -310,6 +315,10 @@
         ctxB.strokeStyle = !black ? "black" : "white"
         ctxB.strokeRect(offset, offset, graph.width, graph.height - 2*offset)
 
+        if (ZouBig.checked) {
+            ctxB.drawImage(desi_data, -19, 50, 528, 200)
+        }
+
         ctxB.font = "14px sans-serif"
 
         ctxB.fillRect(offset + 16, offset + 33, 2, 2)
@@ -352,8 +361,9 @@
 
         for (dgi = 0; dgi <= 6; dgi+=0.5) {
             ctxB.fillRect(0, - dgi * zoomGY, 8, -1)
-            if (dgi%1 === 0)    
+            if (dgi%1 === 0) {    
                 ctxB.fillText(M0 + dgi, -12, - dgi * zoomGY + 3)    
+            }
         }
 
         var nextColor = 0
