@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Angular Size</title>
+    </head>
+    <body>
+        <a href="../index.htm">Home</a>
+        <hr>
+
+        <h3>Angular Size</h3>
+        <p>
+            <em>Background:</em> For the big bang to have happened, there must be some distance where objects begin to appear larger, due to their
+            closer distance to us when the universe was smaller. This point is known as the angular diameter turnaround. 
+        </p>
+
+        <p>
+            <a href="https://astronomy.stackexchange.com/questions/7720/diameter-of-any-galaxy">https://astronomy.stackexchange.com/questions/7720/diameter-of-any-galaxy</a>
+            <br>
+            Given the angular diameter a in radians and the distance d in Mpc, you can get the actual diameter D from: D = d tan a
+            <br>
+            Using the small angle approximation, you get: D=da
+        </p>
+
+        <h3>COnvert arcseconds to radians</h3>
+        <p>a (radians) = 2pi * A (arcseconds) / (360 * 3600)</p>
+        <p><span id="radians">N</span> (radians) = 2pi * <input id="arcseconds" type="number"> (arcseconds) / (360 * 3600)</p>
+        <script>
+            arcseconds.onchange = e => {
+                radians.innerHTML = 2 * Math.PI * parseFloat(arcseconds.value) / (360 * 3600)
+            }
+        </script>
+
+        <ul>
+            <li>Milky Way diameter: 105,700 light years</li>
+            <li>Milky Way effective radius: 5 kpc
+                <br>
+                <em>Because of uncertainty in the current measurement of the Milky Way's size (Methods), we adopt a range of effective radii of 3.4–6.7 kpc </em>
+                <br>
+                <a href="https://www.nature.com/articles/s41550-023-01977-z">https://www.nature.com/articles/s41550-023-01977-z</a>
+            </li>
+        </ul>
+
+        <canvas id="graph" width="800" height="400"></canvas>
+
+
+        <script>
+
+        </script>
+    </body>
+</html>
