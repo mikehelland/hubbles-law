@@ -174,7 +174,7 @@
 
 <script>
 
-    var colors = ["green", "orange", "blue", "purple", "red", "fuchsia"]
+    var colors = ["yellow", "teal", "green", "orange", "blue", "purple", "red", "fuchsia"]
     const black = false
     
     var offset = 20
@@ -407,6 +407,39 @@
 
     function getData() {
         return {"data": [
+                {"ref": "Caputi", "data": [
+                    {"z": 5.48, "M": Math.log10(2.95e11)},
+                    {"z": 5.56, "M": Math.log10(1.23e11)},
+                    {"z": 5.04, "M": Math.log10(1.85e11)},
+                    {"z": 5.00, "M": Math.log10(3.35e11)},
+                    {"z": 5.04, "M": Math.log10(1.37e11)},
+                    {"z": 5.40, "M": Math.log10(0.63e11)},
+                    {"z": 6.04, "M": Math.log10(1.77e11)},
+                    {"z": 5.00, "M": Math.log10(2.76e11)},
+                    {"z": 5.68, "M": Math.log10(1.00e11)},
+                    {"z": 6.04, "M": Math.log10(1.80e11)}
+                ]
+                },
+                {"ref": "Straatman", "data": [
+                    {"z": 3.56, "M":  Math.log10(0.76e11)},
+                    {"z": 3.66, "M":  Math.log10(1.15e11)},
+                    {"z": 3.70, "M":  Math.log10(0.69e11)},
+                    {"z": 3.59, "M":  Math.log10(0.45e11)},
+                    {"z": 3.46, "M":  Math.log10(0.40e11)},
+                    {"z": 3.56, "M":  Math.log10(0.76e11)},
+                    {"z": 3.81, "M":  Math.log10(1.78e11)},
+                    {"z": 3.55, "M":  Math.log10(1.45e11)},
+                    {"z": 3.57, "M":  Math.log10(0.44e11)},
+                    {"z": 3.99, "M":  Math.log10(0.60e11)},
+                    {"z": 3.58, "M":  Math.log10(0.60e11)},
+                    {"z": 3.77, "M":  Math.log10(0.87e11)},
+                    {"z": 3.53, "M":  Math.log10(0.43e11)},
+                    {"z": 3.53, "M":  Math.log10(0.44e11)},
+                    {"z": 4.05, "M":  Math.log10(0.55e11)},
+                    {"z": 3.97, "M":  Math.log10(0.89e11)},
+                    {"z": 3.91, "M":  Math.log10(0.38e11)},
+                    {"z": 3.95, "M":  Math.log10(0.85e11)},
+                    {"z": 3.63, "M":  Math.log10(1.02e11)}]},
                 {"ref": "Onodera", "data": [
                 {"z": 1.8228,  "M": 11.64 , "ep": 0.15, "em": 0.03},
                 {"z": 1.4277,  "M": 11.82 , "ep": 0.03, "em": 0.15},
@@ -510,7 +543,20 @@
                     "title": "A massive galaxy that formed its stars at z ≈ 11",
                     "url": "https://arxiv.org/abs/2308.05606",
                     "year": "2024"
+                },
+                "Straatman": {
+                    "name": " Straatman et al", 
+                    "title": "A substantial population of massive quiescent galaxies at z~4 from ZFOURGE",
+                    "url": "https://arxiv.org/abs/1312.4952",
+                    "year": "2014"
+                },
+                "Caputi": {
+                    "name": " Caputi et al", 
+                    "title": "Spitzer Bright, UltraVISTA Faint Sources in COSMOS: The Contribution to the Overall Population of Massive Galaxies at z = 3-7",
+                    "url": "https://ui.adsabs.harvard.edu/abs/2015ApJ...810...73C/abstract",
+                    "year": "2015"
                 }
+
             }
             
         }
