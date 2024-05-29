@@ -12,6 +12,11 @@
             {"zstart": 2.2, "zend": 2.4, "min": 8.3, "max": 8.64},
             {"zstart": 3.1, "zend": 3.4, "min": 8.19, "max": 8.54}
         ]},
+        {"name": "Heintz K, et al", "ref": "Heintz", "data": [
+            {"z": 8.7622, "OH": 7.46 },   
+            {"z": 10.170, "OH": 7.4 },   
+            {"z": 11.409, "OH": 7.70 }
+        ]},
         {"name": "Pox 186",     "z": 0.004,   "OH": 7.87,       "ref": "pox"},
         {"name": "GS-z12 (beagle)",      "z": 12.6,  "OH": 7.9,        "ref": "z12a"},
         {"name": "GS-z12 (DLA)",      "z": 12.479,  "OH": 6.6,        "ref": "z12"},
@@ -303,6 +308,11 @@
             "title": "The MOSDEF Survey: The Evolution of the Mass-Metallicity Relation from z=0 to z∼3.3",
             "url": "https://arxiv.org/abs/2009.07292",
             "year": "2021"
+        },
+        "Heintz": {
+            "title": "Extreme damped Lyman-α absorption in young star-forming galaxies at z=9−11",
+            "url": "https://arxiv.org/abs/2306.00647",
+            "year": "2023"
         }
     }
 }
