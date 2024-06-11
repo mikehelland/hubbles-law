@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+    body {
+        text-align: center;
+        color:white;
+        background-color: #080808;
+        overflow: hidden;
+        font-size: 20pt;
+    }
+
+    table {
+        margin:auto;
+    }
+
+    .slide {
+        padding:0.9em;
+        display:none;
+    }
+
+    hr {width: 50%;}
+</style>
+</head>
+
+<body>
+
+    <img style="display: none;" id="galaxy" src="galaxy.png">
+    
+
+    <div class="slide">
+    </div>
+    
+    <div class="slide">
+        <h2 style="">z=14 Confirmed!</h2>
+        <h3 class="fi" style="color:#AAA;"><i>The farthest known galaxies yet!</i></h3>
+        <img width="600" class="fi" src="z14-1.png">
+        <p class="fi">https://arxiv.org/abs/2405.18485</p>
+        <img  width="600" class="fi" src="z14-2.png">
+        <p class="fi">https://arxiv.org/abs/2405.18462</p>
+    
+    </div>
+    
+    <div class="slide">
+        <p>Redshift confirmed JWST/NIRSpec</p>
+        <h1 class="fi" style="">Light travel time:</h1>
+        <h3 class="fi">~13.5 billion years</h3>
+
+        <h1 class="fi" style="">Time since Big Bang:</h1>
+        <h3 class="fi">~300 million years</h3>
+
+        <p class="fi">"Galaxy formation models will need to address the existence of such large and luminous galaxies so early in cosmic history."</p>
+        <p class="fi">"The inferred properties of JADES-GS-z14-0 suggest rapid mass assembly and metal enrichment during the earliest phases of galaxy formation."</p>
+        
+    </div>
+
+
+
+
+<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
+
+
+<script>
+
+    var slides = document.getElementsByClassName("slide")
+    var slide = -1
+    var fi = 0
+    var fis = document.getElementsByClassName("fi")
+    for (let i = 0; i < fis.length; i++) {
+        fis[i].style.opacity = 0
+    }
+    fis = []
+
+    document.onkeypress = e => {
+
+        if (!isNaN( parseInt(e.key))) {
+            slide = e.key * 1 - 1
+            console.log(slide)
+        }
+
+        advance()
+    }
+
+    function advance() {
+        
+        if (slide > -1 && fi < fis.length) {
+            if (typeof fis[fi] === "function") {
+                fis[fi]()
+            }
+            else {
+                fadeIn(fis[fi])
+            }
+            fi++
+        }
+        else {
+
+            if (slides[slide] && slides[slide + 1]) {
+                fadeOut(slides[slide], nextSlide)
+            }
+            else {
+                nextSlide()
+            }
+
+        }
+    }
+    //nextSlide()
+
+    function nextSlide() {
+        slide++
+
+        if (!slides[slide]) {
+            return
+        }
+
+
+        fi = 0
+        
+        fis = []
+        var els = slides[slide].getElementsByClassName("fi")
+        for (let i = 0; i < els.length; i++) {
+             fis.push(els[i])
+        }        
+
+        slides[slide].style.opacity = 0
+        slides[slide].style.display = "block"
+        fadeIn(slides[slide])
+
+        onNewSlide(slide, fis)
+
+    }
+
+    const fiLen = 100
+    function fadeIn(el) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.min(1, (Date.now() - start) / fiLen)
+            if (el.style.opacity == 1) {
+                clearInterval(h)
+                console.log("dade done")
+            }
+        }, 1000/100)
+    }
+
+    const f0Len = 50
+    function fadeOut(el, callback) {
+        var start = Date.now()
+        
+        var h = setInterval(() => {
+            el.style.opacity = Math.max(0, 1 - (Date.now() - start) / fiLen)
+            if (el.style.opacity == 0) {
+                clearInterval(h)
+                el.style.display = "none"
+
+                if (callback) callback()
+            }
+        }, 1000/100)
+    }
+
+    function onNewSlide(slide, fi) {
+        
+        
+    }
+</script>
