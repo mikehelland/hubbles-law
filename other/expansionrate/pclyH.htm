@@ -16,19 +16,19 @@
 
         form {
             position: absolute;
-            left: 590px;
-            top: 40px;
+            left: 50px;
+            top: 20px;
         }
     </style>
 </head>
 
 <body>
-    
+    zCMB <input type="number" id="zcmb" value="1092"> has a radius of <span id="radiusCap"></span>
     <br>
 
     <form name="form">
-        \( H = H_0 [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)
-        
+        <!--\( \frac{H}{H_0} = [\Omega_M (1+z)^3 + \Omega_\Lambda]^{1/2} \)-->
+
         <br><br>
         &Lambda;CDM -
         H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
@@ -47,7 +47,7 @@
         var data2
         const c = 299792.458
         const pc2ly = 3.261564
-        var zoomY = 400
+        var zoomY = 100
 
         var data = []
 
@@ -66,12 +66,15 @@
         run()
 
         function run() {
-            
+            var z = parseFloat(zcmb.value)
             var H0 = parseFloat(form.H0.value)
             var OmegaL = parseFloat(form.Omega_L.value)
             var OmegaM = parseFloat(form.Omega_M.value)
 
-            
+            var R0 = nwFLRW(H0, OmegaL, OmegaM, z).DC * pc2ly
+            radiusCap.innerHTML = R0.toFixed(2) + " Gly"
+            //var R = 46000
+
             data = []
 
             var H0 = H0 / 3.08e19 * 60*60*24*365*1e6
@@ -80,31 +83,33 @@
             var a = 1
             var x = 0
             var t = 0
-            
+            var R = R0
+
             while (x >= 0 && t > -25000) {
                 t--
+                x += c - H * x 
                 a -= H * a
+                R -= H * R
                 H = H0 * (OmegaM * a**-3 + OmegaL)**0.5
-                data.push({t, a, 
-                    H: H / (60*60*24*365*1e6) * 3.08e19, 
-                    HH0: H/H0})
+                data.push({t, x, a, H, HH0: H/H0, R})
             }
 
             data.reverse()
-            
+
             H = H0
             c = 1
             a = 1
             x = 0
             t = 0
-            
+            var R = R0
+
             while (t < 15000) {
                 t++
+                x += c + H * x 
                 a += H * a
+                R += H * R
                 H = H0 * (OmegaM * a**-3 + OmegaL)**0.5
-                data.push({t, a, 
-                    H: H / (60*60*24*365*1e6) * 3.08e19, 
-                    HH0: H/H0})
+                data.push({t, x, a, H, HH0: H/H0, R})
             }
 
             
@@ -130,11 +135,11 @@
 
             ctx.translate(w / 2, h - 20)
 
-            for (var i = 20; i <= zoomY * 0.9; i+=20) {
-                ctx.fillText(i, 2, - h * i / zoomY + 2)
+            for (var i = 0; i <= zoomY * 0.9; i+=5) {
+                ctx.fillText(i, 2, - h * i / zoomY - 8)
             }
 
-            ctx.fillText("km/s/Mpc", 10, -h + 35)
+            ctx.fillText("distance (Gly)", 10, -h + 35)
 
             ctx.textAlign = "center"
             ctx.fillStyle = "black"
@@ -157,28 +162,79 @@
             ctx.lineWidth = 4
             ctx.strokeStyle = "black"
 
-            //ctx.setLineDash([50, 10])
+            ctx.setLineDash([50, 10])
             ctx.beginPath()
             ctx.moveTo(w * data[0].t / 1000 / maxZ, -h * data[0].R / zoomY)
 
             data.forEach(dp => {
                 //ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.HH0 / zoomY)
-                ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.H / zoomY)
+                ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.R / 1000 / zoomY)
             })
             ctx.stroke()
 
             ctx.beginPath()
-            ctx.moveTo(w*0.25 - 60, -h/8 * 5)
-            ctx.lineTo(w*0.25 - 120, -h/8 * 5)
+            ctx.moveTo(-w/3, -h/8 * 5)
+            ctx.lineTo(-w/3 - 120, -h/8 * 5)
             ctx.stroke()
 
-            ctx.fillText("Hubble's parameter (H)", w*0.25 + 40, -h/8 * 5 + 5)
+            ctx.fillText("radius of comoving volume", -w/4 + 40, -h/8 * 5)
+
+            ctx.setLineDash([5, 5])
+            ctx.beginPath()
+            ctx.moveTo(w * data[0].t / 1000 / maxZ, -h * (1/data[1].H) / zoomY)
+
+            data.forEach(dp => {
+                if (isNaN(dp.H)) return
+
+                //ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.HH0 / zoomY)
+                ctx.lineTo(w * dp.t / 1000 / maxZ, -h * (1/dp.H) / 1000 * pc2ly / zoomY)
+            })
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.moveTo(-w/3, maxZ + -h/8 * 5)
+            ctx.lineTo(-w/3 - 120, maxZ + -h/8 * 5)
+            ctx.stroke()
+
+            ctx.fillText("1/H(t) × 1 pc/y", -w/4 + 40, maxZ + -h/8 * 5)
+
+            var age = data[1].t / -1000
+
+            ctx.setLineDash([0])
+            ctx.beginPath()
+            ctx.moveTo(w * data[0].t / 1000 / maxZ, -h * (age + data[0].t / 1000) / zoomY)
+
+            data.forEach(dp => {
+                //ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.HH0 / zoomY)
+                ctx.lineTo(w * dp.t / 1000 / maxZ, -h * (age + dp.t / 1000) / zoomY)
+            })
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.moveTo(-w/3, -h/8 * 5 - 30)
+            ctx.lineTo(-w/3 - 120, -h/8 * 5 - 30)
+            ctx.stroke()
+
+            ctx.fillText("universe age × 1 ly/y", -w/4 + 40, -h/8 * 5 - 30)
+
+            ctx.setLineDash([2, 8])
+            ctx.beginPath()
+            ctx.moveTo(w * data[0].t / 1000 / maxZ, -h * (1/data[1].H) / zoomY)
+
+            data.forEach(dp => {
+                if (isNaN(dp.H)) return
+
+                //ctx.lineTo(w * dp.t / 1000 / maxZ, -h * dp.HH0 / zoomY)
+                ctx.lineTo(w * dp.t / 1000 / maxZ, -h * (1/dp.H) / 1000 / zoomY)
+            })
+            ctx.stroke()
 
             ctx.beginPath()
             ctx.moveTo(-w/3, 30 + -h/8 * 5 + 30)
             ctx.lineTo(-w/3 - 120, 30 + -h/8 * 5 + 30)
-            //ctx.stroke()
+            ctx.stroke()
 
+            ctx.fillText("1/H(t) × 1 ly/y", -w/4 + 40, 30 + -h/8 * 5 + 30)
 
 
         }
@@ -186,5 +242,3 @@
 
 
     </script>
-
-<script type="text/javascript" src="https://www.hostmath.com/Math/MathJax.js?config=OK"></script>
