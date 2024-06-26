@@ -2,6 +2,11 @@
 <html>
     <head>
         <title>Angular Size</title>
+        <style>
+            #radians, #distance_output, #actual_diameter {
+                font-weight: bold;
+            }
+        </style>
     </head>
     <body>
         <a href="../index.htm">Home</a>
@@ -13,22 +18,89 @@
             closer distance to us when the universe was smaller. This point is known as the angular diameter turnaround. 
         </p>
 
+        <hr>
+
+        <h3>Inputs</h3>
+
+        <p>
+            redshift z: <input type="number" id="redshift">
+            <br>
+            arcseconds: <input id="arcseconds" type="number"> 
+        
+        </p>
+        
+        <h3>Cosmo params</h3>
+        <p>
+            &Lambda;CDM - 
+            &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.69" step="0.05" id="Omega_L">
+            &Omega;<sub>M</sub>: <input type="number" min="0" value="0.31" step="0.05" id="Omega_M">
+            H<sub>0</sub>: <input type="number" value="67.7" step="0.5" id="H0">
+            
+        </p>
+
+        <h3>Output</h3>
+        <p>
+            <button id="get_distance">Calculate</button>
+        </p>
+        <p>
+            Angular diameter distance (Mpc): 
+            <br>
+            <span id="distance_output">0</span> 
+        </p>
+
+        <p>
+            Radians: 
+            <br>
+            <span id="radians">0</span>
+        </p>
+
+        <p>
+            Diameter (pc): 
+            <br>
+            <span id="actual_diameter">0</span>
+        </p>
+
+        <script src="flrw.js"></script>
+        <script>
+            var d = 0
+            var a = 0
+            get_distance.onclick = () => {
+                d = FLRW(
+                    parseFloat(H0.value), 
+                    parseFloat(Omega_L.value), 
+                    parseFloat(Omega_M.value), 
+                    parseFloat(redshift.value)).DA
+                distance_output.innerHTML = d.toFixed(2)
+
+                a = 2 * Math.PI * parseFloat(arcseconds.value) / (360 * 3600)
+                radians.innerHTML = a
+
+                actual_diameter.innerHTML = (d * 1000 * 1000 * a).toFixed(2)
+
+            }
+
+
+        </script>
+
+
+        <hr>
+        <h3>Angular diameter to actual diameter</h3>
+        
         <p>
             <a href="https://astronomy.stackexchange.com/questions/7720/diameter-of-any-galaxy">https://astronomy.stackexchange.com/questions/7720/diameter-of-any-galaxy</a>
             <br>
             Given the angular diameter a in radians and the distance d in Mpc, you can get the actual diameter D from: D = d tan a
             <br>
             Using the small angle approximation, you get: D=da
+            
         </p>
 
-        <h3>COnvert arcseconds to radians</h3>
+        <h3>Arcseconds to radians</h3>
+        
         <p>a (radians) = 2pi * A (arcseconds) / (360 * 3600)</p>
-        <p><span id="radians">N</span> (radians) = 2pi * <input id="arcseconds" type="number"> (arcseconds) / (360 * 3600)</p>
-        <script>
-            arcseconds.onchange = e => {
-                radians.innerHTML = 2 * Math.PI * parseFloat(arcseconds.value) / (360 * 3600)
-            }
-        </script>
+
+
+        <h3>Other</h3>
 
         <ul>
             <li>Milky Way diameter: 105,700 light years</li>
