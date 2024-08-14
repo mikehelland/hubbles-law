@@ -93,7 +93,9 @@
     <br>
 
     <div>
-        <input id="showsn" type="checkbox" checked="true"> Show SNe
+        <input id="showsn" type="checkbox" checked="true"> Show Pantheon+SH0ES
+        <br>
+        <input id="showSCP" type="checkbox" > Show Supernovae Cosmology Project
     </div>
     <div id="extinction-container">
         <br>
@@ -124,6 +126,9 @@ var drawHypothesis = document.getElementById("graph-hypothesis")
 
 var showSN = document.getElementById("showsn")
 showSN.onchange = e => {
+    drawSN()
+}
+showSCP.onchange = e => {
     drawSN()
 }
 
@@ -274,6 +279,29 @@ var black = false
         })
         ctxB.stroke()
 
+        ctxB.fillStyle = "blue"
+        if (showSCP.checked) {
+            var x, y
+            for (var sn of scpData) {
+                //sn.d = sn.ld
+                if (yAxis.selectedIndex === 1) {
+                    y = sn.ld
+                }
+                else if (yAxis.selectedIndex === 2) {
+                    y = (sn.dm - 28) * 1000
+                }
+                else {
+                    y = sn.d // (1 + sn.z)
+                }
+
+                x = sn.z * zZoom
+
+                ctxB.fillRect(offset + x * zoomG - 1, graph.height - offset - y * zoomGY - 1, 3, 3)
+
+            }
+
+        }
+
 
         ctxB.fillStyle = black ? "yellow" : "red"
         if (showSN.checked) {
@@ -342,6 +370,13 @@ var black = false
         
         
     }
+
+    fetch("https://mikehelland.github.io/hubbles-law/data/supernovae.json").then(res=>res.json()).then(data=> {
+        scpData = data
+        drawSN()
+    })
+
+    
     fetch("https://mikehelland.github.io/hubbles-law/data/Pantheon+SH0ES_z_mu.csv").then(res => res.text()).then(text => {
         //console.log(text)
 
@@ -358,6 +393,7 @@ var black = false
         //    zData = data
         //})
     })
+    
 
     
 var zoomXinput = document.getElementById("graph-zoom-x")

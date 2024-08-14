@@ -2,55 +2,61 @@
 <html>
     <head>
         <style>
-            #canvas {height:400px; width: 400px;}
+            #xcanvas {height:400px; width: 400px;}
+            body {color:white; background-color: black; font-size: 150%; margin: 10% 5% 0 5%;}
         </style>
     </head>
     <body>
-        <p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
+        <!--<p>The <a href="../index.htm">alternative model</a> predicts that the number of galaxies in each volume should be equal.</p>
         <hr>
-        
+    -->
+    <select id="catalog" style="font-size: 150%;"> <!--style="position: absolute; top:10px; left: 60px;"-->
+        <option value="select">Select a quasar/AGN catalog...</option>
+        <option value="sdss">Sloan Digital Sky Survey DR16Q_v4 (2020)</option>
+        <option value="sdss12">Sloan Digital Sky Survey DR12Q (2015)</option>
+        <option value="qso1996M">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
+        <option value="qso2010M">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
+        <!--<option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
+    </select>
 
-        Divide the volume by <span id="divideByCap"></span>
+    <hr>
+    
+        <input type="checkbox" id="byVolume"> Divide the volume by <span id="divideByCap"></span>
         <input type="range" min="1" max="200" id="divideBy">
         <br>
         Absolute magnitude threshold:
-        <input type="range" min="20" max="30" id="magnitudeInput">
+        <input type="range" min="20" max="29" value="20" id="magnitudeInput">
                 <input type="checkbox" id="plusminus"> ±0.5
                 
+        <br>
+        Absolute magnitude <span id="magnitudeCap"></span>
 
         
 
         <hr>
-        <div style="position: relative;">
-            <select id="catalog" style="position: absolute; top:10px; left: 60px;">
-                <option value="select">Select a quasar/AGN catalog...</option>
-                <option value="sdss">SDSS DR16Q_v4</option>
-                <option value="sdss12">SDSS DR12Q</option>
-                <option value="qso1996M">Quasars and Active Galactic Nuclei (7th Ed., 1996)</option>
-                <option value="qso2010M">Quasars and Active Galactic Nuclei (13th Ed., 2010)</option>
-                <!--<option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
-            </select>
 
-            <select id="cosmology" style="position: absolute; top:10px; left: 420px;">
+
+        <div style="position: relative;">
+
+            <select id="cosmology" style="position: absolute; top:10px; left: 420px; display: none;">
                 <option value="LCDM676">LCDM H0 = 67.6</option>
                 <option value="LCDM73">LCDM H0 = 73.0</option>
                 <option value="alt">TDP H = 70.5</option>
                 
             </select>
 
-            <div style="position: absolute; top:36px; left: 60px;">
-                Absolute magnitude <span id="magnitudeCap"></span>
-                
-            </div>
-
-            <canvas id="graph" width="1200" height="400"></canvas>
+            
+            <canvas id="graph" width="1600" height="500"></canvas>
 
         </div>
 
         <hr>
-        <div style="display: flex;  max-height: 400px;">
-            <canvas id="canvas" width="800" height="800"></canvas>
+        <canvas id="canvas" width="1200" height="1200"></canvas>
+
+        <div style="display: flex;  ">
             <pre style="padding-left: 80px; font-size: 20pt; overflow: scroll;" id="outputDiv"></pre>
+            
+            
         </div>
 
         <script src="flrw.js"></script>
@@ -76,6 +82,8 @@
 
             var maxZ = 1
             var maxY
+
+            var foreColor = "white"
 
             catalog.onchange = () => {
                 if (catalog.value !== "select") {
@@ -161,7 +169,7 @@
                     binData(catalog.value)
                 }
             }
-
+            byVolume.onchange = divideBy.onchange
 
             const pi = Math.PI
             const kpi = 4 / 3 * pi
@@ -187,6 +195,8 @@
                 //ctx.fillText(Math.round(V), 20, 20) 
 
                 ctxc.translate(canvas.width / 2, canvas.height)
+                ctxc.strokeStyle = foreColor
+                ctxc.fillStyle = foreColor
 
                 ctxc.beginPath()
                 ctxc.arc(0, 0, zoom * R, 0, pi * 2)
@@ -204,39 +214,57 @@
                 Vs = []
                 var output = ""
 
-                for (var i = 0; i < N; i++) {
-                    var Vn = V/N * (1 + i)
-                    var r = (Vn / kpi)**(1/3)
-                    var z = 1 / (1-r/R) - 1
+                if (byVolume.checked) {
+                    for (var i = 0; i < N; i++) {
+                        var Vn = V/N * (1 + i)
+                        var r = (Vn / kpi)**(1/3)
+                        var z = 1 / (1-r/R) - 1
 
-                    var dC
-                    var cap = z.toFixed(2)
-                    if (z > 1e12) {
-                        z = Infinity
-                        cap = "∞"
-                        dC = 13800
+                        var dC
+                        var cap = z.toFixed(2)
+                        if (z > 1e12) {
+                            z = Infinity
+                            cap = "∞"
+                            dC = 13800
+                        }
+                        else {
+                            dC = nwFLRW(67.6, 0.69, 0.31, z).DC
+                        }
+
+                                        
+                        Vs.push({Vn: V/N, r, z, agn: 0, qso: 0, dC})
+
+                        ctxc.beginPath()
+                        ctxc.arc(0, 0, zoom * r, 0, pi * 2)
+                        ctxc.stroke()
+
+                        ctxc.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
+
+                        //output += lastz.toFixed(2) + " < z < " + cap  + "\n" 
+                        output += lastz.toFixed(4) + ",\n" 
+
+                        lastr = r
+                        lastz = z
+
                     }
-                    else {
-                        dC = nwFLRW(67.6, 0.69, 0.31, z).DC
+
+                }
+                else {
+                    for (var iz = 0.1; iz < 5; iz += 0.1) {
+                        
+                        var z = iz
+
+                        var cap = z.toFixed(2)
+                                        
+                        Vs.push({z, agn: 0, qso: 0})
+                        output += lastz.toFixed(2) + " < z < " + cap  + "\n" 
+                        lastz = z
                     }
-
-                                    
-                    Vs.push({Vn: V/N, r, z, agn: 0, qso: 0, dC})
-
-                    ctxc.beginPath()
-                    ctxc.arc(0, 0, zoom * r, 0, pi * 2)
-                    ctxc.stroke()
-
-                    ctxc.fillText(cap, 0, 4 + -zoom * (lastr + (r - lastr) / 2)) 
-
-                    output += lastz.toFixed(2) + " < z < " + cap  + "\n" 
-
-                    lastr = r
-                    lastz = z
 
                 }
 
                 outputDiv.innerHTML = output
+
             }
 
             var total
@@ -286,6 +314,8 @@
                 var h = graph.height - 20
                 graph.width = graph.width
                 ctx.translate(40, h)
+                ctx.strokeStyle = foreColor
+                ctx.fillStyle = foreColor
 
                 var maxBin = 0
                 for (var i = 0; i < Vs.length; i++) {
@@ -294,6 +324,7 @@
                         break
                     }
                 }
+                maxBin = maxBin || Vs.length
                 console.log(maxBin)
 
                 var maxY = 0
@@ -308,7 +339,6 @@
                 console.log(yz)
                 if (isNaN(yz) || yz === Infinity) yz = 0
 
-                ctx.strokeRect(0, 0, graph.width, -graph.height)
 
                 ctx.textAlign = "right"
                 ctx.fillText("Redshift z", graph.width - 60, -2)
@@ -332,7 +362,7 @@
                 ctx.textAlign = "center"
                 
                 for (i = 0; i < maxBin; i++) {
-                    ctx.fillStyle = "black"
+                    ctx.fillStyle = foreColor
                     if (xz > 40 || i%2 === 0) {
                         ctx.fillText(Vs[i].z.toFixed(2), (i + 1) * xz, 14)
                     }
@@ -341,19 +371,21 @@
                     ctx.fillRect(i * xz + 2, 0, xz - 4, -Vs[i].qso * yz)
                 }
 
-                ctx.beginPath()
+                ctx.strokeRect(0, 0, graph.width, -graph.height)
+
+                /*ctx.beginPath()
                 ctx.moveTo(0, -h/2)
 
                 for (i = 0; i < maxBin; i++) {
                     ctx.lineTo((i+1) * xz, -h/2 * (Vs[i].dC / Vs[i].r))
                 }
                 ctx.strokeStyle = "black"
-                //ctx.stroke()
+                ctx.stroke()*/
 
 
 
                 ctx.font = "14pt serif"
-                ctx.fillStyle = "black"
+                ctx.fillStyle = foreColor
                 ctx.textAlign = "right"
                 ctx.fillText("Total: " + (total || 0), graph.width - 50, -graph.height + 50)
 

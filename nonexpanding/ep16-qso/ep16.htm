@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>nonexpanding</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="../reveal/dist/reset.css">
+		<link rel="stylesheet" href="../reveal/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal/dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../reveal/plugin/highlight/zenburn.css">
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3 style="color: gray;">A brief history...</h3>
+					<div class="fragment" style="text-align: left;">
+						<h2>1920</h2>
+						<ul>
+							<li>The universe was filled with stars</li>
+						</ul>
+						<br>
+						<br>
+						<div class="fragment">
+							<h2>1924</h2>
+							<ul>
+								<li>The universe was filled with galaxies</li>
+							</ul>
+							
+						</div>
+						<br>
+						<div class="fragment">
+							<h2>1960</h2>
+							<ul>
+								<li>Point-like objects behind the galaxies called quasars</li>
+							</ul>
+						</div>
+	
+					</div>
+					
+					<img style="position: absolute; top:15%; right:15%;" src="../ep14-hubble/debate2.png">
+				</section>
+				
+
+				<section>
+					<h2>Today:</h2>
+					<p>
+						We see galaxies at the distances of quasars and beyond.
+					</p>
+					
+					
+				</section>
+
+				<section>
+					<h2>Wikipedia:</h2>
+					<img src="wiki.png">
+
+					<p class="fragment">
+						A quasar (QSO) is a very bright active galactic nuclei (AGN).
+					</p>
+					
+				</section>
+
+				<section>
+					<p style="font-size: larger;">Quasars and Active Galactic Nuclei (13th Ed., 2010)</p>
+					<img src="qsoagn1.png" id="qsoagnimg">
+					<p class="fragment" >Shows quasars and AGN in each redshift range</p>
+					<div style="color:yellow; font-size: 50px; font-weight: bold; display:none; position: absolute; left:240px; top:400px;" id="qso3cap">Now</div>
+					<div style="color:yellow; font-size: 50px; font-weight: bold; display:none; position: absolute; left:700px; top:400px;" id="qso2cap">10 billion years ago</div>
+					
+					<div style="display: flex; width:100%; justify-content: center;">
+						<p class="fragment"><span style="color:blue;">Quasars</span> are brighter than $-22.25$
+						
+							<br>
+							<span style="color:red;">AGN</span> are fainter than $-22.25$</p>
+	
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+							<p class="fragment" id="qso3">
+								$z = 0$ is the present
+								<br>
+								<span class="fragment" id="qso2">$z = 2$ is about 10 billion years ago</span>
+							</p>
+	
+					</div>
+					
+						
+					<div class="fragment" id="qsoagn"></div>
+				</section>
+
+				<section>
+					<p>A quasarless future of the universe</p>
+					<img src="bigtimeline2.png">
+					<p class="fragment">Maybe we're just lucky</p>
+				</section>
+
+
+				<!--
+								<section>
+					<h3>Wikipedia (continued):</h3>
+
+					<img src="pastunderline.png">
+
+					<p class="fragment">They were all over the place in the past, but died out.</p>
+					<p class="fragment">Kind of like dinosaurs.
+					</p>
+					
+					
+				</section>
+				-->
+				
+				<section>
+					<p>You wouldn't expect this in a nonexpanding universe</p>
+				</section>
+
+				<section>
+					<p>In a nonexpanding universe, you would expect all equal volumes to contain the same amount of stuff</p>
+					<img src="expect1.png">
+				</section>
+
+
+				<section>
+					<p>But you'd also expect to see less far away, because its harder to see farther away things. </p>
+					<img src="expect2.png">
+				</section>
+
+				<section>
+					<p>This assumes each redshift "bin" represents an equal volume</p>
+					<p class="fragment">The standard bins are linear over $z$</p>
+
+					<table class="fragment">
+						<tr><td>Standard bins</td>
+						</tr>
+						<tr>
+							<td>
+								$0.0 < z < 0.1$<br>
+								$0.1 < z < 0.2$<br>
+								$0.2 < z < 0.3$<br>
+								$0.3 < z < 0.4$<br>
+								$0.4 < z < 0.5$<br>
+								$0.5 < z < 0.6$<br>
+								$0.6 < z < 0.7$<br>
+								$0.7 < z < 0.8$<br>
+								$0.8 < z < 0.9$<br>
+								$0.9 < z < 1.0$<br>
+								$1.0 < z < 1.1$
+							</td>
+						
+						</tr>
+					</table>
+				</section>
+
+
+				<section>
+					<p>But in a nonexpanding model, it's <em>not</em> linear over $z$</p>
+					<p class="fragment" id="drawV1">The observable region is a sphere with a radius $\frac{c}{H} = 13.8$ billion light years</p>
+					
+					<canvas id="volume" width="700" height="700"></canvas>
+					
+					<p class="fragment" id="drawV2">Divide that by 10, find the radius, and calculate the $z$</p>
+					
+					<p></p>
+
+				</section>
+
+
+				<section>
+					<p>When we divide by 100, we get these bins:</p>
+					<table class="fragment">
+						<tr>
+							<td>Nonexpanding bins</td>
+						</tr>
+						<tr>
+							<td>
+								$0.00 < z < 0.27$<br>
+								$0.27 < z < 0.37$<br>
+								$0.37 < z < 0.45$<br>
+								$0.45 < z < 0.52$<br>
+								$0.52 < z < 0.58$<br>
+								$0.58 < z < 0.64$<br>
+								$0.64 < z < 0.70$<br>
+								$0.70 < z < 0.76$<br>
+								$0.76 < z < 0.81$<br>
+								$0.81 < z < 0.87$<br>
+								$0.87 < z < 0.92$
+							</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<p>Standard bins</p>
+					<img height="400" src="qso1.png">
+					<p>Nonexpanding bins</p>
+					<img height="400" src="qsononex.png">
+					
+				</section>
+
+				<section>
+					<img src="sdss1.png">
+				</section>
+
+
+				<section>
+					<img id="sdssimg" src="sdss4.png">
+					<p>Two missions:</p>
+					<ul>
+						<li class="fragment" id="sdss5">$0.8 < z < 0.22$</li>
+						<li class="fragment" id="sdss6">$z > 0.21$</li>
+					</ul>
+					<p class="fragment">Overlap from $0.21$ to $0.22$</p>
+					<p class="fragment">$z < 0.8$ is not a priority</p>
+
+				</section>
+
+				<section>
+					<a href="file:///home/m/projects/hubbles-law/other/sdss.htm">github.io/hubbles-law/other/sdss.htm</a>
+				</section>
+
+				<section style="text-align: left;">
+					<p>
+						The distribution of quasars is a good argument for the expanding universe.
+					</p>
+
+					<p class="fragment">
+						The universe could only be nonexpanding if something was wrong with the measurements, or interpretation. 
+					</p>
+				</section>
+
+				<section>
+					<p>Is that possible?</p>
+				</section>
+
+				<section>
+					<p>In the DR16 paper, it says the DR12 absolute magnitudes were actually calculated improperly.</p>
+					<img src="dr12-1.png" id="dr12img">
+					<ul>
+						<li class="fragment" id="dr12k">The K-corrections were incorrect</li>
+						<li class="fragment" id="dr12c">The wrong cosmological parameters were used</li>
+					</ul>
+
+				</section>
+
+				<section>
+					<p>It doesn't make sense how only half the K-corrections could be applied</p>
+					<img src="kcorr.png">
+
+				</section>
+
+				<section>
+
+					<p >Both DR12 and DR16 used the same data file, which has single, combined value for the correction.</p>
+					<img src="kcorr2.png">
+					<p>Richards, et al. (2006)</p>
+				</section>
+
+				<section>
+					<p>The code for DR16Q is on github:</p>
+					<img src="dr16github.png">
+				</section>
+
+				<section>
+					<p>But I haven't found DR12's code.</p>
+					<p class="fragment">I'm not sure where or how in DR12's pipeline only the continuum is applied.</p>
+					<p class="fragment">If it's still in the DR16 pipeline, it would be applied twice.</p>
+					<p class="fragment">But in the remote chance it was overlooked, it would only have a slight effect.</p>
+				</section>
+
+
+				<section>
+					<p>The Hubble constant used in DR16 is $67.6$ km/s/Mpc</p>
+					<img src="sn676.png">
+					<p class="fragment">These parameters famously over-predict the supernovae data at the same redshfits</p>
+				</section>
+
+				<section>
+					<p>This choice of parameters places objects farther away, thus increasing their brightness</p>
+					<p class="fragment">But not by a significant amount.</p>
+				</section>
+				
+				<section>
+					<p>SDSS's quasar catalog seems to have less strict standards for the $z > 2$ mission</p>
+					<img src="z2.png">
+					<p class="fragment">And is sparse at $z < 0.8$</p>
+				</section>
+
+				<section>
+					<p>For example, the first quasar ever observed, 3C 273:</p>
+					<img src="q3c.png">
+					<p class="fragment">At $z=0.158$ with an absolute magnitude of $-26.7$</p>
+				</section>
+
+				<section>
+					<p>But there is no quasar that fits that criteria in SDSS</p>
+					<img src="Vs0.png">
+					<p class="fragment">This data only tells part of the story.</p>
+				</section>
+
+				<section>
+					<p>A few other factors could effect measured brightness:</p>
+					<ul>
+						<li class="fragment">Gravitational lensing</li>
+						<li class="fragment">Double quasars</li>
+						<li class="fragment">Interloping starlight</li>
+						<li class="fragment">Intrinsic/gravitational redshift</li>
+					</ul>
+				</section>
+
+				<section>
+					<p>Gravitational Lensing</p>
+					<img src="lpad2.png">
+				</section>
+
+				<section>
+					<p>The quasar's brightness was increased by lensing.</p>
+				</section>
+
+				<section>
+					<p>Double Quasars</p>
+					<img src="lpad4.png">
+				</section>
+
+				<section>
+					<p>Interloping stars</p>
+					<img src="lpad5.png">
+				</section>
+
+				<section>
+					<p>Two objects detected as one increases brightness</p>
+				</section>
+
+				<section>
+					<p>There are hundreds of billions of stars in our galaxy, and hundreds of billions of other galaxies.</p>
+					<p class="fragment">There are only about 1 million known quasars.</p>
+					<p class="fragment">The odds aren't low a star or galaxy would fall in a quasars line of sight to us.</p>
+				</section>
+
+				<section>
+					<p>Gravitational redshift?</p>
+					<p>If a quasar's light originates near a super massive blackhole</p>
+					<img src="wiki.png" height="300">
+					<p class="fragment">Part of their redshift could be from their original high-gravity enrivonment</p>
+					<p class="fragment">Meaning they are not as distant, and thus, not as bright as measured.</p>
+				</section>
+
+				<section>
+					<p>Milky Way and Andromeda collision... possible double quasar?</p>
+					<img src="lpad6.png">
+				</section>
+
+				<section>
+					<p>
+						If own own galaxy will become a quasar, when they're supposedly going extinct...
+					</p>
+				</section>
+
+				<section>
+					<p>And we recently observed a galaxy become active:</p>
+					<img src="awaken.png">
+				</section>
+
+				<section>
+					<p>Maybe the quasar's place in the evolution of galaxies is misunderstood.</p>
+				</section>
+
+				<section>
+					<p>Future studies</p>
+				</section>
+
+				<section>
+					<p>DESI Survey Early Data Release (2023)</p>
+					<img src="desi1.png">
+					<p>Standard bins</p>
+					<div class="fragment">
+						<img src="desi2.png">
+						<p>Nonexpanding bins</p>
+					</div>
+					
+				</section>
+				
+				<section>
+					<p>This is only 1-2% of the data DESI will produce.</p>
+					<p class="fragment">And it doesn't have absolute magnitudes, yet.</p>
+				</section>
+
+				<section>
+					<p>When more data is released, I'll tell you all about it.</p>
+				</section>
+
+				<section>
+					<p>So, what do you think?</p>
+					<p class="fragment">Are quasars the dinosaurs of the cosmos?</p>
+					<p class="fragment">Ruling the early universe, but then going extinct?</p>
+					<br>
+					<p class="fragment">Or have we been misunderstanding them and their properties?</p>
+				</section>
+
+				
+				<!--
+
+				https://arxiv.org/pdf/2007.09001
+				-->
+
+
+			</div>
+
+		</div>
+
+		<script src="volume.js"></script>
+
+		<script src="../reveal/dist/reveal.js"></script>
+		<script src="../reveal/plugin/math/math.js"></script>
+		<script src="../reveal/plugin/zoom/zoom.js"></script>
+		<script src="../reveal/plugin/notes/notes.js"></script>
+		<script src="../reveal/plugin/search/search.js"></script>
+		<script src="../reveal/plugin/markdown/markdown.js"></script>
+		<script src="../reveal/plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: false,
+				progress: false,
+				center: true,
+				hash: true,
+				transition: "fade",
+
+				width: 1920,
+  				height: 1080,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath.KaTeX ]
+			});
+			Reveal.configure({
+				keyboard: {
+					66: "next"
+				}
+			})
+
+			var drawVolume = demoVolume()
+			
+			Reveal.on( 'fragmentshown', event => {
+			  
+				if (event.fragment.id === "qso2") {
+					qso2cap.style.display = "block"
+				}
+				if (event.fragment.id === "qso3") {
+					qso3cap.style.display = "block"
+				}
+				if (event.fragment.id === "qsoagn") {
+					qsoagnimg.src = "qso1.png"
+				}
+				if (event.fragment.id === "drawV1") {
+					drawVolume()
+				}
+				if (event.fragment.id === "drawV2") {
+					drawVolume()
+				}
+				if (event.fragment.id === "sdss6") {
+					sdssimg.src = "sdss6.png"
+				}
+				if (event.fragment.id === "sdss5") {
+					sdssimg.src = "sdss5.png"
+				}
+				if (event.fragment.id === "dr12k") {
+					dr12img.src = "dr12-2.png"
+				}
+				if (event.fragment.id === "dr12c") {
+					dr12img.src = "dr12-3.png"
+				}
+			} );
+
+			Reveal.on("slidechanged", event => {
+                if (event.currentSlide.id === "sample-demo") {
+                    samp.draw()
+                }
+                
+            })
+		</script>
+
+	</body>
+</html>
