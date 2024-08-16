@@ -19,6 +19,14 @@
         <!--<option value="milli">The Million Quasars (Milliquas) catalogue, version 8 (Flesch, 2023)</option>-->
     </select>
 
+    <select id="cosmology" style="font-size: 150%;"> <!--position: absolute; top:10px; left: 420px; display: none;">-->
+        <option value="LCDM676">LCDM H0 = 67.6</option>
+        <option value="LCDM73">LCDM H0 = 73.0</option>
+        <option value="alt">TDP H = 70.5</option>
+        
+    </select>
+
+
     <hr>
     
         <input type="checkbox" id="byVolume"> Divide the volume by <span id="divideByCap"></span>
@@ -37,14 +45,6 @@
 
 
         <div style="position: relative;">
-
-            <select id="cosmology" style="position: absolute; top:10px; left: 420px; display: none;">
-                <option value="LCDM676">LCDM H0 = 67.6</option>
-                <option value="LCDM73">LCDM H0 = 73.0</option>
-                <option value="alt">TDP H = 70.5</option>
-                
-            </select>
-
             
             <canvas id="graph" width="1600" height="500"></canvas>
 

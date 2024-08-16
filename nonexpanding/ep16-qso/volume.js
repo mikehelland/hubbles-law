@@ -45,7 +45,8 @@ function demoVolume() {
         Vs = []
         var output = ""
 
-        for (var i = 0; i < N; i++) {
+        var i = 0
+        var hanim = setInterval(() => {
             var Vn = V/N * (1 + i)
             var r = (Vn / kpi)**(1/3)
             var z = 1 / (1-r/R) - 1
@@ -63,7 +64,7 @@ function demoVolume() {
 
                             
             Vs.push({Vn: V/N, r, z, agn: 0, qso: 0, dC})
-
+            
             ctxc.beginPath()
             ctxc.arc(0, 0, zoom * r, 0, pi * 2)
             ctxc.stroke()
@@ -76,7 +77,12 @@ function demoVolume() {
             lastr = r
             lastz = z
 
-        }
+            i++
+            if (N === i) {
+                clearInterval(hanim)
+            }
+
+        }, 200)
     }
 
 
