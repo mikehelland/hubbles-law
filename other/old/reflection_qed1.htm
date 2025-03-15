@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            /*body{color:white; background-color: black;}*/
+            canvas{margin:1px;}
+        </style>
+    </head>
+    <body>
+
+        <h1>Feynman path integrals</h1>
+
+        <!--The direction is representative of the phase and should point in the same direction as the bulk of the phases for the paths near the centre. 
+        The reason yours doesn't is that it's not sensitive enough to different paths (the scrolls at the ends are not tight enough). 
+        That's because your wavelength (the distance travelled for one complete cycle) is large compared to the path lengths and the lateral extent of the mirror. 
+        For visible light the wavelength is ~0.5 microns and the paths and mirror are much larger. It's still a cartoon, but you should be able to demonstrate 
+        the principle if you fix that problem. 
+        -->
+        boundary: <input id="boundary-input" value="2500" type="number">nm
+        target x:<input id="o-x" value="12000">
+        y:<input id="o-y" value="0">
+        <button id="run-button">Run</button>
+        <br>
+        <br>
+        <div id="models"></div>
+        Top: Photons always move at c.
+        <br>
+        Middle: Photon's speed start at 0.5c, and reflect at c
+        <br>
+        Bottom: Photon's clocks start at half speed, and reflect at full speed. 
+        
+        <script>
+
+            // we're going to try to advance light by 3 nm at a time
+            // so I think that needs a time step of nm-8
+            const c = 2.99792458 // nm/ns-8
+            
+
+            var modelsDiv = document.getElementById("models")
+            var res = 0.1
+            var steps = 5
+            var handle 
+            var models = []
+            var iii
+            
+            animH = setInterval(() => {
+                for (var i = 0; i < models.length; i++) {
+                    models[i].draw()
+                }
+            }, 1000/60)
+
+            
+            var runButton = document.getElementById("run-button")
+            runButton.onclick = e => {
+                modelsDiv.innerHTML = ""
+                models = []
+                clearInterval(handle)
+                
+                models.push(setup(1))
+                //models.push(setup(0.5))
+                //models.push(setup(0.5, true))
+                
+                setTimeout(() => {
+                handle = setInterval(() => {
+                    for (iii = 0; iii < steps; iii++) { 
+                        for (var i = 0; i < models.length; i++) {
+                            models[i].next(handle)
+                        }
+                    }
+                }, 0)
+                }, 1000)
+                
+            }
+
+            var boundaryInput = document.getElementById("boundary-input")
+            boundaryInput.onkeypress = e => {
+                if (e.key === "Enter") {
+                    runButton.onclick()
+                }
+            }
+
+            function setup(dt, testHypothesis) {
+                var done
+                var canvas = document.createElement("canvas")
+                var ctx = canvas.getContext("2d")
+                canvas.width = 1200
+                canvas.height = 500
+                modelsDiv.appendChild(canvas)
+
+                var observerPoint = [document.getElementById("o-x").value * 1, 
+                                    document.getElementById("o-y").value * 1]
+
+                var boundary = boundaryInput.value * 1
+
+                var wavelength = 500
+
+                var photons = []
+                var pcount = 80
+                for (var i  = 0; i < pcount; i++) {
+                    let x = i * (canvas.width / (pcount - 1))
+                    let y = boundary * res
+                    let hyp = Math.sqrt(x*x + y*y)
+                    console.log(x, y)
+                    photons.push({x: 0, y: 0, 
+                        dt: dt,
+                        angle: i,
+                        dial: 0,
+                        dx: x / hyp * c, 
+                        dy: y / hyp * c,
+                        clockX: x,
+                        wavelength: 500 * dt
+                    })
+
+                }
+                console.log(photons)
+                
+                var finished = 0
+
+                var ray = [[canvas.width/2, canvas.height*0.5]]
+
+                var draw = (handle) => {
+                    if (done) return 
+                    ctx.fillStyle = "black"
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+                    ctx.strokeStyle = "red"
+                    ctx.fillStyle = "red"
+                    ctx.beginPath()
+                    ctx.moveTo(0, boundary * res)
+                    ctx.lineTo(canvas.width, boundary * res)
+                    ctx.stroke()
+
+                    ctx.fillRect(observerPoint[0], observerPoint[1], 2, 2)
+
+                    ctx.strokeStyle = "white"
+                    ctx.fillStyle = "yellow"
+                    var lastr
+                    for (var photon of photons) {
+                        ctx.fillRect(photon.x * res, photon.y * res, 2, 2)
+                        
+                        ctx.beginPath()
+                            ctx.moveTo(photon.clockX  + 10, boundary * res + 20)
+                            ctx.lineTo(photon.clockX  + 10 + Math.cos(photon.dial * Math.PI / photon.dt) * 10, 
+                                            boundary * res + 20 + Math.sin(-1*photon.dial * Math.PI / photon.dt) * 10)
+                        ctx.stroke()
+                        
+                    }
+
+                    if (finished === pcount) {
+                        ctx.beginPath()
+                        lastr = [canvas.width/2, canvas.height/2]
+                        ctx.moveTo(lastr[0], lastr[1])
+                        for (var photon of photons) {
+                            lastr = [lastr[0] + photon.dialx * 10, lastr[1] + photon.dialy * 10]
+                            ctx.lineTo(lastr[0], lastr[1])
+                        }
+                        ctx.stroke()
+
+                        ctx.strokeStyle = "green"
+                        ctx.beginPath()
+                        ctx.moveTo(canvas.width/2, canvas.height/2)
+                        ctx.lineTo(lastr[0], lastr[1])
+                        ctx.stroke()
+
+                        console.log(photons)
+                        //clearInterval(handle)
+
+                        done = true
+                    }
+
+                }
+
+                var ndx
+                var ndy
+                var hyp
+                var t = 0
+                var next = (handle) => {
+                    if (done) return
+                    t++
+
+                    for (var photon of photons) {
+                        if (!photon.place) {
+                            var dd = Math.sqrt(Math.pow(photon.dx * photon.dt , 2) + Math.pow(photon.dy * photon.dt , 2))  / photon.wavelength
+                            if (testHypothesis) {
+                                dd = dd * photon.dt
+                            }
+                            photon.dial +=  dd
+                        }
+                        photon.x += photon.dx * photon.dt
+                        photon.y += photon.dy * photon.dt
+                        
+                        //if (photon.y >= 500) debugger 
+
+                        if (!photon.flipped && photon.y > boundary) {
+                            photon.flipped = true
+                            photon.wavelength = photon.wavelength / photon.dt
+                            photon.dt = 1
+                            photon.flipX = photon.x
+                            
+                            ndx = observerPoint[0] - photon.x
+                            ndy = observerPoint[1] - photon.y
+
+                            hyp = Math.sqrt(ndx*ndx + ndy*ndy)
+                            photon.dx = ndx / hyp  * c
+                            photon.dy = ndy / hyp  * c
+
+                            photon.dialx0 = Math.cos(photon.dial*Math.PI/180)
+                            photon.dialy0 = Math.sin(-1*photon.dial*Math.PI/180)
+                            photon.dial0 = photon.dial
+                            //photon.dial = 0
+                        }
+
+                        if (photon.flipped && !photon.place && 
+                            (photon.flipX < observerPoint[0] ? photon.x >= observerPoint[0] : (photon.x <= observerPoint[0]))
+                            && photon.y <= observerPoint[1]) {
+                            
+                                photon.place = ++finished
+                                photon.fdial = photon.dial
+                            
+                                //ray.push([Math.cos(photon.dial*Math.PI/180), Math.sin(-1*photon.dial*Math.PI/180)])
+                                ray.push([Math.sin(photon.dial*Math.PI/180), Math.cos(photon.dial*Math.PI/180)])
+                                photon.dialx = Math.cos(photon.dial*Math.PI)
+                                photon.dialy = Math.sin(-1*photon.dial*Math.PI)
+                        }
+
+                    
+                    }
+
+                }
+
+                return {next, draw}
+            }
+            
+            runButton.onclick()
+        </script>
+
+    </body>
+</html>
