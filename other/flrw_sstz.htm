@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    .sshot {font-size: 125%; 
+        width: 40px;
+        appearance:textfield;
+        border: 0;
+    }
+    form {
+        position: absolute;
+        left:50px;
+        top:50px;
+    }
+
+    #output {
+        font-family: 'Courier New', Courier, monospace;
+    }
+</style>
+</head>
+<body>
+
+
+    Max z (redshift) <input type="number" id="maxZInput" value="15" min="1">
+
+    <hr>
+    <div style="position: relative;">
+        <canvas id="canvas" width="1000" height="600"></canvas>
+        <canvas id="canvasz" width="1000" height="600" style="position: absolute; left:0; top:0; "></canvas>
+
+        <form name="form">
+            &Lambda;CDM - 
+            &Omega;<sub>&Lambda;</sub>: <input type="number" min="0" value="0.7" step="0.05" id="Omega_L">
+            &Omega;<sub>M</sub>: <input type="number" min="0" value="0.3" step="0.05" id="Omega_M">
+            H<sub>0</sub>: <input type="number" value="70" step="0.5" id="H0">
+        </form>
+        
+    </div>
+    <br>
+    <p style="text-align: center; width: 1000px;">
+        comoving distance (dotted), light travel time distance (dashed), angular diameter distance (solid)
+    </p>
+    
+    <div id="output"></div>
+    <br>
+    <br>
+    <input type="checkbox" checked="checked" id="wright"> <a href="https://www.astro.ucla.edu/~wright/CosmoCalc.html">Ned Wright's Javascript Cosmological Calculator</a> 
+    (<span style="color:blue;">blue</span>)
+    <br>
+    <input type="checkbox" id="marmet"> 
+    <a href="https://cosmology.info/code/marmet_l/cosmology-calculators.html">Louis Marmet's Javascript Cosmological Calculator</a> 
+    (<span style="color:red;">red</span>)
+
+    <br>
+    <input type="checkbox"  id="flat"> Flat (link inputs)
+
+    <br>
+    <input type="checkbox" id="screenshot"> Screenshot mode
+
+    <script src="flrw.js"></script>
+    
+    
+    <p>(black):</p>
+    <pre>
+        function flrw2(H0, OmegaL, OmegaM, maxZ) {
+
+            maxZ = maxZ || 10
+            //var OmegaM = 1 - OmegaL
+            var OmegaK = 1 - OmegaL - OmegaM + 1 - 1
+            var curv = Math.sqrt(Math.abs(OmegaK))
+        
+            // convert km/s/Mpc  to  Mly/My/Mly
+            H0 = H0 / 3.08e19 * 60 * 60 * 24 * 365 * 1e6
+            var H = H0 
+            var c = 1
+        
+            var t = 0
+            var z = 0
+        
+            // these are our photons, one has a head start
+            var x1 = 0.1
+            var x2 = 0
+        
+            var xx = 0
+        
+            var data = []
+        
+            while (z < maxZ) {
+        
+                // move the photons with the hubble flow (in reverse)
+                x1 += c - H * x1
+                x2 += c - H * x2
+        
+                // the redshift is how far apart the photons have drifted
+                z = 0.1 / (x1 - x2) - 1
+        
+                t--
+        
+                xx = curv * x2 * (1+z)
+                
+                if (1+OmegaK === 1) xx = x2
+                else if (OmegaK < 0) xx = 1/H0 * Math.sin(xx * H0) / xx   * x2 
+                else xx = 1/H0 * Math.sinh(xx * H0) / xx   * x2 
+        
+                data.push({
+                    z,
+                    d_A: xx ,
+                    d_C: x2 * (1+z),
+                    d_T: -t, 
+                })
+                
+                
+                // update the Hubble parameter
+                H = H0 * Math.sqrt(OmegaM * Math.pow(1 + z, 3) + OmegaL + OmegaK * Math.pow(1 + z, 2))
+        
+            }
+        
+            return data
+        }
+    </pre>
+
+    <script>
+        var data
+        var data2
+        var age
+        const c = 299792.458
+        const pc2ly = 3.261564
+        var zoomY = 45 * 1000
+        
+        var maxZ = maxZInput.value * 1
+
+        maxZInput.onchange = () => {
+            maxZ = maxZInput.value * 1
+            run()
+        }
+
+        var printParameters = true
+
+        var canvas = document.getElementById("canvas")
+            
+        screenshot.onchange = e => {
+            var cls = screenshot.checked ? "sshot" : ""
+            form.H0.className = cls
+            form.Omega_L.className = cls
+            form.Omega_M.className = cls
+        }
+
+
+        form.H0.onchange = e => {
+            run()
+            printParameters = true
+        }
+        form.Omega_L.onchange = e => {
+            printParameters = true
+            if (flat.checked) 
+                form.Omega_M.value = 1 - form.Omega_L.value
+            run()
+        }
+        form.Omega_M.onchange = e => {
+            printParameters = true
+            if (flat.checked) 
+                form.Omega_L.value = 1 - form.Omega_M.value
+            run()
+        }
+
+        wright.onchange = e => drawCanvas()
+        marmet.onchange = e => drawCanvas()
+        
+        var mmz
+        var mmx
+        var canvasz = document.getElementById("canvasz")
+        var ctx2 = canvasz.getContext("2d")
+        canvasz.onclick = e => {
+
+            var div
+            if (printParameters) {
+                div = document.createElement("div")
+                div.innerHTML = `<br>ΩΛ = ${(form.Omega_L.value * 1).toFixed(2)}, Ωm = ${(form.Omega_M.value * 1).toFixed(2)}, H0 = ${(form.H0.value * 1).toFixed(2)}, age = ${(age).toFixed(2)}`
+                output.appendChild(div)
+                printParameters = false
+            }
+
+            div = document.createElement("div")
+            div.innerHTML = `z = ${(currentZ.z).toFixed(2)}, dC = ${(currentZ.d_C / 1000).toFixed(2)}, dT = ${(currentZ.d_T / 1000).toFixed(2)}, dA = ${(currentZ.d_A / 1000).toFixed(2)}`
+            output.appendChild(div)
+
+        }
+        canvasz.onmousemove = e => {
+            mmx = e.clientX - canvas.parentElement.offsetLeft 
+
+            drawCanvas2()
+        }
+        canvasz.onmouseout = e => {
+            mmx = 0
+            drawCanvas2()
+        }
+        run()
+
+
+        function run() {
+            var H0 = parseFloat(form.H0.value)
+            var OmegaL = parseFloat(form.Omega_L.value)
+            var OmegaM = parseFloat(form.Omega_M.value)
+
+            data = []
+            data2 = []
+            data3 = []
+            
+            for (var i = 0; i <= maxZ; i=i+0.1) {
+                
+                //data.push(FLRW(H0, OmegaL, OmegaM, i))
+                data.push(SSTz(0.247, i))
+                data2.push(nwFLRW(H0, OmegaL, OmegaM, i))
+                
+            }
+            
+            data3 = flrw2(H0, OmegaL, OmegaM, maxZ)
+            age = nwFLRW(H0, OmegaL, OmegaM, 1).age
+            
+            drawCanvas()
+            drawCanvas2()
+            
+
+        }
+
+        var currentZ 
+        function drawCanvas2() {
+            canvasz.width = canvasz.width
+            var h = canvasz.height
+            if (!mmx) return
+
+            mmz = (mmx - 20) / canvasz.width * maxZ
+
+            ctx2.font = "italic 14pt serif"
+            ctx2.beginPath()
+            ctx2.moveTo(mmx, 0)
+            ctx2.lineTo(mmx, canvas.height)
+            ctx2.stroke()
+
+            for (mmi = 0; mmi < data3.length; mmi++) {
+                if (data3[mmi].z >= mmz) break   
+            }
+            
+            currentZ = data3[mmi]
+
+            //ctx2.fillText(mmz.toFixed(2), mmx, canvasz.height / 2)
+            ctx2.fillText((data3[mmi].d_C / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_C / zoomY)
+            ctx2.fillText((data3[mmi].d_T / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_T / zoomY )
+            ctx2.fillText((data3[mmi].d_A / 1000).toFixed(2), mmx + 10, h - h * data3[mmi].d_A / zoomY + 5)
+            ctx2.textAlign = "right"
+            ctx2.fillText("z = " + data3[mmi].z.toFixed(2),   mmx - 10, canvasz.height - 30)
+            
+        }
+
+        function drawCanvas() {
+
+            var ctx = canvas.getContext("2d")
+            var w = canvas.width
+            var h = canvas.height
+        
+            canvas.width = w
+            console.log(w, h)
+
+            ctx.fillStyle = "black"
+            ctx.font = "16px sans-serif"
+            ctx.textAlign = "center"
+            for (var i = 0; i <= maxZ; i=i+1) {
+                ctx.fillText(i, 20 + i / maxZ * w, h)
+            }
+            
+            ctx.textAlign = "right"
+            ctx.fillText("redshift z", w - 10, h - 25)
+
+            for (var i = 0; i <= zoomY; i=i+2000) {
+                ctx.fillText(i / 1000, 18, h - 20 - h * i / zoomY)
+            }
+            ctx.textAlign = "left"
+            ctx.fillText("billion light years", 28, 18)
+
+            ctx.translate(20, -20)
+
+            ctx.lineWidth = 1
+            ctx.strokeRect(0, 0, canvas.width, canvas.height)
+
+
+            if (marmet.checked) {
+                ctx.lineWidth = 10
+                ctx.strokeStyle = "red"
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+            }
+
+
+            if (wright.checked) {
+                ctx.lineWidth = 10
+                ctx.strokeStyle = "blue"
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.lookback * 1000 / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DA * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+                ctx.beginPath()
+                ctx.moveTo(0, h)
+
+                data2.forEach(dp => {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.DC * pc2ly / zoomY)
+                })
+                ctx.globalAlpha = 0.4
+                ctx.stroke()
+
+            }
+
+
+
+
+
+
+            ctx.globalAlpha = 1
+            ctx.lineWidth = 6
+            ctx.strokeStyle = "black"
+
+            ctx.setLineDash([50, 10])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            data3.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_T / zoomY)
+            })
+            ctx.stroke()
+
+
+            ctx.setLineDash([])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            var dp
+            for (i = 0; i < data3.length; i++) {
+                dp = data3[i]
+                if (dp.z && dp.d_A < 10000000) {
+                    ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_A / zoomY)
+                }
+            }
+            ctx.stroke()
+
+            ctx.setLineDash([5, 5])
+            ctx.beginPath()
+            ctx.moveTo(0, h)
+
+            data3.forEach(dp => {
+                ctx.lineTo(w * dp.z / maxZ, h - h * dp.d_C / zoomY)
+            })
+            ctx.stroke()
+            
+
+        }
+
+
+
+
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//                          cosmology model                          *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+function SSTz(Hz, z) {
+  let dA = Math.log(1 + z);               // angular distance [Hubble]
+
+  let dA_Gpc = (1/Hz) * dA;
+  let dA_Glyr = pc2ly * dA_Gpc;
+  return {z, DA: dA_Gpc * 1000}
+}
+
+
+
+    </script>
