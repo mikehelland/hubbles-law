@@ -16,7 +16,7 @@
     </ul>
     
 </p>
-<canvas width="1600" height="652" id="graph"></canvas>
+<canvas width="1000" height="952" id="graph"></canvas>
 <img src="../img/visiblespectrum.png" id="colorsImg" style="display: none;">
 
 <ul>
@@ -50,9 +50,9 @@
     ctx.fillRect(getX(5000), 0, getX(28500) - getX(5000), graph.height) 
 
     ctx.fillStyle = "black"
-    ctx.font = "40px bold serif"
-    ctx.fillText("NIRCam", getX(1100), 500)
-    ctx.fillText("MIRI", getX(8800), 500)
+    ctx.font = "30px bold serif"
+    ctx.fillText("NIRCam", getX(800), 600)
+    ctx.fillText("MIRI", getX(8800), 600)
 
 
     ctx.font = "12px sans-serif"
@@ -111,10 +111,12 @@
     ctx.textAlign = "right"
     ctx.fillText("z", -16, -4)
 
+    ctx.strokeStyle = "black"
+    ctx.lineWidth = 3
     ctx.beginPath()
     ctx.moveTo(getX(10), 6)
     ctx.lineTo(getX(1000), 12 * 99 + 6)
-    ctx.setLineDash([2, 4])
+    ctx.setLineDash([4, 4])
     ctx.stroke()
 
 
