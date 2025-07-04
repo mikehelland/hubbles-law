@@ -409,6 +409,10 @@ function SSTz(Hz, z) {
   return {z, DA: dA_Gpc * 1000}
 }
 
+function SSTz_rev(Hz, dA) {
+    let log1z = dA / 1000  * Hz
+    return Math.exp(log1z) - 1 // (1+z) so minus 1
+}
 
 
     </script>
